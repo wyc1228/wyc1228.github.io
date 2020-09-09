@@ -30,7 +30,7 @@
 <meta property="og:description" content="Annotation(注解)1.1 概述注解是jdk 5.0 新增的功能，Annotation 其实就是代码里的特殊标记, 这些标记可以在编译, 类加载, 运行时被读取, 并执行相应的处理。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2020-09-09T13:46:45.000Z">
-<meta property="article:modified_time" content="2020-09-09T13:55:53.769Z">
+<meta property="article:modified_time" content="2020-09-09T14:32:43.660Z">
 <meta property="article:author" content="wyc">
 <meta name="twitter:card" content="summary">
 
@@ -267,7 +267,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2020-09-09 21:46:45 / Modified: 21:55:53" itemprop="dateCreated datePublished" datetime="2020-09-09T21:46:45+08:00">2020-09-09</time>
+      <time title="Created: 2020-09-09 21:46:45 / Modified: 22:32:43" itemprop="dateCreated datePublished" datetime="2020-09-09T21:46:45+08:00">2020-09-09</time>
     </span>
 
   
@@ -281,11 +281,11 @@
     
     <div class="post-body" itemprop="articleBody">
         <h2 id="Annotation-注解"><a href="#Annotation-注解" class="headerlink" title="Annotation(注解)"></a>Annotation(注解)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>注解是jdk 5.0 新增的功能，Annotation 其实就是代码里的特殊标记, 这些标记可以在编译, 类加载, 运行时被读取, 并执行相应的处理。<a id="more"></a></p>
-<p>通过使用 Annotation,程序员可以在不改变原逻辑的情况下, 在源文件中嵌入一些补充信息。<!-- more --></p>
+<p>通过使用 Annotation,程序员可以在不改变原逻辑的情况下, 在源文件中嵌入一些补充信息。</p>
 <p>在JavaSE中，注解的使用目的比较简单，例如标记过时的功能，忽略警告等。</p>
 <p>在JavaEE/Android中注解占据了更重要的角色，例如用来配置应用程序的任何切面，代替JavaEE旧版中所遗留的繁冗代码和XML配置等。</p>
 <p><code>框架 = 注解 + 反射机制 + 设计模式</code></p>
-<h3 id="1-2-声明注解"><a href="#1-2-声明注解" class="headerlink" title="1.2 声明注解"></a>1.2 声明注解</h3><p>注解是一种代码级别的说明.它与*<code>类</code><em>,</em><code>接口</code><em>,</em><code>枚举</code><em>在同一个层次,它可以声明在</em><code>包</code><em>,</em><code>类</code><em>,</em><code>字段</code><em>,</em><code>方法</code><em>,</em><code>局部变量</code><em>,</em><code>方法参数</code>*等的前面,用来对这些元素进行说明,注释.</p>
+<h3 id="1-2-声明注解"><a href="#1-2-声明注解" class="headerlink" title="1.2 声明注解"></a>1.2 声明注解</h3><p>注解是一种代码级别的说明.它与<code>类</code>，<code>接口</code>，<code>枚举</code>在同一个层次,它可以声明在<code>包</code>，<code>类</code>，<code>字段</code>，<code>方法</code>，<code>局部变量</code>，<code>方法参数</code>等的前面用来对这些元素进行说明注释</p>
 <h3 id="1-3-注解的分类"><a href="#1-3-注解的分类" class="headerlink" title="1.3 注解的分类"></a>1.3 注解的分类</h3><ul>
 <li>基本注解</li>
 <li>元注解</li>
@@ -311,7 +311,7 @@
 <p>只能用于标记构造函数和方法，由于保留策略声明为RUNTIME，所以此注解可以在运行时生效。</p>
 </li>
 </ul>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SafeVarargsAnnotation</span>&lt;<span class="title">S</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> S[] args;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造函数可以使用@SafeVarargs标记</span></span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SafeVarargsAnnotation</span><span class="params">(S... args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.args = args;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//此处不能使用@SafeVarargs，因为此方法未声明为static或final方法，如果要抑制unchecked警告，可以使用@SuppressWarnings注解</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="comment">//@SafeVarargs</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loopPrintArgs</span><span class="params">(S... args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (S arg : args) &#123;</span><br><span class="line">            System.out.println(arg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//final方法可以使用@SafeVarargs标记</span></span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">printSelfArgs</span><span class="params">(S... args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (S arg : <span class="keyword">this</span>.args) &#123;</span><br><span class="line">            System.out.println(arg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SafeVarargsAnnotation.loopPrintInfo(<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//static方法可以使用@SafeVarargs标记</span></span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">loopPrintInfo</span><span class="params">(T ... infos)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (T info : infos) &#123;</span><br><span class="line">            System.out.println(info);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SafeVarargsAnnotation</span>&lt;<span class="title">S</span>&gt;</span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> S[] args;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//构造函数可以使用@SafeVarargs标记</span></span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">SafeVarargsAnnotation</span><span class="params">(S... args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.args = args;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//此处不能使用@SafeVarargs，因为此方法未声明为static或final方法，</span></span><br><span class="line">    <span class="comment">//如果要抑制unchecked警告，可以使用@SuppressWarnings注解</span></span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">    <span class="comment">//@SafeVarargs</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">loopPrintArgs</span><span class="params">(S... args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (S arg : args) &#123;</span><br><span class="line">            System.out.println(arg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//final方法可以使用@SafeVarargs标记</span></span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> <span class="title">printSelfArgs</span><span class="params">(S... args)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (S arg : <span class="keyword">this</span>.args) &#123;</span><br><span class="line">            System.out.println(arg);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        SafeVarargsAnnotation.loopPrintInfo(<span class="string">&quot;A&quot;</span>, <span class="string">&quot;B&quot;</span>, <span class="string">&quot;C&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//static方法可以使用@SafeVarargs标记</span></span><br><span class="line">    <span class="meta">@SafeVarargs</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> &lt;T&gt; <span class="function"><span class="keyword">void</span> <span class="title">loopPrintInfo</span><span class="params">(T ... infos)</span></span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (T info : infos) &#123;</span><br><span class="line">            System.out.println(info);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>如果以上把@SafeVarargs标记注释掉，在编译时就会报unchecked警告</p>
 <h3 id="1-5-元注解"><a href="#1-5-元注解" class="headerlink" title="1.5 元注解"></a>1.5 元注解</h3><p><code>java.lang.annotation</code>包下的注解分别是 : <code>@Retention</code>,<code>@Documnetd</code>,<code>@Target</code>,<code>@Inherited</code></p>
@@ -322,21 +322,21 @@
 <ul>
 <li><p><code>Retention</code>：指定所修饰的 Annotation 的生命周期：SOURCE\CLASS\RUNTIME，只有声明为RUNTIME生命周期的注解，才能通过反射获取。</p>
 <ol>
-<li><strong>RetentionPolicy.SOURCE</strong>：注解只在源码阶段保留，编译器开始编译时它将被丢弃忽视</li>
-<li><strong>RetentionPolicy.CLASS</strong>：注解会保留到编译期，但运行时不会把它加载到JVM中（默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得）</li>
-<li><strong>RetentionPolicy.RUNTIME</strong>：注解可以保留到程序运行时，它会被加载到JVM中，所以程序运行过程中可以获取到它们</li>
+<li><code>RetentionPolicy.SOURCE</code>：注解只在源码阶段保留，编译器开始编译时它将被丢弃忽视</li>
+<li><code>RetentionPolicy.CLASS</code>：注解会保留到编译期，但运行时不会把它加载到JVM中（默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得）</li>
+<li><code>RetentionPolicy.RUNTIME</code>：注解可以保留到程序运行时，它会被加载到JVM中，所以程序运行过程中可以获取到它们</li>
 </ol>
 </li>
 <li><p><code>Target</code>:用于指定被修饰的 Annotation 能用于修饰哪些程序元素</p>
 <ol>
-<li><strong>ElementType.PACKAGE</strong>：可作用在包上</li>
-<li><strong>ElementType.TYPE</strong>：可作用在类、接口、枚举上</li>
-<li><strong>ElementType.ANNOTATION_TYPE</strong>：可以作用在注解上</li>
-<li><strong>ElementType.FIELD</strong>：可作用在属性上</li>
-<li><strong>ElementType.CONSTRUCTOR</strong>：可作用在构造方法上</li>
-<li><strong>ElementType.METHOD</strong>：可作用在方法上</li>
-<li><strong>ElementType.PARAMETER</strong>：可作用在方法参数上</li>
-<li><strong>ElementType.LOCAL_VARIABLE</strong>：可作用在局部变量上，例如方法中定义的变量</li>
+<li><code>ElementType.PACKAGE</code>：可作用在包上</li>
+<li><code>ElementType.TYPE</code>：可作用在类、接口、枚举上</li>
+<li><code>ElementType.ANNOTATION_TYPE</code>：可以作用在注解上</li>
+<li><code>ElementType.FIELD</code>：可作用在属性上</li>
+<li><code>ElementType.CONSTRUCTOR</code>：可作用在构造方法上</li>
+<li><code>ElementType.METHOD</code>：可作用在方法上</li>
+<li><code>ElementType.PARAMETER</code>：可作用在方法参数上</li>
+<li><code>ElementType.LOCAL_VARIABLE</code>：可作用在局部变量上，例如方法中定义的变量</li>
 <li><code>ElementType.TYPE_PARAMETER</code>:可作用在类参数的声明上   如：泛型声明。Since jdk1.8以后添加的</li>
 <li><code>ElementType.TYPE_USE</code>:可作用在使用的类型  Since jdk1.8以后添加的</li>
 </ol>
@@ -361,7 +361,7 @@
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Repeatable(Persons.class)</span></span><br><span class="line"><span class="keyword">public</span>  <span class="meta">@interface</span> Person&#123;</span><br><span class="line">    <span class="function">String <span class="title">role</span><span class="params">()</span> <span class="keyword">default</span> &quot;&quot;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>注解Person里面的role属性，role是一个成员变量，只不过书写形式为 String role() default “”； 即所谓的“无形参的方法”形式书写，给role设置了默认值为空字符串 default “”。</p>
-<h4 id="标记注解"><a href="#标记注解" class="headerlink" title="标记注解"></a>标记注解</h4><p>因为*<code>标记注解没有成员</code><em>,所以应用标记注解时,后面不需要有圆括号.如果提供空的圆括号,也不会报错,但不是必需的.类似地,对于所有成员都使用</em><code>默认值(default)</code>*的注解也可以没有圆括号.</p>
+<h4 id="标记注解"><a href="#标记注解" class="headerlink" title="标记注解"></a>标记注解</h4><p>因为<code>标记注解没有成员</code>,所以应用标记注解时,后面不需要有圆括号.如果提供空的圆括号,也不会报错,但不是必需的.类似地,对于所有成员都使用<code>默认值(default)</code>的注解也可以没有圆括号.</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@interface</span> MyMarker_annotation &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
