@@ -1,44 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>Java Enum(枚举)</title>
-    <url>/2020/09/11/Enum(%E6%9E%9A%E4%B8%BE)/</url>
-    <content><![CDATA[<h2 id="Enum-枚举"><a href="#Enum-枚举" class="headerlink" title="Enum(枚举)"></a>Enum(枚举)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
-<li><p>枚举类的理解：类的对象只有有限个，确定的。我们称此类为枚举类</p>
-<p>例如：星期：Monday(星期一)、……、Sunday(星期天) </p>
-<p>性别：Man(男)、Woman(女) </p>
-<p>季节：Spring(春节)……Winter(冬天) </p>
-</li>
-<li><p>当需要定义一组常量时，强烈建议使用枚举类</p>
-</li>
-<li><p>如果枚举类中只一个对象，则可以作为单例模式的实现方式。</p>
-</li>
-</ul>
-<h3 id="1-2-自定义枚举类"><a href="#1-2-自定义枚举类" class="headerlink" title="1.2 自定义枚举类"></a>1.2 自定义枚举类</h3><ul>
-<li>枚举类的属性 :枚举类对象的属性不应允许被改动, 所以应该使用 <code>private final</code> 修饰 </li>
-<li>枚举类的使用: private final 修饰的属性应该在构造器中为其赋值 </li>
-<li>若枚举类显式的定义了带参数的构造器, 则在列出枚举值时也必须对应的传入参数</li>
-<li>私有化类的构造器，保证不能在类的外部创建其对象 </li>
-<li>在类的内部创建枚举类的实例。声明为：public static final </li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//自定义枚举类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Season</span></span>&#123;</span><br><span class="line">    <span class="comment">//声明Season对象的属性:private final修饰</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonDesc;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//私化类的构造器,并给对象属性赋值</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">(String seasonName, String seasonDesc)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.seasonName = seasonName;</span><br><span class="line">        <span class="keyword">this</span>.seasonDesc = seasonDesc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//提供当前枚举类的多个对象：public static final的</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SPRING=<span class="keyword">new</span> Season(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;四季如春&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SUMMER=<span class="keyword">new</span> Season(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;夏日炎炎&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season AUTUMN=<span class="keyword">new</span> Season(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;秋高气爽&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season WINTER=<span class="keyword">new</span> Season(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;冰天雪地&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//其他诉求1：获取枚举类对象的属性</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSeasonName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seasonName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSeasonDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seasonDesc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;seasonName=&#x27;&quot;</span> + seasonName + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, seasonDesc=&#x27;&quot;</span> + seasonDesc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeasonTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Season str=Season.SPRING;</span><br><span class="line">        System.out.println(str);<span class="comment">//Season&#123;seasonName=&#x27;春天&#x27;, seasonDesc=&#x27;四季如春&#x27;&#125;</span></span><br><span class="line">        String seasonDesc = str.getSeasonDesc();</span><br><span class="line">        System.out.println(seasonDesc);<span class="comment">//四季如春</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-3-enum定义枚举类"><a href="#1-3-enum定义枚举类" class="headerlink" title="1.3 enum定义枚举类"></a>1.3 enum定义枚举类</h3><ul>
-<li>jdk 5.0 新增使用enum定义枚举类。步骤：</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> Season1&#123;</span><br><span class="line">    <span class="comment">//提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束,最开始就要这样做</span></span><br><span class="line">    SPRING(<span class="string">&quot;春天&quot;</span>),</span><br><span class="line">    SUMMER(<span class="string">&quot;夏天&quot;</span>),</span><br><span class="line">    AUTUMN(<span class="string">&quot;秋天&quot;</span>),</span><br><span class="line">    WINTER(<span class="string">&quot;冬天&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonName;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season1</span><span class="params">(String seasonName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.seasonName = seasonName;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSeasonName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seasonName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeasonTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Season1 autumn = Season1.AUTUMN;</span><br><span class="line">        System.out.println(autumn);<span class="comment">//重写过toString AUTUMN</span></span><br><span class="line">        System.out.println(autumn.getSeasonName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//枚举类的方法</span></span><br><span class="line">        <span class="comment">//toString():返回枚举类对象的名称</span></span><br><span class="line">        System.out.println(autumn.toString());<span class="comment">//AUTUMN</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//values():返回所的枚举类对象构成的数组</span></span><br><span class="line">        Season1[] values = Season1.values();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; values.length;i++)&#123;</span><br><span class="line">            System.out.println(values[i]);</span><br><span class="line">        &#125;<span class="comment">//SPRING SUMMER AUTUMN WINTER</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//valueOf(String objName):返回枚举类中对象名是objName的对象</span></span><br><span class="line">        Season1 winter = Season1.valueOf(<span class="string">&quot;WINTER&quot;</span>);</span><br><span class="line">        <span class="comment">//如果没objName的枚举类对象，则抛异常：IllegalArgumentException</span></span><br><span class="line"><span class="comment">//        Season1 winter = Season1.valueOf(&quot;WINTER1&quot;);</span></span><br><span class="line">        System.out.println(winter);<span class="comment">//WINTER</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-枚举类对象分别实现接口"><a href="#1-4-枚举类对象分别实现接口" class="headerlink" title="1.4 枚举类对象分别实现接口"></a>1.4 枚举类对象分别实现接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeasonTest1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Season2.AUTUMN.show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Info</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用enum关键字枚举类</span></span><br><span class="line"><span class="keyword">enum</span> Season2 implements Info&#123;</span><br><span class="line">    <span class="comment">//1.提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束</span></span><br><span class="line">    SPRING(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;春暖花开&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;春天在哪里？&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    SUMMER(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;夏日炎炎&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;宁夏&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    AUTUMN(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;秋高气爽&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;秋天不回来&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    WINTER(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;冰天雪地&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;大约在冬季&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonDesc;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season2</span><span class="params">(String seasonName,String seasonDesc)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.seasonName=seasonName;</span><br><span class="line">        <span class="keyword">this</span>.seasonDesc=seasonDesc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>JavaSE</category>
-      </categories>
-      <tags>
-        <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>EL表达式</title>
     <url>/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
     <content><![CDATA[<h2 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>概念：Expression Language 表达式语言</p>
@@ -176,6 +138,44 @@
       </tags>
   </entry>
   <entry>
+    <title>Java Enum(枚举)</title>
+    <url>/2020/09/11/Enum(%E6%9E%9A%E4%B8%BE)/</url>
+    <content><![CDATA[<h2 id="Enum-枚举"><a href="#Enum-枚举" class="headerlink" title="Enum(枚举)"></a>Enum(枚举)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li><p>枚举类的理解：类的对象只有有限个，确定的。我们称此类为枚举类</p>
+<p>例如：星期：Monday(星期一)、……、Sunday(星期天) </p>
+<p>性别：Man(男)、Woman(女) </p>
+<p>季节：Spring(春节)……Winter(冬天) </p>
+</li>
+<li><p>当需要定义一组常量时，强烈建议使用枚举类</p>
+</li>
+<li><p>如果枚举类中只一个对象，则可以作为单例模式的实现方式。</p>
+</li>
+</ul>
+<h3 id="1-2-自定义枚举类"><a href="#1-2-自定义枚举类" class="headerlink" title="1.2 自定义枚举类"></a>1.2 自定义枚举类</h3><ul>
+<li>枚举类的属性 :枚举类对象的属性不应允许被改动, 所以应该使用 <code>private final</code> 修饰 </li>
+<li>枚举类的使用: private final 修饰的属性应该在构造器中为其赋值 </li>
+<li>若枚举类显式的定义了带参数的构造器, 则在列出枚举值时也必须对应的传入参数</li>
+<li>私有化类的构造器，保证不能在类的外部创建其对象 </li>
+<li>在类的内部创建枚举类的实例。声明为：public static final </li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//自定义枚举类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Season</span></span>&#123;</span><br><span class="line">    <span class="comment">//声明Season对象的属性:private final修饰</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonDesc;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//私化类的构造器,并给对象属性赋值</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season</span><span class="params">(String seasonName, String seasonDesc)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.seasonName = seasonName;</span><br><span class="line">        <span class="keyword">this</span>.seasonDesc = seasonDesc;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//提供当前枚举类的多个对象：public static final的</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SPRING=<span class="keyword">new</span> Season(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;四季如春&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season SUMMER=<span class="keyword">new</span> Season(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;夏日炎炎&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season AUTUMN=<span class="keyword">new</span> Season(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;秋高气爽&quot;</span>);</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> Season WINTER=<span class="keyword">new</span> Season(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;冰天雪地&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment">//其他诉求1：获取枚举类对象的属性</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSeasonName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seasonName;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSeasonDesc</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seasonDesc;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;Season&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;seasonName=&#x27;&quot;</span> + seasonName + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, seasonDesc=&#x27;&quot;</span> + seasonDesc + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeasonTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Season str=Season.SPRING;</span><br><span class="line">        System.out.println(str);<span class="comment">//Season&#123;seasonName=&#x27;春天&#x27;, seasonDesc=&#x27;四季如春&#x27;&#125;</span></span><br><span class="line">        String seasonDesc = str.getSeasonDesc();</span><br><span class="line">        System.out.println(seasonDesc);<span class="comment">//四季如春</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-enum定义枚举类"><a href="#1-3-enum定义枚举类" class="headerlink" title="1.3 enum定义枚举类"></a>1.3 enum定义枚举类</h3><ul>
+<li>jdk 5.0 新增使用enum定义枚举类。步骤：</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">enum</span> Season1&#123;</span><br><span class="line">    <span class="comment">//提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束,最开始就要这样做</span></span><br><span class="line">    SPRING(<span class="string">&quot;春天&quot;</span>),</span><br><span class="line">    SUMMER(<span class="string">&quot;夏天&quot;</span>),</span><br><span class="line">    AUTUMN(<span class="string">&quot;秋天&quot;</span>),</span><br><span class="line">    WINTER(<span class="string">&quot;冬天&quot;</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonName;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season1</span><span class="params">(String seasonName)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.seasonName = seasonName;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getSeasonName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> seasonName;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeasonTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Season1 autumn = Season1.AUTUMN;</span><br><span class="line">        System.out.println(autumn);<span class="comment">//重写过toString AUTUMN</span></span><br><span class="line">        System.out.println(autumn.getSeasonName());</span><br><span class="line"></span><br><span class="line">        <span class="comment">//枚举类的方法</span></span><br><span class="line">        <span class="comment">//toString():返回枚举类对象的名称</span></span><br><span class="line">        System.out.println(autumn.toString());<span class="comment">//AUTUMN</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//values():返回所的枚举类对象构成的数组</span></span><br><span class="line">        Season1[] values = Season1.values();</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>;i &lt; values.length;i++)&#123;</span><br><span class="line">            System.out.println(values[i]);</span><br><span class="line">        &#125;<span class="comment">//SPRING SUMMER AUTUMN WINTER</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//valueOf(String objName):返回枚举类中对象名是objName的对象</span></span><br><span class="line">        Season1 winter = Season1.valueOf(<span class="string">&quot;WINTER&quot;</span>);</span><br><span class="line">        <span class="comment">//如果没objName的枚举类对象，则抛异常：IllegalArgumentException</span></span><br><span class="line"><span class="comment">//        Season1 winter = Season1.valueOf(&quot;WINTER1&quot;);</span></span><br><span class="line">        System.out.println(winter);<span class="comment">//WINTER</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-枚举类对象分别实现接口"><a href="#1-4-枚举类对象分别实现接口" class="headerlink" title="1.4 枚举类对象分别实现接口"></a>1.4 枚举类对象分别实现接口</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">SeasonTest1</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Season2.AUTUMN.show();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Info</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">show</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//使用enum关键字枚举类</span></span><br><span class="line"><span class="keyword">enum</span> Season2 implements Info&#123;</span><br><span class="line">    <span class="comment">//1.提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束</span></span><br><span class="line">    SPRING(<span class="string">&quot;春天&quot;</span>,<span class="string">&quot;春暖花开&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;春天在哪里？&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    SUMMER(<span class="string">&quot;夏天&quot;</span>,<span class="string">&quot;夏日炎炎&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;宁夏&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    AUTUMN(<span class="string">&quot;秋天&quot;</span>,<span class="string">&quot;秋高气爽&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;秋天不回来&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    WINTER(<span class="string">&quot;冬天&quot;</span>,<span class="string">&quot;冰天雪地&quot;</span>)&#123;</span><br><span class="line">        <span class="meta">@Override</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">show</span><span class="params">()</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;大约在冬季&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonName;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> String seasonDesc;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Season2</span><span class="params">(String seasonName,String seasonDesc)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.seasonName=seasonName;</span><br><span class="line">        <span class="keyword">this</span>.seasonDesc=seasonDesc;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>JavaSE</category>
+      </categories>
+      <tags>
+        <tag>JavaSE</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Hexo+github搭建个人博客</title>
     <url>/2020/09/08/Hexo-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h2 id="Hexo-github搭建个人博客"><a href="#Hexo-github搭建个人博客" class="headerlink" title="Hexo+github搭建个人博客"></a>Hexo+github搭建个人博客</h2><h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>下载两个软件 <code>NodeJs</code> 和 <code>Git</code>，我用的是这两个版本的<img src="/2020/09/08/Hexo-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20200908205500251.png" alt="image-20200908205500251"></p>
@@ -267,6 +267,259 @@
       </tags>
   </entry>
   <entry>
+    <title>JSP基本使用</title>
+    <url>/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<h2 id="JSP基本使用"><a href="#JSP基本使用" class="headerlink" title="JSP基本使用"></a>JSP基本使用</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li>jsp : java server pages。Java 的服务器页面。</li>
+<li>jsp 的主要作用是代替 Servlet 程序回传 html 页面的数据。</li>
+<li>因为 Servlet 程序回传 html 页面数据是一件非常繁锁的事情。开发成本和维护成本都极高。</li>
+<li><strong>jsp 页面本质上是一个 Servlet 程序</strong>。</li>
+</ul>
+<p>当执行一个index.jsp页面，会生成对应的index_jsp.java文件，可以看出此java类继承于HttpJspBase</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">index_jsp</span> <span class="keyword">extends</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">jasper</span>.<span class="title">runtime</span>.<span class="title">HttpJspBase</span> <span class="keyword">implements</span> <span class="title">org</span>.<span class="title">apache</span>.<span class="title">jasper</span>.<span class="title">runtime</span>.<span class="title">JspSourceDependent</span>,<span class="title">org</span>.<span class="title">apache</span>.<span class="title">jasper</span>.<span class="title">runtime</span>.<span class="title">JspSourceImports</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-2-JSP语法"><a href="#1-2-JSP语法" class="headerlink" title="1.2 JSP语法"></a>1.2 JSP语法</h3><h4 id="1-2-1-JSP指令"><a href="#1-2-1-JSP指令" class="headerlink" title="1.2.1 JSP指令"></a>1.2.1 JSP指令</h4><ol>
+<li><strong>page指令</strong>(最常用)</li>
+</ol>
+<p><strong>&lt;%@ page contentType=”text/html;charset=UTF-8” language=”java” %&gt;</strong></p>
+<ul>
+<li><p>jsp 的 page 指令可以修改 jsp 页面中一些重要的属性，或者行为。</p>
+</li>
+<li><p>language 属性      表示 jsp 翻译后是什么语言文件。暂时只支持 java。 </p>
+</li>
+<li><p>contentType 属性          表示 jsp 返回的数据类型是什么。也是源码中 response.setContentType()参数值 </p>
+</li>
+<li><p>pageEncoding 属性         表示当前 jsp 页面文件本身的字符集。 </p>
+</li>
+<li><p>import 属性 跟 java 源代码中一样。用于导包，导类。</p>
+</li>
+<li><p>errorPage 属性 设置当 jsp 页面运行时出错，自动跳转去的错误页面路径</p>
+</li>
+<li><p>isErrorPage 属性 设置当前 jsp 页面是否是错误信息页面。默认是 false。如果是 true 可以 获取异常信息。</p>
+</li>
+<li><p>ix.session 属性 设置访问当前 jsp 页面，是否会创建 HttpSession 对象。默认是 true。</p>
+</li>
+<li><p>extends 属性 设置 jsp 翻译出来的 java 类默认继承谁。<br>========================两个属性是给 out 输出流使用=============================</p>
+</li>
+<li><p>autoFlush 属性   设置当 out 输出流缓冲区满了之后，是否自动刷新冲级区。默认值是 true。</p>
+</li>
+<li><p>buffer 属性 设置 out 缓冲区的大小。默认是 8kb</p>
+</li>
+</ul>
+<ol start="2">
+<li><p><strong>include指令</strong></p>
+<p><strong>JSP静态包含</strong>(常用)</p>
+</li>
+</ol>
+<ul>
+<li><p>include    ： 页面包含的。导入页面的资源文件</p>
+<ul>
+<li><strong>&lt;%@ include file=”top.jsp”%&gt;</strong></li>
+</ul>
+</li>
+<li><p>此方式也称为jsp <strong>静态包含</strong></p>
+</li>
+<li><p>file属性指定你要包含的jsp页面的路径</p>
+</li>
+<li><p>地址中第一个斜杠/表示为<a href="http://ip:port/工程路径/映射到代码的web目">http://ip:port/工程路径/映射到代码的web目</a> 录</p>
+</li>
+<li><p>静态包含的特点： </p>
+<ul>
+<li>静态包含不会翻译被包含的jsp页面 。</li>
+<li>静态包含其实是把被包含的jsp页面的代码拷贝到包含的位置执行输 出 。</li>
+</ul>
+<p><strong>jsp动态包含</strong></p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;%--</span><br><span class="line">        &lt;jsp:include page=&quot;&quot;&gt;&lt;/jsp:include&gt;     这是动态包含</span><br><span class="line">        page 属性是指定你要包含的jsp页面的路径</span><br><span class="line">        动态包含也可以像静态包含一样。把被包含的内容执行输出到包含位置</span><br><span class="line"></span><br><span class="line">        动态包含的特点：</span><br><span class="line">            <span class="number">1</span>、动态包含会把包含的jsp页面也翻译成为java代码</span><br><span class="line">            <span class="number">2</span>、动态包含底层代码使用如下代码去调用被包含的jsp页面执行输出。</span><br><span class="line">                JspRuntimeLibrary.include(request, response, <span class="string">&quot;/include/footer.jsp&quot;</span>, out, <span class="keyword">false</span>);</span><br><span class="line">            <span class="number">3</span>、动态包含，还可以传递参数</span><br><span class="line">    --%&gt;</span><br><span class="line">    &lt;jsp:include page=<span class="string">&quot;/include/footer.jsp&quot;</span>&gt;</span><br><span class="line">        &lt;jsp:param name=<span class="string">&quot;username&quot;</span> value=<span class="string">&quot;bbj&quot;</span>/&gt;</span><br><span class="line">        &lt;jsp:param name=<span class="string">&quot;password&quot;</span> value=<span class="string">&quot;root&quot;</span>/&gt;</span><br><span class="line">    &lt;/jsp:include&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>动态包含原理</strong></p>
+<p><img src="/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP2.jpg" alt="JSP"></p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>taglib</strong>    ： 导入资源<ul>
+<li><strong>&lt;%@ taglib prefix=”c” uri=”<a href="http://java.sun.com/jsp/jstl/core&quot;">http://java.sun.com/jsp/jstl/core&quot;</a> %&gt;</strong></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li>prefix：前缀，自定义的</li>
+</ul>
+<h4 id="1-2-2-JSP脚本"><a href="#1-2-2-JSP脚本" class="headerlink" title="1.2.2 JSP脚本"></a>1.2.2 JSP脚本</h4><ol>
+<li><p><strong>声明脚本</strong>(不常用)</p>
+<ul>
+<li>格式： &lt;%! 声明 java 代码 %&gt; </li>
+<li>作用：可以给 jsp 翻译出来的 java 类定义属性和方法甚至是静态代码块。内部类等。</li>
+</ul>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%--<span class="number">1</span>、声明类属性--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="keyword">private</span> Integer id;</span><br><span class="line">        <span class="keyword">private</span> String name;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">static</span> Map&lt;String,Object&gt; map;</span><br><span class="line">    %&gt;</span><br><span class="line">&lt;%--<span class="number">2</span>、声明<span class="keyword">static</span>静态代码块--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="keyword">static</span> &#123;</span><br><span class="line">            map = <span class="keyword">new</span> HashMap&lt;String,Object&gt;();</span><br><span class="line">            map.put(<span class="string">&quot;key1&quot;</span>, <span class="string">&quot;value1&quot;</span>);</span><br><span class="line">            map.put(<span class="string">&quot;key2&quot;</span>, <span class="string">&quot;value2&quot;</span>);</span><br><span class="line">            map.put(<span class="string">&quot;key3&quot;</span>, <span class="string">&quot;value3&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line">&lt;%--<span class="number">3</span>、声明类方法--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">abc</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">12</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line">&lt;%--<span class="number">4</span>、声明内部类--%&gt;</span><br><span class="line">    &lt;%!</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">            <span class="keyword">private</span> Integer id = <span class="number">12</span>;</span><br><span class="line">            <span class="keyword">private</span> String abc = <span class="string">&quot;abc&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>表达式脚本</strong></p>
+<ul>
+<li>格式是：&lt;%=表达式%&gt; </li>
+<li>作用是：的 jsp 页面上输出数据。</li>
+<li>表达式脚本的特点： <ul>
+<li>所有的表达式脚本都会被翻译到jspService() 方法中</li>
+<li>表达式脚本都会被翻译成为 out.print()输出到页面上</li>
+<li>由于表达式脚本翻译的内容都在jspService() 方法中,所以jspService()方法中的对象都可以直接使用。 </li>
+<li>表达式脚本中的表达式不能以分号结束。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span>输出整型</span><br><span class="line"><span class="number">2.</span>输出浮点型</span><br><span class="line"><span class="number">3.</span>输出字符串</span><br><span class="line"><span class="number">4.</span>输出对象</span><br><span class="line">    &lt;%=<span class="number">12</span> %&gt; &lt;br&gt;</span><br><span class="line"></span><br><span class="line">    &lt;%=<span class="number">12.12</span> %&gt; &lt;br&gt;</span><br><span class="line"></span><br><span class="line">    &lt;%=<span class="string">&quot;我是字符串&quot;</span> %&gt; &lt;br&gt;</span><br><span class="line"></span><br><span class="line">    &lt;%=map%&gt; &lt;br&gt;</span><br><span class="line"></span><br><span class="line">    &lt;%=request.getParameter(<span class="string">&quot;username&quot;</span>)%&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong>代码脚本</strong></p>
+<ul>
+<li>格式是： &lt;% java 语句 %&gt; </li>
+<li>作用是：可以在 jsp 页面中，编写我们自己需要的功能（写的是 java 语句）。</li>
+<li>代码脚本的特点是：<ul>
+<li>代码脚本翻译之后都在jspService 方法中 </li>
+<li>代码脚本由于翻译到jspService()方法中，所以在jspService()方法中的现有对象都可以直接使用。</li>
+<li>还可以由多个代码脚本块组合完成一个完整的 java 语句。</li>
+<li>代码脚本还可以和表达式脚本一起组合使用，在 jsp 页面上输出数据</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight jsp"><table><tr><td class="code"><pre><span class="line">&lt;%--<span class="number">1.</span>代码脚本----<span class="keyword">if</span> 语句--%&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        <span class="keyword">int</span> i = <span class="number">13</span> ;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">12</span>) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;Hello&quot;</span>);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;JSP&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line">&lt;br&gt;</span><br><span class="line">&lt;%--<span class="number">2.</span>代码脚本----<span class="keyword">for</span> 循环语句--%&gt;</span><br><span class="line">    &lt;table border=<span class="string">&quot;1&quot;</span> cellspacing=<span class="string">&quot;0&quot;</span>&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; <span class="number">10</span>; j++) &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;第&quot;</span>+j+<span class="string">&quot;行&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    %&gt;</span><br><span class="line">    &lt;/table&gt;</span><br><span class="line">&lt;%--<span class="number">3.</span>翻译后java文件中_jspService方法内的代码都可以写--%&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        String username = request.getParameter(<span class="string">&quot;username&quot;</span>);</span><br><span class="line">        System.out.println(<span class="string">&quot;用户名的请求参数值是：&quot;</span> + username);</span><br><span class="line">    %&gt;</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>所执行的java语句都会被放在jspService中</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">_jspService</span><span class="params">(<span class="keyword">final</span> javax.servlet.http.HttpServletRequest request, <span class="keyword">final</span> javax.servlet.http.HttpServletResponse response)</span></span></span><br><span class="line"><span class="function">      <span class="keyword">throws</span> java.io.IOException, javax.servlet.ServletException </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (!javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) &#123;</span><br><span class="line">      <span class="keyword">final</span> java.lang.String _jspx_method = request.getMethod();</span><br><span class="line">      <span class="keyword">if</span> (<span class="string">&quot;OPTIONS&quot;</span>.equals(_jspx_method)) &#123;</span><br><span class="line">        response.setHeader(<span class="string">&quot;Allow&quot;</span>,<span class="string">&quot;GET, HEAD, POST, OPTIONS&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span> (!<span class="string">&quot;GET&quot;</span>.equals(_jspx_method) &amp;&amp; !<span class="string">&quot;POST&quot;</span>.equals(_jspx_method) &amp;&amp; !<span class="string">&quot;HEAD&quot;</span>.equals(_jspx_method)) &#123;</span><br><span class="line">        response.setHeader(<span class="string">&quot;Allow&quot;</span>,<span class="string">&quot;GET, HEAD, POST, OPTIONS&quot;</span>);</span><br><span class="line">        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, <span class="string">&quot;JSP 只允许 GET、POST 或 HEAD。Jasper 还允许 OPTIONS&quot;</span>);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> javax.servlet.jsp.PageContext pageContext;</span><br><span class="line">    javax.servlet.http.HttpSession session = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">final</span> javax.servlet.ServletContext application;</span><br><span class="line">    <span class="keyword">final</span> javax.servlet.ServletConfig config;</span><br><span class="line">    javax.servlet.jsp.JspWriter out = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">final</span> java.lang.Object page = <span class="keyword">this</span>;</span><br><span class="line">    javax.servlet.jsp.JspWriter _jspx_out = <span class="keyword">null</span>;</span><br><span class="line">    javax.servlet.jsp.PageContext _jspx_page_context = <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>因为所有的jsp页面代码都放在jspService方法中，所以jspService方法中声明的对象，我们都可以直接在jsp页面使用，不需要再创建，所以jspService方法中的对象称为内置对象</strong></p>
+<h4 id="1-2-3注释"><a href="#1-2-3注释" class="headerlink" title="1.2.3注释"></a>1.2.3注释</h4><ol>
+<li><p>html 注释：<!-- 这是 html注释 --></p>
+<ul>
+<li>html 注释会被翻译到 java 源代码中。在_jspService 方法里，以 out.writer 输出到客户端。</li>
+</ul>
+</li>
+<li><p>java注释：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">&#x2F;&#x2F;单行java注释</span><br><span class="line">&#x2F;*多行java注释*&#x2F;</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>java 注释会被翻译到 java 源代码中。</li>
+</ul>
+</li>
+<li><p>jsp 注释：&lt;%– 这是jsp注释 –%&gt;</p>
+<ul>
+<li>jsp 注释可以注掉，jsp 页面中所有代码。</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-3-JSP的内置对象"><a href="#1-3-JSP的内置对象" class="headerlink" title="1.3 JSP的内置对象"></a>1.3 JSP的内置对象</h3><ul>
+<li>jsp 中的内置对象，是指 Tomcat 在翻译 jsp 页面成为 Servlet 源代码后，内部提供的九大对象，叫内置对象</li>
+<li>jsp一共有9个内置对象。内置对象在jsp页面中不需要获取和创建，可以直接使用</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>真实类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContext</td>
+<td>当前页面共享数据，还可以获取其他八个内置对象</td>
+</tr>
+<tr>
+<td>request</td>
+<td>HttpServletRequest</td>
+<td>一次请求访问的多个资源(转发)</td>
+</tr>
+<tr>
+<td>session</td>
+<td>HttpSession</td>
+<td>一次会话的多个请求间</td>
+</tr>
+<tr>
+<td>application</td>
+<td>ServletContext</td>
+<td>所有用户间共享数据</td>
+</tr>
+<tr>
+<td>response</td>
+<td>HttpServletResponse</td>
+<td>响应对象</td>
+</tr>
+<tr>
+<td>page</td>
+<td>Object</td>
+<td>当前页面(Servlet)的对象  this</td>
+</tr>
+<tr>
+<td>out</td>
+<td>JspWriter</td>
+<td>输出对象，数据输出到页面上</td>
+</tr>
+<tr>
+<td>config</td>
+<td>ServletConfig</td>
+<td>Servlet的配置对象</td>
+</tr>
+<tr>
+<td>exception</td>
+<td>Throwable</td>
+<td>异常对象</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>前四个为域对象</p>
+<ul>
+<li>四个域对象分别是： <ul>
+<li>pageContext (PageContextImpl 类) 当前 jsp 页面范围内有效</li>
+<li>request (HttpServletRequest 类)、 一次请求内有效 </li>
+<li>session (HttpSession 类)、 一个会话范围内有效（打开浏览器访问服务器，直到关闭浏览器） </li>
+<li>application (ServletContext 类) 整个 web 工程范围内都有效（只要 web 工程不停止，数据都在）</li>
+</ul>
+</li>
+<li>域对象是可以像 Map 一样存取数据的对象。四个域对象功能一样。不同的是它们对数据的存取范围。</li>
+<li>虽然四个域对象都可以存取数据。在使用上它们是有优先顺序的。</li>
+<li>四个域在使用的时候，优先顺序分别是，他们从小到大的范围的顺序。</li>
+<li>pageContext ====&gt;&gt;&gt; request ====&gt;&gt;&gt; session ====&gt;&gt;&gt; application</li>
+</ul>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="string">&quot;java&quot;</span> %&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">    &lt;title&gt;Title&lt;/title&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">    &lt;h1&gt;scope.jsp页面&lt;/h1&gt;</span><br><span class="line">    &lt;%</span><br><span class="line">        <span class="comment">// 往四个域中都分别保存了数据</span></span><br><span class="line">        pageContext.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;pageContext&quot;</span>);</span><br><span class="line">        request.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;request&quot;</span>);</span><br><span class="line">        session.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;session&quot;</span>);</span><br><span class="line">        application.setAttribute(<span class="string">&quot;key&quot;</span>, <span class="string">&quot;application&quot;</span>);</span><br><span class="line">    %&gt;</span><br><span class="line">    pageContext域是否有值：&lt;%=pageContext.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt; &lt;br&gt;</span><br><span class="line">    request域是否有值：&lt;%=request.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt; &lt;br&gt;</span><br><span class="line">    session域是否有值：&lt;%=session.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt; &lt;br&gt;</span><br><span class="line">    application域是否有值：&lt;%=application.getAttribute(<span class="string">&quot;key&quot;</span>)%&gt; &lt;br&gt;</span><br><span class="line">    &lt;%</span><br><span class="line"><span class="comment">//        request.getRequestDispatcher(&quot;/scope2.jsp&quot;).forward(request,response);</span></span><br><span class="line">    <span class="comment">//请求转发，request也有值，但是pageContext置为null</span></span><br><span class="line">    %&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ul>
+<h3 id="1-4-jsp中的out输出和response-getWriter输出的区别"><a href="#1-4-jsp中的out输出和response-getWriter输出的区别" class="headerlink" title="1.4 jsp中的out输出和response.getWriter输出的区别"></a>1.4 jsp中的out输出和response.getWriter输出的区别</h3><ul>
+<li><p>JSP的内置对象response有getwriter方法输出，JSP的内置对象out也有write方法输出，两者区别</p>
+</li>
+<li><p>response和jsp都有各自的缓冲区</p>
+</li>
+<li><p>response 中表示响应，我们经常用于设置返回给客户端的内容（输出） out 也是给用户做输出使用的</p>
+<p><img src="/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP1.jpg" alt="jsp"></p>
+</li>
+<li><p>由于 jsp 翻译之后，底层源代码都是使用 out 来进行输出，所以一般情况下。我们在 jsp 页面中统一使用 out 来进行输出。避免打乱页面输出内容的顺序。</p>
+</li>
+<li><p>out.write() 输出字符串没有问题 </p>
+</li>
+<li><p>out.print() 输出任意数据都没有问题（都转换成为字符串后调用的 write 输出）</p>
+</li>
+<li><p>深入源码，浅出结论：在 jsp 页面中，可以统一使用 out.print()来进行输出 </p>
+</li>
+</ul>
+<h3 id="1-5-请求转发标签"><a href="#1-5-请求转发标签" class="headerlink" title="1.5 请求转发标签"></a>1.5 请求转发标签</h3><figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;%--</span><br><span class="line">        &lt;jsp:forward page=&quot;&quot;&gt;&lt;/jsp:forward&gt; 是请求转发标签，它的功能就是请求转发</span><br><span class="line">            page 属性设置请求转发的路径</span><br><span class="line">    --%&gt;</span><br><span class="line">    &lt;jsp:forward page=&quot;/scope2.jsp&quot;&gt;&lt;/jsp:forward&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="1-6-JSP的使用"><a href="#1-6-JSP的使用" class="headerlink" title="1.6 JSP的使用"></a>1.6 JSP的使用</h3><p><img src="/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP3.jpg" alt="JSP3"></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">doGet</span><span class="params">(HttpServletRequest req, HttpServletResponse resp)</span> <span class="keyword">throws</span> ServletException, IOException </span>&#123;</span><br><span class="line">        <span class="comment">// 获取请求的参数</span></span><br><span class="line">        <span class="comment">// 发sql语句查询学生的信息</span></span><br><span class="line">        <span class="comment">// 使用for循环生成查询到的数据做模拟</span></span><br><span class="line">        List&lt;Student&gt; studentList = <span class="keyword">new</span> ArrayList&lt;Student&gt;();</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> t = i + <span class="number">1</span>;</span><br><span class="line">            studentList.add(<span class="keyword">new</span> Student(t,<span class="string">&quot;name&quot;</span>+t, <span class="number">18</span>+t,<span class="string">&quot;phone&quot;</span>+t));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//自己设置的参数，不是请求传来的参数，所以要用setAttribute保存</span></span><br><span class="line">        <span class="comment">// 保存查询到的结果（学生信息）到request域中</span></span><br><span class="line">        req.setAttribute(<span class="string">&quot;stuList&quot;</span>, studentList);</span><br><span class="line">        <span class="comment">// 请求转发到showStudent.jsp页面</span></span><br><span class="line">        req.getRequestDispatcher(<span class="string">&quot;/test/showStudent.jsp&quot;</span>).forward(req,resp);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>JSP显示数据，通过getAttribute方法</p>
+<figure class="highlight"><table><tr><td class="code"><pre><span class="line">&lt;%</span><br><span class="line">        List&lt;Student&gt; studentList = (List&lt;Student&gt;) request.getAttribute(<span class="string">&quot;stuList&quot;</span>);</span><br><span class="line">    %&gt;</span><br><span class="line">    &lt;table&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;编号&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;姓名&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;年龄&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;电话&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;操作&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;% <span class="keyword">for</span> (Student student : studentList) &#123; %&gt;</span><br><span class="line">        &lt;tr&gt;</span><br><span class="line">            &lt;td&gt;&lt;%=student.getId()%&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;%=student.getName()%&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;%=student.getAge()%&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;&lt;%=student.getPhone()%&gt;&lt;/td&gt;</span><br><span class="line">            &lt;td&gt;删除、修改&lt;/td&gt;</span><br><span class="line">        &lt;/tr&gt;</span><br><span class="line">    &lt;% &#125; %&gt;</span><br><span class="line">    &lt;/table&gt;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>JavaWeb</category>
+      </categories>
+      <tags>
+        <tag>javaweb</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JSTL 标签库的基本使用</title>
     <url>/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/</url>
     <content><![CDATA[<h2 id="JSTL-标签库"><a href="#JSTL-标签库" class="headerlink" title="JSTL 标签库"></a>JSTL 标签库</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>JSTL 标签库 全称是指  JSP   Standard   Tag   Library   JSP 标准标签库。是一个不断完善的开放源代码的 JSP 标签库。</p>
@@ -338,133 +591,6 @@
       <tags>
         <tag>前端</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>XML基本使用</title>
-    <url>/2020/09/17/XML/</url>
-    <content><![CDATA[<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
-<li><code>xml</code>：Extensible Markup Language 可扩展标记语言</li>
-<li>作用：<ul>
-<li>用来保存数据，而且这些数据具有自我描述性 </li>
-<li>它还可以做为项目或者模块的配置文件 </li>
-<li>还可以做为网络传输数据的格式（现在 JSON 为主）</li>
-</ul>
-</li>
-</ul>
-<h3 id="1-2-语法"><a href="#1-2-语法" class="headerlink" title="1.2 语法"></a>1.2 语法</h3><ul>
-<li>基本要求：xml语法严格，不像html语法松散<ul>
-<li>xml文档的后缀名 .xml</li>
-<li>xml<strong>第一行必须定义为文档声明</strong></li>
-<li>xml文档中<strong>有且仅有一个根标签</strong></li>
-<li><strong>属性值必须使用引号</strong>(单双都可)引起来</li>
-<li>标签必须正确关闭</li>
-<li>xml标签名称区分大小写</li>
-</ul>
-</li>
-</ul>
-<h4 id="xml组成"><a href="#xml组成" class="headerlink" title="xml组成"></a>xml组成</h4><ul>
-<li><p>文档声明：格式：<?xml 属性列表 ?></p>
-<ul>
-<li>属性列表： <ol>
-<li><code>version</code>：版本号，必须的属性</li>
-<li><code>encoding</code>：编码方式。告知解析引擎当前文档使用的字符集，默认值：ISO-8859-1 </li>
-<li><code>standalone</code>：是否独立取值： yes：不依赖其他文件 no：依赖其他文件</li>
-</ol>
-</li>
-</ul>
-</li>
-<li><p>指令(了解)：</p>
-<ul>
-<li>结合css的<?xml-stylesheet type="text/css" href="a.css" ?></li>
-</ul>
-</li>
-<li><p>标签：标签名称自定义的</p>
-<ul>
-<li>规则： 名称可以包含字母、数字以及其他的字符</li>
-<li>名称不能以数字或者标点符号开始</li>
-<li>名称不能以字母 xml（或者 XML、Xml 等等）开始</li>
-<li>名称不能包含空格</li>
-<li>xml 中的元素（标签）也 分成 单标签和双标签： </li>
-</ul>
-</li>
-<li><p>属性：id属性值唯一</p>
-</li>
-<li><p>文本：CDATA区：在该区域中的数据会被原样展示 格式： <!--[CDATA[ 这里可以把你输入的字符原样显示，不会解析 xml ]]--></p>
-</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;</span><span class="comment">&lt;!--文档声明--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;?xml-stylesheet type=&quot;text/css&quot; href=&quot;./a.css&quot; ?&gt;指令--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">users</span>&gt;</span><span class="comment">&lt;!--标签自定义--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="comment">&lt;!--id属性，id值唯一--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span> <span class="attr">test</span>=<span class="string">&quot;test01&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xing</span>&gt;</span>zhang<span class="tag">&lt;/<span class="name">xing</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ming</span>&gt;</span>san<span class="tag">&lt;/<span class="name">ming</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--zhangsan--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>23<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">gender</span>&gt;</span>male<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">code</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--if(a &amp;lt; b &amp;amp;&amp;amp; a &amp;lt; c)&#123;&#125;--&gt;</span></span><br><span class="line">            &lt;![CDATA[</span><br><span class="line">            if(a&lt;b &amp;&amp; a&gt;c)&#123;&#125;</span><br><span class="line">            ]]&gt;<span class="comment">&lt;!--里面的内容不会解析成xml--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">id</span>=<span class="string">&quot;3&quot;</span> <span class="attr">name</span>=<span class="string">&quot;wagwu&quot;</span>/&gt;</span><span class="comment">&lt;!--单标签--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">id</span>=<span class="string">&quot;2&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>lisi<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>21<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">gender</span>&gt;</span>female<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">users</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-3-解析XML"><a href="#1-3-解析XML" class="headerlink" title="1.3 解析XML"></a>1.3 解析XML</h3><ul>
-<li><p>操作xml文档，将文档中的数据读取到内存中</p>
-<ul>
-<li>xml文档解析(读取)：将文档中的数据读取到内存中</li>
-<li>xml文档解析(写入)：将内存中的数据保存到xml文档中。持久化的存储</li>
-</ul>
-</li>
-<li><p>xml常见的解析器：</p>
-<ul>
-<li>DOM4J：一款非常优秀的解析器</li>
-<li>Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。PULL：Android操作系统内置的解析器，sax方式的。</li>
-</ul>
-</li>
-</ul>
-<h4 id="dom4j解析"><a href="#dom4j解析" class="headerlink" title="dom4j解析"></a>dom4j解析</h4><ul>
-<li><p>由于 dom4j 它不是 sun 公司的技术，而属于第三方公司的技术，我们需要使用 dom4j 就需要到 dom4j 官网下载 dom4j 的 jar 包。</p>
-</li>
-<li><p>dom4j解析步骤</p>
-<ul>
-<li>第一步： 先加载 xml 文件创建 Document 对象 </li>
-<li>第二步：通过 Document 对象拿到根元素对象 </li>
-<li>第三步：通过根元素.elelemts(标签名); 可以返回一个集合，这个集合里放着。所有你指定的标签名的元素对象 </li>
-<li>第四步：找到你想要修改、删除的子元素，进行相应在的操作 </li>
-<li>第五步，保存到硬盘上</li>
-</ul>
-</li>
-<li><p>需要解析的xml文件</p>
-</li>
-</ul>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">books</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN12341232&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>辟邪剑谱<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">price</span>&gt;</span>9.9<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">author</span>&gt;</span>班主任<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN12341231&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>葵花宝典<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">price</span>&gt;</span>99.99<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">author</span>&gt;</span>班长<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">books</span>&gt;</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>解析的是book，需要先创建book类对应xml中的内容</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String sn;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> BigDecimal price;</span><br><span class="line">    <span class="keyword">private</span> String author;</span><br><span class="line">    <span class="comment">//constructor</span></span><br><span class="line">    <span class="comment">//略</span></span><br><span class="line">    <span class="comment">//getter and setter 方法</span></span><br><span class="line">    <span class="comment">//略</span></span><br><span class="line">    <span class="comment">//toString() 方法</span></span><br><span class="line">    <span class="comment">//略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>然后解析xml内容</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dom4jTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建一个SaxReader输入流，去读取 xml配置文件，生成Document对象</span></span><br><span class="line">        SAXReader saxReader = <span class="keyword">new</span> SAXReader();</span><br><span class="line"></span><br><span class="line">        Document document = saxReader.read(<span class="string">&quot;src/books.xml&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(document);</span><br><span class="line">        <span class="comment">//结果,生成document对象</span></span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultDocument@5bcab519 [Document: name src/books.xml]</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>转换为book对象</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//读取books.xml文件生成book类</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> <span class="keyword">throws</span> DocumentException </span>&#123;</span><br><span class="line">        <span class="comment">//1. 读取books.xml文件</span></span><br><span class="line">        SAXReader saxReader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        Document document = saxReader.read(<span class="string">&quot;src/books.xml&quot;</span>);</span><br><span class="line">        <span class="comment">//2. 通过文档对象获取根元素</span></span><br><span class="line">        Element rootElement = document.getRootElement();</span><br><span class="line"><span class="comment">//        System.out.println(rootElement);</span></span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultElement@5bcab519 [Element: &lt;books attributes: []/&gt;]</span></span><br><span class="line">        <span class="comment">//3. 通过根元素books获取book标签对象</span></span><br><span class="line">        <span class="comment">//element()和elements()都是通过标签名查找子元素</span></span><br><span class="line">        List&lt;Element&gt; book = rootElement.elements(<span class="string">&quot;book&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (Element o : book) &#123;</span><br><span class="line"><span class="comment">//            System.out.println(o);//每一个book标签对象</span></span><br><span class="line">            Element name = o.element(<span class="string">&quot;name&quot;</span>);<span class="comment">//name标签对象</span></span><br><span class="line">            <span class="comment">//getText()获取标签中的文本内容</span></span><br><span class="line">            String nametext = name.getText();</span><br><span class="line">            System.out.println(nametext);</span><br><span class="line">            <span class="comment">//elementText()方法一次性获得标签内容</span></span><br><span class="line">            String pricetext = o.elementText(<span class="string">&quot;price&quot;</span>);</span><br><span class="line">            String authortext = o.elementText(<span class="string">&quot;author&quot;</span>);</span><br><span class="line">            System.out.println(pricetext);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//获取属性 attributeValue():获取属性值方法</span></span><br><span class="line">            String sn = o.attributeValue(<span class="string">&quot;sn&quot;</span>);</span><br><span class="line">            System.out.println(sn);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//转成book对象</span></span><br><span class="line">            System.out.println(<span class="keyword">new</span> Book(sn,nametext, BigDecimal.valueOf(Double.parseDouble(pricetext)),authortext));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultElement@4cf777e8 [Element: &lt;book attributes: [org.dom4j.tree.DefaultAttribute@2f686d1f [Attribute: name sn value &quot;SN12341232&quot;]]/&gt;]</span></span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultElement@3fee9989 [Element: &lt;book attributes: [org.dom4j.tree.DefaultAttribute@73ad2d6 [Attribute: name sn value &quot;SN12341231&quot;]]/&gt;]</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2020/09/07/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
   </entry>
   <entry>
     <title>Java Annotation(注解)</title>
@@ -597,6 +723,133 @@
       </tags>
   </entry>
   <entry>
+    <title>XML基本使用</title>
+    <url>/2020/09/17/XML/</url>
+    <content><![CDATA[<h2 id="XML"><a href="#XML" class="headerlink" title="XML"></a>XML</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li><code>xml</code>：Extensible Markup Language 可扩展标记语言</li>
+<li>作用：<ul>
+<li>用来保存数据，而且这些数据具有自我描述性 </li>
+<li>它还可以做为项目或者模块的配置文件 </li>
+<li>还可以做为网络传输数据的格式（现在 JSON 为主）</li>
+</ul>
+</li>
+</ul>
+<h3 id="1-2-语法"><a href="#1-2-语法" class="headerlink" title="1.2 语法"></a>1.2 语法</h3><ul>
+<li>基本要求：xml语法严格，不像html语法松散<ul>
+<li>xml文档的后缀名 .xml</li>
+<li>xml<strong>第一行必须定义为文档声明</strong></li>
+<li>xml文档中<strong>有且仅有一个根标签</strong></li>
+<li><strong>属性值必须使用引号</strong>(单双都可)引起来</li>
+<li>标签必须正确关闭</li>
+<li>xml标签名称区分大小写</li>
+</ul>
+</li>
+</ul>
+<h4 id="xml组成"><a href="#xml组成" class="headerlink" title="xml组成"></a>xml组成</h4><ul>
+<li><p>文档声明：格式：<?xml 属性列表 ?></p>
+<ul>
+<li>属性列表： <ol>
+<li><code>version</code>：版本号，必须的属性</li>
+<li><code>encoding</code>：编码方式。告知解析引擎当前文档使用的字符集，默认值：ISO-8859-1 </li>
+<li><code>standalone</code>：是否独立取值： yes：不依赖其他文件 no：依赖其他文件</li>
+</ol>
+</li>
+</ul>
+</li>
+<li><p>指令(了解)：</p>
+<ul>
+<li>结合css的<?xml-stylesheet type="text/css" href="a.css" ?></li>
+</ul>
+</li>
+<li><p>标签：标签名称自定义的</p>
+<ul>
+<li>规则： 名称可以包含字母、数字以及其他的字符</li>
+<li>名称不能以数字或者标点符号开始</li>
+<li>名称不能以字母 xml（或者 XML、Xml 等等）开始</li>
+<li>名称不能包含空格</li>
+<li>xml 中的元素（标签）也 分成 单标签和双标签： </li>
+</ul>
+</li>
+<li><p>属性：id属性值唯一</p>
+</li>
+<li><p>文本：CDATA区：在该区域中的数据会被原样展示 格式： <!--[CDATA[ 这里可以把你输入的字符原样显示，不会解析 xml ]]--></p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&#x27;1.0&#x27; encoding=&quot;utf-8&quot; standalone=&quot;yes&quot; ?&gt;</span><span class="comment">&lt;!--文档声明--&gt;</span></span><br><span class="line"><span class="comment">&lt;!--&lt;?xml-stylesheet type=&quot;text/css&quot; href=&quot;./a.css&quot; ?&gt;指令--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">users</span>&gt;</span><span class="comment">&lt;!--标签自定义--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">id</span>=<span class="string">&quot;1&quot;</span>&gt;</span><span class="comment">&lt;!--id属性，id值唯一--&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span> <span class="attr">test</span>=<span class="string">&quot;test01&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">xing</span>&gt;</span>zhang<span class="tag">&lt;/<span class="name">xing</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">ming</span>&gt;</span>san<span class="tag">&lt;/<span class="name">ming</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--zhangsan--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>23<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">gender</span>&gt;</span>male<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">code</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!--if(a &amp;lt; b &amp;amp;&amp;amp; a &amp;lt; c)&#123;&#125;--&gt;</span></span><br><span class="line">            &lt;![CDATA[</span><br><span class="line">            if(a&lt;b &amp;&amp; a&gt;c)&#123;&#125;</span><br><span class="line">            ]]&gt;<span class="comment">&lt;!--里面的内容不会解析成xml--&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">code</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">id</span>=<span class="string">&quot;3&quot;</span> <span class="attr">name</span>=<span class="string">&quot;wagwu&quot;</span>/&gt;</span><span class="comment">&lt;!--单标签--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">user</span> <span class="attr">id</span>=<span class="string">&quot;2&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>lisi<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">age</span>&gt;</span>21<span class="tag">&lt;/<span class="name">age</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">gender</span>&gt;</span>female<span class="tag">&lt;/<span class="name">gender</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">users</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-解析XML"><a href="#1-3-解析XML" class="headerlink" title="1.3 解析XML"></a>1.3 解析XML</h3><ul>
+<li><p>操作xml文档，将文档中的数据读取到内存中</p>
+<ul>
+<li>xml文档解析(读取)：将文档中的数据读取到内存中</li>
+<li>xml文档解析(写入)：将内存中的数据保存到xml文档中。持久化的存储</li>
+</ul>
+</li>
+<li><p>xml常见的解析器：</p>
+<ul>
+<li>DOM4J：一款非常优秀的解析器</li>
+<li>Jsoup：jsoup 是一款Java 的HTML解析器，可直接解析某个URL地址、HTML文本内容。它提供了一套非常省力的API，可通过DOM，CSS以及类似于jQuery的操作方法来取出和操作数据。PULL：Android操作系统内置的解析器，sax方式的。</li>
+</ul>
+</li>
+</ul>
+<h4 id="dom4j解析"><a href="#dom4j解析" class="headerlink" title="dom4j解析"></a>dom4j解析</h4><ul>
+<li><p>由于 dom4j 它不是 sun 公司的技术，而属于第三方公司的技术，我们需要使用 dom4j 就需要到 dom4j 官网下载 dom4j 的 jar 包。</p>
+</li>
+<li><p>dom4j解析步骤</p>
+<ul>
+<li>第一步： 先加载 xml 文件创建 Document 对象 </li>
+<li>第二步：通过 Document 对象拿到根元素对象 </li>
+<li>第三步：通过根元素.elelemts(标签名); 可以返回一个集合，这个集合里放着。所有你指定的标签名的元素对象 </li>
+<li>第四步：找到你想要修改、删除的子元素，进行相应在的操作 </li>
+<li>第五步，保存到硬盘上</li>
+</ul>
+</li>
+<li><p>需要解析的xml文件</p>
+</li>
+</ul>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">books</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN12341232&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>辟邪剑谱<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">price</span>&gt;</span>9.9<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">author</span>&gt;</span>班主任<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">book</span> <span class="attr">sn</span>=<span class="string">&quot;SN12341231&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>葵花宝典<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">price</span>&gt;</span>99.99<span class="tag">&lt;/<span class="name">price</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">author</span>&gt;</span>班长<span class="tag">&lt;/<span class="name">author</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">book</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">books</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>解析的是book，需要先创建book类对应xml中的内容</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Book</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> String sn;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> BigDecimal price;</span><br><span class="line">    <span class="keyword">private</span> String author;</span><br><span class="line">    <span class="comment">//constructor</span></span><br><span class="line">    <span class="comment">//略</span></span><br><span class="line">    <span class="comment">//getter and setter 方法</span></span><br><span class="line">    <span class="comment">//略</span></span><br><span class="line">    <span class="comment">//toString() 方法</span></span><br><span class="line">    <span class="comment">//略</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>然后解析xml内容</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Dom4jTest</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 创建一个SaxReader输入流，去读取 xml配置文件，生成Document对象</span></span><br><span class="line">        SAXReader saxReader = <span class="keyword">new</span> SAXReader();</span><br><span class="line"></span><br><span class="line">        Document document = saxReader.read(<span class="string">&quot;src/books.xml&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(document);</span><br><span class="line">        <span class="comment">//结果,生成document对象</span></span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultDocument@5bcab519 [Document: name src/books.xml]</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>转换为book对象</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">//读取books.xml文件生成book类</span></span><br><span class="line">    <span class="meta">@Test</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> <span class="keyword">throws</span> DocumentException </span>&#123;</span><br><span class="line">        <span class="comment">//1. 读取books.xml文件</span></span><br><span class="line">        SAXReader saxReader = <span class="keyword">new</span> SAXReader();</span><br><span class="line">        Document document = saxReader.read(<span class="string">&quot;src/books.xml&quot;</span>);</span><br><span class="line">        <span class="comment">//2. 通过文档对象获取根元素</span></span><br><span class="line">        Element rootElement = document.getRootElement();</span><br><span class="line"><span class="comment">//        System.out.println(rootElement);</span></span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultElement@5bcab519 [Element: &lt;books attributes: []/&gt;]</span></span><br><span class="line">        <span class="comment">//3. 通过根元素books获取book标签对象</span></span><br><span class="line">        <span class="comment">//element()和elements()都是通过标签名查找子元素</span></span><br><span class="line">        List&lt;Element&gt; book = rootElement.elements(<span class="string">&quot;book&quot;</span>);</span><br><span class="line">        <span class="keyword">for</span> (Element o : book) &#123;</span><br><span class="line"><span class="comment">//            System.out.println(o);//每一个book标签对象</span></span><br><span class="line">            Element name = o.element(<span class="string">&quot;name&quot;</span>);<span class="comment">//name标签对象</span></span><br><span class="line">            <span class="comment">//getText()获取标签中的文本内容</span></span><br><span class="line">            String nametext = name.getText();</span><br><span class="line">            System.out.println(nametext);</span><br><span class="line">            <span class="comment">//elementText()方法一次性获得标签内容</span></span><br><span class="line">            String pricetext = o.elementText(<span class="string">&quot;price&quot;</span>);</span><br><span class="line">            String authortext = o.elementText(<span class="string">&quot;author&quot;</span>);</span><br><span class="line">            System.out.println(pricetext);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//获取属性 attributeValue():获取属性值方法</span></span><br><span class="line">            String sn = o.attributeValue(<span class="string">&quot;sn&quot;</span>);</span><br><span class="line">            System.out.println(sn);</span><br><span class="line"></span><br><span class="line">            <span class="comment">//转成book对象</span></span><br><span class="line">            System.out.println(<span class="keyword">new</span> Book(sn,nametext, BigDecimal.valueOf(Double.parseDouble(pricetext)),authortext));</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultElement@4cf777e8 [Element: &lt;book attributes: [org.dom4j.tree.DefaultAttribute@2f686d1f [Attribute: name sn value &quot;SN12341232&quot;]]/&gt;]</span></span><br><span class="line">        <span class="comment">//org.dom4j.tree.DefaultElement@3fee9989 [Element: &lt;book attributes: [org.dom4j.tree.DefaultAttribute@73ad2d6 [Attribute: name sn value &quot;SN12341231&quot;]]/&gt;]</span></span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2020/09/07/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>HTML&amp;CSS简单入门</title>
     <url>/2020/09/12/HTML&amp;CSS/</url>
     <content><![CDATA[<h2 id="HTML-amp-CSS"><a href="#HTML-amp-CSS" class="headerlink" title="HTML&amp;CSS"></a>HTML&amp;CSS</h2><h3 id="HTML"><a href="#HTML" class="headerlink" title="HTML"></a>HTML</h3><h4 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h4><p>html:Hyper Text Markup Language 超文本标记语言</p>
@@ -678,6 +931,171 @@
       <tags>
         <tag>前端</tag>
         <tag>javaweb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Java Reflection(反射)</title>
+    <url>/2020/09/10/Reflection(%E5%8F%8D%E5%B0%84)/</url>
+    <content><![CDATA[<h2 id="Reflection-反射"><a href="#Reflection-反射" class="headerlink" title="Reflection(反射)"></a>Reflection(反射)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>Reflection（反射）是被视为动态语言的关键，反射机制允许程序在执行期 借助于Reflection API取得任何类的内部信息，并能直接操作任意对象的内部属性及方法。 </p>
+<ul>
+<li>框架 = 反射 + 注解 + 设计模式。</li>
+</ul>
+<h3 id="1-2-反射机制提供的功能"><a href="#1-2-反射机制提供的功能" class="headerlink" title="1.2 反射机制提供的功能"></a>1.2 反射机制提供的功能</h3><ol>
+<li>在运行时判断任意一个对象所属的类</li>
+<li>在运行时构造任意一个类的对象</li>
+<li>在运行时判断任意一个类所具有的成员变量和方法</li>
+<li>在运行时获取泛型信息</li>
+<li>在运行时调用任意一个对象的成员变量和方法</li>
+<li>在运行时处理注解</li>
+<li>生成动态代理</li>
+</ol>
+<h3 id="1-3-反射相关的主要API"><a href="#1-3-反射相关的主要API" class="headerlink" title="1.3 反射相关的主要API"></a>1.3 反射相关的主要API</h3><ul>
+<li><code>java.lang.Class</code>:代表一个类</li>
+<li><code>java.lang.reflect.Method</code>:代表类的方法</li>
+<li><code>java.lang.reflect.Field</code>:代表类的成员变量</li>
+<li><code>java.lang.reflect.Constructor</code>:代表类的构造器</li>
+</ul>
+<h3 id="1-4-详解Class类"><a href="#1-4-详解Class类" class="headerlink" title="1.4 详解Class类"></a>1.4 详解Class类</h3><ul>
+<li>先上代码，了解反射的基本实现步骤，通过反射对Person类进行操作</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Class&lt;Person&gt; clazz = Person.class;</span><br><span class="line">       <span class="comment">//通过反射创建Person类对象</span></span><br><span class="line">       Constructor cons = clazz.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">       Object obj = cons.newInstance(<span class="string">&quot;tom&quot;</span>, <span class="number">12</span>);</span><br><span class="line">       Person p=(Person)obj;</span><br><span class="line">       System.out.println(p.toString());<span class="comment">//Person&#123;name=&#x27;tom&#x27;, age=12&#125;</span></span><br><span class="line">       <span class="comment">//通过反射调用对象指定的属性和指定的方法</span></span><br><span class="line">       <span class="comment">//调用属性</span></span><br><span class="line">       Field age = clazz.getDeclaredField(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">       age.set(p,<span class="number">2</span>);</span><br><span class="line">       System.out.println(p);<span class="comment">//Person&#123;name=&#x27;tom&#x27;, age=2&#125;</span></span><br><span class="line">       <span class="comment">//调用方法</span></span><br><span class="line">       Method show = clazz.getDeclaredMethod(<span class="string">&quot;show&quot;</span>);</span><br><span class="line">       show.invoke(p);<span class="comment">//show()方法</span></span><br><span class="line"></span><br><span class="line">       <span class="comment">//通过反射，可以调用person类的私有属性和方法</span></span><br><span class="line">       Constructor&lt;Person&gt; constructor = clazz.getDeclaredConstructor(String.class);</span><br><span class="line">       constructor.setAccessible(<span class="keyword">true</span>);<span class="comment">//这一步是调用私有构造器的关键</span></span><br><span class="line">       Person person = constructor.newInstance(<span class="string">&quot;jerry&quot;</span>);</span><br><span class="line">       System.out.println(person);<span class="comment">//Person&#123;name=&#x27;jerry&#x27;, age=0&#125;</span></span><br><span class="line">       <span class="comment">//调用私有属性</span></span><br><span class="line">       Field name = clazz.getDeclaredField(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">       name.setAccessible(<span class="keyword">true</span>);<span class="comment">//这一步是调用私有属性的关键</span></span><br><span class="line">       name.set(person,<span class="string">&quot;zhangsan&quot;</span>);</span><br><span class="line">       System.out.println(person);<span class="comment">//Person&#123;name=&#x27;zhangsan&#x27;, age=0&#125;</span></span><br><span class="line">       <span class="comment">//调用私有方法</span></span><br><span class="line">       Method showNation = clazz.getDeclaredMethod(<span class="string">&quot;showNation&quot;</span>, String.class);</span><br><span class="line">       showNation.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">       Object nation = showNation.invoke(person,<span class="string">&quot;中国&quot;</span>);<span class="comment">//showNation()方法</span></span><br><span class="line">       String nat=(String)nation;</span><br><span class="line">       System.out.println(nat);<span class="comment">//中国</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<p>首先，根据上述代码，首先要获取一个Class类的实例(clazz)，此实例就是Person.class，Person.class就是运行时类</p>
+<ol>
+<li>类的加载过程：<br>程序经过javac.exe命令以后，会生成一个或多个字节码文件(.class结尾)。<br>接着我们使用java.exe命令对某个字节码文件进行解释运行。相当于将某个字节码文件<br>加载到内存中。此过程就称为类的加载。加载到内存中的类，我们就称为运行时类，此<br>运行时类，就作为Class的一个实例。</li>
+<li>换句话说，Class的实例就对应着一个运行时类。</li>
+<li>加载到内存中的运行时类，会缓存一定的时间。在此时间之内，我们可以通过不同的方式<br>来获取此运行时类。</li>
+</ol>
+<p>在Object类中定义了以下的方法，此方法 将被所有子类继承： </p>
+<p><code>public final Class getClass()</code><br>以上的方法返回值的类型是一个Class类， 此类是Java反射的源头，实际上所谓反射从程序的运行结果来看也很好理解，即： 可以<code>通过对象反射求出类的名称</code>。</p>
+<ul>
+<li>正常方式 : 引入需要的<code>包类</code>名称 ——&gt; 通过<code>new</code>实例化 ——&gt; 取得实例化对象</li>
+<li>反射方式 : 实例化对象 ——&gt; <code>getClass()</code> ——&gt; 得到完整的<code>包类</code>名称</li>
+</ul>
+<h3 id="1-5-四种获取Class类实例的方式"><a href="#1-5-四种获取Class类实例的方式" class="headerlink" title="1.5 四种获取Class类实例的方式"></a>1.5 四种获取Class类实例的方式</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test3</span><span class="params">()</span></span>&#123;</span><br><span class="line">       <span class="comment">//方式一：调用运行时类的属性：.class</span></span><br><span class="line">       Class&lt;Person&gt; clazz1 = Person.class;</span><br><span class="line">       System.out.println(clazz1);<span class="comment">//class com.review.reflection.Person,person类本身</span></span><br><span class="line">       <span class="comment">//方式二：通过运行时类的对象,调用getClass()方法</span></span><br><span class="line">       Person p1=<span class="keyword">new</span> Person();</span><br><span class="line">       Class&lt;? extends Person&gt; clazz2 = p1.getClass();</span><br><span class="line">       System.out.println(clazz2);<span class="comment">//class com.review.reflection.Person,person类本身</span></span><br><span class="line">       <span class="comment">//方式三：调用Class的静态方法.forName(String classPath)</span></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           Class&lt;?&gt; clazz3 = Class.forName(<span class="string">&quot;com.review.reflection.Person&quot;</span>);</span><br><span class="line">           System.out.println(clazz3);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       System.out.println(clazz1==clazz2);<span class="comment">//true</span></span><br><span class="line">       <span class="comment">//上面三种方式获取的都是同一个运行时类，同一个内存地址</span></span><br><span class="line">       <span class="comment">//方式四：使用类的加载器ClassLoader，通过classLoader获取Class类实例</span></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           ClassLoader classLoader = Person.class.getClassLoader();</span><br><span class="line">           Class&lt;?&gt; clazz4 = classLoader.loadClass(<span class="string">&quot;com.review.reflection.Person&quot;</span>);</span><br><span class="line">           System.out.println(clazz4);<span class="comment">//com.review.reflection.Person</span></span><br><span class="line">           System.out.println(clazz1==clazz4);<span class="comment">//true</span></span><br><span class="line">       &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//四种方式获取的运行时类都是一样的，地址相同</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-6-哪些类型有Class对象"><a href="#1-6-哪些类型有Class对象" class="headerlink" title="1.6 哪些类型有Class对象"></a>1.6 哪些类型有Class对象</h3><ul>
+<li>class： 外部类，成员(成员内部类，静态内部类)，局部内部类，匿名内部类 </li>
+<li>interface：接口 </li>
+<li>[]：数组 </li>
+<li>enum：枚举 </li>
+<li>annotation：注解@interface </li>
+<li>primitive type：基本数据类型 </li>
+<li>void</li>
+</ul>
+<h3 id="1-7-类加载器ClassLoader"><a href="#1-7-类加载器ClassLoader" class="headerlink" title="1.7 类加载器ClassLoader"></a>1.7 类加载器ClassLoader</h3><p>类加载器的作用:把<code>类(class)</code>装载进内存.如下示例</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Java源文件(*.java) ——Java编译器——&gt; 字节码文件(*.class) ——类加载器+字节码效验器+解释器——&gt; 操作系统平台</span><br></pre></td></tr></table></figure>
+
+<p><strong>类加载的过程</strong>：</p>
+<p>当程序主动使用某个类时,如果该类还未被<code>加载</code>到内存中,则系统会通知如下三个步骤来对该类进行初始化.</p>
+<ol>
+<li>类的加载 : 将类的<code>Class</code>文件读入到内存,并为之创建一个<code>java.lang.Class</code>对象,此过程由类加载器完成.</li>
+<li>类的链接 : 将类的<code>二进制</code>数据合并到<code>JRE</code>中.</li>
+<li>类的初始化 : <code>JVM</code>负责对类进行初始化.</li>
+</ol>
+<p><code>JVM</code>规范定义了两种类型的类加载器:<code>启动类加载器(bootstrap)</code>和<code>用户自定义加载器(user-defined class loader)</code>，JVM在运行时会产生<code>三个类加载器</code></p>
+<ol>
+<li>引导类加载器:<code>JVM</code>自带的类加载器,负责Java平台核心库,用来加载核心类库,该加载器无法直接获取.</li>
+<li>扩展类加载器:负责<code>jar包</code>或将指定目录下的<code>jar包</code>装入工作库.</li>
+<li>系统类加载器:负责<code>java-classpath</code>或<code>java.class.path</code>所指的目录下的类与<code>jar</code>包装入工作.(最常用)</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">//对于自定义类，使用系统类加载器加载</span></span><br><span class="line">       ClassLoader classLoader = ClassLoaderTest.class.getClassLoader();//由系统类加载器加载</span><br><span class="line">       System.out.println(classLoader);<span class="comment">//AppClassLoader</span></span><br><span class="line">       <span class="comment">//调用系统类加载器的getParent()方法可以获取扩展类加载器</span></span><br><span class="line">       ClassLoader classLoader1 = classLoader.getParent();<span class="comment">//获取扩展类加载器</span></span><br><span class="line">       System.out.println(classLoader1);<span class="comment">//PlatformClassLoader</span></span><br><span class="line">       <span class="comment">//调用扩展类加载器的getParent()方法无法获取引导类加载器</span></span><br><span class="line">       ClassLoader classLoader2 = classLoader1.getParent();</span><br><span class="line">       System.out.println(classLoader2);<span class="comment">//null引导类加载器获取不到，主要加载java核心类库，无法加载自定义类</span></span><br><span class="line"></span><br><span class="line">       ClassLoader classLoader3 = String.class.getClassLoader();</span><br><span class="line">       System.out.println(classLoader3);<span class="comment">//null,引导类加载器无法拿到</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>应用：使用ClassLoader加载配置文件</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">       <span class="comment">//此时文件默认在当前的module下</span></span><br><span class="line">       <span class="comment">//读取配置文件1</span></span><br><span class="line">       <span class="comment">/*FileInputStream fis=new FileInputStream(&quot;jdbc.properties&quot;);</span></span><br><span class="line"><span class="comment">       properties.load(fis);*/</span></span><br><span class="line">       <span class="comment">//读取配置文件2，使用classloader</span></span><br><span class="line">       <span class="comment">//文件默认识别在当前module下的src下</span></span><br><span class="line">       ClassLoader classLoader = ClassLoaderTest.class.getClassLoader();</span><br><span class="line">       InputStream is = classLoader.getResourceAsStream(<span class="string">&quot;jdbc1.properties&quot;</span>);</span><br><span class="line">       properties.load(is);</span><br><span class="line"></span><br><span class="line">       String user = properties.getProperty(<span class="string">&quot;user&quot;</span>);</span><br><span class="line">       String password = properties.getProperty(<span class="string">&quot;password&quot;</span>);</span><br><span class="line">       System.out.println(user+<span class="string">&quot;:&quot;</span>+password);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-8-newInstance-创建运行时类的对象"><a href="#1-8-newInstance-创建运行时类的对象" class="headerlink" title="1.8 newInstance()创建运行时类的对象"></a>1.8 newInstance()创建运行时类的对象</h3><p><code>newInstance()</code>:调用此方法，创建对应的运行时类的对象。内部调用了运行时类的空参的构造器。</p>
+<p>要想此方法正常的创建运行时类的对象，要求：</p>
+<ol>
+<li>运行时类必须提供空参的构造器</li>
+<li>空参的构造器的访问权限得够。通常，设置为public。</li>
+</ol>
+<p>在javabean中要求提供一个public的空参构造器。原因：</p>
+<ol>
+<li>便于通过反射，创建运行时类的对象</li>
+<li>便于子类继承此运行时类时，默认调用super()时，保证父类此构造器</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Class&lt;Person&gt; clazz = Person.class;</span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">       newInstance():调用此方法，创建对应的运行时类的对象</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       Person person = clazz.newInstance();<span class="comment">//java9之后已过时</span></span><br><span class="line">       System.out.println(person);</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       Person person1 = clazz.getDeclaredConstructor().newInstance();<span class="comment">//推荐</span></span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-9-获取运行时类的指定结构"><a href="#1-9-获取运行时类的指定结构" class="headerlink" title="1.9 获取运行时类的指定结构"></a>1.9 获取运行时类的指定结构</h3><ol>
+<li><p>获取成员变量们</p>
+<ul>
+<li><code>Field[] getFields()</code> ：获取所有public修饰的成员变量(属性)</li>
+<li><code>Field getField(String name)</code>:获取指定名称的 public修饰的成员变量(属性)</li>
+<li><code>Field[] getDeclaredFields()</code>:  获取所有的成员变量(属性)，不考虑修饰符</li>
+<li><code>Field getDeclaredField(String name)</code>  :获取指定名称的当前运行时类的属性，不考虑权限</li>
+</ul>
+</li>
+<li><p>获取构造方法们</p>
+<ul>
+<li><code>Constructor&lt;?&gt;[] getConstructors()</code>  :获取当前运行时Public修饰的构造方法们</li>
+<li><code>Constructor&lt;T&gt; getConstructor(类&lt;?&gt;... parameterTypes)</code>  :获取指定参数的构造方法</li>
+<li><code>Constructor&lt;T&gt; getDeclaredConstructor(类&lt;?&gt;... parameterTypes)</code>  </li>
+<li><code>Constructor&lt;?&gt;[] getDeclaredConstructors()</code>  :获取当前运行时构造方法们,不考虑修饰符</li>
+</ul>
+</li>
+<li><p>获取成员方法们(同理加Declared是不考虑修饰符)：</p>
+<ul>
+<li><code>Method[] getMethods()</code>  </li>
+<li><code>Method getMethod(String name, 类&lt;?&gt;... parameterTypes)</code>  </li>
+<li><code>Method[] getDeclaredMethods()</code>  </li>
+<li><code>Method getDeclaredMethod(String name, 类&lt;?&gt;... parameterTypes)</code>  </li>
+</ul>
+</li>
+<li><p>获取全类名:<code>String getName()</code>  </p>
+</li>
+<li><p>成员变量操作：</p>
+<ul>
+<li>设置值:<code>void set(Object obj, Object value)</code>  </li>
+<li>获取值:<code>get(Object obj)</code> </li>
+</ul>
+</li>
+<li><p>忽略访问权限修饰符的安全检查</p>
+<ul>
+<li>setAccessible(true):暴力反射</li>
+</ul>
+</li>
+<li><p>创建对象：T newInstance(Object… initargs)<br>如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法</p>
+</li>
+<li><p>Method：方法对象<br>执行方法：<code>Object invoke(Object obj, Object... args)</code><br>获取方法名称：<code>String getName</code>:获取方法名</p>
+</li>
+</ol>
+<h3 id="2-0-反射的应用"><a href="#2-0-反射的应用" class="headerlink" title="2.0 反射的应用"></a>2.0 反射的应用</h3><h4 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h4><ul>
+<li>原理：使用一个代理将对象包装起来, 然后用该代理对象取代原始对象。任何对原始对象的调用都要通过代理。代理对象决定是否以及何时将方法调用转到原始对象上。 </li>
+</ul>
+<h4 id="动态代理介绍"><a href="#动态代理介绍" class="headerlink" title="动态代理介绍"></a>动态代理介绍</h4><ol>
+<li><p>概念 动态代理是指客户通过代理类来调用其它对象的方法,并且是在程序运行时根据需要动态创建目标类的代理对象.</p>
+</li>
+<li><p>使用场合 调试及远程方法调用等.</p>
+</li>
+<li><p>动态代理相关API</p>
+<ul>
+<li><p>Proxy ：专门完成代理的操作类，是所有动态代理类的父类。通过此类为一个或多个接口动态地生成实现类。</p>
+</li>
+<li><p>提供用于创建动态代理类和动态代理对象的静态方法 <code>static Class&lt;?&gt; getProxyClass(ClassLoader loader, Class&lt;?&gt;... interfaces)</code>  </p>
+</li>
+<li><p>创建 一个动态代理类所对应的Class对象 <code>static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler h)</code>  直接创建一个动态代理对象(loader:类加载器，interfaces：被代理类实现的全部接口，h：得到InvocationHandler接 口的实现类实例)</p>
+</li>
+<li><p><code>InvocationHandler</code>：创建一个实现接口InvocationHandler的类，它必须实现invoke方 法，以完成代理的具体操作。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object theProxy, Method method, Object[] params)</span> <span class="keyword">throws</span> Throwable</span>&#123; </span><br><span class="line">    <span class="keyword">try</span>&#123; Object retval = method.invoke(targetObj, params); <span class="comment">// Print out the result </span></span><br><span class="line">        System.out.println(retval); </span><br><span class="line">    	<span class="keyword">return</span> retval; </span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception exc)&#123;&#125; </span><br><span class="line">&#125;<span class="comment">//theProxy:代理类对象，method：调用的方法，params：调用方法所传入的参数</span></span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ul>
+</li>
+</ol>
+<h4 id="静态代理示例"><a href="#静态代理示例" class="headerlink" title="静态代理示例"></a>静态代理示例</h4><p>为了与动态代理相比较,静态代理程序示例如下.不难发现: 如果添加不同接口则需要不同的代理类来完成其代理!很繁琐!</p>
+<p>代理类和目标对象的类都是在编译期间确定下来，不利于程序的扩展。<br>每一个代理类只能为一个接口服务，这样一来程序开发中必然产生过多的代理。</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">静态代理举例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ClotFactory</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">produceCloth</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProxyClothFactory</span> <span class="keyword">implements</span> <span class="title">ClotFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ClotFactory factory;<span class="comment">//拿被代理类对象进行实例化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProxyClothFactory</span><span class="params">(ClotFactory factory)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.factory=factory;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">produceCloth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;代理工厂准备工作&quot;</span>);</span><br><span class="line">        factory.produceCloth();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="keyword">implements</span> <span class="title">ClotFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">produceCloth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;生产衣服&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ProxyClothFactory proxyClothFactory = <span class="keyword">new</span> ProxyClothFactory(<span class="keyword">new</span> Factory());</span><br><span class="line">        proxyClothFactory.produceCloth();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="动态代理示例"><a href="#动态代理示例" class="headerlink" title="动态代理示例"></a>动态代理示例</h4><p><strong>反射的动态性</strong></p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">动态代理举例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Human</span></span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">getBelief</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">eat</span><span class="params">(String food)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SupperMan</span> <span class="keyword">implements</span> <span class="title">Human</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getBelief</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;I Belief I can Fly&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(String food)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我喜欢吃：&quot;</span>+food);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">动态创建代理类</span></span><br><span class="line"><span class="comment">问题：如何根据内存中的被代理类，动态的创建一个代理类及其对象</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">当通过代理类的对象调用方法时，如何动态的区调用被代理类中的同名方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//代理类生产工厂，用这个类来生成代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProxyFactory</span></span>&#123;</span><br><span class="line">    <span class="comment">//调用此方法返回一个代理类对象，解决问题一</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getProxyInstance</span><span class="params">(Object obj)</span></span>&#123;<span class="comment">//obj:被代理类的对象</span></span><br><span class="line">        MyInvocationHandler handler=<span class="keyword">new</span> MyInvocationHandler();</span><br><span class="line">        handler.bind(obj);</span><br><span class="line">        <span class="keyword">return</span> Proxy.newProxyInstance(obj.getClass().getClassLoader(),obj.getClass().getInterfaces(),handler);</span><br><span class="line">        <span class="comment">//java.lang.reflect.Proxy：该类用于动态生成代理类，</span></span><br><span class="line">        <span class="comment">// 只需传入目标接口的类加载器、目标接口以及InvocationHandler便可为目标接口生成代理类及代理对象。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//newProxyInstance(ClassLoader loader, Class[] interfaces, InvocationHandler h):</span></span><br><span class="line">        <span class="comment">// 该方法用于为指定类装载器、一组接口及调用处理器生成动态代理类实例</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object obj;<span class="comment">//需要被代理类对象进行赋值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.obj=obj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当我们通过代理类的对象调用方法A时就睡自动的调用如下方法：invok()</span></span><br><span class="line">    <span class="comment">//将被代理类要执行的方法A的功能声明在invoke中</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//method:即为代理类对象调用的方法，此方法也就作为了被代理类对象要调用的方法</span></span><br><span class="line">        <span class="comment">//obj:被代理类对象</span></span><br><span class="line">        Object returnValue = method.invoke(obj, args);</span><br><span class="line">        <span class="comment">//上述方法的返回值就作为当前类中的invok方法的返回值</span></span><br><span class="line">        <span class="keyword">return</span> returnValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//proxyInstance:代理类对象</span></span><br><span class="line">        Human proxyInstance = (Human) ProxyFactory.getProxyInstance(<span class="keyword">new</span> SupperMan());</span><br><span class="line">        <span class="comment">//当通过代理类调用方法时，会自动的调用被代理类方法</span></span><br><span class="line">        String belief = proxyInstance.getBelief();</span><br><span class="line">        System.out.println(belief);</span><br><span class="line">        proxyInstance.eat(<span class="string">&quot;汉堡&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;*********&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Factory factory = <span class="keyword">new</span> Factory();</span><br><span class="line">        ClotFactory proxyInstance1 = (ClotFactory) ProxyFactory.getProxyInstance(factory);</span><br><span class="line">        proxyInstance1.produceCloth();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>JavaSE</category>
+      </categories>
+      <tags>
+        <tag>JavaSE</tag>
       </tags>
   </entry>
   <entry>
@@ -1069,171 +1487,6 @@
       </categories>
       <tags>
         <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Java Reflection(反射)</title>
-    <url>/2020/09/10/Reflection(%E5%8F%8D%E5%B0%84)/</url>
-    <content><![CDATA[<h2 id="Reflection-反射"><a href="#Reflection-反射" class="headerlink" title="Reflection(反射)"></a>Reflection(反射)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>Reflection（反射）是被视为动态语言的关键，反射机制允许程序在执行期 借助于Reflection API取得任何类的内部信息，并能直接操作任意对象的内部属性及方法。 </p>
-<ul>
-<li>框架 = 反射 + 注解 + 设计模式。</li>
-</ul>
-<h3 id="1-2-反射机制提供的功能"><a href="#1-2-反射机制提供的功能" class="headerlink" title="1.2 反射机制提供的功能"></a>1.2 反射机制提供的功能</h3><ol>
-<li>在运行时判断任意一个对象所属的类</li>
-<li>在运行时构造任意一个类的对象</li>
-<li>在运行时判断任意一个类所具有的成员变量和方法</li>
-<li>在运行时获取泛型信息</li>
-<li>在运行时调用任意一个对象的成员变量和方法</li>
-<li>在运行时处理注解</li>
-<li>生成动态代理</li>
-</ol>
-<h3 id="1-3-反射相关的主要API"><a href="#1-3-反射相关的主要API" class="headerlink" title="1.3 反射相关的主要API"></a>1.3 反射相关的主要API</h3><ul>
-<li><code>java.lang.Class</code>:代表一个类</li>
-<li><code>java.lang.reflect.Method</code>:代表类的方法</li>
-<li><code>java.lang.reflect.Field</code>:代表类的成员变量</li>
-<li><code>java.lang.reflect.Constructor</code>:代表类的构造器</li>
-</ul>
-<h3 id="1-4-详解Class类"><a href="#1-4-详解Class类" class="headerlink" title="1.4 详解Class类"></a>1.4 详解Class类</h3><ul>
-<li>先上代码，了解反射的基本实现步骤，通过反射对Person类进行操作</li>
-</ul>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Class&lt;Person&gt; clazz = Person.class;</span><br><span class="line">       <span class="comment">//通过反射创建Person类对象</span></span><br><span class="line">       Constructor cons = clazz.getConstructor(String.class, <span class="keyword">int</span>.class);</span><br><span class="line">       Object obj = cons.newInstance(<span class="string">&quot;tom&quot;</span>, <span class="number">12</span>);</span><br><span class="line">       Person p=(Person)obj;</span><br><span class="line">       System.out.println(p.toString());<span class="comment">//Person&#123;name=&#x27;tom&#x27;, age=12&#125;</span></span><br><span class="line">       <span class="comment">//通过反射调用对象指定的属性和指定的方法</span></span><br><span class="line">       <span class="comment">//调用属性</span></span><br><span class="line">       Field age = clazz.getDeclaredField(<span class="string">&quot;age&quot;</span>);</span><br><span class="line">       age.set(p,<span class="number">2</span>);</span><br><span class="line">       System.out.println(p);<span class="comment">//Person&#123;name=&#x27;tom&#x27;, age=2&#125;</span></span><br><span class="line">       <span class="comment">//调用方法</span></span><br><span class="line">       Method show = clazz.getDeclaredMethod(<span class="string">&quot;show&quot;</span>);</span><br><span class="line">       show.invoke(p);<span class="comment">//show()方法</span></span><br><span class="line"></span><br><span class="line">       <span class="comment">//通过反射，可以调用person类的私有属性和方法</span></span><br><span class="line">       Constructor&lt;Person&gt; constructor = clazz.getDeclaredConstructor(String.class);</span><br><span class="line">       constructor.setAccessible(<span class="keyword">true</span>);<span class="comment">//这一步是调用私有构造器的关键</span></span><br><span class="line">       Person person = constructor.newInstance(<span class="string">&quot;jerry&quot;</span>);</span><br><span class="line">       System.out.println(person);<span class="comment">//Person&#123;name=&#x27;jerry&#x27;, age=0&#125;</span></span><br><span class="line">       <span class="comment">//调用私有属性</span></span><br><span class="line">       Field name = clazz.getDeclaredField(<span class="string">&quot;name&quot;</span>);</span><br><span class="line">       name.setAccessible(<span class="keyword">true</span>);<span class="comment">//这一步是调用私有属性的关键</span></span><br><span class="line">       name.set(person,<span class="string">&quot;zhangsan&quot;</span>);</span><br><span class="line">       System.out.println(person);<span class="comment">//Person&#123;name=&#x27;zhangsan&#x27;, age=0&#125;</span></span><br><span class="line">       <span class="comment">//调用私有方法</span></span><br><span class="line">       Method showNation = clazz.getDeclaredMethod(<span class="string">&quot;showNation&quot;</span>, String.class);</span><br><span class="line">       showNation.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">       Object nation = showNation.invoke(person,<span class="string">&quot;中国&quot;</span>);<span class="comment">//showNation()方法</span></span><br><span class="line">       String nat=(String)nation;</span><br><span class="line">       System.out.println(nat);<span class="comment">//中国</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-<p>首先，根据上述代码，首先要获取一个Class类的实例(clazz)，此实例就是Person.class，Person.class就是运行时类</p>
-<ol>
-<li>类的加载过程：<br>程序经过javac.exe命令以后，会生成一个或多个字节码文件(.class结尾)。<br>接着我们使用java.exe命令对某个字节码文件进行解释运行。相当于将某个字节码文件<br>加载到内存中。此过程就称为类的加载。加载到内存中的类，我们就称为运行时类，此<br>运行时类，就作为Class的一个实例。</li>
-<li>换句话说，Class的实例就对应着一个运行时类。</li>
-<li>加载到内存中的运行时类，会缓存一定的时间。在此时间之内，我们可以通过不同的方式<br>来获取此运行时类。</li>
-</ol>
-<p>在Object类中定义了以下的方法，此方法 将被所有子类继承： </p>
-<p><code>public final Class getClass()</code><br>以上的方法返回值的类型是一个Class类， 此类是Java反射的源头，实际上所谓反射从程序的运行结果来看也很好理解，即： 可以<code>通过对象反射求出类的名称</code>。</p>
-<ul>
-<li>正常方式 : 引入需要的<code>包类</code>名称 ——&gt; 通过<code>new</code>实例化 ——&gt; 取得实例化对象</li>
-<li>反射方式 : 实例化对象 ——&gt; <code>getClass()</code> ——&gt; 得到完整的<code>包类</code>名称</li>
-</ul>
-<h3 id="1-5-四种获取Class类实例的方式"><a href="#1-5-四种获取Class类实例的方式" class="headerlink" title="1.5 四种获取Class类实例的方式"></a>1.5 四种获取Class类实例的方式</h3><figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test3</span><span class="params">()</span></span>&#123;</span><br><span class="line">       <span class="comment">//方式一：调用运行时类的属性：.class</span></span><br><span class="line">       Class&lt;Person&gt; clazz1 = Person.class;</span><br><span class="line">       System.out.println(clazz1);<span class="comment">//class com.review.reflection.Person,person类本身</span></span><br><span class="line">       <span class="comment">//方式二：通过运行时类的对象,调用getClass()方法</span></span><br><span class="line">       Person p1=<span class="keyword">new</span> Person();</span><br><span class="line">       Class&lt;? extends Person&gt; clazz2 = p1.getClass();</span><br><span class="line">       System.out.println(clazz2);<span class="comment">//class com.review.reflection.Person,person类本身</span></span><br><span class="line">       <span class="comment">//方式三：调用Class的静态方法.forName(String classPath)</span></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           Class&lt;?&gt; clazz3 = Class.forName(<span class="string">&quot;com.review.reflection.Person&quot;</span>);</span><br><span class="line">           System.out.println(clazz3);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       System.out.println(clazz1==clazz2);<span class="comment">//true</span></span><br><span class="line">       <span class="comment">//上面三种方式获取的都是同一个运行时类，同一个内存地址</span></span><br><span class="line">       <span class="comment">//方式四：使用类的加载器ClassLoader，通过classLoader获取Class类实例</span></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           ClassLoader classLoader = Person.class.getClassLoader();</span><br><span class="line">           Class&lt;?&gt; clazz4 = classLoader.loadClass(<span class="string">&quot;com.review.reflection.Person&quot;</span>);</span><br><span class="line">           System.out.println(clazz4);<span class="comment">//com.review.reflection.Person</span></span><br><span class="line">           System.out.println(clazz1==clazz4);<span class="comment">//true</span></span><br><span class="line">       &#125; <span class="keyword">catch</span> (ClassNotFoundException e) &#123;</span><br><span class="line">           e.printStackTrace();</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">//四种方式获取的运行时类都是一样的，地址相同</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-6-哪些类型有Class对象"><a href="#1-6-哪些类型有Class对象" class="headerlink" title="1.6 哪些类型有Class对象"></a>1.6 哪些类型有Class对象</h3><ul>
-<li>class： 外部类，成员(成员内部类，静态内部类)，局部内部类，匿名内部类 </li>
-<li>interface：接口 </li>
-<li>[]：数组 </li>
-<li>enum：枚举 </li>
-<li>annotation：注解@interface </li>
-<li>primitive type：基本数据类型 </li>
-<li>void</li>
-</ul>
-<h3 id="1-7-类加载器ClassLoader"><a href="#1-7-类加载器ClassLoader" class="headerlink" title="1.7 类加载器ClassLoader"></a>1.7 类加载器ClassLoader</h3><p>类加载器的作用:把<code>类(class)</code>装载进内存.如下示例</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Java源文件(*.java) ——Java编译器——&gt; 字节码文件(*.class) ——类加载器+字节码效验器+解释器——&gt; 操作系统平台</span><br></pre></td></tr></table></figure>
-
-<p><strong>类加载的过程</strong>：</p>
-<p>当程序主动使用某个类时,如果该类还未被<code>加载</code>到内存中,则系统会通知如下三个步骤来对该类进行初始化.</p>
-<ol>
-<li>类的加载 : 将类的<code>Class</code>文件读入到内存,并为之创建一个<code>java.lang.Class</code>对象,此过程由类加载器完成.</li>
-<li>类的链接 : 将类的<code>二进制</code>数据合并到<code>JRE</code>中.</li>
-<li>类的初始化 : <code>JVM</code>负责对类进行初始化.</li>
-</ol>
-<p><code>JVM</code>规范定义了两种类型的类加载器:<code>启动类加载器(bootstrap)</code>和<code>用户自定义加载器(user-defined class loader)</code>，JVM在运行时会产生<code>三个类加载器</code></p>
-<ol>
-<li>引导类加载器:<code>JVM</code>自带的类加载器,负责Java平台核心库,用来加载核心类库,该加载器无法直接获取.</li>
-<li>扩展类加载器:负责<code>jar包</code>或将指定目录下的<code>jar包</code>装入工作库.</li>
-<li>系统类加载器:负责<code>java-classpath</code>或<code>java.class.path</code>所指的目录下的类与<code>jar</code>包装入工作.(最常用)</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="comment">//对于自定义类，使用系统类加载器加载</span></span><br><span class="line">       ClassLoader classLoader = ClassLoaderTest.class.getClassLoader();//由系统类加载器加载</span><br><span class="line">       System.out.println(classLoader);<span class="comment">//AppClassLoader</span></span><br><span class="line">       <span class="comment">//调用系统类加载器的getParent()方法可以获取扩展类加载器</span></span><br><span class="line">       ClassLoader classLoader1 = classLoader.getParent();<span class="comment">//获取扩展类加载器</span></span><br><span class="line">       System.out.println(classLoader1);<span class="comment">//PlatformClassLoader</span></span><br><span class="line">       <span class="comment">//调用扩展类加载器的getParent()方法无法获取引导类加载器</span></span><br><span class="line">       ClassLoader classLoader2 = classLoader1.getParent();</span><br><span class="line">       System.out.println(classLoader2);<span class="comment">//null引导类加载器获取不到，主要加载java核心类库，无法加载自定义类</span></span><br><span class="line"></span><br><span class="line">       ClassLoader classLoader3 = String.class.getClassLoader();</span><br><span class="line">       System.out.println(classLoader3);<span class="comment">//null,引导类加载器无法拿到</span></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>应用：使用ClassLoader加载配置文件</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test2</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Properties properties=<span class="keyword">new</span> Properties();</span><br><span class="line">       <span class="comment">//此时文件默认在当前的module下</span></span><br><span class="line">       <span class="comment">//读取配置文件1</span></span><br><span class="line">       <span class="comment">/*FileInputStream fis=new FileInputStream(&quot;jdbc.properties&quot;);</span></span><br><span class="line"><span class="comment">       properties.load(fis);*/</span></span><br><span class="line">       <span class="comment">//读取配置文件2，使用classloader</span></span><br><span class="line">       <span class="comment">//文件默认识别在当前module下的src下</span></span><br><span class="line">       ClassLoader classLoader = ClassLoaderTest.class.getClassLoader();</span><br><span class="line">       InputStream is = classLoader.getResourceAsStream(<span class="string">&quot;jdbc1.properties&quot;</span>);</span><br><span class="line">       properties.load(is);</span><br><span class="line"></span><br><span class="line">       String user = properties.getProperty(<span class="string">&quot;user&quot;</span>);</span><br><span class="line">       String password = properties.getProperty(<span class="string">&quot;password&quot;</span>);</span><br><span class="line">       System.out.println(user+<span class="string">&quot;:&quot;</span>+password);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-8-newInstance-创建运行时类的对象"><a href="#1-8-newInstance-创建运行时类的对象" class="headerlink" title="1.8 newInstance()创建运行时类的对象"></a>1.8 newInstance()创建运行时类的对象</h3><p><code>newInstance()</code>:调用此方法，创建对应的运行时类的对象。内部调用了运行时类的空参的构造器。</p>
-<p>要想此方法正常的创建运行时类的对象，要求：</p>
-<ol>
-<li>运行时类必须提供空参的构造器</li>
-<li>空参的构造器的访问权限得够。通常，设置为public。</li>
-</ol>
-<p>在javabean中要求提供一个public的空参构造器。原因：</p>
-<ol>
-<li>便于通过反射，创建运行时类的对象</li>
-<li>便于子类继承此运行时类时，默认调用super()时，保证父类此构造器</li>
-</ol>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="meta">@Test</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">test1</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">       Class&lt;Person&gt; clazz = Person.class;</span><br><span class="line">       <span class="comment">/*</span></span><br><span class="line"><span class="comment">       newInstance():调用此方法，创建对应的运行时类的对象</span></span><br><span class="line"><span class="comment">        */</span></span><br><span class="line">       Person person = clazz.newInstance();<span class="comment">//java9之后已过时</span></span><br><span class="line">       System.out.println(person);</span><br><span class="line">       <span class="comment">//</span></span><br><span class="line">       Person person1 = clazz.getDeclaredConstructor().newInstance();<span class="comment">//推荐</span></span><br><span class="line"></span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-9-获取运行时类的指定结构"><a href="#1-9-获取运行时类的指定结构" class="headerlink" title="1.9 获取运行时类的指定结构"></a>1.9 获取运行时类的指定结构</h3><ol>
-<li><p>获取成员变量们</p>
-<ul>
-<li><code>Field[] getFields()</code> ：获取所有public修饰的成员变量(属性)</li>
-<li><code>Field getField(String name)</code>:获取指定名称的 public修饰的成员变量(属性)</li>
-<li><code>Field[] getDeclaredFields()</code>:  获取所有的成员变量(属性)，不考虑修饰符</li>
-<li><code>Field getDeclaredField(String name)</code>  :获取指定名称的当前运行时类的属性，不考虑权限</li>
-</ul>
-</li>
-<li><p>获取构造方法们</p>
-<ul>
-<li><code>Constructor&lt;?&gt;[] getConstructors()</code>  :获取当前运行时Public修饰的构造方法们</li>
-<li><code>Constructor&lt;T&gt; getConstructor(类&lt;?&gt;... parameterTypes)</code>  :获取指定参数的构造方法</li>
-<li><code>Constructor&lt;T&gt; getDeclaredConstructor(类&lt;?&gt;... parameterTypes)</code>  </li>
-<li><code>Constructor&lt;?&gt;[] getDeclaredConstructors()</code>  :获取当前运行时构造方法们,不考虑修饰符</li>
-</ul>
-</li>
-<li><p>获取成员方法们(同理加Declared是不考虑修饰符)：</p>
-<ul>
-<li><code>Method[] getMethods()</code>  </li>
-<li><code>Method getMethod(String name, 类&lt;?&gt;... parameterTypes)</code>  </li>
-<li><code>Method[] getDeclaredMethods()</code>  </li>
-<li><code>Method getDeclaredMethod(String name, 类&lt;?&gt;... parameterTypes)</code>  </li>
-</ul>
-</li>
-<li><p>获取全类名:<code>String getName()</code>  </p>
-</li>
-<li><p>成员变量操作：</p>
-<ul>
-<li>设置值:<code>void set(Object obj, Object value)</code>  </li>
-<li>获取值:<code>get(Object obj)</code> </li>
-</ul>
-</li>
-<li><p>忽略访问权限修饰符的安全检查</p>
-<ul>
-<li>setAccessible(true):暴力反射</li>
-</ul>
-</li>
-<li><p>创建对象：T newInstance(Object… initargs)<br>如果使用空参数构造方法创建对象，操作可以简化：Class对象的newInstance方法</p>
-</li>
-<li><p>Method：方法对象<br>执行方法：<code>Object invoke(Object obj, Object... args)</code><br>获取方法名称：<code>String getName</code>:获取方法名</p>
-</li>
-</ol>
-<h3 id="2-0-反射的应用"><a href="#2-0-反射的应用" class="headerlink" title="2.0 反射的应用"></a>2.0 反射的应用</h3><h4 id="代理模式"><a href="#代理模式" class="headerlink" title="代理模式"></a>代理模式</h4><ul>
-<li>原理：使用一个代理将对象包装起来, 然后用该代理对象取代原始对象。任何对原始对象的调用都要通过代理。代理对象决定是否以及何时将方法调用转到原始对象上。 </li>
-</ul>
-<h4 id="动态代理介绍"><a href="#动态代理介绍" class="headerlink" title="动态代理介绍"></a>动态代理介绍</h4><ol>
-<li><p>概念 动态代理是指客户通过代理类来调用其它对象的方法,并且是在程序运行时根据需要动态创建目标类的代理对象.</p>
-</li>
-<li><p>使用场合 调试及远程方法调用等.</p>
-</li>
-<li><p>动态代理相关API</p>
-<ul>
-<li><p>Proxy ：专门完成代理的操作类，是所有动态代理类的父类。通过此类为一个或多个接口动态地生成实现类。</p>
-</li>
-<li><p>提供用于创建动态代理类和动态代理对象的静态方法 <code>static Class&lt;?&gt; getProxyClass(ClassLoader loader, Class&lt;?&gt;... interfaces)</code>  </p>
-</li>
-<li><p>创建 一个动态代理类所对应的Class对象 <code>static Object newProxyInstance(ClassLoader loader, Class&lt;?&gt;[] interfaces, InvocationHandler h)</code>  直接创建一个动态代理对象(loader:类加载器，interfaces：被代理类实现的全部接口，h：得到InvocationHandler接 口的实现类实例)</p>
-</li>
-<li><p><code>InvocationHandler</code>：创建一个实现接口InvocationHandler的类，它必须实现invoke方 法，以完成代理的具体操作。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object theProxy, Method method, Object[] params)</span> <span class="keyword">throws</span> Throwable</span>&#123; </span><br><span class="line">    <span class="keyword">try</span>&#123; Object retval = method.invoke(targetObj, params); <span class="comment">// Print out the result </span></span><br><span class="line">        System.out.println(retval); </span><br><span class="line">    	<span class="keyword">return</span> retval; </span><br><span class="line">    &#125;<span class="keyword">catch</span> (Exception exc)&#123;&#125; </span><br><span class="line">&#125;<span class="comment">//theProxy:代理类对象，method：调用的方法，params：调用方法所传入的参数</span></span><br></pre></td></tr></table></figure>
-
-
-</li>
-</ul>
-</li>
-</ol>
-<h4 id="静态代理示例"><a href="#静态代理示例" class="headerlink" title="静态代理示例"></a>静态代理示例</h4><p>为了与动态代理相比较,静态代理程序示例如下.不难发现: 如果添加不同接口则需要不同的代理类来完成其代理!很繁琐!</p>
-<p>代理类和目标对象的类都是在编译期间确定下来，不利于程序的扩展。<br>每一个代理类只能为一个接口服务，这样一来程序开发中必然产生过多的代理。</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">静态代理举例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">ClotFactory</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">produceCloth</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProxyClothFactory</span> <span class="keyword">implements</span> <span class="title">ClotFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> ClotFactory factory;<span class="comment">//拿被代理类对象进行实例化</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ProxyClothFactory</span><span class="params">(ClotFactory factory)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.factory=factory;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">produceCloth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;代理工厂准备工作&quot;</span>);</span><br><span class="line">        factory.produceCloth();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Factory</span> <span class="keyword">implements</span> <span class="title">ClotFactory</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">produceCloth</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;生产衣服&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">StaticProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        ProxyClothFactory proxyClothFactory = <span class="keyword">new</span> ProxyClothFactory(<span class="keyword">new</span> Factory());</span><br><span class="line">        proxyClothFactory.produceCloth();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="动态代理示例"><a href="#动态代理示例" class="headerlink" title="动态代理示例"></a>动态代理示例</h4><p><strong>反射的动态性</strong></p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">动态代理举例</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.InvocationHandler;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Proxy;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">interface</span> <span class="title">Human</span></span>&#123;</span><br><span class="line">    <span class="function">String <span class="title">getBelief</span><span class="params">()</span></span>;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">eat</span><span class="params">(String food)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//被代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SupperMan</span> <span class="keyword">implements</span> <span class="title">Human</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getBelief</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;I Belief I can Fly&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">eat</span><span class="params">(String food)</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我喜欢吃：&quot;</span>+food);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">动态创建代理类</span></span><br><span class="line"><span class="comment">问题：如何根据内存中的被代理类，动态的创建一个代理类及其对象</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">当通过代理类的对象调用方法时，如何动态的区调用被代理类中的同名方法</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="comment">//代理类生产工厂，用这个类来生成代理类</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ProxyFactory</span></span>&#123;</span><br><span class="line">    <span class="comment">//调用此方法返回一个代理类对象，解决问题一</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Object <span class="title">getProxyInstance</span><span class="params">(Object obj)</span></span>&#123;<span class="comment">//obj:被代理类的对象</span></span><br><span class="line">        MyInvocationHandler handler=<span class="keyword">new</span> MyInvocationHandler();</span><br><span class="line">        handler.bind(obj);</span><br><span class="line">        <span class="keyword">return</span> Proxy.newProxyInstance(obj.getClass().getClassLoader(),obj.getClass().getInterfaces(),handler);</span><br><span class="line">        <span class="comment">//java.lang.reflect.Proxy：该类用于动态生成代理类，</span></span><br><span class="line">        <span class="comment">// 只需传入目标接口的类加载器、目标接口以及InvocationHandler便可为目标接口生成代理类及代理对象。</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">//newProxyInstance(ClassLoader loader, Class[] interfaces, InvocationHandler h):</span></span><br><span class="line">        <span class="comment">// 该方法用于为指定类装载器、一组接口及调用处理器生成动态代理类实例</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyInvocationHandler</span> <span class="keyword">implements</span> <span class="title">InvocationHandler</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object obj;<span class="comment">//需要被代理类对象进行赋值</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">bind</span><span class="params">(Object obj)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.obj=obj;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//当我们通过代理类的对象调用方法A时就睡自动的调用如下方法：invok()</span></span><br><span class="line">    <span class="comment">//将被代理类要执行的方法A的功能声明在invoke中</span></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">invoke</span><span class="params">(Object proxy, Method method, Object[] args)</span> <span class="keyword">throws</span> Throwable </span>&#123;</span><br><span class="line"></span><br><span class="line">        <span class="comment">//method:即为代理类对象调用的方法，此方法也就作为了被代理类对象要调用的方法</span></span><br><span class="line">        <span class="comment">//obj:被代理类对象</span></span><br><span class="line">        Object returnValue = method.invoke(obj, args);</span><br><span class="line">        <span class="comment">//上述方法的返回值就作为当前类中的invok方法的返回值</span></span><br><span class="line">        <span class="keyword">return</span> returnValue;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProxyTest</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        <span class="comment">//proxyInstance:代理类对象</span></span><br><span class="line">        Human proxyInstance = (Human) ProxyFactory.getProxyInstance(<span class="keyword">new</span> SupperMan());</span><br><span class="line">        <span class="comment">//当通过代理类调用方法时，会自动的调用被代理类方法</span></span><br><span class="line">        String belief = proxyInstance.getBelief();</span><br><span class="line">        System.out.println(belief);</span><br><span class="line">        proxyInstance.eat(<span class="string">&quot;汉堡&quot;</span>);</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">&quot;*********&quot;</span>);</span><br><span class="line"></span><br><span class="line">        Factory factory = <span class="keyword">new</span> Factory();</span><br><span class="line">        ClotFactory proxyInstance1 = (ClotFactory) ProxyFactory.getProxyInstance(factory);</span><br><span class="line">        proxyInstance1.produceCloth();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-]]></content>
-      <categories>
-        <category>JavaSE</category>
-      </categories>
-      <tags>
-        <tag>JavaSE</tag>
       </tags>
   </entry>
   <entry>
