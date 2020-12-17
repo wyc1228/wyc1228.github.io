@@ -5834,4 +5834,1191 @@ Screen:</code></pre>
         <tag>Spring</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Linux实用指令</title>
+    <url>/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="Linux实用指令"><a href="#Linux实用指令" class="headerlink" title="Linux实用指令"></a>Linux实用指令</h2><h3 id="1-指令运行级别"><a href="#1-指令运行级别" class="headerlink" title="1. 指令运行级别"></a>1. 指令运行级别</h3><p>七个运行级别：配置文件为/etc/inittab</p>
+<ul>
+<li>0：关机</li>
+<li>1：单用户【找回丢失密码】，在这个级别下进入linux系统不需要密码</li>
+<li>2：多用户状态没有网络服务</li>
+<li>3：多用户状态有网络服务【用的最多】</li>
+<li>4：系统未使用保留给用户【不要进入，未使用】</li>
+<li>5：图形界面</li>
+<li>6：系统重启</li>
+</ul>
+<p>重用的运行级别是3和5，要修改默认的运行级别可以修改文件</p>
+<p>/etc/inittab的id:5:initdefault:这一行的数字</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011100723582.png" alt="image-20201011100723582"></p>
+<p>切换指定运行级别的指令</p>
+<ul>
+<li><p>init [0,1,2,3,5,6]</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011101317826.png" alt="image-20201011101317826"></p>
+</li>
+</ul>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011101523387.png" alt="image-20201011101523387"></p>
+<p>面试题</p>
+<ul>
+<li><p>如何找回root密码？（修改密码只能在主机进行，不能远程进行，所以还是很安全的）</p>
+<ul>
+<li><p>进入到单用户模式，然后修改root密码，因为进入单用户模式，root不需要密码就可以登录</p>
+</li>
+<li><p>第一步，linux开机之前，按enter键进入此界面</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011102622709.png" alt="image-20201011102622709"></p>
+</li>
+<li><p>然后按e，进入到此界面</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011102703435.png" alt="image-20201011102703435"></p>
+</li>
+<li><p>选中第二个，然后按e进入到此页面</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011102849840.png" alt="image-20201011102849840"></p>
+</li>
+<li><p>然后输入空格，再输入1，进入单用户模式</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011103000871.png" alt="image-20201011103000871"></p>
+</li>
+<li><p>然后enter键，回到此界面，【告诉内核进入单用户模式】</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011103139995.png" alt="image-20201011103139995"></p>
+</li>
+<li><p>然后输入b，开始启动，进入单用户模式，而且以root模式登陆，然后输入passwd修改root密码，正常重启之后完成root密码修改</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011103520697.png" alt="image-20201011103520697"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-帮助指令"><a href="#2-帮助指令" class="headerlink" title="2. 帮助指令"></a>2. 帮助指令</h3><p>当我们对某个指令不熟，可以使用linux提供的帮助指令来了解这个指令的使用方法</p>
+<p>基本语法</p>
+<ul>
+<li><p>man [命令或配置文件]</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011105208203.png" alt="image-20201011105208203"></p>
+</li>
+</ul>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011105256123.png" alt="image-20201011105256123"></p>
+<ul>
+<li><p>help 指令，获取shell内置命令的帮助信息</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011105412729.png" alt="image-20201011105412729"></p>
+</li>
+</ul>
+<h3 id="3-文件目录指令"><a href="#3-文件目录指令" class="headerlink" title="3. 文件目录指令"></a>3. 文件目录指令</h3><ul>
+<li><p>pwd 指令，显示当前工作目录的绝对路径</p>
+</li>
+<li><p>ls 指令，查看当前目录的所有内容信息</p>
+<ul>
+<li><p>ls -a ，查看当前目录所有文件和目录，包括隐藏信息</p>
+</li>
+<li><p>ls -l ，以列表的方式显示信息</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011105905442.png" alt="image-20201011105905442"></p>
+</li>
+</ul>
+</li>
+<li><p>cd 指令，切换到指定目录</p>
+<ul>
+<li>cd [参数]</li>
+<li>cd ~：回到自己的家目录，普通用户家目录在/home下，root用户家目录在/root</li>
+<li>cd ..：回到当前目录的上一级目录也可以直接用cd命令，更快捷</li>
+</ul>
+</li>
+<li><p>mkdir 指令：创建目录</p>
+<ul>
+<li><p>mkdir 目录</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011113401308.png" alt="image-20201011113401308"></p>
+</li>
+<li><p>mkdir -p 目录名：创建多级目录</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011113633152.png" alt="image-20201011113633152"></p>
+</li>
+</ul>
+</li>
+<li><p>rmdir 指令：删除空目录</p>
+<ul>
+<li><p>rmdir 目录</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011113854099.png" alt="image-20201011113854099"></p>
+</li>
+<li><p>rm -rf 要删除的内容：删除非空目录</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011114155758.png" alt="image-20201011114155758"></p>
+</li>
+<li><p>rm -rf /*：删库跑路，慎重选择</p>
+</li>
+</ul>
+</li>
+<li><p>touch 指令：创建空文件</p>
+<ul>
+<li><p>touch 文件名称</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011114453043.png" alt="image-20201011114453043"></p>
+</li>
+</ul>
+</li>
+<li><p>cp指令，拷贝文件到指定目录</p>
+<ul>
+<li><p>cp [选项] source dest：将source文件拷贝到dest，将world.txt复制到bbb文件夹</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011130300801.png" alt="image-20201011130300801"></p>
+</li>
+<li><p>-r：递归复制整个文件夹 ：cp -r resource dest</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011130804101.png" alt="image-20201011130804101"></p>
+</li>
+<li><p>强制覆盖不提示：\cp</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011130942404.png" alt="image-20201011130942404"></p>
+</li>
+</ul>
+</li>
+<li><p>rm指令：移除或删除文件或目录</p>
+<ul>
+<li><p>rm [选项] 要删除的文件或目录</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011131111736.png" alt="image-20201011131111736"></p>
+</li>
+<li><p>-r：递归删除整个文件夹，-f：强制删除不提示</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011131400736.png" alt="image-20201011131400736"></p>
+</li>
+<li><p>rm -rf /*：删除所有文件，且不提示</p>
+</li>
+</ul>
+</li>
+<li><p>mv指令：移动文件与目录重命名</p>
+<ul>
+<li><p>mv oldNameFile newNameFile （重命名）</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011131642146.png" alt="image-20201011131642146"></p>
+</li>
+<li><p>mv /temp/movefile  /targetFolder（移动文件）</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011132308376.png" alt="image-20201011132308376"></p>
+</li>
+</ul>
+</li>
+<li><p>cat 指令：查看文件内容，只是以只读的方式打开</p>
+<ul>
+<li><p>cat [选项] 要查看的文件</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011132610348.png" alt="image-20201011132610348"></p>
+</li>
+<li><p>-n：显示行号</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011133252276.png" alt="image-20201011133252276"></p>
+</li>
+<li><p>cat只能浏览文件，不能修改文件，为了浏览方便，一般会带上管道命令|more</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011133445177.png" alt="image-20201011133445177"></p>
+</li>
+</ul>
+</li>
+<li><p>more指令</p>
+<ul>
+<li><p>more指令是一个基于VI编辑器的文本过滤器，它以全屏幕的方式按页来显示文本文件的内容，more指令中内置了若干快捷键</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011133913987.png" alt="image-20201011133913987"></p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011133931642.png" alt="image-20201011133931642"></p>
+</li>
+<li><p>快捷键：</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空白键(space)</td>
+<td>代表向下翻一页；</td>
+</tr>
+<tr>
+<td>Enter</td>
+<td>代表向下翻『一行』；</td>
+</tr>
+<tr>
+<td>q</td>
+<td>代表立刻离开 more ，不再显示该文件内容。</td>
+</tr>
+<tr>
+<td>Ctrl+F</td>
+<td>向下滚动一屏</td>
+</tr>
+<tr>
+<td>Ctrl+B</td>
+<td>返回上一屏</td>
+</tr>
+<tr>
+<td>=</td>
+<td>输出当前行的行号</td>
+</tr>
+<tr>
+<td>:f</td>
+<td>输出文件名和当前行的行号</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>less指令</p>
+<ul>
+<li><p>less指令用来分屏查看文件内容，它的功能与more指令类似，但是比more指令更加强大，支持各种显示终端。less指令在显示文件内容时，并不是一次将整个文件加载之后才显示，而是 根据显示需要加载内容，对于显示大型文件具有较高的效率。</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011135145939.png" alt="image-20201011135145939"></p>
+</li>
+<li><p>快捷键</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>功能说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>空白键(space)</td>
+<td>代表向下翻一页；</td>
+</tr>
+<tr>
+<td>Enter</td>
+<td>代表向下翻『一行』；</td>
+</tr>
+<tr>
+<td>q</td>
+<td>代表立刻离开 less ，不再显示该文件内容。</td>
+</tr>
+<tr>
+<td>pagedown</td>
+<td>向下翻动一页</td>
+</tr>
+<tr>
+<td>pageup</td>
+<td>向上翻动一页</td>
+</tr>
+<tr>
+<td>/字串</td>
+<td>向下搜寻字串的内容</td>
+</tr>
+<tr>
+<td>？字串</td>
+<td>向上搜寻字串的内容</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+</li>
+<li><p>输出重定向指令 &gt; 和追加指令 &gt;&gt;</p>
+<ul>
+<li><p>输出重定向&gt;：会将原来的文件的内容覆盖掉</p>
+<ul>
+<li>例如 ls -l &gt; 文件 （将列表的内容写入到文件中(覆盖写)）</li>
+<li>例如ls &gt;&gt; 文件（将列表的内容追加到文件中）</li>
+<li>例如cat 文件1&gt;&gt;文件2（将文件1的内容追加到文件2）</li>
+</ul>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011140859478.png" alt="image-20201011140859478"></p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011141357540.png" alt="image-20201011141357540"></p>
+</li>
+</ul>
+</li>
+<li><p>echo指令：输出内容到控制台</p>
+<ul>
+<li><p>echo [选项] [输出内容]</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011141615203.png" alt="image-20201011141615203"></p>
+</li>
+</ul>
+</li>
+<li><p>head指令</p>
+<ul>
+<li><p>用于显示文件的开头部分，默认情况下head指令显示文件的前十行内容</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011141814571.png" alt="image-20201011141814571"></p>
+</li>
+<li><p>head -n 5 文件：显示文件头五行内容</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011141914008.png" alt="image-20201011141914008"></p>
+</li>
+</ul>
+</li>
+<li><p>tail指令</p>
+<ul>
+<li><p>用于输出文件中尾部内容，默认输出文件的后十行</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011142211200.png" alt="image-20201011142211200"></p>
+</li>
+<li><p>tail -n 5 文件：查看文件后五行的内容</p>
+</li>
+<li><p>tail -f 文件：实时追踪该文档的所有更新，工作中经常使用，ctrl+c退出tail模式</p>
+</li>
+</ul>
+</li>
+<li><p>ln指令</p>
+<ul>
+<li><p>软连接也叫符号链接，类似于windows中的快捷方式，主要存放了链接其他文件的路径</p>
+</li>
+<li><p>ln -s [原文件目录] [软链接名]：给原文件创建一个软连接</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011143639992.png" alt="image-20201011143639992"></p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011143738658.png" alt="image-20201011143738658"></p>
+</li>
+<li><p>此时，进入到linkToRoot文件夹，显示的内容是root文件夹中的内容，但是此时你输入pwd，显示的还是本路径文件夹</p>
+</li>
+<li><p>删除软链接</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011144125607.png" alt="image-20201011144125607"></p>
+</li>
+<li><p>在删除软链接时，不要带有/，否则提示资源忙</p>
+</li>
+</ul>
+</li>
+<li><p>history命令</p>
+<ul>
+<li><p>查看已经执行过的历史命令，也可以执行历史命令</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011144319802.png" alt="image-20201011144319802"></p>
+</li>
+<li><p>显示最近使用过的10个指令，执行编号为149的历史指令</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011144501406.png" alt="image-20201011144501406"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="4-时间日期指令"><a href="#4-时间日期指令" class="headerlink" title="4. 时间日期指令"></a>4. 时间日期指令</h3><ul>
+<li><p>date指令：显示当前日期</p>
+<ul>
+<li><p>date：显示当前时间</p>
+</li>
+<li><p>date  +%Y：显示当前年</p>
+</li>
+<li><p>date   +%m：显示当前是哪个月</p>
+</li>
+<li><p>date   +%d：显示当前是那一天</p>
+</li>
+<li><p>date  “+%Y-%m-%d %H:%M:%S”：显示年月日时分秒</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011145247572.png" alt="image-20201011145247572"></p>
+</li>
+</ul>
+</li>
+<li><p>date指令-设置日期</p>
+<ul>
+<li><p>date -s 字符串时间</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011145426002.png" alt="image-20201011145426002"></p>
+</li>
+<li><p>cal[选项]：查看日历指令，不加选项，显示本月日历</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011145559467.png" alt="image-20201011145559467"></p>
+</li>
+<li><p>cal 2020 ：显示2020年日历</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011150244555.png" alt="image-20201011150244555"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="5-搜索查找指令"><a href="#5-搜索查找指令" class="headerlink" title="5. 搜索查找指令"></a>5. 搜索查找指令</h3><ul>
+<li><p>find指令：find指令将从指定目录向下递归地遍历其各个子目录，将满足条件的文件或者目录显示在终 端。</p>
+<ul>
+<li><p>find [搜索范围] [选项]</p>
+</li>
+<li><p>选项说明</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-name&lt;查询方式&gt;</td>
+<td>按照指定的文件名查找模式来查找文件</td>
+</tr>
+<tr>
+<td>-user&lt;用户名&gt;</td>
+<td>查找属于指定用户名所有文件</td>
+</tr>
+<tr>
+<td>-size&lt;文件大小&gt;</td>
+<td>按照指定的文件大小查找文件</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>按文件名：根据名称查找/home目录下的hello.txt文件</p>
+</li>
+<li><p>按拥有者：查找/opt目录下，用户名称称为root的文件</p>
+</li>
+<li><p>查找整个linux系统下大于20m的文件（+n 大于 -n小于 n等与）</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011153853517.png" alt="image-20201011153853517"></p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011153914930.png" alt="image-20201011153914930"></p>
+</li>
+<li><p>查询 /目录下所有txt文件</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011154057534.png" alt="image-20201011154057534"></p>
+</li>
+</ul>
+</li>
+<li><p>locate指令</p>
+<ul>
+<li><p>locaate指令可以快速定位文件路径。locate指令利用事先建立的系统中所有文件名称及路径 的locate数据库实现快速定位给定的文件。Locate指令无需遍历整个文件系统，查询速度较快。 为了保证查询结果的准确度，管理员必须定期更新locate时刻。</p>
+</li>
+<li><p>由于locate指令基于数据库进行查询，所以第一次运行前，必须使用updatedb指令创建locate数据库</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011154833831.png" alt="image-20201011154833831"></p>
+</li>
+</ul>
+</li>
+<li><p>grep指令和管道符号|</p>
+<ul>
+<li><p>grep过滤查找，管道符”|”表示将前一个命令的处理结果输出传递到后面的命令处理</p>
+</li>
+<li><p>grep [选项] 查找内容 源文件，-n：显示匹配行及行号，-i：忽略大小写</p>
+</li>
+<li><p>案例：查找a.txt文件中，”ces”所在的行，并显示行号</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011155318000.png" alt="image-20201011155318000"></p>
+</li>
+<li><p>grep -ni ces：表示不区分大小写</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="6-压缩和解压文件命令"><a href="#6-压缩和解压文件命令" class="headerlink" title="6. 压缩和解压文件命令"></a>6. 压缩和解压文件命令</h3><ul>
+<li><p>gzip/gunzip 指令</p>
+<ul>
+<li><p>gzip 文件：用于压缩文件，只能将文件压缩为*.gz文件</p>
+</li>
+<li><p>gunzip 文件.gz：用于解压文件</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011155903218.png" alt="image-20201011155903218"></p>
+</li>
+<li><p>当我们使用gzip对文件进行压缩后，不会保留原来的文件，解压后也不会保留压缩包</p>
+</li>
+</ul>
+</li>
+<li><p>zip/unzip 指令</p>
+<ul>
+<li><p>zip [选项] 自定义文件名.zip ：压缩文件和目录的命令</p>
+<ul>
+<li>-r：递归压缩：即压缩目录</li>
+</ul>
+</li>
+<li><p>unzip [选项] 文件名.zip ：解压缩文件</p>
+</li>
+<li><p>常用选项</p>
+<ul>
+<li>-d&lt;目录&gt; ：指定解压后文件的存放目录</li>
+</ul>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011161425758.png" alt="image-20201011161425758"></p>
+</li>
+</ul>
+</li>
+<li><p>tar指令</p>
+<ul>
+<li><p>tar指令是打包指令，最后打包后的文件是.tar.gz的文件</p>
+</li>
+<li><p>tar [选项] XXX.tar.gz 打包的内容 (功能描述：压缩后的文件格式.tar.gz)</p>
+</li>
+<li><p>选项说明</p>
+<table>
+<thead>
+<tr>
+<th>选项</th>
+<th>功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-c</td>
+<td>产生.tar打包文件</td>
+</tr>
+<tr>
+<td>-v</td>
+<td>显示详细信息</td>
+</tr>
+<tr>
+<td>-f</td>
+<td>指定压缩后的文件名</td>
+</tr>
+<tr>
+<td>-z</td>
+<td>打包的同时压缩</td>
+</tr>
+<tr>
+<td>-x</td>
+<td>解包.tar文件</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>案例：压缩多个文件，a.tar.gz是打包后的文件名</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011162228870.png" alt="image-20201011162228870"></p>
+</li>
+<li><p>案例：解压test01文件夹下，test01文件夹要事先存在才能成功</p>
+<p><img src="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/image-20201011162538610.png" alt="image-20201011162538610"></p>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Linux基础</title>
+    <url>/2020/10/09/Linux%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<h2 id="Linux基础"><a href="#Linux基础" class="headerlink" title="Linux基础"></a>Linux基础</h2><h3 id="1-Linux的目录结构"><a href="#1-Linux的目录结构" class="headerlink" title="1. Linux的目录结构"></a>1. Linux的目录结构</h3><ul>
+<li><p>Linux文件系统是采用层级式的树状目录结构，在此结构中嘴上层是根目录“/”，然后在此目录下再创建其他目录</p>
+</li>
+<li><p>在linux中，一些皆为文件</p>
+</li>
+</ul>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011084739788.png" alt="image-20201011084739788"></p>
+<ul>
+<li><p>具体的目录结构：</p>
+<ul>
+<li>/bin [重点] (/usr/bin 、 /usr/local/bin) <ul>
+<li>是Binary的缩写, 这个目录存放着最经常使用的命令</li>
+</ul>
+</li>
+<li>/sbin (/usr/sbin 、 /usr/local/sbin)<ul>
+<li>s就是Super User的意思，这里存放的是系统管理员使用的系统管理程序。</li>
+</ul>
+</li>
+<li>/home [重点] <ul>
+<li>存放普通用户的主目录，在Linux中每个用户都有一个自己的目录，一般 该目录名是以用户的账号命名的。</li>
+</ul>
+</li>
+<li>/root [重点]<ul>
+<li>该目录为系统管理员，也称作超级权限者的用户主目录。</li>
+</ul>
+</li>
+<li>/lib <ul>
+<li>系统开机所需要最基本的动态连接共享库，其作用类似于Windows里的DLL文件。几 乎所有的应用程序都需要用到这些共享库。</li>
+</ul>
+</li>
+<li>/lost+found<ul>
+<li>这个目录一般情况下是空的，当系统非法关机后，这里就存放了一些文件。</li>
+</ul>
+</li>
+<li>/etc [重点] <ul>
+<li>所有的系统管理所需要的配置文件和子目录 my.conf</li>
+</ul>
+</li>
+<li>/usr [重点]<ul>
+<li>这是一个非常重要的目录，用户的很多应用程序和文件都放在这个目录下，类似与 windows下的program files目录。</li>
+</ul>
+</li>
+<li>/boot [重点]<ul>
+<li>存放的是启动Linux时使用的一些核心文件，包括一些连接文件以及镜像文件</li>
+</ul>
+</li>
+<li>/proc：<strong>涉及linux内核，不要轻易动</strong><ul>
+<li>这个目录是一个虚拟的目录，它是系统内存的映射，访问这个目录来获取系统信息。</li>
+</ul>
+</li>
+<li>/srv：<strong>涉及linux内核，不要轻易动</strong><ul>
+<li>service缩写，该目录存放一些服务启动之后需要提取的数据。 </li>
+</ul>
+</li>
+<li>/sys：<strong>涉及linux内核，不要轻易动</strong><ul>
+<li>这是linux2.6内核的一个很大的变化。该目录下安装了2.6内核中新出现的一个文件系统 sysfs </li>
+</ul>
+</li>
+<li>/tmp<ul>
+<li>这个目录是用来存放一些临时文件的。</li>
+</ul>
+</li>
+<li>/dev<ul>
+<li>类似于windows的设备管理器，把所有的硬件用文件的形式存储。</li>
+</ul>
+</li>
+<li>/media [重点]<ul>
+<li>linux系统会自动识别一些设备，例如U盘、光驱等等，当识别后，linux 会把识别的设备挂载到这个目录下。</li>
+</ul>
+</li>
+<li>/mnt [重点]<ul>
+<li>系统提供该目录是为了让用户临时挂载别的文件系统的，我们可以将外部的存储挂 载在/mnt/上，然后进入该目录就可以查看里的内容了。 d:/myshare</li>
+</ul>
+</li>
+<li>/opt<ul>
+<li>这是给主机额外安装软件所摆放的目录。如安装ORACLE数据库就可放到该目录下。 默认为空。 </li>
+</ul>
+</li>
+<li>/usr/local [重点]<ul>
+<li>这是另一个给主机额外安装软件所安装的目录。一般是通过编译源码方式安装的程序。</li>
+</ul>
+</li>
+<li>/var [重点]<ul>
+<li>这个目录中存放着在不断扩充着的东西，习惯将经常被修改的目录放在这个目录下。 包括各种日志文件。</li>
+</ul>
+</li>
+<li>/selinux [security-enhanced linux] 360<ul>
+<li>SELinux是一种安全子系统,它能控制程序只能访问特定文件。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>linux目录总结：</p>
+<ul>
+<li>linux的目录中有且只有一个根目录</li>
+<li>linux的各个目录存放的内容是规划好的，不要乱放文件</li>
+<li>linux是以文件的形式管理我们的设备，因此linux系统，一切皆为文件</li>
+<li>linux目录树，每个目录的作用</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-vi和vim编辑器"><a href="#2-vi和vim编辑器" class="headerlink" title="2.vi和vim编辑器"></a>2.vi和vim编辑器</h3><ul>
+<li>所有的linux系统都会内建vi文本编辑器</li>
+<li>vim具有程序编辑能力，可以看做vi的增强版</li>
+</ul>
+<p>vi和vim的三种模式</p>
+<ul>
+<li><p>正常模式</p>
+<ul>
+<li>以vim打开一个档案就直接进入一般模式，在这个模式中，你可以使用上下左右按键来移动光标可以使用删除字符或删除整行来处理档案，也可以使用赋值，粘贴来处理文件数据</li>
+</ul>
+</li>
+<li><p>插入模式</p>
+<ul>
+<li>按下i，I，o，O，a，A，r，R等任何一个字母之后才会进入编辑模式，一般按i即可</li>
+</ul>
+</li>
+<li><p>命令行模式</p>
+</li>
+<li><p>在这个模式中，可以提供你相关的指令，完成读取，存盘，替换，离开vim，显示行号等的动作则在此模式中达成的</p>
+</li>
+<li><p>vim模式的相互切换</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201010205432518.png" alt="image-20201010205432518"></p>
+</li>
+</ul>
+<p>快捷键的使用：</p>
+<ul>
+<li>拷贝当前行，将光标停留在当前行，模式切换为正常模式，点击yy赋值成功，p粘贴到光标所在的下一行</li>
+<li>拷贝当前行向下的五行(包含当前行) 5yy，p粘贴到光标的下五行</li>
+<li>删除当前行，输入dd，删除光标下面的5行(包含光标所在的行)</li>
+<li>在文件中查找某个单词，首先进入到命令行，输入/，再输入要查找的关键字，有多个，输入n跳转到下一个</li>
+<li>设置文件的行号，取消文件的行号，在命令行模式下输入：set nu  取消set：nonu</li>
+<li>使用快捷键到达文档的最末行和最首行，在正常模式下输入g到达最末行，输入gg到最首行</li>
+<li>撤销一个动作，在正常模式下输入u撤销</li>
+<li>将光标移动到第20行，先显示行号，再回到正常模式下，输入20，再输入shift+g跳转到第20行</li>
+</ul>
+<h3 id="3-用户管理"><a href="#3-用户管理" class="headerlink" title="3. 用户管理"></a>3. 用户管理</h3><p>关机和重启指令</p>
+<ul>
+<li>shutdown<ul>
+<li>shutdown -h now：表示立即关机</li>
+<li>shutdown -h 1：表示1分钟后关机</li>
+<li>shutdown -r now：立即重启</li>
+</ul>
+</li>
+<li>halt：直接使用，效果等价于关机</li>
+<li>reboot：重启系统</li>
+<li>syn：把内存的数据同步到磁盘上，防止关机或重启的时候没有保存的数据丢失，建议在关机或重启前执行此命令</li>
+</ul>
+<p>用户登录和注销指令</p>
+<ul>
+<li>登录尽量不用root账号登录，系统管理员，权限很大，避免操作失误，可以登录普通用户，再用su-用户名命令来切换成系统管理员身份</li>
+<li>logout 注销用户</li>
+<li>注意：<ul>
+<li>logout注销指令在图形运行级别无效，在运行级别3下有效</li>
+</ul>
+</li>
+</ul>
+<p>用户和用户组：</p>
+<ul>
+<li>Linux系统是一个多用户多任务的操作系统，任何一个要使用系统资源的用户，都必须首先向系统管理员申请一个账号，然后以这个账号的身份进入系统。</li>
+<li>linux的用户至少要属于一个组</li>
+</ul>
+<p>添加用户</p>
+<ul>
+<li><p>在创建用户时，如果没有指定组，默认会创建和用户名相同的组，将此用户放进去</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011093459470.png" alt="image-20201011093459470"></p>
+</li>
+<li><p>useradd[选项] 用户名</p>
+<ul>
+<li><p>添加一个用户xm，当用户创建成功后，会自动创建和用户同名的家目录，home文件夹下创建</p>
+</li>
+<li><p>也可以通过<code>useradd -d 指定目录 新的用户名</code>，来给新创建的用户指定家目录</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011085217655.png" alt="image-20201011085217655"></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011090431300.png" alt="image-20201011090431300"></p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011090634208.png" alt="image-20201011090634208"></p>
+<ul>
+<li>指定或者修改密码：passwd 用户名</li>
+</ul>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011085925737.png" alt="image-20201011085925737"></p>
+<ul>
+<li><p>删除用户 userdel 用户名，此删除指令会保存家目录</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011090128716.png" alt="image-20201011090128716"></p>
+</li>
+</ul>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011085244221.png" alt="image-20201011085244221"></p>
+<ul>
+<li><p>删除用户xh以及用户家目录</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011090519036.png" alt="image-20201011090519036"></p>
+</li>
+</ul>
+<ul>
+<li>在删除用户时，我们一般不会将家目录删除</li>
+</ul>
+<p>查询用户信息</p>
+<ul>
+<li><p>id 用户名</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011090830464.png" alt="image-20201011090830464"></p>
+</li>
+<li><p>uid：用户id号，gid：所在组id号，组：组名</p>
+</li>
+<li><p>当用户不存在时，返回无此用户</p>
+</li>
+</ul>
+<p>切换用户</p>
+<ul>
+<li><p>在linux中，如果当前用户的权限不够，可以通过su - 指令，切换到高权限用户，比如root</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011091857516.png" alt="image-20201011091857516"></p>
+</li>
+<li><p>高权限root用户，切换到xh用户，不需要密码，xh属于普通用户，可能权限不够</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011092013695.png" alt="image-20201011092013695"></p>
+</li>
+<li><p>输入exit可以返回到上一个用户</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011092134703.png" alt="image-20201011092134703"></p>
+</li>
+<li><p>从权限高的用户切换到权限低的用户，不需要输入密码，反之需要输入密码</p>
+</li>
+<li><p>当返回原来用户时，可以使用exit指令来返回到原来的用户</p>
+</li>
+</ul>
+<p>用户组</p>
+<ul>
+<li><p>类似于角色，系统可以对有共性的多个用户进行统一管理，多个用户放在同一个组里</p>
+</li>
+<li><p>创建组：groupadd 组名</p>
+</li>
+<li><p>删除组：groupdel 组名</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011092912825.png" alt="image-20201011092912825"></p>
+</li>
+</ul>
+<ul>
+<li>增加用户时直接加上组，<code>useradd -g 组名 用户名</code></li>
+</ul>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011093337910.png" alt="image-20201011093337910"></p>
+<p>修改用户的组</p>
+<ul>
+<li><p><code>usermod -g 用户组 用户名</code></p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011093656038.png" alt="image-20201011093656038"></p>
+</li>
+</ul>
+<p>用户和组相关的文件</p>
+<ul>
+<li><p>/etc/passwd 文件 用户（user）的配置文件，记录用户的各种信息 </p>
+<ul>
+<li>每行的含义：用户名:口令:用户标识号:组标识号:注释性描述:主目录:登录Shell </li>
+</ul>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011095022648.png" alt="image-20201011095022648"></p>
+<ul>
+<li>zwj：用户名，x：密码，501：用户id，502：组id，/home/zwj：家目录，/bin/bash：对应shell</li>
+</ul>
+</li>
+<li><p>/etc/group 文件 组(group)的配置文件，记录Linux包含的组的信息 </p>
+<ul>
+<li><p>每行含义：组名:口令:组标识号:组内用户列表</p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011095434913.png" alt="image-20201011095434913"></p>
+</li>
+</ul>
+</li>
+<li><p>/etc/shadow 文件 口令的配置文件 ，主要存储密码和登录的相关信息，是加密的</p>
+<ul>
+<li><p>每行的含义：登录名:加密口令:最后一次修改时间:最小时间间隔:最大时间间隔:警 告时间:不活动时间:失效时间:标志 </p>
+<p><img src="/2020/10/09/Linux%E5%9F%BA%E7%A1%80/image-20201011095613937.png" alt="image-20201011095613937"></p>
+</li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>linux组管理</title>
+    <url>/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/</url>
+    <content><![CDATA[<h2 id="linux组管理"><a href="#linux组管理" class="headerlink" title="linux组管理"></a>linux组管理</h2><p>基本介绍：</p>
+<ul>
+<li>在linux中，每个用户必须属于一个组，不能独立在组外。</li>
+<li>在linux中每个文件都有所有者，所在组，和其他组</li>
+<li>一般谁创建了改文件，改文件的所有者就是谁，改文件的所在组就是该用户的所在组，出去该用户所在的组，称为其他组</li>
+</ul>
+<p>查看文件的所有者：ls -ahl</p>
+<p>案例：创建一个组police，在创建一个用户tom，将tom加入到这个组，在使用tom创建一个文件</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170453271.png" alt="image-20201011170453271"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170854559.png" alt="image-20201011170854559"></p>
+<p>修改文件所有者</p>
+<ul>
+<li><p>chown 用户名 文件名</p>
+</li>
+<li><p>chown newowner:newgroup file 改变文件的所有者和所有组</p>
+</li>
+<li><p>chown -R 用户名 目录名 如果是目录，则使其下所有子文件或目录递归生效</p>
+</li>
+<li><p>使用root创建一个文件apple.txt，然后将其所有者修改为tom，第一列为所有者，第二列为所在组</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011171228494.png" alt="image-20201011171228494"></p>
+</li>
+</ul>
+<p>查看文件所在组</p>
+<ul>
+<li><p>当某个用户创建了一个文件后，默认这个文件的所在组就是该用户所在的组</p>
+</li>
+<li><p>查看文件所在组：ls -ahl</p>
+</li>
+<li><p>修改<strong>文件所在组</strong>：chgrp 组名 文件名</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011171931762.png" alt="image-20201011171931762"></p>
+</li>
+</ul>
+<p>其他组：</p>
+<ul>
+<li>除文件的所有者和所在组的用户外，系统的其他用户都是文件的其他组</li>
+</ul>
+<p>修改<strong>用户所在组</strong>：</p>
+<ul>
+<li><p>usermod -g 组名 用户名</p>
+</li>
+<li><p>usermod -d 目录名 用户名 ：改变该用户登录的初始目录</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011093656038.png" alt="image-20201011093656038"></p>
+</li>
+</ul>
+<h2 id="权限介绍"><a href="#权限介绍" class="headerlink" title="权限介绍"></a>权限介绍</h2><p>ls -l中显示的内容如下：</p>
+<p>drwxr-xr-x. 2 root root：drwxr-xr-x【0-9位说明】</p>
+<ul>
+<li>0：d，表示文件的类型（d：目录，-：普通文件，l：软连接，c：字符设备[键盘，鼠标]，b：块文件）</li>
+<li>1-3：rwx，表示文件所有者权限rwx   —User</li>
+<li>4-6：r-x，表示文件所在组的用户拥有的权限，-代表没有权限，r-x：表示只有r和x的权限  —Group</li>
+<li>7-9：r-x，表示文件其他组的用户拥有的权限  —Other</li>
+</ul>
+<p>rwx：可用数字表示为: r=4,w=2,x=1 因此rwx=4+2+1=7 </p>
+<ul>
+<li>[ r ]代表可读(read): 可以读取,查看</li>
+<li>[ w ]代表可写(write): 可以修改,但是不代表可以删除该文件,删除一个文件的前提条件是 对该文件所在的目录有写权限，才能删除该文件</li>
+<li>[ x ]代表可执行(execute):可以被执行</li>
+</ul>
+<p>表示不同用户能对文件干什么</p>
+<ul>
+<li>第一组rwx : 文件拥有者的权限是读、写和执行 </li>
+<li>第二组r-x : 与文件拥有者同一组的用户对此文件的权限是读、执行但不能写</li>
+<li>第三组r-x: 不与文件拥有者同组的其他用户对这个文件的权限是读、执行但不能写</li>
+</ul>
+<p>修改权限：</p>
+<ul>
+<li>通过chmod指令，可以修改文件或者目录的权限。</li>
+</ul>
+<p>第一种修改权限方式</p>
+<ul>
+<li>u:所有者 g:所有组 o:其他人 a:所有人(u、g、o的总和) </li>
+<li>chmod u=rwx,g=rx,o=x 文件目录名 </li>
+<li>chmod o+w 文件目录名 //给other增加一个w权限</li>
+<li>chmod a-x 文件目录名//给all减去一个x权限</li>
+</ul>
+<p>案例：</p>
+<ul>
+<li>给test文件的所有者读写执行的权限，给所在组读执行权限，给其它组读执行权限。</li>
+<li>给test文件的所有者除去执行的权限，增加组写的权限 </li>
+<li>给abc文件的所有用户添加读的权限</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011204420867.png" alt="image-20201011204420867"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011204855871.png" alt="image-20201011204855871"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011205001906.png" alt="image-20201011205001906"></p>
+<p>第二种方式，通过数字变更权限</p>
+<ul>
+<li>r=4 w=2 x=1 rwx=4+2+1=7 </li>
+<li>chmod u=rwx,g=rx,o=x 文件目录名 相当于 chmod 751 文件目录名</li>
+</ul>
+<p>案例：将 a.txt 文件的权限修改成 rwxr-xr-x, 使用给数字的方式实现</p>
+<ul>
+<li><p>rwx=4+2+1，r-x=4+1，r-x=4+1</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011205822422.png" alt="image-20201011205822422"></p>
+</li>
+</ul>
+<h2 id="任务调度"><a href="#任务调度" class="headerlink" title="任务调度"></a>任务调度</h2><p>概述</p>
+<ul>
+<li><p>任务调度：是指系统在某个时间执行挺稳定的命令或程序</p>
+</li>
+<li><p>任务调度分类</p>
+<ul>
+<li>系统工作：有些工作需要周而复始的执行，如病毒扫描</li>
+<li>个别用户工作：固定时间对数据库备份</li>
+</ul>
+</li>
+<li><p>语法 ：crontab [选项]</p>
+</li>
+<li><p>常用选项</p>
+<table>
+<thead>
+<tr>
+<th>-e</th>
+<th>编辑crontab定时任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-l</td>
+<td>查询crontab任务</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>删除当前用户所有的crontab任务</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>service crond restart [重启任务调度]</p>
+</li>
+</ul>
+<p>案例：设置任务调度文件，是指每分钟执行一次</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011220523450.png" alt="image-20201011220523450"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011221616512.png" alt="image-20201011221616512"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011221804492.png" alt="image-20201011221804492"></p>
+<ul>
+<li><p>5个占位符说明</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>含义</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一个“*”</td>
+<td>一小时当中的第几分钟</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>第二个“*”</td>
+<td>一天当中的第几小时</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>第三个“*”</td>
+<td>一个月当中的第几天</td>
+<td>1-31</td>
+</tr>
+<tr>
+<td>第四个“*”</td>
+<td>一年当中的第几月</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>第五个“*”</td>
+<td>一周当中的星期几</td>
+<td>0-7（0和7都代表星期日）</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>特殊符号说明</p>
+<table>
+<thead>
+<tr>
+<th>特殊符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>代表任何时间。比如第一个“*”就代表一小时中每分钟都执行一 次的意思。</td>
+</tr>
+<tr>
+<td>，</td>
+<td>代表不连续的时间。比如“0 8,12,16 * * * 命令”，就代表在每天 的8点0分，12点0分，16点0分都执行一次命令</td>
+</tr>
+<tr>
+<td>-</td>
+<td>代表连续的时间范围。比如“0 5 * * 1-6命令”，代表在周一到周 六的凌晨5点0分执行命令</td>
+</tr>
+<tr>
+<td>*/n</td>
+<td>代表每隔多久执行一次。比如“*/10 * * * * 命令”，代表每隔 10分钟就执行一遍命令</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>特定时间执行任务案例</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>45 22 * * * 命令</td>
+<td>在22点45分执行命令</td>
+</tr>
+<tr>
+<td>0 17 * * 1 命令</td>
+<td>每周1 的17点0分执行命令</td>
+</tr>
+<tr>
+<td>0 5 1,15 * * 命令</td>
+<td>每月1号和15号的凌晨5点0分执行命令</td>
+</tr>
+<tr>
+<td>40 4 * * 1-5 命令</td>
+<td>每周一到周五的凌晨4点40分执行命令</td>
+</tr>
+<tr>
+<td>*/10 4 * * * 命令</td>
+<td>每天的凌晨4点，每隔10分钟执行一次命令</td>
+</tr>
+<tr>
+<td>0 0 1,15 * 1 命令</td>
+<td>每月1号和15号，每周1的0点0分都会执行命令。注意：星期几和 几号最好不要同时出现，因为他们定义的都是天。非常容易让管 理员混乱。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="磁盘分区，挂载"><a href="#磁盘分区，挂载" class="headerlink" title="磁盘分区，挂载"></a>磁盘分区，挂载</h2><p>分区的两种方式</p>
+<p>mbr分区：</p>
+<ul>
+<li>最多支持四个主分区</li>
+<li>系统只能安装在主分区 </li>
+<li>扩展分区要占一个主分区 </li>
+<li>MBR最大只支持2TB，但拥有最好的兼容性</li>
+</ul>
+<p>gpt分区: </p>
+<ul>
+<li>支持无限多个主分区（但操作系统可能限制，比如 windows下最多128个分区）</li>
+<li>最大支持18EB的大容量（1EB=1024 PB，1PB=1024 TB ） </li>
+<li>windows7 64位以后支持gtp</li>
+</ul>
+<p>linux分区：</p>
+<ul>
+<li>Linux来说无论有几个分区，分给哪一目录使用，它归根结底就只有一个根目录，一个独 立且唯一的文件结构 , Linux中每个分区都是用来组成整个文件系统的一部分。</li>
+<li>Linux采用了一种叫“载入”的处理方法，它的整个文件系统中包含了一整套的文件和目 录，且将一个分区和一个目录联系起来。这时要载入的一个分区将使它的存储空间在一 个目录下获得。</li>
+</ul>
+<p>linux硬盘说明：</p>
+<ul>
+<li>Linux硬盘分IDE硬盘和SCSI硬盘，目前基本上是SCSI硬盘 </li>
+<li>对于IDE硬盘，驱动器标识符为“hdx<del>”,其中“hd”表明分区所在设备的类型，这里是指 IDE硬盘了。“x”为盘号（a为基本盘，b为基本从属盘，c为辅助主盘，d为辅助从属盘）,“</del>”代表分区，前四个分区用数字1到4表示，它们是主分区或扩展分区，从5开始就 是逻辑分区。例，hda3表示为第一个IDE硬盘上的第三个主分区或扩展分区,hdb2表示为 第二个IDE硬盘上的第二个主分区或扩展分区。</li>
+<li>对于SCSI硬盘则标识为“sdx~”，SCSI硬盘是用“sd”来表示分区所在设备的类型的，其余 则和IDE硬盘的表示方法一样。</li>
+</ul>
+<p>lsblk命令查看分区挂载情况</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012090034652.png" alt="image-20201012090034652"></p>
+<p>磁盘相关命令</p>
+<ul>
+<li>查询系统整体磁盘使用情况：df -h</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012090755617.png" alt="image-20201012090755617"></p>
+<ul>
+<li>查询指定目录的磁盘占用情况：du -h /目录<ul>
+<li>-h：带有计量单位</li>
+<li>-s：指定目录占用大小汇总</li>
+<li>-a：含文件</li>
+<li>–max-depth=1 子目录深度</li>
+<li>-c：列出明细的同时，增加汇总值</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091154311.png" alt="image-20201012091154311"></p>
+<ul>
+<li>统计/home文件夹下文件的个数，”^-“：表示以-开头的文件，wc统计指令</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091559210.png" alt="image-20201012091559210"></p>
+<ul>
+<li>统计/home文件夹下目录的个数，”^d”：表示以-开头的文件，wc统计指令</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091725141.png" alt="image-20201012091725141"></p>
+<ul>
+<li>统计/home文件夹下文件的个数，包括子文件夹里的，-lR：R表示递归统计子目录的，linux是区分大小写的，不能写r，大写的R表示递归，r表示逆序</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091952665.png" alt="image-20201012091952665"></p>
+<ul>
+<li>统计/home文件夹下目录的个数，包括子文件夹里的，</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012092130731.png" alt="image-20201012092130731"></p>
+<ul>
+<li><p>以树状结构显示目录结构</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012092526166.png" alt="image-20201012092526166"></p>
+</li>
+</ul>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>基本介绍</p>
+<ul>
+<li>在LINUX中，每个执行的程序（代码）都称为一个进程。每一个进程都分配一 个ID号。</li>
+<li>每一个进程，都会对应一个父进程，而这个父进程可以复制多个子进程。例 如www服务器。</li>
+<li>每个进程都可能以两种方式存在的。前台与后台，所谓前台进程就是用户目 前的屏幕上可以进行操作的。后台进程则是实际在操作，但由于屏幕上无法 看到的进程，通常使用后台方式执行。</li>
+<li>一般系统的服务都是以后台进程的方式存在，而且都会常驻在系统中。直到 关机才才结束。</li>
+</ul>
+<p>显示系统执行的进程：ps指令，ps -aux</p>
+<ul>
+<li>ps -a：显示当前终端的所有进程信息</li>
+<li>ps -u：以用户的格式显示进程信息</li>
+<li>ps -x：显示后台进程运行的参数</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012100415532.png" alt="image-20201012100415532"></p>
+<p>第一行进程指令说明：</p>
+<ul>
+<li>System V展示风格 </li>
+<li>USER：用户名称 </li>
+<li>PID：进程号 </li>
+<li>%CPU：进程占用CPU的百分比 </li>
+<li>%MEM：进程占用物理内存的百分比</li>
+<li>VSZ：进程占用的虚拟内存大小（单位：KB） </li>
+<li>RSS：进程占用的物理内存大小（单位：KB）</li>
+<li>TT：终端名称,缩写 .</li>
+<li>STAT：进程状态，其中S-睡眠，s-表示该进程是会话的先导进程，N-表示进程拥有比普通 优先级更低的优先级，R-正在运行，D-短期等待，Z-僵死进程，T-被跟踪或者被停止等等 </li>
+<li>STARTED：进程的启动时间 </li>
+<li>TIME：CPU时间，即进程使用CPU的总时间</li>
+<li>COMMAND：启动进程所用的命令和参数，如果过长会被截断显示</li>
+</ul>
+<p>全格式显示当前所有进程，查看进程的父进程，ps -ef，PPID为父进程</p>
+<ul>
+<li><p>ps -e：显示所有进程(也显示父进程)</p>
+</li>
+<li><p>ps -f：全格式</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012101247970.png" alt="image-20201012101247970"></p>
+</li>
+</ul>
+<p>终止进程kill和killall</p>
+<ul>
+<li>若是某个进程执行一半需要停止时，或是已消了很大的系统资源时，此时可以考虑停止该 进程。使用kill命令来完成此项任务。</li>
+<li>kill [选项] 进程号（功能描述：通过进程号杀死进程） ，-9 :表示强迫进程立即停止</li>
+<li>killall 进程名称 （功能描述：通过进程名称杀死进程，也支持通配符，这在系统因负载过大而变得很慢时很有用）</li>
+</ul>
+<p>查看进程树pstree</p>
+<ul>
+<li><p>pstree [选项] ,可以直观的来查看进程信息，-p：显示进程的PID，-u：显示进程的所属用户</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012101926636.png" alt="image-20201012101926636"></p>
+</li>
+</ul>
+<p>服务(Service)管理</p>
+<ul>
+<li><p>服务(service) 本质就是进程，但是是运行在后台的，通常都会监听某个端口，等待其它程序的请求，比如(mysql , sshd 防火墙等)，因此我们又称为守护进程，在Linux中非常重要。</p>
+</li>
+<li><p>service管理指令： </p>
+<ul>
+<li>service 服务名 [start | stop | restart | reload | status] </li>
+<li>在CentOS7.0后 不再使用service ,而是 systemctl</li>
+</ul>
+</li>
+<li><p>查看当前防火墙状况</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012102229010.png" alt="image-20201012102229010"></p>
+</li>
+</ul>
+<p>Linux系统有7种运行级别(runlevel)：常用的是级别3和5 </p>
+<ul>
+<li>运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动</li>
+<li>运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆</li>
+<li>运行级别2：多用户状态(没有NFS)，不支持网络</li>
+<li>运行级别3：完全的多用户状态(有NFS)，登陆后进入控制台命令行模式</li>
+<li>运行级别4：系统未使用，保留</li>
+<li>运行级别5：X11控制台，登陆后进入图形GUI模式</li>
+<li>运行级别6：系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动</li>
+</ul>
+<p>chkconfig指令</p>
+<ul>
+<li>通过chkconfig 命令可以给每个服务的各个运行级别设置自启动/关闭</li>
+<li>查看服务 chkconfig –list|grep xxx </li>
+<li>chkconfig 服务名 –list </li>
+<li>chkconfig –level 5 服务名 on/off </li>
+</ul>
+<h2 id="RPM与YUM"><a href="#RPM与YUM" class="headerlink" title="RPM与YUM"></a>RPM与YUM</h2><p>rpm包的管理</p>
+<ul>
+<li>一种用于互联网下载包的打包及安装工具，它包含在某些Linux分发版中。它生成具有.RPM扩展名的文件。RPM是RedHat Package Manager（RedHat软件包管理工 具）的缩写，类似windows的setup.exe，这一文件格式名称虽然打上了RedHat的 标志，但理念是通用的。 </li>
+<li>Linux的分发版本都有采用（suse,redhat, centos 等等），可以算是公认的行业标 准了。</li>
+</ul>
+<p>rpm包的简单查询指令：</p>
+<ul>
+<li>查询已安装的rpm列表 ：rpm -qa|grep xx</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012113537748.png" alt="image-20201012113537748"></p>
+<ul>
+<li>卸载rpm包：rpm -e rpm包的名称</li>
+<li>安装rpm包：rpm -ivh rpm包全路径名称<ul>
+<li>i=install 安装 </li>
+<li>v=verbose 提示</li>
+<li>h=hash 进度条</li>
+</ul>
+</li>
+</ul>
+<p>yum包管理</p>
+<ul>
+<li>Yum 是一个Shell前端软件包管理器。基于RPM包管理，能够从指定 的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并 且一次安装所有依赖的软件包。</li>
+</ul>
+<p>yum的基本指令</p>
+<ul>
+<li>查询yum服务器是否有需要安装的软件 yum list|grep xx软件列表</li>
+<li>安装指定的yum包 yum install xxx 下载安装</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
 </search>
