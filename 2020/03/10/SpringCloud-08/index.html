@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Stream消息驱动&#x2F;Sleuth链路跟踪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud-08(Stream消息驱动&#x2F;Sleuth链路跟踪)">
+<meta property="og:url" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Stream消息驱动&#x2F;Sleuth链路跟踪">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321160542463.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321160950884.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321161426685.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321162555867.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321163215802.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321171518926.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321171508230.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321163730080.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321193654961.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321193732838.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321193822743.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321200346701.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321200408829.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321200450579.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321201514126.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321201912987.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321201945445.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321202015835.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321202211214.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321203627268.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321203741432.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321204019042.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321204849366.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321204921445.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321205105742.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321205123337.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321205141387.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321210200306.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321210341175.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321210330815.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322083925373.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322085734859.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322085852979.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322090104252.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322090416872.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322091131284.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322091405690.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322092129287.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322092844786.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322094140646.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322094242418.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322094444227.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210322094511931.png">
+<meta property="article:published_time" content="2020-03-10T13:46:45.000Z">
+<meta property="article:modified_time" content="2021-10-17T03:40:35.260Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SpringCloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/03/10/SpringCloud-08/image-20210321160542463.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/03/10/SpringCloud-08/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>SpringCloud-08(Stream消息驱动/Sleuth链路跟踪) | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringCloud-08"><span class="nav-text">SpringCloud-08</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81Stream%E6%B6%88%E6%81%AF%E9%A9%B1%E5%8A%A8"><span class="nav-text">1、Stream消息驱动</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E8%AE%BE%E8%AE%A1%E6%80%9D%E6%83%B3"><span class="nav-text">2、设计思想</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E7%94%A8Cloud-Stream"><span class="nav-text">2.1 为什么要用Cloud Stream</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-Stream%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E7%BB%9F%E4%B8%80%E5%BA%95%E5%B1%82%E5%B7%AE%E5%BC%82"><span class="nav-text">2.2 Stream为什么可以统一底层差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-Binder"><span class="nav-text">2.3 Binder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="nav-text">2.4 通信方式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81Stream%E6%A0%87%E5%87%86%E6%B5%81%E7%A8%8B%E5%A5%97%E8%B7%AF"><span class="nav-text">3、Stream标准流程套路</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81%E5%B8%B8%E7%94%A8%E6%B3%A8%E8%A7%A3"><span class="nav-text">4、常用注解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E6%B6%88%E6%81%AF%E9%A9%B1%E5%8A%A8%E4%B9%8B%E7%94%9F%E4%BA%A7%E8%80%85"><span class="nav-text">5、消息驱动之生产者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-1-%E6%96%B0%E5%BB%BAModule"><span class="nav-text">5.1 新建Module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-POM%E6%96%87%E4%BB%B6"><span class="nav-text">5.2 POM文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-3-YML%E6%96%87%E4%BB%B6"><span class="nav-text">5.3 YML文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-4-%E4%B8%9A%E5%8A%A1%E7%B1%BB%EF%BC%9A"><span class="nav-text">5.4 业务类：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-5-%E6%B5%8B%E8%AF%95"><span class="nav-text">5.5 测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81-%E6%B6%88%E6%81%AF%E9%A9%B1%E5%8A%A8%E4%B9%8B%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-text">6、 消息驱动之消费者</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E6%96%B0%E5%BB%BAModule"><span class="nav-text">6.1 新建Module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-POM"><span class="nav-text">6.2 POM</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-YML"><span class="nav-text">6.3 YML</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-4-%E4%B8%BB%E5%90%AF%E5%8A%A8"><span class="nav-text">6.4 主启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-5-%E4%B8%9A%E5%8A%A1%E7%B1%BB"><span class="nav-text">6.5 业务类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-6-%E6%B5%8B%E8%AF%95"><span class="nav-text">6.6 测试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E5%88%86%E7%BB%84%E6%B6%88%E8%B4%B9%E4%B8%8E%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">7、分组消费与持久化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E7%94%9F%E4%BA%A7%E8%80%85%E5%AE%9E%E9%99%85%E6%A1%88%E4%BE%8B"><span class="nav-text">7.1 生产者实际案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E6%B6%88%E8%B4%B9%E6%8C%81%E4%B9%85%E5%8C%96"><span class="nav-text">7.2 消费持久化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81SpringCloud-Sleuth%E8%AF%B7%E6%B1%82%E9%93%BE%E8%B7%AF%E8%B7%9F%E8%B8%AA"><span class="nav-text">8、SpringCloud Sleuth请求链路跟踪</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">8.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E6%90%AD%E5%BB%BA%E9%93%BE%E8%B7%AF%E7%9B%91%E6%8E%A7"><span class="nav-text">8.2 搭建链路监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E8%80%85"><span class="nav-text">8.3 服务提供者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-%E6%9C%8D%E5%8A%A1%E6%B6%88%E8%B4%B9%E8%80%85"><span class="nav-text">8.4 服务消费者</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-5-%E6%B5%8B%E8%AF%95"><span class="nav-text">8.5 测试</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">49</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/03/10/SpringCloud-08/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud-08(Stream消息驱动/Sleuth链路跟踪)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-03-10 21:46:45" itemprop="dateCreated datePublished" datetime="2020-03-10T21:46:45+08:00">2020-03-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SpringCloud/" itemprop="url" rel="index"><span itemprop="name">SpringCloud</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Stream消息驱动/Sleuth链路跟踪</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="SpringCloud-08"><a href="#SpringCloud-08" class="headerlink" title="SpringCloud-08"></a>SpringCloud-08</h1><h2 id="1、Stream消息驱动"><a href="#1、Stream消息驱动" class="headerlink" title="1、Stream消息驱动"></a>1、Stream消息驱动</h2><p>什么是Spring Cloud Stream？</p>
+<ul>
+<li><p>官方定义Spring Cloud Stream 是一个构件微消息驱动微服务的框架</p>
+</li>
+<li><p>应用程序通过<code>inputs</code>或者<code>outputs</code>来与Spring Cloud Stream中的binder对象交互。</p>
+</li>
+<li><p>通过我们配置来binding(绑定)，而Spring Cloud Stream的binder对象负责与消息中间件交互。</p>
+</li>
+<li><p>所以，我们只需要搞清楚如何与Spring Cloud Stream交互就可以方便使用消息驱动的方式</p>
+</li>
+</ul>
+<p>通过使用Spring Integration来连接消息代理中间件以试下消息事件驱动。</p>
+<p>Spring Cloud Stream 为一些供应商的消息中间件产品提供了个性化的自动化配置实现，引用了发布-订阅、消费组、分区的三个核心概念。</p>
+<p><strong>目前仅支持RabbitMQ、Kafka</strong></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321160542463.png" alt="image-20210321160542463"></p>
+<p><strong>总结：</strong></p>
+<ul>
+<li>屏蔽底层信息中间件的差异,降低切换成本,统一消息的编程模型</li>
+</ul>
+<p><strong>官网：</strong></p>
+<p><a target="_blank" rel="noopener" href="https://spring.io/projects/spring-cloud-stream#overview">https://spring.io/projects/spring-cloud-stream#overview</a></p>
+<p><a target="_blank" rel="noopener" href="https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/3.0.1.RELEASE/reference/html/">https://cloud.spring.io/spring-cloud-static/spring-cloud-stream/3.0.1.RELEASE/reference/html/</a></p>
+<p>Stream中文指导手册：<a target="_blank" rel="noopener" href="https://m.wang1314.com/doc/webapp/topic/20971999.html">https://m.wang1314.com/doc/webapp/topic/20971999.html</a></p>
+<h2 id="2、设计思想"><a href="#2、设计思想" class="headerlink" title="2、设计思想"></a>2、设计思想</h2><p>标准的MQ</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321160950884.png" alt="image-20210321160950884"></p>
+<ul>
+<li>生产者/消费者之间靠消息媒介传递消息内容（Message）</li>
+<li>消息必须走特定的通道（消息通道MessageChannel）</li>
+<li>消息通道里的消息如何被消费呢,谁负责收发处理<ul>
+<li>消息通道MessageChannel的子接口SubscribableChannel,由MessageHandler消息处理器所订阅</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-1-为什么要用Cloud-Stream"><a href="#2-1-为什么要用Cloud-Stream" class="headerlink" title="2.1 为什么要用Cloud Stream"></a>2.1 为什么要用Cloud Stream</h3><p>比如说我们用到了RabbitMQ和Kafka，由于这两个消息中间件的架构上的不同，像RabbitMQ有exchange，kafka有Topic和Partitions分区</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321161426685.png" alt="image-20210321161426685"></p>
+<p>这些中间件的差异性导致我们实际项目开发给我们造成了一定的困扰，我们如果用了两个消息队列的其中一种，后面的业务需求，我想往另外一种消息队列进行迁移，这时候无疑就是一个灾难性的，一大推东西都要重新推倒重新做，因为它跟我们的系统耦合了，这时候SpringCloud Stream给我们提供了一种解耦合的方式</p>
+<h3 id="2-2-Stream为什么可以统一底层差异"><a href="#2-2-Stream为什么可以统一底层差异" class="headerlink" title="2.2 Stream为什么可以统一底层差异"></a>2.2 Stream为什么可以统一底层差异</h3><p>在没有绑定器这个概念的情况下，我们的SpringBoot应用要直接与消息中间件进行消息交互的时候，由于各消息中间件构建的初衷不同，他们的实现细节上会有较大的差异性</p>
+<p>通过定义绑定器作为中间层，完美的实现了<strong>应用程序与消息中间件细节之间的隔离</strong>。</p>
+<p>通过向应用程序暴露统一的Channel通道，使得应用程序不需要考虑各种不同的消息中间件的实现</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321162555867.png" alt="image-20210321162555867"></p>
+<h3 id="2-3-Binder"><a href="#2-3-Binder" class="headerlink" title="2.3 Binder"></a>2.3 Binder</h3><p>在没有绑定器这个概念的情况下，我们的SpringBoot应用要直接与消息中间件进行信息交互的时候，由于各消息中间件构建的初衷不同，它们的实现细节上会有较大的差异性，通过定义绑定器作为中间层，完美的实现了<strong>应用程序与消息中间件细节之间的隔离</strong>。</p>
+<p>Stream对消息中间件的进一步封装，可以做到代码层面对中间件的无感知，甚至与动态的切换中间件(rabbitmq切换kafka)，使得微服务开发的高度解耦，服务可以关注更多自己的业务流程</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321163215802.png" alt="image-20210321163215802"></p>
+<p><strong>通过定义绑定器作为中间层，完美的实现了应用程序与消息中间件细节之间的隔离</strong>。</p>
+<ul>
+<li><strong>input对应消费者</strong></li>
+<li><strong>output对应生产者</strong></li>
+</ul>
+<h3 id="2-4-通信方式"><a href="#2-4-通信方式" class="headerlink" title="2.4 通信方式"></a>2.4 通信方式</h3><p><strong>Stream中的消息通信方式遵循了发布-订阅模式</strong></p>
+<ul>
+<li>topic主题进行广播<ul>
+<li>在ribbitmq就是Exchange</li>
+<li>在kafka中就是topic</li>
+</ul>
+</li>
+</ul>
+<h2 id="3、Stream标准流程套路"><a href="#3、Stream标准流程套路" class="headerlink" title="3、Stream标准流程套路"></a>3、Stream标准流程套路</h2><p><img src="/2020/03/10/SpringCloud-08/image-20210321171518926.png" alt="image-20210321171518926"></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321171508230.png" alt="image-20210321171508230"></p>
+<p><strong>Binder</strong></p>
+<ul>
+<li>很方便的连接中间件,屏蔽差异</li>
+</ul>
+<p><strong>Channel</strong></p>
+<ul>
+<li>通道,是队列Queue的一种抽象,在消息通讯系统中就是实现存储和转发的媒介,通过Channel对队列进行配置</li>
+</ul>
+<p><strong>Source和Sink</strong></p>
+<ul>
+<li>简单的可理解为参考对象是Spring Cloud Stream的自身,从Stream发布信息就是输出,接受消息就是输入</li>
+</ul>
+<h2 id="4、常用注解"><a href="#4、常用注解" class="headerlink" title="4、常用注解"></a>4、常用注解</h2><p><img src="/2020/03/10/SpringCloud-08/image-20210321163730080.png" alt="image-20210321163730080"></p>
+<h2 id="5、消息驱动之生产者"><a href="#5、消息驱动之生产者" class="headerlink" title="5、消息驱动之生产者"></a>5、消息驱动之生产者</h2><p>说明：本案例将要建三个模块，前提是RabbitMQ环境ok</p>
+<ul>
+<li>cloud-stream-rabbitmq-provider8801,作为生产者进行发消息模块</li>
+<li>cloud-stream-rabbitmq-consumer8802,作为消息接收模块</li>
+<li>cloud-stream-rabbitmq-consumer8803,作为消息接收模块</li>
+</ul>
+<h3 id="5-1-新建Module"><a href="#5-1-新建Module" class="headerlink" title="5.1 新建Module"></a>5.1 新建Module</h3><ul>
+<li>cloud-stream-rabbitmq-provider8801</li>
+</ul>
+<h3 id="5-2-POM文件"><a href="#5-2-POM文件" class="headerlink" title="5.2 POM文件"></a>5.2 POM文件</h3><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud2020&lt;/artifactId&gt;
+        &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;cloud-stream-rabbitmq-provider8801&lt;/artifactId&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--基础配置--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></pre>
+<h3 id="5-3-YML文件"><a href="#5-3-YML文件" class="headerlink" title="5.3 YML文件"></a>5.3 YML文件</h3><pre><code class="yml">server:
+  port: 8801
+
+spring:
+  application:
+    name: cloud-stream-provider
+  rabbitmq:
+    host: 192.168.127.7
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      binders: # 在此处配置要绑定的rabbitmq的服务信息；
+        defaultRabbit: # 表示定义的名称，用于于binding整合
+          type: rabbit # 消息组件类型
+      bindings: # 服务的整合处理
+        output: # 这个名字是一个通道的名称
+          destination: studyExchange # 表示要使用的Exchange名称定义
+          content-type: application/json # 设置消息类型，本次为json，文本则设置“text/plain”
+          binder: defaultRabbit # 设置要绑定的消息服务的具体设置
+
+eureka:
+  client: # 客户端进行Eureka注册的配置
+    service-url:
+      defaultZone: http://localhost:7001/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 2 # 设置心跳的时间间隔（默认是30秒）
+    lease-expiration-duration-in-seconds: 5 # 如果现在超过了5秒的间隔（默认是90秒）
+    instance-id: send-8801.com  # 在信息列表时显示主机名称
+    prefer-ip-address: true     # 访问的路径变为IP地址
+</code></pre>
+<p><strong>注意：</strong>binder: defaultRabbit配置变红无影响</p>
+<blockquote>
+<p><strong>视频里的application.yml使用了spring.cloud.stream.binders.defaultRabbit.environment.spring.rabbitmq.xx来配置rabbitmq的环境，如果你是用的其他服务器上的rabbitmq，比如我使用的是linux服务器来运行rabbitmq。</strong><br><strong>按照视频中的配置方式的话，启动时会试图连接两次rabbitmq程序</strong><br><strong>第一次试图连接访问的就是application.yml中配置的地址，此时已经订阅成功了，但是程序还会在之后进行第二次连接，此时访问的地址就是localhost:5672，在我的环境中，我本地没有rabbitmq环境，所以直接报IOException。</strong></p>
+<p><strong>所以，如果是使用的自己的服务器来配置，则需要修改配置文件，将rabbitmq的配置信息移动到application.yml中的spring节点下修改后的配置如上述代码</strong></p>
+</blockquote>
+<h3 id="5-4-业务类："><a href="#5-4-业务类：" class="headerlink" title="5.4 业务类："></a>5.4 业务类：</h3><ul>
+<li>发送消息接口</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.service;
+
+public interface IMessageProvider &#123;
+    public String send();
+&#125;
+</code></pre>
+<ul>
+<li>发送消息接口实现类：</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.service.impl;
+
+import com.practice.springcloud.service.IMessageProvider;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.messaging.Source;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.MessageChannel;
+
+import javax.annotation.Resource;
+import java.util.UUID;
+
+
+@EnableBinding(Source.class) //定义消息的推送管道
+public class MessageProviderImpl implements IMessageProvider &#123;
+
+    @Resource
+    private MessageChannel output; //消息发送管道
+
+    @Override
+    public String send() &#123;
+        String serial = UUID.randomUUID().toString();
+        output.send(MessageBuilder.withPayload(serial).build()); //官网有
+        System.out.println(&quot;****serial:&quot;+serial);
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>Controller</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.service.IMessageProvider;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@RestController
+public class SendMessageController &#123;
+    @Resource
+    private IMessageProvider messageProvider;
+
+    @GetMapping(value = &quot;/sendMessage&quot;)
+    public String sendMessage()&#123;
+        return messageProvider.send();
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="5-5-测试"><a href="#5-5-测试" class="headerlink" title="5.5 测试"></a>5.5 测试</h3><p>启动7001，启动RabbitMQ，<a target="_blank" rel="noopener" href="http://localhost:15672/">http://localhost:15672/</a></p>
+<p>启动8801：<a target="_blank" rel="noopener" href="http://localhost:8801/sendMessage">http://localhost:8801/sendMessage</a></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321193654961.png" alt="image-20210321193654961"></p>
+<p>多次刷新此地址会发现波峰流量变动：</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321193732838.png" alt="image-20210321193732838"><img src="/2020/03/10/SpringCloud-08/image-20210321193822743.png" alt="image-20210321193822743"></p>
+<h2 id="6、-消息驱动之消费者"><a href="#6、-消息驱动之消费者" class="headerlink" title="6、 消息驱动之消费者"></a>6、 消息驱动之消费者</h2><h3 id="6-1-新建Module"><a href="#6-1-新建Module" class="headerlink" title="6.1 新建Module"></a>6.1 新建Module</h3><ul>
+<li>cloud-stream-rabbitmq-consumer8802</li>
+</ul>
+<h3 id="6-2-POM"><a href="#6-2-POM" class="headerlink" title="6.2 POM"></a>6.2 POM</h3><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud2020&lt;/artifactId&gt;
+        &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;cloud-stream-rabbitmq-consumer8802&lt;/artifactId&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-stream-rabbit&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h3 id="6-3-YML"><a href="#6-3-YML" class="headerlink" title="6.3 YML"></a>6.3 YML</h3><pre><code class="yml">server:
+  port: 8802
+
+spring:
+  application:
+    name: cloud-stream-consumer
+  rabbitmq:
+    host: 192.168.127.7
+    port: 5672
+    username: guest
+    password: guest
+  cloud:
+    stream:
+      binders: # 在此处配置要绑定的rabbitMQ的服务信息
+        defaultRabbit: # 表示定义的名称，用于binding的整合
+          type: rabbit # 消息中间件类型
+      bindings: # 服务的整合处理
+        input: # 这个名字是一个通道的名称
+          destination: studyExchange # 表示要使用的exchange名称定义
+          content-type: application/json # 设置消息类型，本次为json，文本则设为text/plain
+          binder: defaultRabbit # 设置要绑定的消息服务的具体设置
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka
+  instance:
+    lease-renewal-interval-in-seconds: 2 # 设置心跳的间隔时间，默认30
+    lease-expiration-duration-in-seconds: 5 # 超过5秒间隔，默认90
+    instance-id: receive-8802.com #主机名
+    prefer-ip-address: true # 显示ip
+</code></pre>
+<h3 id="6-4-主启动"><a href="#6-4-主启动" class="headerlink" title="6.4 主启动"></a>6.4 主启动</h3><ul>
+<li>和8801一致</li>
+</ul>
+<h3 id="6-5-业务类"><a href="#6-5-业务类" class="headerlink" title="6.5 业务类"></a>6.5 业务类</h3><pre><code class="java">package com.practice.springcloud.controller;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.cloud.stream.messaging.Sink;
+import org.springframework.messaging.Message;
+import org.springframework.stereotype.Component;
+
+@Component
+@EnableBinding(Sink.class)
+public class ReceiveMessageListenerController &#123;
+
+    @Value(&quot;$&#123;server.port&#125;&quot;)
+    private String serverPort;
+
+    @StreamListener(Sink.INPUT)
+    public void input(Message&lt;String&gt; message)&#123;
+        System.out.println(&quot;消费者1号，----------》接收到的消息：&quot;+message.getPayload()+&quot;\t Port: &quot;+serverPort);
+
+    &#125;
+&#125;
+</code></pre>
+<h3 id="6-6-测试"><a href="#6-6-测试" class="headerlink" title="6.6 测试"></a>6.6 测试</h3><p>启动7001，启动RabbitMQ，启动8801，启动8802</p>
+<p>输入地址：<a target="_blank" rel="noopener" href="http://localhost:8801/sendMessage">http://localhost:8801/sendMessage</a></p>
+<p>此时8801发送了消息</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321200346701.png" alt="image-20210321200346701"></p>
+<p>8802也接收到了消息</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321200408829.png" alt="image-20210321200408829"></p>
+<p>RabbitMQ也产生了波峰</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321200450579.png" alt="image-20210321200450579"></p>
+<h2 id="7、分组消费与持久化"><a href="#7、分组消费与持久化" class="headerlink" title="7、分组消费与持久化"></a>7、分组消费与持久化</h2><p>依照8802，创建8803</p>
+<p>启动7001,8801,8802,8803，查看Eureka服务注册中心，发现8801服务发送者，8802和8803服务消费者都注册进来了</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321201514126.png" alt="image-20210321201514126"></p>
+<p>运行后存在两个问题</p>
+<ul>
+<li>有重复消费问题</li>
+<li>消息持久化问题</li>
+</ul>
+<p>运行<a target="_blank" rel="noopener" href="http://localhost:8801/sendMessage%EF%BC%8C%E5%8F%91%E9%80%81%E4%B8%A4%E6%9D%A1%E6%B6%88%E6%81%AF(%E5%88%B7%E6%96%B0%E4%B8%A4%E4%B8%8B)">http://localhost:8801/sendMessage，发送两条消息(刷新两下)</a></p>
+<p>此时8801发送两条数据</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321201912987.png" alt="image-20210321201912987"></p>
+<p>而8802消费了2条</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321201945445.png" alt="image-20210321201945445"></p>
+<p>并且8803也消费了两条</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321202015835.png" alt="image-20210321202015835"></p>
+<p>此时出现消息重复消费问题，要如何解决？</p>
+<p><strong>使用分组和持久化属性group解决</strong></p>
+<h3 id="7-1-生产者实际案例"><a href="#7-1-生产者实际案例" class="headerlink" title="7.1 生产者实际案例"></a>7.1 生产者实际案例</h3><p><img src="/2020/03/10/SpringCloud-08/image-20210321202211214.png" alt="image-20210321202211214"></p>
+<p><strong>不同组是可以全面消费的(重复消费)</strong></p>
+<p><strong>同一个组内会发生竞争关系，只有其中一个可以消费</strong></p>
+<p>故障现象：重复消费</p>
+<p>导致原因：默认分组group是不同的，组流水号不一样，被认为不同组，可以消费</p>
+<p>自定义配置分组，自定义配置分为同一个组，解决重复消费问题</p>
+<p><strong>分组的原理：</strong></p>
+<ul>
+<li>微服务应用放置于同一个group中,就能保证消息只会被其中一个应用消费一次.  <strong>不同的组是可以消费的,同一个组内会发生竞争关系,只有其中一个可以消费</strong></li>
+</ul>
+<p><strong>将8802和8803分为不同的组PracticeA，PracticeB（可以消费）</strong></p>
+<ul>
+<li>8802分到PracticeA组</li>
+</ul>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321203627268.png" alt="image-20210321203627268"></p>
+<ul>
+<li>同理，8803分到PracticeB组只需要加这个配置就可以</li>
+</ul>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321203741432.png" alt="image-20210321203741432"></p>
+<ul>
+<li>此时，可以在RabbitMQ中看到这两个组</li>
+</ul>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321204019042.png" alt="image-20210321204019042"></p>
+<p>分布式微服务应用为了实现高可用和负载均衡，实际上都会部署多个实例，本例启动了两个消费微服务(8802/8803)。</p>
+<p>多数情况，生产者发送消息给某个具体微服务时只希望被消费一次，按照上面我们启动两个应用的例子，虽然他们同属于一个应用，但是这个消息出现了被重复消费两次的情况，为了解决这个问题，在Spring Cloud Stream中提供了消费组的概念</p>
+<p><strong>如何解决重复消费</strong></p>
+<p>8802/8803实现轮询分组，每次只有一个消费者，8801模块发的消息只能被8802或8803其中一个接收到，这样就避免了重复消费。</p>
+<p>所以8802/8803都变成相同组，group两个相同，都放入PracticeA组</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321204849366.png" alt="image-20210321204849366"></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321204921445.png" alt="image-20210321204921445"></p>
+<p>此时发送两条消息</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321205105742.png" alt="image-20210321205105742"></p>
+<p>8802接收到1条消息</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321205123337.png" alt="image-20210321205123337"></p>
+<p>8803接收到1条</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321205141387.png" alt="image-20210321205141387"></p>
+<p>结论：<strong>同一个组的多个微服务实例,每次只会有一个拿到</strong></p>
+<h3 id="7-2-消费持久化"><a href="#7-2-消费持久化" class="headerlink" title="7.2 消费持久化"></a>7.2 消费持久化</h3><p>停止8802/8803并去除掉<strong>8802的分组group：PracticeA</strong>，<strong>不要去掉8803的group</strong></p>
+<p>8801先发送4条消息到rabbitmq</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321210200306.png" alt="image-20210321210200306"></p>
+<p>先启动8802，无分组属性配置，后台没有打出来消息</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321210341175.png" alt="image-20210321210341175"></p>
+<p>再启动8803，有分组属性配置，后台打出来了MQ上的消息</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210321210330815.png" alt="image-20210321210330815"></p>
+<p>由此可见：有分组属性，会自动进行消费持久化</p>
+<h2 id="8、SpringCloud-Sleuth请求链路跟踪"><a href="#8、SpringCloud-Sleuth请求链路跟踪" class="headerlink" title="8、SpringCloud Sleuth请求链路跟踪"></a>8、SpringCloud Sleuth请求链路跟踪</h2><h3 id="8-1-概述"><a href="#8-1-概述" class="headerlink" title="8.1 概述"></a>8.1 概述</h3><p><strong>为何会出现此技术，有何作用？</strong></p>
+<p>在微服务框架中，一个由客户端发起的请求在后端系统中会经过多个不同的服务节点调用来协同产生最后的请求结果，每一个前段请求都会形成一条复杂的分布式服务调用链路，链路中的任何一环出现高延时或错误都会引起整个请求的失败</p>
+<p><strong>Sleuth链路跟踪是什么？</strong></p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/spring-cloud/spring-cloud-sleuth">https://github.com/spring-cloud/spring-cloud-sleuth</a></li>
+<li>Spring Cloud Sleuth提供了一套完整的服务跟踪的解决方案</li>
+<li>在分布式系统中提供了追踪解决方案并且兼容支持了zipkin</li>
+</ul>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322083925373.png" alt="image-20210322083925373"></p>
+<ul>
+<li>当产品模块去调用库存模块，Zipkin就记录下来并以网页的形式展现出来</li>
+</ul>
+<p>Sleuth和Zipkin：Sleuth用来收集整理，Zipkin用来展现</p>
+<h3 id="8-2-搭建链路监控"><a href="#8-2-搭建链路监控" class="headerlink" title="8.2 搭建链路监控"></a>8.2 搭建链路监控</h3><p>Zipkin下载安装：</p>
+<p>SpringCloud从F版已不需要自己搭建Zipkin Server了,只需调用jar包即可</p>
+<p><a target="_blank" rel="noopener" href="https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/">https://dl.bintray.com/openzipkin/maven/io/zipkin/java/zipkin-server/</a></p>
+<p>zipkin-server-2.12.9-exec.jar</p>
+<p>运行jar(在jar包所在的路径)</p>
+<p>java -jar zipkin-server-2.12.9-exec.jar</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322085734859.png" alt="image-20210322085734859"></p>
+<p>运行控制台（相当于前端页面）</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:9411/zipkin/">http://localhost:9411/zipkin/</a></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322085852979.png" alt="image-20210322085852979"></p>
+<p>术语：</p>
+<p>完整的调用链路图：</p>
+<p>表示一请求链路，一条链路通过Trace Id唯一标识，Span标识发起的请求信息，各span通过parent id关联起来</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322090104252.png" alt="image-20210322090104252"></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322090416872.png" alt="image-20210322090416872"></p>
+<p>Trace:类似于树结构的Span集合,表示一条调用链路,存在唯一标识</p>
+<p>span:表示调用链路来源,通俗的理解span就是一次请求信息</p>
+<h3 id="8-3-服务提供者"><a href="#8-3-服务提供者" class="headerlink" title="8.3 服务提供者"></a>8.3 服务提供者</h3><p>以<code>cloud-provider-payment8001</code>为例</p>
+<p>增加POM依赖</p>
+<pre><code class="xml">&lt;!--包含了sleuth+zipkin--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-zipkin&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>可以看到Zipkin中包含Sleuth</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322091131284.png" alt="image-20210322091131284"></p>
+<p>修改YML文件</p>
+<pre><code class="yml">spring:
+  application:
+    name: cloud-order-service
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+    #采样率值介于 0 到 1 之间，1 则表示全部采集
+      probability: 1
+</code></pre>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322091405690.png" alt="image-20210322091405690"></p>
+<p>业务类中加一段代码</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322092129287.png" alt="image-20210322092129287"></p>
+<h3 id="8-4-服务消费者"><a href="#8-4-服务消费者" class="headerlink" title="8.4 服务消费者"></a>8.4 服务消费者</h3><p>以<code>cloud-consumer-order80</code>为例</p>
+<p>改POM</p>
+<pre><code class="xml">&lt;!--包含了sleuth+zipkin--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-zipkin&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<p>改yml</p>
+<pre><code class="yml">spring:
+  application:
+    name: cloud-payment-service
+
+  zipkin:
+    base-url: http://localhost:9411
+  sleuth:
+    sampler:
+    #采样率值介于 0 到 1 之间，1 则表示全部采集
+      probability: 1
+</code></pre>
+<p>业务类Controller中加一段代码</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322092844786.png" alt="image-20210322092844786"></p>
+<h3 id="8-5-测试"><a href="#8-5-测试" class="headerlink" title="8.5 测试"></a>8.5 测试</h3><p>启动7001,8001，80</p>
+<p>输入<a target="_blank" rel="noopener" href="http://localhost/consumer/payment/zipkin">http://localhost/consumer/payment/zipkin</a></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322094140646.png" alt="image-20210322094140646"></p>
+<p>查看Zipkin页面</p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322094242418.png" alt="image-20210322094242418"></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322094444227.png" alt="image-20210322094444227"></p>
+<p><img src="/2020/03/10/SpringCloud-08/image-20210322094511931.png" alt="image-20210322094511931"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SpringCloud/" rel="tag"># SpringCloud</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/08/Hexo-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" rel="next" title="Hexo+github搭建个人博客">
+                  Hexo+github搭建个人博客 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
