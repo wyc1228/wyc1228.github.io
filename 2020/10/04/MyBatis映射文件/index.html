@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="MyBatis的SQL映射文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis的SQL映射文件">
+<meta property="og:url" content="https://wyc1228.github.io/2020/10/04/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="MyBatis的SQL映射文件">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-04T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-08T14:22:16.578Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/10/04/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>MyBatis的SQL映射文件 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis%E7%9A%84SQL%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6"><span class="nav-text">MyBatis的SQL映射文件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%A2%9E%E5%88%A0%E6%94%B9%E6%9F%A5%E8%AF%AD%E5%8F%A5"><span class="nav-text">1.2 增删改查语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E8%8E%B7%E5%8F%96%E8%87%AA%E5%A2%9E%E4%B8%BB%E9%94%AE%E7%9A%84%E5%80%BC"><span class="nav-text">1.3 获取自增主键的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E8%8E%B7%E5%8F%96%E9%9D%9E%E8%87%AA%E5%A2%9E%E4%B8%BB%E9%94%AE%E7%9A%84%E5%80%BC-Oracle"><span class="nav-text">1.4 获取非自增主键的值(Oracle)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E5%8F%82%E6%95%B0%E5%A4%84%E7%90%86"><span class="nav-text">1.5 参数处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E5%8F%82%E6%95%B0%E8%8E%B7%E5%8F%96-%E4%B8%8E-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">1.6 参数获取#{}与${}的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E6%9B%B4%E4%B8%B0%E5%AF%8C%E7%9A%84%E7%94%A8%E6%B3%95%EF%BC%9A"><span class="nav-text">1.7 #{}:更丰富的用法：</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/10/04/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MyBatis的SQL映射文件
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-04 21:46:45" itemprop="dateCreated datePublished" datetime="2020-10-04T21:46:45+08:00">2020-10-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">MyBatis的SQL映射文件</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="MyBatis的SQL映射文件"><a href="#MyBatis的SQL映射文件" class="headerlink" title="MyBatis的SQL映射文件"></a>MyBatis的SQL映射文件</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>映射文件指导着MyBatis如何进行数据库增删改查， 有着非常重要的意义；</p>
+<p><strong>标签：</strong></p>
+<ul>
+<li>cache –命名空间的二级缓存配置 </li>
+<li>cache-ref – 其他命名空间缓存配置的引用。</li>
+<li><code>resultMap</code> – 自定义结果集映射 </li>
+<li>parameterMap – 已废弃！老式风格的参数映射</li>
+<li><code>sql</code> –抽取可重用语句块。</li>
+<li><code>insert</code> – 映射插入语句</li>
+<li><code>update</code> – 映射更新语句</li>
+<li><code>delete</code> – 映射删除语句</li>
+<li><code>select</code> – 映射查询语句</li>
+</ul>
+<h3 id="1-2-增删改查语句"><a href="#1-2-增删改查语句" class="headerlink" title="1.2 增删改查语句"></a>1.2 增删改查语句</h3><p>接口文件EmployeeMapper</p>
+<pre><code class="java">public interface EmployeeMapper &#123;
+    
+    public Employee getEmpById(Integer id);
+
+    public void addEmp(Employee employee);
+    public void updateEmp(Employee employee);
+    public void deleteEmpById(Integer id);
+
+&#125;
+</code></pre>
+<p>mapper映射文件</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+ PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+ &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.review.mybatis.dao.EmployeeMapper&quot;&gt;
+&lt;!-- 
+namespace:名称空间;
+id：唯一标识
+resultType：返回值类型
+#&#123;id&#125;：从传递过来的参数中取出id值
+
+public Employee getEmpById(Integer id);
+ --&gt;
+    &lt;select id=&quot;getEmpById&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+
+    &lt;!--
+    public void addEmp(Employee employee);
+    public void updateEmp(Employee employee);
+    public void deleteEmpById(Integer id);
+    --&gt;
+    &lt;!--parameterType 可以省略  增删改无返回值类型，会自动封装--&gt;
+    &lt;insert id=&quot;addEmp&quot; parameterType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        insert into tbl_employee(last_name,email,gender) values(#&#123;lastName&#125;,#&#123;email&#125;,#&#123;gender&#125;)
+    &lt;/insert&gt;
+    &lt;update id=&quot;updateEmp&quot;&gt;
+        update tbl_employee set last_name=#&#123;lastName&#125;,email=#&#123;email&#125;,gender=#&#123;gender&#125; where id=#&#123;id&#125;
+    &lt;/update&gt;
+    &lt;delete id=&quot;deleteEmpById&quot;&gt;
+        delete from tbl_employee where id=#&#123;id&#125;
+    &lt;/delete&gt;
+
+&lt;/mapper&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//前面的几步封装为一个方法，可以直接调用
+public SqlSessionFactory getSqlSessionFactory() throws IOException &#123;
+        String resource = &quot;mybatis-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        return new SqlSessionFactoryBuilder().build(inputStream);
+    &#125;
+/*
+    myBatis允许增删改定义以下类型的返回值，可以自动的为我们封装
+        Integer，Long，Boolean，void：基本类型和包装类型都可以
+    sqlSessionFactory.openSession();获取到的sqlSession不会自动提交数据，需要手动提交
+    sqlSessionFactory.openSession(true);自动提交，不用手动commit
+     */
+    @Test
+    public void test03() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1.获取到的sqlSession不会自动提交数据，需要手动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper mapper;
+        try &#123;
+            mapper = sqlSession.getMapper(EmployeeMapper.class);
+            Employee employee=new Employee(null,&quot;jack&quot;,&quot;jack@163.com&quot;,&quot;1&quot;);
+            //添加
+//            mapper.addEmp(employee);
+            //修改
+//            Employee employee=new Employee(2,&quot;jack&quot;,&quot;jack@163.com&quot;,&quot;1&quot;);
+//            mapper.updateEmp(employee);
+            //删除
+            mapper.deleteEmpById(2);
+            //手动提交
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-3-获取自增主键的值"><a href="#1-3-获取自增主键的值" class="headerlink" title="1.3 获取自增主键的值"></a>1.3 获取自增主键的值</h3><p>获取自增主键的值：</p>
+<ul>
+<li>mysql支持自增主键，自增主键值的获取，mybatis也是利用statement.getGenreatedKeys()；</li>
+<li>useGeneratedKeys=”true”；使用自增主键获取主键值策略</li>
+<li>keyProperty；指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给javaBean的哪个属性</li>
+</ul>
+<pre><code class="xml">&lt;insert id=&quot;addEmp&quot; parameterType=&quot;com.review.mybatis.bean.Employee&quot;
+            useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;&gt;
+        insert into tbl_employee(last_name,email,gender)
+        values(#&#123;lastName&#125;,#&#123;email&#125;,#&#123;gender&#125;)
+    &lt;/insert&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">@Test
+    public void test03() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1.获取到的sqlSession不会自动提交数据，需要手动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper mapper;
+        try &#123;
+            mapper = sqlSession.getMapper(EmployeeMapper.class);
+            Employee employee=new Employee(null,&quot;jack&quot;,&quot;jack@163.com&quot;,&quot;1&quot;);
+            //添加
+            mapper.addEmp(employee);
+            //因为主键id值是自增的，我们new的时候是设为null，所以grtId()取不出来主键值，值为null
+            //在mapper文件中设置了useGeneratedKeys=&quot;true&quot; keyProperty=&quot;id&quot;，则就可以通过getId取出主键值
+            System.out.println(employee.getId());
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-4-获取非自增主键的值-Oracle"><a href="#1-4-获取非自增主键的值-Oracle" class="headerlink" title="1.4 获取非自增主键的值(Oracle)"></a>1.4 获取非自增主键的值(Oracle)</h3><pre><code class="xml">&lt;!-- 
+    获取非自增主键的值：
+        Oracle不支持自增；Oracle使用序列来模拟自增；
+        每次插入的数据的主键是从序列中拿到的值；如何获取到这个值；
+     --&gt;
+    &lt;insert id=&quot;addEmp&quot; databaseId=&quot;oracle&quot;&gt;
+        &lt;!-- 
+        keyProperty:查出的主键值封装给javaBean的哪个属性
+        order=&quot;BEFORE&quot;:当前sql在插入sql之前运行
+               AFTER：当前sql在插入sql之后运行
+        resultType:查出的数据的返回值类型
+        
+        BEFORE运行顺序：
+            先运行selectKey查询id的sql；查出id值封装给javaBean的id属性
+            在运行插入的sql；就可以取出id属性对应的值
+        AFTER运行顺序：
+            先运行插入的sql（从序列中取出新值作为id）；
+            再运行selectKey查询id的sql；
+         --&gt;
+        &lt;selectKey keyProperty=&quot;id&quot; order=&quot;BEFORE&quot; resultType=&quot;Integer&quot;&gt;
+            &lt;!-- 编写查询主键的sql语句 --&gt;
+            &lt;!-- BEFORE--&gt;
+            select EMPLOYEES_SEQ.nextval from dual 
+            &lt;!-- AFTER：
+             select EMPLOYEES_SEQ.currval from dual --&gt;
+        &lt;/selectKey&gt;
+        
+        &lt;!-- 插入时的主键是从序列中拿到的 --&gt;
+        &lt;!-- BEFORE:--&gt;
+        insert into employees(EMPLOYEE_ID,LAST_NAME,EMAIL) 
+        values(#&#123;id&#125;,#&#123;lastName&#125;,#&#123;email&lt;!-- ,jdbcType=NULL --&gt;&#125;) 
+        &lt;!-- AFTER：
+        insert into employees(EMPLOYEE_ID,LAST_NAME,EMAIL) 
+        values(employees_seq.nextval,#&#123;lastName&#125;,#&#123;email&#125;) --&gt;
+    &lt;/insert&gt;
+</code></pre>
+<h3 id="1-5-参数处理"><a href="#1-5-参数处理" class="headerlink" title="1.5 参数处理"></a>1.5 参数处理</h3><p>单个参数：mybatis不会做特殊处理，</p>
+<ul>
+<li>#{参数名/任意名}：取出参数值。</li>
+</ul>
+<p>例如：传入的参数只有一个id，可以写任意名字，可以正常执行</p>
+<pre><code class="xml">&lt;select id=&quot;getEmpById&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+</code></pre>
+<p>多个参数：mybatis会做特殊处理。</p>
+<ul>
+<li>多个参数会被封装成 一个map，#{}就是从map中获取指定的key的值；<ul>
+<li>key：param1…paramN,或者 参数的索引也可以</li>
+<li>value：传入的参数值</li>
+</ul>
+</li>
+</ul>
+<p>例如：传入id和lastName，来查询员工表</p>
+<pre><code class="xml">&lt;select id=&quot;getEmpByIdAndLastName&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;id&#125; and last_name=#&#123;lastName&#125;
+&lt;/select&gt;
+</code></pre>
+<pre><code class="java">//测试代码
+@Test
+    public void test04() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1.获取到的sqlSession不会自动提交数据，需要手动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper mapper;
+        try &#123;
+            mapper = sqlSession.getMapper(EmployeeMapper.class);
+            //查询
+            Employee tom = mapper.getEmpByIdAndLastName(1, &quot;tom&quot;);
+            System.out.println(tom);
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>你会发现运行时出现异常：</p>
+<pre><code class="java">org.apache.ibatis.binding.BindingException: Parameter &#39;id&#39; not found. Available parameters are [0, 1, param1, param2]
+</code></pre>
+<p>此时，根据多个参数会被封装成 一个map，你可以这样设置mapper映射文件，key为param1的值和key为param2的值</p>
+<pre><code class="xml">&lt;select id=&quot;getEmpByIdAndLastName&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;param1&#125; and last_name=#&#123;param2&#125;
+&lt;/select&gt;
+</code></pre>
+<p>这时，程序正常运行，但是参数写成param不能很好的见名知意，所以推荐使用命名参数</p>
+<p><strong>命名参数</strong>：明确指定封装参数时map的key；@Param(“id”)，dao层的方法参数加上parma注解</p>
+<pre><code class="java">public Employee getEmpByIdAndLastName(@Param(&quot;id&quot;) Integer id, @Param(&quot;lastName&quot;) String lastName);
+</code></pre>
+<p>这时多个参数会被封装成 一个map，</p>
+<ul>
+<li><p>key：使用@Param注解指定的值</p>
+</li>
+<li><p>value：参数值</p>
+</li>
+</ul>
+<p>#{指定的key}取出对应的参数值</p>
+<p>所以，多个参数推荐使用命名参数的方法</p>
+<p>POJO：<br>如果多个参数正好是我们业务逻辑的数据模型，我们就可以直接传入pojo；<br>    #{属性名}：取出传入的pojo的属性值    </p>
+<p><strong>Map</strong>：<br>如果多个参数不是业务模型中的数据，没有对应的pojo，不经常使用，为了方便，我们也可以传入map<br>    #{key}：取出map中对应的值</p>
+<pre><code class="java">public Employee getEmpByMap(Map&lt;String, Object&gt; map);
+</code></pre>
+<pre><code class="xml">&lt;!-- public Employee getEmpByMap(Map&lt;String, Object&gt; map); --&gt;
+     &lt;select id=&quot;getEmpByMap&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+         select * from tbl_employee where id=#&#123;id&#125; and last_name=#&#123;lastName&#125;
+     &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">@Test
+    public void test04() throws IOException&#123;
+        
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1、获取到的SqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession();
+        
+        try&#123;
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+            map.put(&quot;id&quot;, 2);
+            map.put(&quot;lastName&quot;, &quot;Tom&quot;);
+            Employee employee = mapper.getEmpByMap(map);
+            
+            System.out.println(employee);
+            
+        &#125;finally&#123;
+            openSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>TO：<br>如果多个参数不是业务模型中的数据，但是经常要使用，推荐来编写一个TO（Transfer Object）数据传输对象<br>Page{<br>    int index;<br>    int size;<br>}</p>
+<p>特别的取值方式：</p>
+<blockquote>
+<p>public Employee getEmp(@Param(“id”)Integer id,String lastName);<br>    取值：id==&gt;#{id/param1}   lastName==&gt;#{param2}</p>
+</blockquote>
+<blockquote>
+<p>public Employee getEmp(Integer id,@Param(“e”)Employee emp);<br>    取值：id==&gt;#{param1}    lastName===&gt;#{param2.lastName/e.lastName}</p>
+</blockquote>
+<blockquote>
+<p>public Employee getEmpById(List<Integer> ids);<br>    取值：取出第一个id的值：   #{list[0]}</Integer></p>
+</blockquote>
+<p><strong>特别注意</strong>：如果是Collection（List、Set）类型或者是数组，也会特殊处理。也是把传入的list或者数组封装在map中。<br>map中的key：Collection的key为(collection)，如果是List还可以使用这个key(list)，数组的key为(array)</p>
+<p><strong>结合源码，mybatis怎么处理参数</strong></p>
+<blockquote>
+<p>总结：参数多时会封装map，为了不混乱，我们可以使用@Param来指定封装时 使用的key；#{key}就可以取出map中的值；</p>
+</blockquote>
+<p>@Param(“id”)Integer id,@Param(“lastName”)String lastName;</p>
+<p><code>ParamNameResolver</code>解析参数封装map的；</p>
+<ol>
+<li><p>names：{0=id, 1=lastName}；构造器的时候就确定好了</p>
+<ul>
+<li><p>确定流程：</p>
+<ul>
+<li>获取每个标了param注解的参数的@Param的值：id，lastName；  赋值给name;</li>
+<li>每次解析一个参数给map中保存信息：（key：参数索引，value：name的值）<ul>
+<li>name的值：<ul>
+<li>标注了param注解：注解的值</li>
+<li>没有标注：<ol>
+<li>全局配置：useActualParamName（jdk1.8）：name=参数名</li>
+<li>name=map.size()；相当于当前元素的索引</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>{0=id, 1=lastName,2=2}</p>
+</li>
+</ul>
+<p>args【1，”Tom”,’hello’】</p>
+</li>
+</ol>
+<pre><code class="java">public Object getNamedParams(Object[] args) &#123;
+    final int paramCount = names.size();
+    //1、参数为null直接返回
+    if (args == null || paramCount == 0) &#123;
+      return null;
+     
+    //2、如果只有一个元素，并且没有Param注解；args[0]：单个参数直接返回
+    &#125; else if (!hasParamAnnotation &amp;&amp; paramCount == 1) &#123;
+      return args[names.firstKey()];
+      
+    //3、多个元素或者有Param标注
+    &#125; else &#123;
+      final Map&lt;String, Object&gt; param = new ParamMap&lt;Object&gt;();
+      int i = 0;
+      
+      //4、遍历names集合；&#123;0=id, 1=lastName,2=2&#125;
+      for (Map.Entry&lt;Integer, String&gt; entry : names.entrySet()) &#123;
+      
+          //names集合的value作为key;  names集合的key又作为取值的参考args[0]:args【1，&quot;Tom&quot;】:
+          //eg:&#123;id=args[0]:1,lastName=args[1]:Tom,2=args[2]&#125;
+        param.put(entry.getValue(), args[entry.getKey()]);
+        
+        
+        // add generic param names (param1, param2, ...)param
+        //额外的将每一个参数也保存到map中，使用新的key：param1...paramN
+        //效果：有Param注解可以#&#123;指定的key&#125;，或者#&#123;param1&#125;
+        final String genericParamName = GENERIC_NAME_PREFIX + String.valueOf(i + 1);
+        // ensure not to overwrite parameter named with @Param
+        if (!names.containsValue(genericParamName)) &#123;
+          param.put(genericParamName, args[entry.getKey()]);
+        &#125;
+        i++;
+      &#125;
+      return param;
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+<h3 id="1-6-参数获取-与-的区别"><a href="#1-6-参数获取-与-的区别" class="headerlink" title="1.6 参数获取#{}与${}的区别"></a>1.6 参数获取#{}与${}的区别</h3><p>#{}表示一个占位符号 </p>
+<ul>
+<li>通过#{}可以实现 preparedStatement 向占位符中设置值，自动进行 java 类型和 jdbc 类型转换， #{}可以有效防止 sql 注入。 #{}可以接收简单类型值或 pojo 属性值。 如果 parameterType 传输单个简单类 型值，#{}括号中可以是 value 或其它名称。 </li>
+</ul>
+<p>${}表示拼接 sql 串 </p>
+<ul>
+<li>通过${}可以将 parameterType 传入的内容拼接在 sql 中且不进行 jdbc 类型转换， ${}可以接收简 单类型值或 pojo 属性值，如果 parameterType 传输单个简单类型值，${}括号中只能是 value。</li>
+</ul>
+<p>#{}：可以获取map中的值或者pojo对象属性的值；</p>
+<p>${}：可以获取map中的值或者pojo对象属性的值；</p>
+<p>mapper文件，第一个用$获取，第二个用#获取</p>
+<pre><code class="xml">&lt;!-- public Employee getEmpByMap(Map&lt;String, Object&gt; map); --&gt;
+     &lt;select id=&quot;getEmpByMap&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+         select * from $&#123;tableName&#125; where id=$&#123;id&#125; and last_name=#&#123;lastName&#125;
+     &lt;/select&gt;
+</code></pre>
+<p>测试方法</p>
+<pre><code class="java">@Test
+    public void test04() throws IOException&#123;
+        
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1、获取到的SqlSession不会自动提交数据
+        SqlSession openSession = sqlSessionFactory.openSession();
+        
+        try&#123;
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            Map&lt;String, Object&gt; map = new HashMap&lt;&gt;();
+            map.put(&quot;id&quot;, 2);
+            map.put(&quot;lastName&quot;, &quot;Tom&quot;);
+            map.put(&quot;tableName&quot;, &quot;tbl_employee&quot;);
+            Employee employee = mapper.getEmpByMap(map);
+            
+            System.out.println(employee);
+            
+        &#125;finally&#123;
+            openSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>对应的select语句:<code>Preparing: select * from tbl_employee where id=2 and last_name=?</code></p>
+<p>区别：</p>
+<ul>
+<li>#{}:是以预编译的形式，将参数设置到sql语句中；PreparedStatement；防止sql注入</li>
+<li>${}:取出的值直接拼装在sql语句中；会有安全问题；</li>
+<li>大多情况下，我们去参数的值都应该去使用#{}；</li>
+<li>#将传入的数据当成一个字符串，会对自动传入的数据加一个双引号。</li>
+<li>$将传入的数据直接显示在sql语句中。</li>
+<li>#方式能够很大程度上防止sql注入，而$无法防止sql的注入</li>
+<li>$一般用于传入数据库对象，例如传入表名。</li>
+<li>mybatis排序时使用order by动态参数时使用$而不是#</li>
+</ul>
+<p>原生jdbc不支持占位符的地方我们就可以使用${}进行取值，比如分表、排序。。。；按照年份分表拆分</p>
+<blockquote>
+<p>select * from ${year}_salary where xxx;<br>select * from tbl_employee order by ${f_name} ${order}    </p>
+</blockquote>
+<h3 id="1-7-更丰富的用法："><a href="#1-7-更丰富的用法：" class="headerlink" title="1.7 #{}:更丰富的用法："></a>1.7 #{}:更丰富的用法：</h3><ul>
+<li><p>规定参数的一些规则：</p>
+<ul>
+<li>javaType、 jdbcType、 mode（存储过程）、 numericScale、resultMap、 typeHandler、 jdbcTypeName、 expression（未来准备支持的功能）；</li>
+</ul>
+</li>
+<li><p>jdbcType通常需要在某种特定的条件下被设置：</p>
+<ul>
+<li>在我们数据为null的时候，有些数据库可能不能识别mybatis对null的默认处理。比如Oracle（报错）；</li>
+<li>JdbcType OTHER：无效的类型；因为mybatis对所有的null都映射的是原生Jdbc的OTHER类型，oracle不能正确处理;</li>
+</ul>
+<p>由于全局配置中：jdbcTypeForNull=OTHER；oracle不支持；两种办法</p>
+<ol>
+<li>#{email,jdbcType=NULL};</li>
+</ol>
+<pre><code class="xml">&lt;insert id=&quot;addEmp&quot; databaseId=&quot;oracle&quot;&gt;
+        &lt;!-- 
+        keyProperty:查出的主键值封装给javaBean的哪个属性
+        order=&quot;BEFORE&quot;:当前sql在插入sql之前运行
+               AFTER：当前sql在插入sql之后运行
+        resultType:查出的数据的返回值类型
+        
+        BEFORE运行顺序：
+            先运行selectKey查询id的sql；查出id值封装给javaBean的id属性
+            在运行插入的sql；就可以取出id属性对应的值
+        AFTER运行顺序：
+            先运行插入的sql（从序列中取出新值作为id）；
+            再运行selectKey查询id的sql；
+         --&gt;
+        &lt;selectKey keyProperty=&quot;id&quot; order=&quot;BEFORE&quot; resultType=&quot;Integer&quot;&gt;
+            &lt;!-- 编写查询主键的sql语句 --&gt;
+            &lt;!-- BEFORE--&gt;
+            select EMPLOYEES_SEQ.nextval from dual 
+            &lt;!-- AFTER：
+             select EMPLOYEES_SEQ.currval from dual --&gt;
+        &lt;/selectKey&gt;
+        
+        &lt;!-- 插入时的主键是从序列中拿到的 --&gt;
+        &lt;!-- BEFORE:--&gt;
+        insert into employees(EMPLOYEE_ID,LAST_NAME,EMAIL) 
+        values(#&#123;id&#125;,#&#123;lastName&#125;,#&#123;emai,jdbcType=NULL&#125;) 
+        &lt;!-- AFTER：
+        insert into employees(EMPLOYEE_ID,LAST_NAME,EMAIL) 
+        values(employees_seq.nextval,#&#123;lastName&#125;,#&#123;email&#125;) --&gt;
+    &lt;/insert&gt;
+</code></pre>
+<ol start="2">
+<li>jdbcTypeForNull=NULL，修改全局配置<setting name="jdbcTypeForNull" value="NULL">
+</setting></li>
+</ol>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSM/" rel="tag"># SSM</a>
+              <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="prev" title="MyBatis基本使用">
+                  <i class="fa fa-chevron-left"></i> MyBatis基本使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/" rel="next" title="MyBatis映射文件Select元素">
+                  MyBatis映射文件Select元素 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

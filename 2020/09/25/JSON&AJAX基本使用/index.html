@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="JSON&amp;AJAX基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSON&amp;AJAX基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/25/JSON&AJAX%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="JSON&amp;AJAX基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-25T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-01T13:41:51.402Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="javaweb">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/25/JSON&AJAX%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JSON&AJAX基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JSON-amp-AJAX%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">JSON&amp;AJAX基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSON"><span class="nav-text">JSON</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-JSON%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 JSON的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-JSON%E4%B8%AD%E5%B8%B8%E7%94%A8%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-text">1.3 JSON中常用的方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-JSON%E6%95%B0%E6%8D%AE%E5%92%8Cjava%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%9B%B8%E4%BA%92%E8%BD%AC%E6%8D%A2"><span class="nav-text">1.4 JSON数据和java对象的相互转换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AJAX"><span class="nav-text">AJAX</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0-1"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Ajax%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 Ajax的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E8%A1%A8%E5%8D%95%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-text">1.3 表单序列化</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/25/JSON&AJAX%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JSON&AJAX基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-25 21:46:45" itemprop="dateCreated datePublished" datetime="2020-09-25T21:46:45+08:00">2020-09-25</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaWeb/" itemprop="url" rel="index"><span itemprop="name">JavaWeb</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">JSON&AJAX基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="JSON-amp-AJAX基本使用"><a href="#JSON-amp-AJAX基本使用" class="headerlink" title="JSON&amp;AJAX基本使用"></a>JSON&amp;AJAX基本使用</h1><h2 id="JSON"><a href="#JSON" class="headerlink" title="JSON"></a>JSON</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>JSON (JavaScript Object Notation) 是一种轻量级的数据交换格式。易于人阅读和编写。同时也易于机器解析和生成。</p>
+<p>JSON 采用完全独立于语言的文本格式，而且很多语言都提供了对 json 的支持（包括 C, C++, C#, Java, JavaScript, Perl, Python 等），这样就使得 JSON 成为理想的数据交换格式。</p>
+<p>json 是一种轻量级的数据交换格式，轻量级指的是跟 xml 做比较。</p>
+<p>数据交换指的是客户端和服务器之间业务数据的传递格式。</p>
+<h3 id="1-2-JSON的使用"><a href="#1-2-JSON的使用" class="headerlink" title="1.2 JSON的使用"></a>1.2 JSON的使用</h3><p>json 是由键值对组成，并且由花括号包围。每个键由引号引起来，键和值之间使用冒号进行分隔， 多组键值对之间进行逗号进行分隔。</p>
+<p>键用引号(单双都行)引起来，也可以不使用引号</p>
+<p>花括号保存对象：使用{}定义json 格式</p>
+<p>方括号保存数组：[]</p>
+<p>值的取值类型：</p>
+<ul>
+<li><p>数字（整数或浮点数）</p>
+</li>
+<li><p>字符串（在双引号中）</p>
+</li>
+<li><p>逻辑值（true 或 false）</p>
+</li>
+<li><p>数组（在方括号中）    {“persons”:[{},{}]}</p>
+</li>
+<li><p>对象（在花括号中） {“address”:{“province”：”陕西”….}}</p>
+</li>
+<li><p>null</p>
+</li>
+</ul>
+<p>获取数据方式:</p>
+<ul>
+<li>json对象.键名</li>
+<li>json对象[“键名”]</li>
+<li>数组对象[索引]</li>
+<li>遍历</li>
+</ul>
+<pre><code class="json">&lt;script&gt;
+        //定义基本格式
+        var person=&#123;&quot;name&quot;:&quot;张三&quot;,age:23,&#39;gender&#39;:true&#125;;
+        //获取name值
+        var name = person.name;
+        var age = person[&quot;age&quot;];
+        // alert(name);
+        // alert(age);
+        // alert(person);
+        //获取person对象中所有的键值对，遍历
+        //for in 循环
+        for(var key in person)&#123;
+            //这样的方式不行，相当于person.&quot;name&quot;
+            alert(key+&quot;:&quot;+person[key]);
+        &#125;
+        //嵌套格式
+        var persons = &#123;
+            &quot;persons&quot;: [
+                &#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 23, &quot;gender&quot;: true&#125;,
+                &#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 23, &quot;gender&quot;: true&#125;,
+                &#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 23, &quot;gender&quot;: true&#125;]
+        &#125;;
+        var gender = persons.persons[0].gender;
+        // alert(gender);
+        // alert(persons);
+        var ps=[
+            &#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 23, &quot;gender&quot;: true&#125;,
+            &#123;&quot;name&quot;: &quot;李四&quot;, &quot;age&quot;: 23, &quot;gender&quot;: true&#125;,
+            &#123;&quot;name&quot;: &quot;张三&quot;, &quot;age&quot;: 23, &quot;gender&quot;: true&#125;
+            ];
+        var name1 = ps[1].name;
+        // alert(name1);
+        // alert(ps);
+        //获取ps所有值
+        for(var i=0;i&lt;ps.length;i++)&#123;
+            for (var j in ps[i])&#123;
+                alert(j+&quot;:&quot;+ps[i][j]);
+            &#125;
+        &#125;
+    &lt;/script&gt;
+</code></pre>
+<h3 id="1-3-JSON中常用的方法"><a href="#1-3-JSON中常用的方法" class="headerlink" title="1.3 JSON中常用的方法"></a>1.3 JSON中常用的方法</h3><p>json 的存在有两种形式。 </p>
+<p>一种是：对象的形式存在，我们叫它 json 对象。 </p>
+<p>一种是：字符串的形式存在，我们叫它 json 字符串。 </p>
+<p>一般我们要操作 json 中的数据的时候，需要 json 对象的格式。 </p>
+<p>一般我们要在客户端和服务器之间进行数据交换的时候，使用 json 字符串。</p>
+<p><code>JSON.stringify()</code> 把 json 对象转换成为 json 字符串</p>
+<p><code>JSON.parse()</code> 把 json 字符串转换成为 json 对象</p>
+<pre><code class="Json">// 把json对象转换成为 json字符串
+            var jsonObjString = JSON.stringify(jsonObj); // 特别像 Java中对象的toString
+            alert(jsonObjString)
+            // 把json字符串。转换成为json对象
+            var jsonObj2 = JSON.parse(jsonObjString);
+            alert(jsonObj2.key1);// 12
+            alert(jsonObj2.key2);// abc
+</code></pre>
+<h3 id="1-4-JSON数据和java对象的相互转换"><a href="#1-4-JSON数据和java对象的相互转换" class="headerlink" title="1.4 JSON数据和java对象的相互转换"></a>1.4 JSON数据和java对象的相互转换</h3><p>JSON常见的解析器</p>
+<ul>
+<li>常见的解析器：Jsonlib，Gson，fastjson，jackson</li>
+</ul>
+<p><strong>JSON和java对象互相转换</strong>(使用Gson)</p>
+<ul>
+<li>导入Gson的相关jar包</li>
+<li>创建Gson核心对象 Gson</li>
+<li>调用Gson的相关方法进行转换</li>
+</ul>
+<pre><code class="java">  //javaBean和json的互转
+    @Test
+    public void test1()&#123;
+        Person person = new Person(1,&quot;国哥好帅!&quot;);
+        // 创建Gson对象实例
+        Gson gson = new Gson();
+        // toJson方法可以把java对象转换成为json字符串
+        String personJsonString = gson.toJson(person);
+        System.out.println(personJsonString);
+        // fromJson把json字符串转换回Java对象
+        // 第一个参数是json字符串
+        // 第二个参数是转换回去的Java对象类型
+        Person person1 = gson.fromJson(personJsonString, Person.class);
+        System.out.println(person1);
+    &#125;
+</code></pre>
+<p><strong>List和JSON的互相转换</strong></p>
+<pre><code class="java">   //List 和json的互转
+    @Test
+    public void test2() &#123;
+        List&lt;Person&gt; personList = new ArrayList&lt;&gt;();
+
+        personList.add(new Person(1, &quot;hello&quot;));
+        personList.add(new Person(2, &quot;康师傅&quot;));
+
+        Gson gson = new Gson();
+
+        // 把List转换为json字符串
+        String personListJsonString = gson.toJson(personList);
+        System.out.println(personListJsonString);
+        //把json转换为list
+        List&lt;Person&gt; list = gson.fromJson(personListJsonString, new PersonListType().getType());
+        System.out.println(list);
+        Person person = list.get(0);
+        System.out.println(person);
+    &#125;
+</code></pre>
+<p><strong>Map和JSON的互相转换</strong></p>
+<pre><code class="java">@Test
+    public void test3()&#123;
+        Map&lt;Integer,Person&gt; personMap = new HashMap&lt;&gt;();
+
+        personMap.put(1, new Person(1, &quot;Hello&quot;));
+        personMap.put(2, new Person(2, &quot;Json&quot;));
+
+        Gson gson = new Gson();
+        // 把 map 集合转换成为 json字符串
+        String personMapJsonString = gson.toJson(personMap);
+        System.out.println(personMapJsonString);
+
+//        Map&lt;Integer,Person&gt; personMap2 = gson.fromJson(personMapJsonString, new PersonMapType().getType());
+        Map&lt;Integer,Person&gt; personMap2 = gson.fromJson(personMapJsonString, new TypeToken&lt;HashMap&lt;Integer,Person&gt;&gt;()&#123;&#125;.getType());
+
+        System.out.println(personMap2);
+        Person p = personMap2.get(1);
+        System.out.println(p);
+
+    &#125;
+</code></pre>
+<h2 id="AJAX"><a href="#AJAX" class="headerlink" title="AJAX"></a>AJAX</h2><h3 id="1-1-概述-1"><a href="#1-1-概述-1" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>概念： ASynchronous JavaScript And XML    异步的JavaScript 和 XML，指一种创建交互式网页应用的网页开发技术</p>
+<p>异步和同步：客户端和服务器端相互通信的基础上</p>
+<ul>
+<li>同步：客户端必须等待服务器端的响应。在等待的期间客户端不能做其他操作。</li>
+<li>异步：客户端不需要等待服务器端的响应。在服务器处理请求的过程中，客户端可以进行其他的操作。</li>
+</ul>
+<p>ajax 是一种浏览器通过 js 异步发起请求，局部更新页面的技术。</p>
+<p>Ajax 请求的局部更新，浏览器地址栏不会发生变化 局部更新不会舍弃原来页面的内容</p>
+<p>Ajax 是一种在<strong>无需重新加载整个网页</strong>的情况下，能够更新部分网页的技术。</p>
+<p>通过在后台与服务器进行少量数据交换，Ajax 可以使网页实现异步更新。</p>
+<p>这意味着可以在不重新加载整个网页的情况下，对网页的某部分进行更新。</p>
+<p>传统的网页（不使用 Ajax）如果需要更新内容，必须重载整个网页页面。使用Ajax可以提升用户的体验</p>
+<h3 id="1-2-Ajax的使用"><a href="#1-2-Ajax的使用" class="headerlink" title="1.2 Ajax的使用"></a>1.2 Ajax的使用</h3><p>原生Ajax的实现</p>
+<pre><code class="js">&lt;script type=&quot;text/javascript&quot;&gt;
+            // 在这里使用javaScript语言发起Ajax请求，访问服务器AjaxServlet中javaScriptAjax
+            function ajaxRequest() &#123;
+//                 1、我们首先要创建XMLHttpRequest 
+                var xmlhttprequest = new XMLHttpRequest();
+//                 2、调用open方法设置请求参数
+                xmlhttprequest.open(&quot;GET&quot;,&quot;http://localhost:8080/16_json_ajax_i18n/ajaxServlet?action=javaScriptAjax&quot;,true);
+//                 4、在send方法前绑定onreadystatechange事件，处理请求完成后的操作。
+                xmlhttprequest.onreadystatechange = function()&#123;
+                    if (xmlhttprequest.readyState == 4 &amp;&amp; xmlhttprequest.status == 200) &#123;
+                        alert(&quot;收到服务器返回的数据：&quot; + xmlhttprequest.responseText);
+                        var jsonObj = JSON.parse(xmlhttprequest.responseText);
+                        // 把响应的数据显示在页面上
+                        document.getElementById(&quot;div01&quot;).innerHTML = &quot;编号：&quot; + jsonObj.id + &quot; , 姓名：&quot; + jsonObj.name;
+                    &#125;
+                &#125;
+//                 3、调用send方法发送请求
+                xmlhttprequest.send();
+                alert(&quot;我是最后一行的代码&quot;);
+            &#125;
+        &lt;/script&gt;
+</code></pre>
+<p>JQeury实现方式：$.ajax()</p>
+<ul>
+<li>语法：$.ajax({键值对});</li>
+<li>使用$.ajax()发送异步请求</li>
+</ul>
+<p>参数</p>
+<ul>
+<li>url 表示请求的地址 </li>
+<li>type 表示请求的类型 GET 或 POST 请求 </li>
+<li>data 表示发送给服务器的数据 格式有两种：name=value&amp;name=value ，{key:value} </li>
+<li>success 请求成功，响应的回调函数 ，error错误，返回啥</li>
+<li>dataType 响应的数据类型</li>
+</ul>
+<pre><code class="js">function fun() &#123;
+            //使用$.ajax()发送异步请求
+            $.ajax(&#123;
+                url:&quot;ajaxServlet&quot; ,//请求路径
+                type:&quot;POST&quot;,//请求方式，默认get
+                // data:&quot;username=jack&amp;age=23&quot;,//请求参数,两种写法
+                data:&#123;&quot;username&quot;:&quot;jack&quot;,&quot;age&quot;:23&#125;,//建议这种
+                success:function (data) &#123;
+                    alert(data);
+                &#125;,//响应成功后的回调函数
+                error:function () &#123;
+                    alert(&quot;出错了&quot;)
+                &#125;,//如果请求响应出现错误，会执行的回调函数
+                dataType:&quot;text&quot;//设置接收到的响应数据的格式
+                //最后一个键值对不加逗号
+            &#125;);
+        &#125;
+</code></pre>
+<p>  $.get()：发送get请求</p>
+<p>  语法：$.get(url, [data], [callback], [type])</p>
+<p>  参数：</p>
+<ul>
+<li><p>url：请求路径</p>
+</li>
+<li><p>data：请求参数</p>
+</li>
+<li><p>callback：回调函数</p>
+</li>
+<li><p>type：响应结果的类型</p>
+<pre><code class="js">//定义方法
+      function fun() &#123;
+          //使用$.ajax()发送异步请求
+          $.get(&quot;ajaxServlet&quot;,&#123;username:&quot;rose&quot;,age:23&#125;,function (data) &#123;
+              alert(data)
+          &#125;,&quot;text&quot;);
+      &#125;
+</code></pre>
+<p>$.post()：发送post请求</p>
+<p>语法：$.post(url, [data], [callback], [type])</p>
+<p>参数：</p>
+</li>
+<li><p>url：请求路径</p>
+</li>
+<li><p>data：请求参数</p>
+</li>
+<li><p>callback：回调函数</p>
+</li>
+<li><p>type：响应结果的类型</p>
+<pre><code class="js">//定义方法
+      function fun() &#123;
+          //使用$.ajax()发送异步请求
+          $.post(&quot;ajaxServlet&quot;,&#123;username:&quot;rose&quot;,age:23&#125;,function (data) &#123;
+              alert(data)
+          &#125;,&quot;text&quot;);
+      &#125;
+</code></pre>
+<p>$.getJSON() 方法 ：get请求固定，返回的类型固定是json数据，所以比前面的方法省略了type参数</p>
+</li>
+<li><p>url 请求的 url 地址 </p>
+</li>
+<li><p>data 发送给服务器的数据 </p>
+</li>
+<li><p>callback 成功的回调函数</p>
+<pre><code class="js">              // ajax--getJson请求
+              $(&quot;#getJSONBtn&quot;).click(function()&#123;
+                  $.getJSON(&quot;http://localhost:8080/16_json_ajax_i18n/ajaxServlet&quot;,&quot;action=jQueryGetJSON&quot;,function (data) &#123;
+                      $(&quot;#msg&quot;).html(&quot; getJSON 编号：&quot; + data.id + &quot; , 姓名：&quot; + data.name);
+                  &#125;);
+              &#125;);
+</code></pre>
+</li>
+</ul>
+<h3 id="1-3-表单序列化"><a href="#1-3-表单序列化" class="headerlink" title="1.3 表单序列化"></a>1.3 表单序列化</h3><p>表单序列化 serialize()</p>
+<p>serialize()可以把表单中所有表单项的内容都获取到，并以 name=value&amp;name=value 的形式进行拼接。</p>
+<pre><code class="js">// ajax请求
+                $(&quot;#submit&quot;).click(function()&#123;
+                    // 把参数序列化
+                    $.getJSON(&quot;http://localhost:8080/16_json_ajax_i18n/ajaxServlet&quot;,&quot;action=jQuerySerialize&amp;&quot; + $(&quot;#form01&quot;).serialize(),function (data) &#123;
+                        $(&quot;#msg&quot;).html(&quot; Serialize 编号：&quot; + data.id + &quot; , 姓名：&quot; + data.name);
+                    &#125;);
+                &#125;);
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javaweb/" rel="tag"># javaweb</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/24/Filter%E8%BF%87%E6%BB%A4%E5%99%A8&Listener%E7%9B%91%E5%90%AC%E5%99%A8/" rel="prev" title="Filter过滤器和Listener监听器">
+                  <i class="fa fa-chevron-left"></i> Filter过滤器和Listener监听器
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/26/%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8A%E4%BC%A0%E4%B8%8E%E4%B8%8B%E8%BD%BD/" rel="next" title="文件的上传与下载">
+                  文件的上传与下载 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

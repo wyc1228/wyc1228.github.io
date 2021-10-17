@@ -1,0 +1,1148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Ribbon负载均衡&#x2F;OpenFeign服务调用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud-04(Ribbon负载均衡&#x2F;OpenFeign服务调用)">
+<meta property="og:url" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Ribbon负载均衡&#x2F;OpenFeign服务调用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317122201421.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317123909054.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317123438489.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317123455721.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317124307620.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317125020829.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317134013468.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317134240134.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317144004875.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317144510886.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317152206578.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317152422861.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317155440728.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317160604862.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318131350182.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318131802389.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318135443770.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318135427320.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318140303175.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318144018677.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318144222327.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318144327033.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318144955210.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318145050463.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318145705330.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318151027980.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318151646862.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210318151632185.png">
+<meta property="article:published_time" content="2020-11-18T13:46:45.000Z">
+<meta property="article:modified_time" content="2021-03-25T11:55:13.407Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SpringCloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/11/18/SpringCloud-04/image-20210317122201421.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/11/18/SpringCloud-04/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>SpringCloud-04(Ribbon负载均衡/OpenFeign服务调用) | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringCloud-04"><span class="nav-text">SpringCloud-04</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81Ribbon%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8"><span class="nav-text">1、Ribbon负载均衡服务调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Ribbon%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">1.1 Ribbon是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%8F%AF%E4%BB%A5%E5%B9%B2%E4%BB%80%E4%B9%88"><span class="nav-text">1.2 可以干什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E6%BC%94%E7%A4%BA"><span class="nav-text">1.3 负载均衡演示</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-RestTemplate%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.4 RestTemplate的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-Ribbon%E6%A0%B8%E5%BF%83%E7%BB%84%E4%BB%B6IRule"><span class="nav-text">1.5 Ribbon核心组件IRule</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E7%AE%97%E6%B3%95"><span class="nav-text">1.6 负载均衡算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-1-%E5%8E%9F%E7%90%86"><span class="nav-text">1.6.1 原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-2-%E6%89%8B%E5%86%99%E8%B4%9F%E8%BD%BD%E7%AE%97%E6%B3%95"><span class="nav-text">1.6.2 手写负载算法</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81OpenFeign%E6%9C%8D%E5%8A%A1%E8%B0%83%E7%94%A8"><span class="nav-text">2、OpenFeign服务调用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-OpenFeign%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">2.1 OpenFeign是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-%E5%8F%AF%E4%BB%A5%E5%B9%B2%E4%BB%80%E4%B9%88"><span class="nav-text">2.2 可以干什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-OpenFeign%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">2.3 OpenFeign的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-1-%E6%96%B0%E5%BB%BAModule%EF%BC%8CFeign%E5%9C%A8%E6%B6%88%E8%B4%B9%E7%AB%AF%E4%BD%BF%E7%94%A8"><span class="nav-text">2.3.1 新建Module，Feign在消费端使用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-2-%E6%94%B9POM"><span class="nav-text">2.3.2 改POM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-3-%E6%94%B9YML"><span class="nav-text">2.3.3 改YML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-4-%E4%B8%BB%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="nav-text">2.3.4 主启动类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-5-%E4%B8%9A%E5%8A%A1%E7%B1%BB"><span class="nav-text">2.3.5 业务类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-3-6-%E6%B5%8B%E8%AF%95"><span class="nav-text">2.3.6 测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-OpenFeign%E8%B6%85%E6%97%B6%E6%8E%A7%E5%88%B6"><span class="nav-text">2.4 OpenFeign超时控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-5-OpenFeign%E6%97%A5%E5%BF%97%E6%89%93%E5%8D%B0%E5%8A%9F%E8%83%BD"><span class="nav-text">2.5 OpenFeign日志打印功能</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/11/18/SpringCloud-04/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud-04(Ribbon负载均衡/OpenFeign服务调用)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-18 21:46:45" itemprop="dateCreated datePublished" datetime="2020-11-18T21:46:45+08:00">2020-11-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SpringCloud/" itemprop="url" rel="index"><span itemprop="name">SpringCloud</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Ribbon负载均衡/OpenFeign服务调用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="SpringCloud-04"><a href="#SpringCloud-04" class="headerlink" title="SpringCloud-04"></a>SpringCloud-04</h1><h2 id="1、Ribbon负载均衡服务调用"><a href="#1、Ribbon负载均衡服务调用" class="headerlink" title="1、Ribbon负载均衡服务调用"></a>1、Ribbon负载均衡服务调用</h2><h3 id="1-1-Ribbon是什么"><a href="#1-1-Ribbon是什么" class="headerlink" title="1.1 Ribbon是什么"></a>1.1 Ribbon是什么</h3><ul>
+<li><p>Spring Cloud Ribbon 是基于Netflix Ribbon实现的一套<strong>客户端(应该在消费者端80)    负载均衡工具</strong></p>
+</li>
+<li><p>简单来说，Ribbon是Netflix发布的开源项目，主要功能是提供<strong>客户端的软件负载均衡算法和服务调用</strong>。Ribbon客户端组件提供一系列完善的配置项如连接超时，重试等。简单来说，就是配置文件中列出Load Balancer(简称LB)后面的所有机器，Ribbon会自动的帮助理你基于某种规则(如简单轮询，随机连接等)去连接这些机器。我们很容易使用Ribbon实现自定义的负载均衡算法</p>
+</li>
+<li><p>官网资料：<a target="_blank" rel="noopener" href="https://github.com/Netflix/ribbon/wiki/Getting-Started">https://github.com/Netflix/ribbon/wiki/Getting-Started</a></p>
+</li>
+<li><p>Ribbon目前也进入维护模式，未来可能会被SpringCloud的LoadBalance替换</p>
+</li>
+</ul>
+<h3 id="1-2-可以干什么"><a href="#1-2-可以干什么" class="headerlink" title="1.2 可以干什么"></a>1.2 可以干什么</h3><p>LB负载均衡(Load Balance)是什么</p>
+<ul>
+<li><p>简单来说，就是将用户请求平摊到多个服务器上，从而达到系统的HA(高可用)</p>
+</li>
+<li><p>常见的负载均衡有 软件Nginx，LVS，硬件F5等</p>
+</li>
+</ul>
+<p>Ribbon本地负载均衡客户端和Nginx服务端负载均衡区别</p>
+<ul>
+<li>Nginx是服务器负载均衡，客户端所有请求都会交给Nginx，然后由Nginx实现转发请求。即负载均衡是由服务端实现</li>
+<li>Ribbon本地负载均衡，在调用微服务接口的时候，会在注册中心上获取信息服务列表之后缓存到JVM本地，从而在本地实现RPC远程服务调用技术</li>
+</ul>
+<p><strong>集中式负载均衡LB</strong></p>
+<ul>
+<li>即在服务的消费方和提供方之间使用独立LB设施(可以是硬件，如F5，也可以是软件，如Nginx)，由该设施负责把访问请求通过某种策略转发到服务的提供方</li>
+</ul>
+<p><strong>进程内LB</strong></p>
+<ul>
+<li>将LB逻辑集成到消费方，消费方从服务注册中心获知有哪些地址可用，然后自己再从这些地址中选择出一个合适的服务器，Ribbon就属于进程内LB，它只是一个类库，集成与消费方进程，消费方通过它来获取到服务提供方的地址</li>
+</ul>
+<p><strong>Ribbon：负载均衡+RestTemplate调用</strong></p>
+<h3 id="1-3-负载均衡演示"><a href="#1-3-负载均衡演示" class="headerlink" title="1.3 负载均衡演示"></a>1.3 负载均衡演示</h3><p>Ribbon其实就是一个软负载均衡的客户端组件，他可以和其他所需请求的客户端结合使用，和Eureka结合只是其中一个实例</p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317122201421.png" alt="image-20210317122201421"></p>
+<p>Ribbon在工作时分成两步</p>
+<ul>
+<li><p>第一步先选择EurekaServer，它优先选择在同一个区域内负载较少的server</p>
+</li>
+<li><p>第二步再根据用户指定的策略，从server取到的服务注册列表中选择一个地址</p>
+</li>
+<li><p>其中Ribbon提供了多种策略，比如轮询，随机和根据响应时间加权</p>
+</li>
+</ul>
+<p>启动配置了Eureka的服务注册中心的7001和7002服务，再启动配置了Eureka的支付模块<code>cloud-provider-payment8001</code>，<code>cloud-provider-payment8002</code>，再启动配置了Eureka的消费者模块<code>cloud-consumer-order80</code></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317123909054.png" alt="image-20210317123909054"></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317123438489.png" alt="image-20210317123438489"></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317123455721.png" alt="image-20210317123455721"></p>
+<p><strong>发现此是8001和8002服务端口交替出现，此时Ribbon是轮询策略</strong></p>
+<p>但是此时查看80消费端的POM文件，发现并没有配置Ribbon依赖，但是我们负载均衡已经完成了</p>
+<p>因为<code>spring-cloud-starter-netflix-eureka-client</code>自带了<code>spring-cloud-starter-ribbon</code></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317124307620.png" alt="image-20210317124307620"></p>
+<h3 id="1-4-RestTemplate的使用"><a href="#1-4-RestTemplate的使用" class="headerlink" title="1.4 RestTemplate的使用"></a>1.4 RestTemplate的使用</h3><p><img src="/2020/11/18/SpringCloud-04/image-20210317125020829.png" alt="image-20210317125020829"></p>
+<p><code>getForObject</code>方法/<code>getForEntity</code>方法</p>
+<p>如果需要详细信息就使用<code>getForEntity</code>方法，如果只需要返回一个Json串，就使用<code>getForObject</code>方法</p>
+<pre><code class="java">//返回对象为响应体中数据转化成的对象，基本可以理解为Json
+@GetMapping(&quot;/consumer/payment/get/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPayment(@PathVariable(&quot;id&quot;) Long id)&#123;
+        return restTemplate.getForObject(PAYMENT_URL+&quot;/payment/get/&quot;+id,CommonResult.class);
+    &#125;
+
+  
+//返回对象为ResponseEntity对象，包含响应中的一些重要信息，比如响应头，响应状态码，响应体等
+@GetMapping(&quot;/consumer/payment/getForEntity/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPayment2(@PathVariable(&quot;id&quot;) Long id)&#123;
+
+        ResponseEntity&lt;CommonResult&gt; entity = restTemplate.getForEntity(PAYMENT_URL + &quot;/payment/get/&quot; + id, CommonResult.class);
+        if (entity.getStatusCode().is2xxSuccessful())&#123;
+            return entity.getBody();
+        &#125;else &#123;
+            return new CommonResult&lt;&gt;(444,&quot;操作失败&quot;);
+        &#125;
+    &#125;
+</code></pre>
+<p>postForObject/postForEntity</p>
+<pre><code class="java">@GetMapping(&quot;/consumer/payment/create&quot;)
+    public CommonResult&lt;Payment&gt; create(Payment payment)&#123;
+        return restTemplate.postForObject(PAYMENT_URL+&quot;/payment/create&quot;,payment,CommonResult.class);
+//        return restTemplate.postForEntity(PAYMENT_URL+&quot;/payment/create&quot;,payment,CommonResult.class).getBody();
+    &#125;
+</code></pre>
+<h3 id="1-5-Ribbon核心组件IRule"><a href="#1-5-Ribbon核心组件IRule" class="headerlink" title="1.5 Ribbon核心组件IRule"></a>1.5 Ribbon核心组件IRule</h3><p>IRule：根据特定算法从服务列表中选取一个要访问的服务</p>
+<ul>
+<li><code>com.netflix.loadbalancer.RoundRobinRule</code>：轮询(默认)</li>
+<li><code>com.netflix.loadbalancer.RandomRule</code>：随机</li>
+<li><code>com.netflix.loadbalancer.RetryRule</code>：先按照RoundRobinRule的策略获取服务,如果获取服务失败则在指定时间内进行重试,获取可用的服务</li>
+<li><code>WeightedResponseTimeRule</code>：对RoundRobinRule的扩展,响应速度越快的实例选择权重越多大,越容易被选择</li>
+<li><code>BestAvailableRule</code>：会先过滤掉由于多次访问故障而处于断路器跳闸状态的服务,然后选择一个并发量最小的服务</li>
+<li><code>AvailabilityFilteringRule</code>：先过滤掉故障实例,再选择并发较小的实例</li>
+<li><code>ZoneAvoidanceRule</code>：默认规则,复合判断server所在区域的性能和server的可用性选择服务器</li>
+</ul>
+<p><strong>如何替换服务</strong></p>
+<ul>
+<li><p>修改<code>cloud-consumer-order80</code></p>
+</li>
+<li><p>注意：官方文档明确给出警告：Ribbon自定义配置类不能放在<code>@ComponentScan</code>所扫描的当前包下以及子包下，否则我们自定义的这个配置类就会被所有的Ribbon客户端所共享，达不到特殊化定制的目的</p>
+</li>
+<li><p>通俗来讲，每一个启动类都有<code>@SpringBootApplication</code>注解，而此注解上有<code>@ComponentScan</code>注解，所以不能放在主启动类的当前包下以及子包下</p>
+</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317134013468.png" alt="image-20210317134013468"></p>
+<ul>
+<li>所以，既然不能在主启动的包下，那就新建一个包</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317134240134.png" alt="image-20210317134240134"></p>
+<ul>
+<li>上面包下新建MySelfRule规则类</li>
+</ul>
+<pre><code class="java">package com.practice.myrule;
+
+import com.netflix.loadbalancer.IRule;
+import com.netflix.loadbalancer.RoundRobinRule;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+/**
+ * 自定义负载均衡路由规则类
+ * */
+@Configuration
+public class MySelfRule &#123;
+    @Bean
+    public IRule myRule() &#123;
+        // 定义为随机
+        return new RandomRule();
+    &#125;
+
+&#125;
+</code></pre>
+<ul>
+<li>在主启动类上添加<code>@RibbonClient</code></li>
+</ul>
+<pre><code class="java">package com.practice.springcloud;
+
+import com.practice.myrule.MySelfRule;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
+
+@SpringBootApplication
+@EnableEurekaClient
+@RibbonClient(name = &quot;CLOUD-PAYMENT-SERVICE&quot;, configuration = MySelfRule.class)
+public class OrderMain80 &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(OrderMain80.class,args);
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>测试，可以看出8001和8002端口随机变化，不会跟之前默认轮询一样互相切换</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317144004875.png" alt="image-20210317144004875"></p>
+<h3 id="1-6-负载均衡算法"><a href="#1-6-负载均衡算法" class="headerlink" title="1.6 负载均衡算法"></a>1.6 负载均衡算法</h3><h4 id="1-6-1-原理"><a href="#1-6-1-原理" class="headerlink" title="1.6.1 原理"></a>1.6.1 原理</h4><p>负载均衡算法：rest接口第几次请求数%服务器集群总数量 = 实际调用服务器位置下标，每次服务重启动后rest接口计数从1开始</p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317144510886.png" alt="image-20210317144510886"></p>
+<h4 id="1-6-2-手写负载算法"><a href="#1-6-2-手写负载算法" class="headerlink" title="1.6.2 手写负载算法"></a>1.6.2 手写负载算法</h4><ul>
+<li><p>原理+JUC （CAS+自旋锁）</p>
+</li>
+<li><p>7001/7002集群启动</p>
+</li>
+<li><p>8001/8002微服务改造，都修改Controller</p>
+</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317152206578.png" alt="image-20210317152206578"></p>
+<pre><code class="java">@GetMapping(value = &quot;/payment/lb&quot;)
+    public String getPaymentLB() &#123;
+        return serverPort;
+    &#125;
+</code></pre>
+<ul>
+<li><p>80订单微服务改造</p>
+<ol>
+<li><code>ApplicationContextBean</code>去掉注解<code>@LoadBalanced</code></li>
+</ol>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317152422861.png" alt="image-20210317152422861"></p>
+<ol start="2">
+<li>LoadBalancer接口</li>
+</ol>
+<pre><code class="java">package com.practice.springcloud.lb;
+
+import org.springframework.cloud.client.ServiceInstance;
+
+import java.util.List;
+
+/**
+ * 获取存活的服务实例列表
+ * */
+public interface LoadBalancer &#123;
+
+    ServiceInstance instance(List&lt;ServiceInstance&gt; serviceInstances);
+&#125;
+</code></pre>
+<ol start="3">
+<li>MyLB</li>
+</ol>
+<pre><code class="java">package com.practice.springcloud.lb;
+
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+
+/**
+ * Ribbon手写轮询算法
+ * */
+@Component
+public class MyLB implements  LoadBalancer&#123;
+
+
+    private AtomicInteger atomicInteger = new AtomicInteger(0);
+
+    public final int getAndIncrement()&#123;
+        int current;
+        int next;
+
+        do &#123;
+            current = this.atomicInteger.getAndIncrement();
+            // 超过最大值,为0,重新计数 2147483647 = Integer.MAX_VALUE
+            next = current &gt;= Integer.MAX_VALUE ? 0 : current + 1;
+            // 自旋锁
+        &#125;while (this.atomicInteger.compareAndSet(current,next));
+        System.out.println(&quot;****第几次访问，次数next: &quot;+next);
+        return next;
+    &#125;
+
+    /*
+    * 负载均衡算法:rest接口第几次请求数%服务器集群总数量=实际调用服务器位置下标,每次服务重启动后rest接口计数从1开始.
+    * */
+    @Override
+    public ServiceInstance instance(List&lt;ServiceInstance&gt; serviceInstances) &#123;
+
+        int index = getAndIncrement() % serviceInstances.size();
+
+
+        return serviceInstances.get(index);
+    &#125;
+&#125;
+</code></pre>
+<ol start="4">
+<li>OrderController</li>
+</ol>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.entities.CommonResult;
+import com.practice.springcloud.entities.Payment;
+import com.practice.springcloud.lb.LoadBalancer;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
+
+import javax.annotation.Resource;
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@Slf4j
+public class OrderController &#123;
+
+    /**
+     * 通过在eureka上注册过的微服务名称调用
+     * */
+//    public static final String PAYMENT_URL = &quot;http://localhost:8001&quot;;
+    public static final String PAYMENT_URL = &quot;http://CLOUD-PAYMENT-SERVICE&quot;;
+    @Resource
+    private RestTemplate restTemplate;
+
+    /**
+     * 自定义负载均衡规则
+     * */
+    @Resource
+    private LoadBalancer loadBalancer;
+    @Resource
+    private DiscoveryClient discoveryClient;
+
+    @GetMapping(&quot;/consumer/payment/create&quot;)
+    public CommonResult&lt;Payment&gt; create(Payment payment)&#123;
+        return restTemplate.postForObject(PAYMENT_URL+&quot;/payment/create&quot;,payment,CommonResult.class);
+//        return restTemplate.postForEntity(PAYMENT_URL+&quot;/payment/create&quot;,payment,CommonResult.class).getBody();
+    &#125;
+
+    @GetMapping(&quot;/consumer/payment/get/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPayment(@PathVariable(&quot;id&quot;) Long id)&#123;
+        return restTemplate.getForObject(PAYMENT_URL+&quot;/payment/get/&quot;+id,CommonResult.class);
+    &#125;
+
+    @GetMapping(&quot;/consumer/payment/getForEntity/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPayment2(@PathVariable(&quot;id&quot;) Long id)&#123;
+
+        ResponseEntity&lt;CommonResult&gt; entity = restTemplate.getForEntity(PAYMENT_URL + &quot;/payment/get/&quot; + id, CommonResult.class);
+        if (entity.getStatusCode().is2xxSuccessful())&#123;
+            return entity.getBody();
+        &#125;else &#123;
+            return new CommonResult&lt;&gt;(444,&quot;操作失败&quot;);
+        &#125;
+    &#125;
+
+    /**
+     * 路由规则: 轮询
+     * http://localhost/consumer/payment/payment/lb
+     */
+    @GetMapping(value = &quot;/consumer/payment/lb&quot;)
+    public String getPaymentLB()&#123;
+        List&lt;ServiceInstance&gt; instances = discoveryClient.getInstances(&quot;CLOUD-PAYMENT-SERVICE&quot;);
+        if (instances == null || instances.size() &lt;= 0)&#123;
+            return null;
+        &#125;
+
+        ServiceInstance serviceInstance = loadBalancer.instance(instances);
+        URI uri = serviceInstance.getUri();
+
+        return restTemplate.getForObject(uri+&quot;/payment/lb&quot;,String.class);
+
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p>测试，输入<a target="_blank" rel="noopener" href="http://localhost/consumer/payment/lb%E5%9C%B0%E5%9D%80%EF%BC%8C8001%E5%92%8C8002%E4%BA%A4%E6%9B%BF%E5%87%BA%E7%8E%B0">http://localhost/consumer/payment/lb地址，8001和8002交替出现</a></p>
+</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317155440728.png" alt="image-20210317155440728"></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210317160604862.png" alt="image-20210317160604862"></p>
+<h2 id="2、OpenFeign服务调用"><a href="#2、OpenFeign服务调用" class="headerlink" title="2、OpenFeign服务调用"></a>2、OpenFeign服务调用</h2><h3 id="2-1-OpenFeign是什么"><a href="#2-1-OpenFeign是什么" class="headerlink" title="2.1 OpenFeign是什么"></a>2.1 OpenFeign是什么</h3><ul>
+<li>Feign是一个声明式WebService客户端。使用Feign能让编写WebService客户端更加简单。</li>
+<li>它的使用方法是定义一个服务接口然后在上面添加注解。Feign也支持可插拔式的编码器和解码器。SpringCloud对Feign进行了封装，使其支持了SpringMVC标准注解和HttpMessageConverters。Feign可以与Eureka和Ribbon组合使用以支持负载均衡</li>
+<li>Feign是一个声明式的Web服务客户端，让编写Web服务客户端变的非常容易，只需要创建一个接口并在接口上添加注解即可</li>
+</ul>
+<h3 id="2-2-可以干什么"><a href="#2-2-可以干什么" class="headerlink" title="2.2 可以干什么"></a>2.2 可以干什么</h3><ul>
+<li>Feign旨在使编写Java Http客户端变的更容易</li>
+<li>前面在使用Ribbon+RestTemplate时，利用RestTemplate对Http请求的封装处理，形成了一套模板化的调用方法。但是在实际开发中，由于对服务依赖的调用可能不止一处，<strong>往往一个接口会被多处调用，所以通常会针对每个微服务自行封装一些客户端来包装这些依赖服务的调用</strong>，所以，Feign在此基础上做了进一步封装，由他来帮助我们定义和实现依赖服务接口的定义。在Feign的实现下，**我们只需要创建一个接口并使用注解的方式来配置它(以前是Dao接口上面标注Mapper注解，现在是一个微服务接口上面标注一个Feign注解即可)**，即可完成对服务提供方的接口绑定，简化了使用Spring Cloud Ribbon时，自动封装服务调用客户端的开发量</li>
+</ul>
+<p><strong>Feign集成了Ribbon</strong></p>
+<ul>
+<li>利用Ribbon维护了Payment的服务列表信息，并且通过轮询实现了客户端的负载均衡。而与Ribbon不同的是，通过Feign只需要定义服务绑定接口且以声明式的方法，优雅而简单的实现了服务调用</li>
+</ul>
+<p>Feign和OpenFeign两者区别</p>
+<ul>
+<li>Feign<ul>
+<li>Feign是Spring Cloud组件中的一个轻量级RESTful的Http服务客户端，Feign内置了Ribbon，用来做客户端负载均衡，去调用服务注册中心的服务，Feign的使用方法是：使用Feign的注解定义接口，调用这个接口，就可以调用服务注册中心的服务</li>
+</ul>
+</li>
+<li>OpenFeign<ul>
+<li>OpenFeign是SpringCloud在Feign基础上支持了SpringMVC的注解，如@RequestMapping等等。OpenFeign的@FeignClient可以解析SpringMVC的@RequestMapping注解下的接口，并通过动态代理的方式产生实现类，实现类中做负载均衡并调用其他服务</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-OpenFeign的使用"><a href="#2-3-OpenFeign的使用" class="headerlink" title="2.3 OpenFeign的使用"></a>2.3 OpenFeign的使用</h3><ul>
+<li>OpenFeign替换了Ribbon+RestTemplate</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318131350182.png" alt="image-20210318131350182"></p>
+<ul>
+<li>接口+注解   微服务调用接口+@FeginClient</li>
+</ul>
+<h4 id="2-3-1-新建Module，Feign在消费端使用"><a href="#2-3-1-新建Module，Feign在消费端使用" class="headerlink" title="2.3.1 新建Module，Feign在消费端使用"></a>2.3.1 新建Module，Feign在消费端使用</h4><p><img src="/2020/11/18/SpringCloud-04/image-20210318131802389.png" alt="image-20210318131802389"></p>
+<h4 id="2-3-2-改POM"><a href="#2-3-2-改POM" class="headerlink" title="2.3.2 改POM"></a>2.3.2 改POM</h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud2020&lt;/artifactId&gt;
+        &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;cloud-consumer-feign-order80&lt;/artifactId&gt;
+    &lt;description&gt;订单消费者之feign&lt;/description&gt;
+
+    &lt;dependencies&gt;
+        &lt;!--openfeign--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--eureka client--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+            &lt;artifactId&gt;cloud-api-commons&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--监控--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--热部署--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+
+&lt;/project&gt;
+</code></pre>
+<h4 id="2-3-3-改YML"><a href="#2-3-3-改YML" class="headerlink" title="2.3.3 改YML"></a>2.3.3 改YML</h4><pre><code class="yml">server:
+  port: 80
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+</code></pre>
+<h4 id="2-3-4-主启动类"><a href="#2-3-4-主启动类" class="headerlink" title="2.3.4 主启动类"></a>2.3.4 主启动类</h4><ul>
+<li>@EnableFeignClient</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableFeignClients
+public class OrderFeignMain80 &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(OrderFeignMain80.class,args);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-5-业务类"><a href="#2-3-5-业务类" class="headerlink" title="2.3.5 业务类"></a>2.3.5 业务类</h4><p>业务逻辑接口+<strong>@FeignClient配置调用provider服务</strong></p>
+<ul>
+<li>新建PaymentFeignService接口并新增注解@FeignClient</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.service;
+
+
+import com.practice.springcloud.entities.CommonResult;
+import com.practice.springcloud.entities.Payment;
+import feign.Param;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@Component
+@FeignClient(value = &quot;CLOUD-PAYMENT-SERVICE&quot;)
+public interface PaymentFeignService &#123;
+
+    @GetMapping(value = &quot;/payment/get/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPaymentById(@PathVariable(&quot;id&quot;) Long id);
+&#125;
+</code></pre>
+<ul>
+<li>控制层Controller</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.entities.CommonResult;
+import com.practice.springcloud.entities.Payment;
+import com.practice.springcloud.service.PaymentFeignService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@RestController
+@Slf4j
+public class OrderFeignController &#123;
+
+    @Resource
+    private PaymentFeignService paymentFeignService;
+
+    @GetMapping(value = &quot;/consumer/payment/get/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPaymentById(@PathVariable(&quot;id&quot;) Long id)&#123;
+
+        return paymentFeignService.getPaymentById(id);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="2-3-6-测试"><a href="#2-3-6-测试" class="headerlink" title="2.3.6 测试"></a>2.3.6 测试</h4><ul>
+<li>启动Eureka集群7001和7002</li>
+<li>启动支付服务8001和8002</li>
+<li>启动消费模块Feign80</li>
+<li>输入<a target="_blank" rel="noopener" href="http://localhost/consumer/payment/get/31">http://localhost/consumer/payment/get/31</a></li>
+<li>8001和8002轮询切换，说明Feign中自带负载均衡配置项</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318135443770.png" alt="image-20210318135443770"></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318135427320.png" alt="image-20210318135427320"></p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318140303175.png" alt="image-20210318140303175"></p>
+<h3 id="2-4-OpenFeign超时控制"><a href="#2-4-OpenFeign超时控制" class="headerlink" title="2.4 OpenFeign超时控制"></a>2.4 OpenFeign超时控制</h3><ul>
+<li>设置超时，8001服务提供方写暂停程序</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318144018677.png" alt="image-20210318144018677"></p>
+<pre><code class="java">@GetMapping(value = &quot;/payment/feign/timeout&quot;)
+    public String paymentFeignTimeout()&#123;
+        //暂停几秒钟线程
+        try &#123;
+            TimeUnit.SECONDS.sleep(3);
+        &#125;catch (InterruptedException e)&#123;
+            e.printStackTrace();
+        &#125;
+        return serverPort;
+    &#125;
+</code></pre>
+<ul>
+<li>80服务消费方添加超时方法PaymentFeignService</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318144222327.png" alt="image-20210318144222327"></p>
+<pre><code class="java">@Component
+@FeignClient(value = &quot;CLOUD-PAYMENT-SERVICE&quot;)
+public interface PaymentFeignService &#123;
+
+    @GetMapping(value = &quot;/payment/get/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPaymentById(@PathVariable(&quot;id&quot;) Long id);
+
+    @GetMapping(value = &quot;/payment/feign/timeout&quot;)
+    public String paymentFeignTimeout();
+&#125;
+</code></pre>
+<ul>
+<li>80服务消费方添加超时方法OrderFeignController</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318144327033.png" alt="image-20210318144327033"></p>
+<pre><code class="java">@RestController
+@Slf4j
+public class OrderFeignController &#123;
+
+    @Resource
+    private PaymentFeignService paymentFeignService;
+
+    @GetMapping(value = &quot;/consumer/payment/get/&#123;id&#125;&quot;)
+    public CommonResult&lt;Payment&gt; getPaymentById(@PathVariable(&quot;id&quot;) Long id)&#123;
+
+        return paymentFeignService.getPaymentById(id);
+    &#125;
+
+    @GetMapping(value = &quot;/consumer/payment/feign/timeout&quot;)
+    public String paymentFeignTimeout()&#123;
+        //openfeign-ribbon，客户端一般默认等待1秒钟
+        return paymentFeignService.paymentFeignTimeout();
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>测试：<a target="_blank" rel="noopener" href="http://localhost/consumer/payment/feign/timeout">http://localhost/consumer/payment/feign/timeout</a></li>
+<li>8001服务提供者访问没问题</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318144955210.png" alt="image-20210318144955210"></p>
+<ul>
+<li>服务消费方测试超时</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318145050463.png" alt="image-20210318145050463"></p>
+<ul>
+<li>OpenFeign默认等待1秒钟，超过后报错</li>
+<li>OpenFeign客户端默认只等待一秒钟，但是服务端处理需要超过1秒钟，导致Feign客户端不想等待，直接返回报错，为了避免这样的情况，有时候我们需要设置Feign客户端的超时控制</li>
+<li>在客户端80的yml文件中设置超时控制</li>
+</ul>
+<pre><code class="yml">server:
+  port: 80
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+# 设置feign客户端超时时间(OpenFeign默认支持ribbon)
+ribbon:
+  # 指的是建立连接后从服务器读取到可用资源所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接所用的时间,适用于网络状态正常的情况下,两端连接所用的时间
+  ConnectTimeout: 5000
+</code></pre>
+<ul>
+<li>这样客户端80访问就没有什么问题了</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318145705330.png" alt="image-20210318145705330"></p>
+<h3 id="2-5-OpenFeign日志打印功能"><a href="#2-5-OpenFeign日志打印功能" class="headerlink" title="2.5 OpenFeign日志打印功能"></a>2.5 OpenFeign日志打印功能</h3><ul>
+<li>Feign提供了日志打印功能，我们可以通过配置来调整日志级别，从而了解Feign中Http请求的细节，说白了就是<strong>对Feign接口的调用情况进行监控和输出</strong></li>
+</ul>
+<p>OpenFeign的日志级别</p>
+<ul>
+<li>NONE：默认的，不显示任何日志；</li>
+<li>BASIC：仅记录请求方法，URL，响应状态码以及执行时间</li>
+<li>HEADERS：除了BASIC中定义的信息之外，还有请求和响应的头信息</li>
+<li>FULL：除了HEADERS中定义的信息之外，还有请求和响应的正文及元数据</li>
+</ul>
+<p>配置日志Bean，在80服务下配置</p>
+<pre><code class="java">@Configuration
+public class FeignConfig &#123;
+
+    /**
+     * feignClient配置日志级别
+     *
+     * @return
+     */
+    @Bean
+    public Logger.Level feignLoggerLevel() &#123;
+        // 请求和响应的头信息,请求和响应的正文及元数据
+        return Logger.Level.FULL;
+    &#125;
+&#125;
+</code></pre>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318151027980.png" alt="image-20210318151027980"></p>
+<ul>
+<li>YML文件中需要开启日志的Feign客户端</li>
+</ul>
+<pre><code class="yml">server:
+  port: 80
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+# 设置feign客户端超时时间(OpenFeign默认支持ribbon)
+ribbon:
+  # 指的是建立连接后从服务器读取到可用资源所用的时间
+  ReadTimeout: 5000
+  #指的是建立连接所用的时间,适用于网络状态正常的情况下,两端连接所用的时间
+  ConnectTimeout: 5000
+logging:
+  level:
+    # feign日志以什么级别监控哪个接口
+    com.practice.springcloud.service.PaymentFeignService: debug
+</code></pre>
+<ul>
+<li>测试</li>
+</ul>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318151646862.png" alt="image-20210318151646862"></p>
+<p>后台日志查看</p>
+<p><img src="/2020/11/18/SpringCloud-04/image-20210318151632185.png" alt="image-20210318151632185"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SpringCloud/" rel="tag"># SpringCloud</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/17/SpringCloud-03/" rel="prev" title="SpringCloud-03(Zookeeper/Consul服务注册中心)">
+                  <i class="fa fa-chevron-left"></i> SpringCloud-03(Zookeeper/Consul服务注册中心)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/19/SpringCloud-05/" rel="next" title="SpringCloud-05(Hystrix服务熔断，降级)">
+                  SpringCloud-05(Hystrix服务熔断，降级) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

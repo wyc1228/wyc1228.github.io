@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="MyBatis基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="MyBatis基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/setting%E8%AE%BE%E7%BD%AE.jpg">
+<meta property="article:published_time" content="2020-10-03T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-08T14:25:40.122Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/setting%E8%AE%BE%E7%BD%AE.jpg">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>MyBatis基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">MyBatis基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-MyBatis%E7%9A%84%E5%85%A5%E9%97%A8%E7%A8%8B%E5%BA%8F"><span class="nav-text">1.2 MyBatis的入门程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3MyBatis%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%BC%8F%E7%BC%96%E7%A8%8B"><span class="nav-text">1.3MyBatis的接口式编程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-MyBatis%E5%85%A8%E5%B1%80%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">1.4 MyBatis全局配置文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#properties-%E5%B1%9E%E6%80%A7"><span class="nav-text">properties 属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#settings%E8%AE%BE%E7%BD%AE"><span class="nav-text">settings设置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#typeAliases%E5%88%AB%E5%90%8D%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-text">typeAliases别名处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#typeHandlers%E7%B1%BB%E5%9E%8B%E5%A4%84%E7%90%86%E5%99%A8"><span class="nav-text">typeHandlers类型处理器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#plugins%E6%8F%92%E4%BB%B6%E6%9C%BA%E5%88%B6"><span class="nav-text">plugins插件机制</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#environments%E7%8E%AF%E5%A2%83"><span class="nav-text">environments环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#databaseIdProvider%E7%8E%AF%E5%A2%83"><span class="nav-text">databaseIdProvider环境</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#mapper%E6%98%A0%E5%B0%84"><span class="nav-text">mapper映射</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MyBatis基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-03 21:46:45" itemprop="dateCreated datePublished" datetime="2020-10-03T21:46:45+08:00">2020-10-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">MyBatis基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="MyBatis基本使用"><a href="#MyBatis基本使用" class="headerlink" title="MyBatis基本使用"></a>MyBatis基本使用</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li><p>MyBatis 是支持定制化 SQL、存储过程以及高级映射的优秀的<strong>持久层框架</strong>。</p>
+</li>
+<li><p>MyBatis 避免了几乎所有的 JDBC 代码和手动设置参数以及获取结果集。</p>
+</li>
+<li><p>MyBatis可以使用简单的XML或注解用于配置和原始映射，将接口和Java的POJO（Plain Old Java Objects，普通的Java对象）映射成数据库中的记录</p>
+</li>
+<li><p>MyBatis网址： <a target="_blank" rel="noopener" href="https://github.com/mybatis/mybatis-3/">https://github.com/mybatis/mybatis-3/</a></p>
+</li>
+</ul>
+<h3 id="1-2-MyBatis的入门程序"><a href="#1-2-MyBatis的入门程序" class="headerlink" title="1.2 MyBatis的入门程序"></a>1.2 MyBatis的入门程序</h3><p>前提：有sql数据库测试表，有<strong>对应的javaBean</strong></p>
+<p><strong>首先</strong>：导入MyBatis的jar包：<code>mybatis-3.4.1.jar</code>，数据库的连接jar包<code>mysql-connector-java-5.1.37-bin.jar</code>，然后根据官方文档</p>
+<p><strong>第一步</strong>：创建MyBatis全局配置文件<code>mybatis-config.xml</code></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+ PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+ &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    &lt;!-- 配置 mybatis 的环境 --&gt;
+    &lt;environments default=&quot;mysql&quot;&gt;
+        &lt;!-- 配置 mysql 的环境 --&gt;
+        &lt;environment id=&quot;mysql&quot;&gt;
+            &lt;!-- 配置 事务类型 --&gt;
+            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
+            &lt;!-- 配置连接数据库的信息：用的是数据源(连接池) --&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;com.mysql.jdbc.Driver&quot; /&gt;
+                &lt;property name=&quot;url&quot; value=&quot;jdbc:mysql://localhost:3306/mybatis&quot; /&gt;
+                &lt;property name=&quot;username&quot; value=&quot;root&quot; /&gt;
+                &lt;property name=&quot;password&quot; value=&quot;123456&quot; /&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    &lt;!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 --&gt;
+    &lt;mappers&gt;
+        &lt;!--单个映射，必须写全AccountDao.xml--&gt;
+        &lt;!--&lt;mapper resource=&quot;com/review/dao/EmployeeMapper.xml&quot;&gt;&lt;/mapper&gt;--&gt;
+        &lt;!--批量注册--&gt;
+        &lt;package name=&quot;com.review.dao&quot;/&gt;
+        &lt;!--单个映射，但是引入的是接口名，要保证映射文件与接口名一致--&gt;
+        &lt;!--&lt;mapper class=&quot;com.review.dao.AccountDao&quot;/&gt;--&gt;
+    &lt;/mappers&gt;
+&lt;/configuration&gt;
+</code></pre>
+<p><strong>第二步</strong>：创建SQL映射文件<code>EmployeeMapper.xml</code></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+ PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+ &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.review.mybatis.EmployeeMapper&quot;&gt;
+&lt;!-- 
+namespace:名称空间;指定为接口全类名名称
+id：唯一标识
+resultType：返回值类型
+#&#123;id&#125;：从传递过来的参数中取出id值
+
+public Employee getEmpById(Integer id);
+ --&gt;
+    &lt;select id=&quot;selectEmp&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p><strong>第三步</strong>：编写测试代码</p>
+<pre><code class="java">/**
+     * 1、根据xml配置文件（全局配置文件）创建一个SqlSessionFactory对象 有数据源一些运行环境信息
+     * 2、sql映射文件；配置了每一个sql，以及sql的封装规则等。
+     * 3、将sql映射文件注册在全局配置文件中
+     * 4、写代码：
+     *         1）、根据全局配置文件得到SqlSessionFactory；
+     *         2）、使用sqlSession工厂，获取到sqlSession对象使用他来执行增删改查
+     *             一个sqlSession就是代表和数据库的一次会话，用完关闭
+     *         3）、使用sql的唯一标志来告诉MyBatis执行哪个sql。sql都是保存在sql映射文件中的。
+     *
+     * @throws IOException
+     */
+    @Test
+    public void test() throws IOException &#123;
+        String resource = &quot;mybatis-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory= new SqlSessionFactoryBuilder().build(inputStream);
+
+        //获取一个SQLSession实例,能直接执行已经映射的sql语句
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try &#123;
+            //传入的参数，第一个为唯一标识符，第二个为需要的参数
+            //唯一标识符是Mapper映射文件需要执行的sql语句的配置文件的id，单独传入id也可，为了防止id重复最好使用namespace+id，这样就能保证是唯一标识符
+            //namespace命名空间在Employee中设置为com.review.mybatis.EmployeeMapper，select的id为selectEmp
+            Employee employee = openSession.selectOne(&quot;com.review.mybatis.EmployeeMapper.selectEmp&quot;, 1);
+            System.out.println(employee);
+        &#125;finally &#123;
+            openSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>至此，一个简单的MyBatis入门程序结束</p>
+<h3 id="1-3MyBatis的接口式编程"><a href="#1-3MyBatis的接口式编程" class="headerlink" title="1.3MyBatis的接口式编程"></a>1.3MyBatis的接口式编程</h3><p>将入门程序转换为接口式编程</p>
+<p><strong>首先</strong>，创建一个Dao接口，接口名称为<code>EmployeeMapper</code></p>
+<pre><code class="java">import com.review.mybatis.bean.Employee;
+
+public interface EmployeeMapper &#123;
+    public Employee getEmpById(Integer id);
+&#125;
+</code></pre>
+<p>MyBatis提供了一个功能：接口与配置文件动态绑定，</p>
+<p>之前EmployeeMapper配置文件的namespace可以随意写，现在指定为接口的全类名，此时MyBatis就知道此接口和配置文件绑定</p>
+<p>然后此接口中有一个方法根据Id查询员工，而配置文件中select标签的功能也是按照Id查询员工，所以可以将select的id值和接口的方法名绑定</p>
+<pre><code class="java">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+ PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+ &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.review.mybatis.dao.EmployeeMapper&quot;&gt;
+&lt;!-- 
+namespace:名称空间;指定为接口全类名名称
+id：唯一标识
+resultType：返回值类型
+#&#123;id&#125;：从传递过来的参数中取出id值
+
+public Employee getEmpById(Integer id);
+ --&gt;
+    &lt;select id=&quot;getEmpById&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">/**
+ * 1、接口式编程
+ *     原生：        Dao        ====&gt;  DaoImpl
+ *     mybatis：    Mapper    ====&gt;  xxMapper.xml
+ *
+ * 2、SqlSession代表和数据库的一次会话；用完必须关闭；
+ * 3、SqlSession和connection一样她都是非线程安全。每次使用都应该去获取新的对象。
+ * 4、mapper接口没有实现类，但是mybatis会为这个接口生成一个代理对象。
+ *         （将接口和xml进行绑定）
+ *         EmployeeMapper empMapper =    sqlSession.getMapper(EmployeeMapper.class);
+ * 5、两个重要的配置文件：
+ *         mybatis的全局配置文件：包含数据库连接池信息，事务管理器信息等...系统运行环境信息
+ *         sql映射文件：保存了每一个sql语句的映射信息：
+ *                     将sql抽取出来。
+ *
+ */
+//前三步为固定代码，可以抽取为一个方法
+public SqlSessionFactory getSqlSessionFactory() throws IOException &#123;
+        //1.读取配置文件
+        InputStream in = Resources.getResourceAsStream(&quot;mybatis-config.xml&quot;);
+        //2.创建 SqlSessionFactory 的构建者对象
+        SqlSessionFactoryBuilder builder = new SqlSessionFactoryBuilder();
+        //3.使用构建者创建工厂对象 SqlSessionFactory
+        SqlSessionFactory factory = builder.build(in);
+        //4.返回工厂对象 SqlSessionFactory
+        return factory;
+    &#125;
+
+    @Test
+    public void test01() throws IOException &#123;
+        // 1、获取sqlSessionFactory对象
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        // 2、使用SqlSessionFactory获取sqlSession对象
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try &#123;
+            // 3、获取接口的实现类对象
+            //会为接口自动的创建一个代理对象，代理对象去执行增删改查方法
+            EmployeeMapper mapper = openSession.getMapper(EmployeeMapper.class);
+            //使用接口的getEmpById查询员工
+            Employee employee = mapper.getEmpById(1);
+            //打印mapper接口的实现类,可以看出proxy是代理对象
+            System.out.println(mapper.getClass());//class com.sun.proxy.$Proxy8
+            System.out.println(employee);
+        &#125; finally &#123;
+            openSession.close();
+        &#125;
+
+    &#125;
+</code></pre>
+<p><strong>注意：</strong> </p>
+<ol>
+<li>SqlSession 的实例不是线程安全的，因此是不能被共享的。</li>
+<li>SqlSession每次使用完成后需要正确关闭，这个关闭操作是必须的</li>
+<li>SqlSession可以直接调用方法的id进行数据库操作，但是我们一般还是推荐使用SqlSession获取到Dao接口的代理类，执行代理对象的方法，可以更安全的进行类型检查操作</li>
+</ol>
+<h3 id="1-4-MyBatis全局配置文件"><a href="#1-4-MyBatis全局配置文件" class="headerlink" title="1.4 MyBatis全局配置文件"></a>1.4 MyBatis全局配置文件</h3><p>每一个属性配置都有顺序，你可以不配置，但是顺序一定要对</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;configuration&gt;&lt;!--配置--&gt;
+    &lt;properties/&gt;&lt;!--属性--&gt;
+    &lt;settings/&gt;&lt;!--设置--&gt;
+    &lt;typeAliases/&gt;&lt;!--类型别名--&gt; 
+    &lt;typeHandlers/&gt;&lt;!--类型处理器--&gt; 
+    &lt;objectFactory/&gt;&lt;!--对象工厂--&gt;  
+    &lt;plugins/&gt;&lt;!--插件--&gt; 
+    &lt;environments&gt;&lt;!--配置环境--&gt; 
+        &lt;environment&gt;&lt;!--环境变量--&gt; 
+        &lt;transactionManager/&gt;&lt;!--事务管理器--&gt; 
+            &lt;dataSource/&gt;&lt;!--数据源--&gt; 
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    &lt;databaseidProvider/&gt;&lt;!--数据库厂商标识--&gt;  
+    &lt;mappers/&gt;&lt;!--映射器--&gt; 
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="properties-属性"><a href="#properties-属性" class="headerlink" title="properties 属性"></a>properties 属性</h4><ul>
+<li>mybatis可以使用properties来引入外部properties配置文件的内容；</li>
+<li>resource：引入类路径下的资源</li>
+<li>url：引入网络路径或者磁盘路径下的资源</li>
+</ul>
+<p>创建数据库配置文件<code>dbconfig.properties</code></p>
+<pre><code class="properties">jdbc.driver=com.mysql.jdbc.Driver
+jdbc.url=jdbc:mysql://localhost:3306/mybatis
+jdbc.username=root
+jdbc.password=123456
+</code></pre>
+<p>全局配置文件<code>mybatis-config.xml</code></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE configuration
+ PUBLIC &quot;-//mybatis.org//DTD Config 3.0//EN&quot;
+ &quot;http://mybatis.org/dtd/mybatis-3-config.dtd&quot;&gt;
+&lt;configuration&gt;
+    
+    &lt;properties resource=&quot;dbconfig.properties&quot;&gt;&lt;/properties&gt;
+    
+    &lt;environments default=&quot;development&quot;&gt;
+        &lt;environment id=&quot;development&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;$&#123;jdbc.driver&#125;&quot; /&gt;
+                &lt;property name=&quot;url&quot; value=&quot;$&#123;jdbc.url&#125;&quot; /&gt;
+                &lt;property name=&quot;username&quot; value=&quot;$&#123;jdbc.username&#125;&quot; /&gt;
+                &lt;property name=&quot;password&quot; value=&quot;$&#123;jdbc.password&#125;&quot; /&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+    &lt;!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 --&gt;
+    &lt;mappers&gt;
+        &lt;mapper resource=&quot;EmployeeMapper.xml&quot; /&gt;
+    &lt;/mappers&gt;
+&lt;/configuration&gt;
+</code></pre>
+<h4 id="settings设置"><a href="#settings设置" class="headerlink" title="settings设置"></a>settings设置</h4><ul>
+<li>这是 MyBatis 中极为重要的调整设置，它们会改变 MyBatis 的运行时行为。 </li>
+<li>settings包含很多重要的设置项，setting:用来设置每一个设置项<ul>
+<li>name：设置项名</li>
+<li>value：设置项取值</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/03/MyBatis%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/setting%E8%AE%BE%E7%BD%AE.jpg" alt="Setting设置"></p>
+<pre><code class="xml">&lt;settings&gt;
+        &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot;/&gt;
+    &lt;/settings&gt;
+</code></pre>
+<p><code>mapUnderscoreToCamelCase</code>此参数若设置为false，则表示若数据库某一项的值为last_name，而对应的javaBean的参数为lastName，则在查询时查询不到数据库last_name的值，因为javaBean的lastName字段与数据的last_name没有对应，设置为true则可以互相对应</p>
+<h4 id="typeAliases别名处理器"><a href="#typeAliases别名处理器" class="headerlink" title="typeAliases别名处理器"></a>typeAliases别名处理器</h4><p>typeAliases：别名处理器：可以为我们的java类型起别名，别名不区分大小写</p>
+<pre><code class="xml">&lt;typeAliases&gt;
+        &lt;!-- 1、typeAlias:为某个java类型起别名
+                type:指定要起别名的类型全类名;默认别名就是类名小写；employee
+                alias:指定新的别名
+         --&gt;
+        &lt;typeAlias type=&quot;com.review.mybatis.bean.Employee&quot; alias=&quot;emp&quot;/&gt;
+
+        &lt;!-- 2、package:为某个包下的所有类批量起别名
+                name：指定包名（为当前包以及下面所有的后代包的每一个类都起一个默认别名（类名小写），）
+        --&gt;
+        &lt;package name=&quot;com.review.mybatis.bean&quot;/&gt;
+
+        &lt;!-- 3、批量起别名的情况下，使用@Alias注解为某个类型指定新的别名 --&gt;
+    &lt;/typeAliases&gt;
+</code></pre>
+<pre><code class="java">import org.apache.ibatis.type.Alias;
+
+@Alias(&quot;emp&quot;)
+public class Employee &#123;
+    
+    private Integer id;
+    private String lastName;
+    private String email;
+    private String gender;
+    //getter and setter 略
+&#125;
+</code></pre>
+<p>EmployeeMapper.xml映射文件</p>
+<pre><code class="xml">&lt;mapper namespace=&quot;com.review.mybatis.dao.EmployeeMapper&quot;&gt;
+&lt;!-- 
+namespace:名称空间;
+id：唯一标识
+resultType：返回值类型，起了别名
+#&#123;id&#125;：从传递过来的参数中取出id值
+public Employee getEmpById(Integer id);
+ --&gt;
+    &lt;select id=&quot;getEmpById&quot; resultType=&quot;emp&quot;&gt;
+        select id,last_name lastName,email,gender from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p><strong>注意：</strong>MyBatis已经为许多常见的 Java 类型内建了相应的类型别名。它们都是大小写不敏感的，我们在起别名的时候千万不要占用已有的别名。</p>
+<h4 id="typeHandlers类型处理器"><a href="#typeHandlers类型处理器" class="headerlink" title="typeHandlers类型处理器"></a>typeHandlers类型处理器</h4><ul>
+<li>主要功能是处理数据库类型和java中数据类型的对应关系</li>
+<li>例如java中String类型与数据库中varchar类型的对应关系</li>
+</ul>
+<h4 id="plugins插件机制"><a href="#plugins插件机制" class="headerlink" title="plugins插件机制"></a>plugins插件机制</h4><p>拦截SQL语句执行的核心步骤，这个拦截就是利用插件机制进行的，用来拦四大对象中的方法，在这些方法执行前后进行拦截，这个拦截就是动态代理</p>
+<ul>
+<li>Executor：执行器(update, query, flushStatements, commit, rollback,getTransaction, close, isClosed)</li>
+<li>Parameter：参数处理器(getParameterObject, setParameters)</li>
+<li>ResultSetHandler：结果集处理器(handleResultSets, handleOutputParameters)</li>
+<li>StatementHandler：sql语句处理器(prepare, parameterize, batch, update, query)</li>
+</ul>
+<h4 id="environments环境"><a href="#environments环境" class="headerlink" title="environments环境"></a>environments环境</h4><ul>
+<li>MyBatis可以配置多种环境，比如开发、测试和生产环境需要有不同的配置。</li>
+<li>每种环境使用一个environment标签进行配置并指 定唯一标识符</li>
+<li>可以通过environments标签中的default属性指定 一个环境的标识符来快速的切换环境</li>
+</ul>
+<pre><code class="xml">&lt;!--
+        environments：环境们，mybatis可以配置多种环境 ,default指定使用某种环境。可以达到快速切换环境。
+            environment：配置一个具体的环境信息；必须有两个标签；id代表当前环境的唯一标识
+                1.transactionManager：事务管理器；
+                    type：事务管理器的类型;JDBC(JdbcTransactionFactory)|MANAGED(ManagedTransactionFactory)
+                          自定义事务管理器：实现TransactionFactory接口.type指定为全类名
+                2.dataSource：数据源;
+                    type:数据源类型;UNPOOLED(UnpooledDataSourceFactory)
+                                |POOLED(PooledDataSourceFactory)
+                                |JNDI(JndiDataSourceFactory)
+                    自定义数据源：实现DataSourceFactory接口，type是全类名
+         --&gt;
+    &lt;environments default=&quot;dev_mysql&quot;&gt;
+        &lt;environment id=&quot;dev_mysql&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot;&gt;&lt;/transactionManager&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;$&#123;jdbc.driver&#125;&quot; /&gt;
+                &lt;property name=&quot;url&quot; value=&quot;$&#123;jdbc.url&#125;&quot; /&gt;
+                &lt;property name=&quot;username&quot; value=&quot;$&#123;jdbc.username&#125;&quot; /&gt;
+                &lt;property name=&quot;password&quot; value=&quot;$&#123;jdbc.password&#125;&quot; /&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+
+        &lt;environment id=&quot;dev_oracle&quot;&gt;
+            &lt;transactionManager type=&quot;JDBC&quot; /&gt;
+            &lt;dataSource type=&quot;POOLED&quot;&gt;
+                &lt;property name=&quot;driver&quot; value=&quot;$&#123;orcl.driver&#125;&quot; /&gt;
+                &lt;property name=&quot;url&quot; value=&quot;$&#123;orcl.url&#125;&quot; /&gt;
+                &lt;property name=&quot;username&quot; value=&quot;$&#123;orcl.username&#125;&quot; /&gt;
+                &lt;property name=&quot;password&quot; value=&quot;$&#123;orcl.password&#125;&quot; /&gt;
+            &lt;/dataSource&gt;
+        &lt;/environment&gt;
+    &lt;/environments&gt;
+</code></pre>
+<h4 id="databaseIdProvider环境"><a href="#databaseIdProvider环境" class="headerlink" title="databaseIdProvider环境"></a>databaseIdProvider环境</h4><p>MyBatis 可以根据不同的数据库厂商执行不同的语句。</p>
+<pre><code class="xml">&lt;!-- databaseIdProvider：支持多数据库厂商的；
+         type=&quot;DB_VENDOR&quot;：VendorDatabaseIdProvider
+             作用就是得到数据库厂商的标识(驱动getDatabaseProductName())，mybatis就能根据数据库厂商标识来执行不同的sql;
+             MySQL，Oracle，SQL Server,xxxx
+      --&gt;
+    &lt;databaseIdProvider type=&quot;DB_VENDOR&quot;&gt;
+        &lt;!-- 为不同的数据库厂商起别名 --&gt;
+        &lt;property name=&quot;MySQL&quot; value=&quot;mysql&quot;/&gt;
+        &lt;property name=&quot;Oracle&quot; value=&quot;oracle&quot;/&gt;
+        &lt;property name=&quot;SQL Server&quot; value=&quot;sqlserver&quot;/&gt;
+    &lt;/databaseIdProvider&gt;
+</code></pre>
+<p>Mapper.xml映射文件</p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; ?&gt;
+&lt;!DOCTYPE mapper
+ PUBLIC &quot;-//mybatis.org//DTD Mapper 3.0//EN&quot;
+ &quot;http://mybatis.org/dtd/mybatis-3-mapper.dtd&quot;&gt;
+&lt;mapper namespace=&quot;com.review.mybatis.dao.EmployeeMapper&quot;&gt;
+&lt;!-- 
+namespace:名称空间;指定为接口的全类名
+id：唯一标识
+resultType：返回值类型
+#&#123;id&#125;：从传递过来的参数中取出id值
+
+public Employee getEmpById(Integer id);
+ --&gt;
+     &lt;select id=&quot;getEmpById&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select * from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+    &lt;select id=&quot;getEmpById&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot; databaseId=&quot;mysql&quot;&gt;
+        select * from tbl_employee where id = #&#123;id&#125;
+    &lt;/select&gt;
+    &lt;select id=&quot;getEmpById&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot; databaseId=&quot;oracle&quot;&gt;
+        select EMPLOYEE_ID id,LAST_NAME    lastName,EMAIL email from employees where EMPLOYEE_ID=#&#123;id&#125;
+    &lt;/select&gt;
+&lt;/mapper&gt;
+</code></pre>
+<p>MyBatis匹配规则如下：</p>
+<ol>
+<li>如果没有配置databaseIdProvider标签，那么databaseId=null</li>
+<li>如果配置了databaseIdProvider标签，使用标签配置的name去匹 配数据库信息，匹配上设置databaseId=配置指定的值，否则依旧为 null</li>
+<li>如果databaseId不为null，他只会找到配置databaseId的sql语句</li>
+<li>MyBatis 会加载不带 databaseId 属性和带有匹配当前数据库 databaseId 属性的所有语句。如果同时找到带有 databaseId 和不带 databaseId 的相同语句，则后者会被舍弃。</li>
+</ol>
+<h4 id="mapper映射"><a href="#mapper映射" class="headerlink" title="mapper映射"></a>mapper映射</h4><pre><code class="xml">&lt;!-- 将我们写好的sql映射文件（EmployeeMapper.xml）一定要注册到全局配置文件（mybatis-config.xml）中 --&gt;
+&lt;!-- mappers：将sql映射注册到全局配置中 --&gt;
+&lt;mappers&gt;
+   &lt;!--
+      mapper:注册一个sql映射
+         注册配置文件
+         resource：引用类路径下的sql映射文件
+            mybatis/mapper/EmployeeMapper.xml
+         url：引用网路路径或者磁盘路径下的sql映射文件
+            file:///var/mappers/AuthorMapper.xml
+
+         注册接口
+         class：引用（注册）接口，
+            1、有sql映射文件，映射文件名必须和接口同名，并且放在与接口同一目录下；
+            2、没有sql映射文件，所有的sql都是利用注解写在接口上;
+            推荐：
+               比较重要的，复杂的Dao接口我们来写sql映射文件
+               不重要，简单的Dao接口为了开发快速可以使用注解；
+   --&gt;
+   &lt;mapper resource=&quot;mybatis/mapper/EmployeeMapper.xml&quot;/&gt;
+    
+    &lt;!--此种方法要求 mapper 接口名称和 mapper 映射文件名称相同，且放在同一个目录中。--&gt;
+   &lt;mapper class=&quot;com.review.mybatis.dao.EmployeeMapperAnnotation&quot;/&gt;
+
+   &lt;!-- 批量注册： --&gt;
+    &lt;!--此种方法要求 mapper 接口名称和 mapper 映射文件名称相同，且放在同一个目录中。--&gt;
+   &lt;package name=&quot;com.review.mybatis.dao&quot;/&gt;
+&lt;/mappers&gt;
+</code></pre>
+<p>使用class的<mapper class="com.review.mybatis.dao.EmployeeMapperAnnotation">方式，可以不用写配置文件，直接基于注解</mapper></p>
+<pre><code class="java">import com.review.mybatis.bean.Employee;
+import org.apache.ibatis.annotations.Select;
+
+public interface EmployeeMapperAnnotation &#123;
+    
+    @Select(&quot;select * from tbl_employee where id=#&#123;id&#125;&quot;)
+    public Employee getEmpById(Integer id);
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSM/" rel="tag"># SSM</a>
+              <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/02/Spring%E4%BA%8B%E5%8A%A1%E7%AE%A1%E7%90%86/" rel="prev" title="Spring事务管理">
+                  <i class="fa fa-chevron-left"></i> Spring事务管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/04/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/" rel="next" title="MyBatis的SQL映射文件">
+                  MyBatis的SQL映射文件 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

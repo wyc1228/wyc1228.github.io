@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="MyBatis映射文件Select元素">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis映射文件Select元素">
+<meta property="og:url" content="https://wyc1228.github.io/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="MyBatis映射文件Select元素">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/employee.jpg">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/dept.jpg">
+<meta property="article:published_time" content="2020-10-05T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-08T14:22:23.481Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/employee.jpg">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>MyBatis映射文件Select元素 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0"><span class="nav-text">MyBatis映射文件Select元素</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-resultMap%E4%BD%BF%E7%94%A8"><span class="nav-text">1.2 resultMap使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-resultMap%E5%85%B3%E8%81%94%E6%9F%A5%E8%AF%A2"><span class="nav-text">1.3 resultMap关联查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-association%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.4 association的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E5%85%B3%E8%81%94%E9%9B%86%E5%90%88%E5%B0%81%E8%A3%85%E8%A7%84%E5%88%99"><span class="nav-text">1.5 关联集合封装规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E9%89%B4%E5%88%AB%E5%99%A8"><span class="nav-text">1.6 鉴别器</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MyBatis映射文件Select元素
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-05 21:46:45" itemprop="dateCreated datePublished" datetime="2020-10-05T21:46:45+08:00">2020-10-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">MyBatis映射文件Select元素</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="MyBatis映射文件Select元素"><a href="#MyBatis映射文件Select元素" class="headerlink" title="MyBatis映射文件Select元素"></a>MyBatis映射文件Select元素</h2><h3 id="1-1概述"><a href="#1-1概述" class="headerlink" title="1.1概述"></a>1.1概述</h3><p>Select元素来定义查询操作。</p>
+<ul>
+<li><p>Id：唯一标识符。 – 用来引用这条语句，需要和接口的方法名一致 </p>
+</li>
+<li><p>parameterType：参数类型。 – 可以不传，MyBatis会根据TypeHandler自动推断</p>
+</li>
+<li><p>resultType：返回值类型。 – 别名或者全类名，如果返回的是集合，定义集合中元素的类型。不能和resultMap同时使用</p>
+</li>
+</ul>
+<p>使用：</p>
+<p>第一种：返回的是一个List集合</p>
+<pre><code class="xml">&lt;!-- public List&lt;Employee&gt; getEmpsByLastNameLike(String lastName); --&gt;
+    &lt;!--resultType：如果返回的是一个集合，要写集合中元素的类型  --&gt;
+    &lt;select id=&quot;getEmpsByLastNameLike&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select * from tbl_employee where last_name like #&#123;lastName&#125;
+    &lt;/select&gt;
+</code></pre>
+<pre><code class="java">@Test
+    public void test05() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1.获取到的sqlSession不会自动提交数据，需要手动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper mapper;
+        try &#123;
+            mapper = sqlSession.getMapper(EmployeeMapper.class);
+            List&lt;Employee&gt; like = mapper.getEmpsByLastNameLike(&quot;%e%&quot;);
+            for (Employee employee : like) &#123;
+                System.out.println(employee);
+            &#125;
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>第二种：返回一条记录的Map</p>
+<pre><code class="xml">&lt;!--public Map&lt;String, Object&gt; getEmpByIdReturnMap(Integer id);  --&gt;
+     &lt;select id=&quot;getEmpByIdReturnMap&quot; resultType=&quot;map&quot;&gt;
+         select * from tbl_employee where id=#&#123;id&#125;
+     &lt;/select&gt;
+</code></pre>
+<pre><code class="java">@Test
+    public void test05() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1.获取到的sqlSession不会自动提交数据，需要手动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper mapper;
+        try &#123;
+            mapper = sqlSession.getMapper(EmployeeMapper.class);
+            Map&lt;String, Object&gt; map = mapper.getEmpByIdReturnMap(1);
+            System.out.println(map);
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>第三种：返回多条记录的Map</p>
+<pre><code class="java">//多条记录封装一个map：Map&lt;Integer,Employee&gt;:键是这条记录的主键，值是记录封装后的javaBean
+    //@MapKey:告诉mybatis封装这个map的时候使用哪个属性作为map的key
+    @MapKey(&quot;lastName&quot;)
+    public Map&lt;String, Employee&gt; getEmpByLastNameLikeReturnMap(String lastName);
+</code></pre>
+<pre><code class="xml">&lt;!--public Map&lt;String, Employee&gt; getEmpByLastNameLikeReturnMap(String lastName);  --&gt;
+     &lt;select id=&quot;getEmpByLastNameLikeReturnMap&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+         select * from tbl_employee where last_name like #&#123;lastName&#125;
+     &lt;/select&gt;
+</code></pre>
+<pre><code class="java">@Test
+    public void test05() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        //1.获取到的sqlSession不会自动提交数据，需要手动提交
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        EmployeeMapper mapper;
+        try &#123;
+            Map&lt;String, Employee&gt; map = mapper.getEmpByLastNameLikeReturnMap(&quot;%r%&quot;);
+            System.out.println(map);
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-2-resultMap使用"><a href="#1-2-resultMap使用" class="headerlink" title="1.2 resultMap使用"></a>1.2 resultMap使用</h3><p><code>resultMap</code>，实现高级结果集映射</p>
+<p>之前讲过数据库字段名和javabean属性名不对应，则取不出数据，解决方法有设置开启自动驼峰命名规则映射功能，mapUnderscoreToCamelCase=true。此设置可以使数据库字段名为last_name映射为javabean的lastName</p>
+<p>现在使用resultMap实现高级结果集映射，首先在mapper文件中自定义resultMap的封装规则</p>
+<pre><code class="xml">&lt;!--自定义某个javaBean的封装规则
+    type：自定义规则的Java类型
+    id:唯一id方便引用
+      --&gt;
+    &lt;resultMap type=&quot;com.review.mybatis.bean.Employee&quot; id=&quot;MySimpleEmp&quot;&gt;
+        &lt;!--指定主键列的封装规则
+        id定义主键会底层有优化；
+        column：指定哪一列
+        property：指定对应的javaBean属性
+          --&gt;
+        &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+        
+        &lt;!-- 定义普通列封装规则 --&gt;
+        &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+        &lt;!-- 其他不指定的列会自动封装：我们只要写resultMap就把全部的映射规则都写上。 --&gt;
+        &lt;result column=&quot;email&quot; property=&quot;email&quot;/&gt;
+        &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+    &lt;/resultMap&gt;
+
+&lt;!--然后使用resultMap执行sql语句--&gt;
+&lt;!-- resultMap:自定义结果集映射规则；  --&gt;
+    &lt;!-- public Employee getEmpById(Integer id); --&gt;
+    &lt;select id=&quot;getEmpById&quot;  resultMap=&quot;MySimpleEmp&quot;&gt;
+        select * from tbl_employee where id=#&#123;id&#125;
+    &lt;/select&gt;
+</code></pre>
+<p>注意：resultMap和resultType只能使用一个，二选一</p>
+<h3 id="1-3-resultMap关联查询"><a href="#1-3-resultMap关联查询" class="headerlink" title="1.3 resultMap关联查询"></a>1.3 resultMap关联查询</h3><p>查询Employee的同时查询员工对应的部门：Employee===Department<br> 一个员工有与之对应的部门信息； id  last_name  gender    d_id     did  dept_name (private Department dept;)</p>
+<p><img src="/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/employee.jpg" alt="employee"></p>
+<p><img src="/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/dept.jpg" alt="employee"></p>
+<pre><code class="java">public class Employee &#123;
+    private Integer id;
+    private String lastName;
+    private String email;
+    private String gender;
+    private Department dept;
+&#125;
+</code></pre>
+<p>mapper映射文件</p>
+<pre><code class="xml">&lt;!--
+        联合查询：级联属性封装结果集
+id  last_name  gender    d_id     did  dept_name (private Department dept;)
+      --&gt;
+    &lt;resultMap type=&quot;com.review.mybatis.bean.Employee&quot; id=&quot;MyDifEmp&quot;&gt;
+        &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+        &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+        &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+        &lt;result column=&quot;did&quot; property=&quot;dept.id&quot;/&gt;
+        &lt;result column=&quot;dept_name&quot; property=&quot;dept.departmentName&quot;/&gt;
+    &lt;/resultMap&gt;
+&lt;!--  public Employee getEmpAndDept(Integer id);--&gt;
+    &lt;select id=&quot;getEmpAndDept&quot; resultMap=&quot;MyDifEmp&quot;&gt;
+        SELECT e.id id,e.last_name last_name,e.gender gender,e.d_id d_id,
+        d.id did,d.dept_name dept_name FROM tbl_employee e,tbl_dept d
+        WHERE e.d_id=d.id AND e.id=#&#123;id&#125;
+    &lt;/select&gt;
+</code></pre>
+<h3 id="1-4-association的使用"><a href="#1-4-association的使用" class="headerlink" title="1.4 association的使用"></a>1.4 association的使用</h3><p>另一种关联方式</p>
+<pre><code class="xml">&lt;!-- 
+        使用association定义关联的单个对象的封装规则；
+     --&gt;
+    &lt;resultMap type=&quot;com.review.mybatis.bean.Employee&quot; id=&quot;MyDifEmp2&quot;&gt;
+        &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+        &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+        &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+        
+        &lt;!--  association可以指定联合的javaBean对象
+        property=&quot;dept&quot;：指定哪个属性是联合的对象
+        javaType:指定这个属性对象的类型[不能省略]
+        --&gt;
+        &lt;association property=&quot;dept&quot; javaType=&quot;com.review.mybatis.bean.Department&quot;&gt;
+            &lt;id column=&quot;did&quot; property=&quot;id&quot;/&gt;
+            &lt;result column=&quot;dept_name&quot; property=&quot;departmentName&quot;/&gt;
+        &lt;/association&gt;
+    &lt;/resultMap&gt;
+    &lt;!--  public Employee getEmpAndDept(Integer id);--&gt;
+    &lt;select id=&quot;getEmpAndDept&quot; resultMap=&quot;MyDifEmp&quot;&gt;
+        SELECT e.id id,e.last_name last_name,e.gender gender,e.d_id d_id,
+        d.id did,d.dept_name dept_name FROM tbl_employee e,tbl_dept d
+        WHERE e.d_id=d.id AND e.id=#&#123;id&#125;
+    &lt;/select&gt;
+</code></pre>
+<p>分步查询</p>
+<p>departmentMapper映射文件</p>
+<pre><code class="xml">&lt;mapper namespace=&quot;com.review.mybatis.dao.DepartmentMapper&quot;&gt;
+    &lt;!--public Department getDeptById(Integer id);  --&gt;
+    &lt;select id=&quot;getDeptById&quot; resultType=&quot;com.review.mybatis.bean.Department&quot;&gt;
+        select id,dept_name departmentName from tbl_dept where id=#&#123;id&#125;
+    &lt;/select&gt;
+</code></pre>
+<pre><code class="xml">&lt;!-- 使用association进行分步查询：
+        1、先按照员工id查询员工信息
+        2、根据查询员工信息中的d_id值去部门表查出部门信息
+        3、部门设置到员工中；
+     --&gt;
+     
+     &lt;!--  id  last_name  email   gender    d_id   --&gt;
+     &lt;resultMap type=&quot;com.review.mybatis.bean.Employee&quot; id=&quot;MyEmpByStep&quot;&gt;
+         &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+         &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+         &lt;result column=&quot;email&quot; property=&quot;email&quot;/&gt;
+         &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+         &lt;!-- association定义关联对象的封装规则
+             select:表明当前属性是调用select指定的方法查出的结果
+             column:指定将哪一列的值传给这个方法
+             流程：使用select指定的方法（传入column指定的这列参数的值）查出对象，并封装给property指定的属性
+          --&gt;
+         &lt;association property=&quot;dept&quot; 
+             select=&quot;com.review.mybatis.dao.DepartmentMapper.getDeptById&quot;
+             column=&quot;d_id&quot;&gt;
+         &lt;/association&gt;
+     &lt;/resultMap&gt;
+     &lt;!--  public Employee getEmpByIdStep(Integer id);--&gt;
+     &lt;select id=&quot;getEmpByIdStep&quot; resultMap=&quot;MyEmpByStep&quot;&gt;
+         select * from tbl_employee where id=#&#123;id&#125;
+         &lt;if test=&quot;_parameter!=null&quot;&gt;
+             and 1=1
+         &lt;/if&gt;
+     &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">@Test
+    public void test06() throws IOException&#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession openSession = sqlSessionFactory.openSession();
+        try&#123;
+            EmployeeMapperPlus mapper = openSession.getMapper(EmployeeMapperPlus.class);
+            Employee employee = mapper.getEmpByIdStep(3);
+            System.out.println(employee);
+            System.out.println(employee.getDept());
+        &#125;finally&#123;
+            openSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>分步查询可以使用延迟加载</p>
+<p>可以使用延迟加载（懒加载）；(按需加载)</p>
+<p>Employee==&gt;Dept：</p>
+<p>我们每次查询Employee对象的时候，都将一起查询出来。</p>
+<p>部门信息在我们使用的时候再去查询；</p>
+<p>分段查询的基础之上加上两个配置：在mybatis的配置文件中设置</p>
+<pre><code class="xml">&lt;settings&gt;
+        &lt;!-- &lt;setting name=&quot;mapUnderscoreToCamelCase&quot; value=&quot;true&quot;/&gt; --&gt;
+        &lt;!-- &lt;setting name=&quot;jdbcTypeForNull&quot; value=&quot;NULL&quot;/&gt; --&gt;
+        
+        &lt;!--显示的指定每个我们需要更改的配置的值，即使他是默认的。防止版本更新带来的问题  --&gt;
+        &lt;setting name=&quot;lazyLoadingEnabled&quot; value=&quot;true&quot;/&gt;
+        &lt;setting name=&quot;aggressiveLazyLoading&quot; value=&quot;false&quot;/&gt;
+    &lt;/settings&gt;
+</code></pre>
+<h3 id="1-5-关联集合封装规则"><a href="#1-5-关联集合封装规则" class="headerlink" title="1.5 关联集合封装规则"></a>1.5 关联集合封装规则</h3><p>查询部门的时候将部门对应的所有员工信息也查询出来：注释在DepartmentMapper.xml中</p>
+<pre><code class="xml">&lt;!-- 
+    public class Department &#123;
+            private Integer id;
+            private String departmentName;
+            private List&lt;Employee&gt; emps;
+      did  dept_name  ||  eid  last_name  email   gender  
+     --&gt;
+</code></pre>
+<p>如何封装集合List<Employee></Employee></p>
+<pre><code class="xml">&lt;!--嵌套结果集的方式，使用collection标签定义关联的集合类型的属性封装规则  --&gt;
+    &lt;resultMap type=&quot;com.review.mybatis.bean.Department&quot; id=&quot;MyDept&quot;&gt;
+        &lt;id column=&quot;did&quot; property=&quot;id&quot;/&gt;
+        &lt;result column=&quot;dept_name&quot; property=&quot;departmentName&quot;/&gt;
+        &lt;!-- 
+            collection定义关联集合类型的属性的封装规则 
+            ofType:指定集合里面元素的类型
+        --&gt;
+        &lt;collection property=&quot;emps&quot; ofType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+            &lt;!-- 定义这个集合中元素的封装规则 --&gt;
+            &lt;!--did  dept_name  ||  eid  last_name  email   gender --&gt;
+            &lt;id column=&quot;eid&quot; property=&quot;id&quot;/&gt;
+            &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+            &lt;result column=&quot;email&quot; property=&quot;email&quot;/&gt;
+            &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+        &lt;/collection&gt;
+    &lt;/resultMap&gt;
+    &lt;!-- public Department getDeptByIdPlus(Integer id); --&gt;
+    &lt;select id=&quot;getDeptByIdPlus&quot; resultMap=&quot;MyDept&quot;&gt;
+        SELECT d.id did,d.dept_name dept_name,
+                e.id eid,e.last_name last_name,e.email email,e.gender gender
+        FROM tbl_dept d
+        LEFT JOIN tbl_employee e
+        ON d.id=e.d_id
+        WHERE d.id=#&#123;id&#125;
+    &lt;/select&gt;
+</code></pre>
+<h3 id="1-6-鉴别器"><a href="#1-6-鉴别器" class="headerlink" title="1.6 鉴别器"></a>1.6 鉴别器</h3><pre><code class="xml">&lt;!-- &lt;discriminator javaType=&quot;&quot;&gt;&lt;/discriminator&gt;
+        鉴别器：mybatis可以使用discriminator判断某列的值，然后根据某列的值改变封装行为
+        封装Employee：
+            如果查出的是女生：就把部门信息查询出来，否则不查询；
+            如果是男生，把last_name这一列的值赋值给email;
+     --&gt;
+     &lt;resultMap type=&quot;com.review.mybatis.bean.Employee&quot; id=&quot;MyEmpDis&quot;&gt;
+         &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+         &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+         &lt;result column=&quot;email&quot; property=&quot;email&quot;/&gt;
+         &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+         &lt;!--
+             column：指定判定的列名
+             javaType：列值对应的java类型  --&gt;
+         &lt;discriminator javaType=&quot;string&quot; column=&quot;gender&quot;&gt;
+             &lt;!--女生  resultType:指定封装的结果类型；不能缺少。/resultMap--&gt;
+             &lt;case value=&quot;0&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+                 &lt;association property=&quot;dept&quot; 
+                     select=&quot;com.review.mybatis.dao.DepartmentMapper.getDeptById&quot;
+                     column=&quot;d_id&quot;&gt;
+                 &lt;/association&gt;
+             &lt;/case&gt;
+             &lt;!--男生 ;如果是男生，把last_name这一列的值赋值给email; --&gt;
+             &lt;case value=&quot;1&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+                 &lt;id column=&quot;id&quot; property=&quot;id&quot;/&gt;
+                 &lt;result column=&quot;last_name&quot; property=&quot;lastName&quot;/&gt;
+                 &lt;result column=&quot;last_name&quot; property=&quot;email&quot;/&gt;
+                 &lt;result column=&quot;gender&quot; property=&quot;gender&quot;/&gt;
+             &lt;/case&gt;
+         &lt;/discriminator&gt;
+     &lt;/resultMap&gt;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSM/" rel="tag"># SSM</a>
+              <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/04/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6/" rel="prev" title="MyBatis的SQL映射文件">
+                  <i class="fa fa-chevron-left"></i> MyBatis的SQL映射文件
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/06/MyBatis%E5%8A%A8%E6%80%81SQL/" rel="next" title="MyBatis动态SQL">
+                  MyBatis动态SQL <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

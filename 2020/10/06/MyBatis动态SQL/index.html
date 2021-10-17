@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="MyBatis动态SQL">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MyBatis动态SQL">
+<meta property="og:url" content="https://wyc1228.github.io/2020/10/06/MyBatis%E5%8A%A8%E6%80%81SQL/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="MyBatis动态SQL">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-10-06T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-08T14:22:40.424Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="MyBatis">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/10/06/MyBatis%E5%8A%A8%E6%80%81SQL/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>MyBatis动态SQL | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#MyBatis%E5%8A%A8%E6%80%81SQL"><span class="nav-text">MyBatis动态SQL</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-if%E7%9A%84%E4%BD%BF%E7%94%A8%EF%BC%9A"><span class="nav-text">1.2 if的使用：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3trim%E6%A0%87%E7%AD%BE"><span class="nav-text">1.3trim标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-choose%E6%A0%87%E7%AD%BE%E4%BD%BF%E7%94%A8"><span class="nav-text">1.4 choose标签使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-set%E6%A0%87%E7%AD%BE%E4%BD%BF%E7%94%A8"><span class="nav-text">1.5 set标签使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-foreach%E6%A0%87%E7%AD%BE"><span class="nav-text">1.6 foreach标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E5%86%85%E7%BD%AE%E5%8F%82%E6%95%B0"><span class="nav-text">1.7 内置参数</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/10/06/MyBatis%E5%8A%A8%E6%80%81SQL/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          MyBatis动态SQL
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-06 21:46:45" itemprop="dateCreated datePublished" datetime="2020-10-06T21:46:45+08:00">2020-10-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">MyBatis动态SQL</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="MyBatis动态SQL"><a href="#MyBatis动态SQL" class="headerlink" title="MyBatis动态SQL"></a>MyBatis动态SQL</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>动态 SQL是MyBatis强大特性之一。极大的简化我们拼装 SQL的操作。</p>
+<p>动态 SQL 元素和使用 JSTL 或其他类似基于 XML 的文本处理器相似。</p>
+<p>MyBatis 采用功能强大的基于 OGNL 的表达式来简化操作。 </p>
+<ul>
+<li> if </li>
+<li> choose (when, otherwise) </li>
+<li> trim (where, set) </li>
+<li>foreach</li>
+</ul>
+<h3 id="1-2-if的使用："><a href="#1-2-if的使用：" class="headerlink" title="1.2 if的使用："></a>1.2 if的使用：</h3><p>直接写入表达式，在使用时不管传入几个参数都可以执行</p>
+<p>mapper映射文件</p>
+<pre><code class="xml"> &lt;!-- 查询员工，要求，携带了哪个字段查询条件就带上这个字段的值 --&gt;
+    &lt;!--where标签解决解决sql语句拼装的and的问题：and拼接在前面--&gt;
+     &lt;!-- public List&lt;Employee&gt; getEmpsByConditionIf(Employee employee); --&gt;
+     &lt;select id=&quot;getEmpsByConditionIf&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+         select * from tbl_employee
+         &lt;!-- where --&gt;
+         &lt;where&gt;
+             &lt;!-- test：判断表达式（OGNL）
+             OGNL参照PPT或者官方文档。
+                    c:if  test
+             从参数中取值进行判断
+             遇见特殊符号应该去写转义字符：
+             &amp;&amp;：
+             --&gt;
+             &lt;if test=&quot;id!=null&quot;&gt;&lt;!--传上来的id参数不为空才会将其拼接--&gt;
+                 id=#&#123;id&#125;
+             &lt;/if&gt;
+             &lt;if test=&quot;lastName!=null &amp;amp;&amp;amp; lastName!=&amp;quot;&amp;quot;&quot;&gt;&lt;!--&amp;amp;&amp;amp;==&amp;&amp; &amp;quot;&amp;quot;=&quot;&quot; --&gt;
+                 and last_name like #&#123;lastName&#125;
+             &lt;/if&gt;
+             &lt;if test=&quot;email!=null and email.trim()!=&amp;quot;&amp;quot;&quot;&gt;
+                 and email=#&#123;email&#125;
+             &lt;/if&gt; 
+             &lt;!-- ognl会进行字符串与数字的转换判断  &quot;0&quot;==0 --&gt;
+             &lt;if test=&quot;gender==0 or gender==1&quot;&gt;
+                  and gender=#&#123;gender&#125;
+             &lt;/if&gt;
+         &lt;/where&gt;
+     &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> public SqlSessionFactory getSqlSessionFactory() throws IOException &#123;
+        String resource = &quot;mybatis-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        return new SqlSessionFactoryBuilder().build(inputStream);
+    &#125;
+
+    //测试if中的where标签
+    @Test
+    public void test1() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(3,&quot;%c%&quot;,null,null);
+            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionIf(employee);
+            for (Employee employee1 : empsByConditionIf) &#123;
+                System.out.println(employee1);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>此时若将输入的id值置为null，你会发现sql语句拼接出了问题，所以我们可以使用trim标签</p>
+<h3 id="1-3trim标签"><a href="#1-3trim标签" class="headerlink" title="1.3trim标签"></a>1.3trim标签</h3><pre><code class="xml">&lt;!--使用trim标签解决sql语句拼装的and的问题：and拼接在后面--&gt;
+    &lt;!--public List&lt;Employee&gt; getEmpsByConditionTrim(Employee employee);  --&gt;
+    &lt;select id=&quot;getEmpsByConditionTrim&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select * from tbl_employee
+        &lt;!-- 后面多出的and或者or where标签不能解决
+        prefix=&quot;&quot;:前缀：trim标签体中是整个字符串拼串 后的结果。
+                prefix给拼串后的整个字符串加一个前缀
+        prefixOverrides=&quot;&quot;:
+                前缀覆盖： 去掉整个字符串前面多余的字符
+        suffix=&quot;&quot;:后缀
+                suffix给拼串后的整个字符串加一个后缀
+        suffixOverrides=&quot;&quot;
+                后缀覆盖：去掉整个字符串后面多余的字符
+
+        --&gt;
+        &lt;!-- 自定义字符串的截取规则 --&gt;
+        &lt;trim prefix=&quot;where&quot; suffixOverrides=&quot;and&quot;&gt;
+            &lt;if test=&quot;id!=null&quot;&gt;
+                id=#&#123;id&#125; and
+            &lt;/if&gt;
+            &lt;if test=&quot;lastName!=null &amp;amp;&amp;amp; lastName!=&amp;quot;&amp;quot;&quot;&gt;
+                last_name like #&#123;lastName&#125; and
+            &lt;/if&gt;
+            &lt;if test=&quot;email!=null and email.trim()!=&amp;quot;&amp;quot;&quot;&gt;
+                email=#&#123;email&#125; and
+            &lt;/if&gt;
+            &lt;!-- ognl会进行字符串与数字的转换判断  &quot;0&quot;==0 --&gt;
+            &lt;if test=&quot;gender==0 or gender==1&quot;&gt;
+                gender=#&#123;gender&#125;
+            &lt;/if&gt;
+        &lt;/trim&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//测试if中的trim标签，and放在后面
+    @Test
+    public void test2() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(null,&quot;%c%&quot;,null,null);
+            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionTrim(employee);
+            for (Employee employee1 : empsByConditionIf) &#123;
+                System.out.println(employee1);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-4-choose标签使用"><a href="#1-4-choose标签使用" class="headerlink" title="1.4 choose标签使用"></a>1.4 choose标签使用</h3><pre><code class="xml">&lt;!--choose标签：如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个--&gt;
+    &lt;!-- public List&lt;Employee&gt; getEmpsByConditionChoose(Employee employee); --&gt;
+    &lt;select id=&quot;getEmpsByConditionChoose&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select * from tbl_employee
+        &lt;where&gt;
+            &lt;!-- 如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个 --&gt;
+            &lt;choose&gt;
+                &lt;when test=&quot;id!=null&quot;&gt;
+                    id=#&#123;id&#125;
+                &lt;/when&gt;
+                &lt;when test=&quot;lastName!=null&quot;&gt;
+                    last_name like #&#123;lastName&#125;
+                &lt;/when&gt;
+                &lt;when test=&quot;email!=null&quot;&gt;
+                    email = #&#123;email&#125;
+                &lt;/when&gt;
+                &lt;otherwise&gt;
+                    gender = 0
+                &lt;/otherwise&gt;
+            &lt;/choose&gt;
+        &lt;/where&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> //测试choose标签
+    @Test
+    public void test3() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(1,&quot;%c%&quot;,null,&quot;1&quot;);
+            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionChoose(employee);
+            for (Employee employee1 : empsByConditionIf) &#123;
+                System.out.println(employee1);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-5-set标签使用"><a href="#1-5-set标签使用" class="headerlink" title="1.5 set标签使用"></a>1.5 set标签使用</h3><pre><code class="xml">&lt;!--set更新操作，封装修改，传入哪一个参数更新哪一个--&gt;
+    &lt;!--public void updateEmp(Employee employee);  --&gt;
+    &lt;update id=&quot;updateEmp&quot;&gt;
+        &lt;!-- Set标签的使用 ,后面多个逗号，加set标签可以去掉，加trim标签也可以--&gt;
+        update tbl_employee
+        &lt;set&gt;
+            &lt;if test=&quot;lastName!=null&quot;&gt;
+                last_name=#&#123;lastName&#125;,
+            &lt;/if&gt;
+            &lt;if test=&quot;email!=null&quot;&gt;
+                email=#&#123;email&#125;,
+            &lt;/if&gt;
+            &lt;if test=&quot;gender!=null&quot;&gt;
+                gender=#&#123;gender&#125;
+            &lt;/if&gt;
+        &lt;/set&gt;
+        where id=#&#123;id&#125;
+        &lt;!--
+                Trim：更新拼串
+                update tbl_employee
+                &lt;trim prefix=&quot;set&quot; suffixOverrides=&quot;,&quot;&gt;
+                    &lt;if test=&quot;lastName!=null&quot;&gt;
+                        last_name=#&#123;lastName&#125;,
+                    &lt;/if&gt;
+                    &lt;if test=&quot;email!=null&quot;&gt;
+                        email=#&#123;email&#125;,
+                    &lt;/if&gt;
+                    &lt;if test=&quot;gender!=null&quot;&gt;
+                        gender=#&#123;gender&#125;
+                    &lt;/if&gt;
+                &lt;/trim&gt;
+                where id=#&#123;id&#125;  --&gt;
+    &lt;/update&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//测试set标签
+    @Test
+    public void test4() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(1,&quot;%c%&quot;,null,&quot;1&quot;);
+            mapper.updateEmp(employee);
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-6-foreach标签"><a href="#1-6-foreach标签" class="headerlink" title="1.6 foreach标签"></a>1.6 foreach标签</h3><pre><code class="xml">&lt;!--foreach 遍历集合--&gt;
+    &lt;!--public List&lt;Employee&gt; getEmpsByConditionForeach(List&lt;Integer&gt; ids);  --&gt;
+    &lt;select id=&quot;getEmpsByConditionForeach&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        &lt;!--
+            collection：指定要遍历的集合：
+                list类型的参数会特殊处理封装在map中，map的key就叫list
+            item：将当前遍历出的元素赋值给指定的变量
+            separator:每个元素之间的分隔符
+            open：遍历出所有结果拼接一个开始的字符
+            close:遍历出所有结果拼接一个结束的字符
+            index:索引。遍历list的时候是index就是索引，item就是当前值
+                          遍历map的时候index表示的就是map的key，item就是map的值
+
+            #&#123;变量名&#125;就能取出变量的值也就是当前遍历出的元素
+          --&gt;
+        select * from tbl_employee
+        &lt;foreach collection=&quot;ids&quot; item=&quot;item_id&quot; separator=&quot;,&quot; open=&quot;where id in(&quot; close=&quot;)&quot;&gt;
+            #&#123;item_id&#125;
+        &lt;/foreach&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> //测试foreach标签
+    @Test
+    public void test5() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            List&lt;Employee&gt; empsByConditionForeach = mapper.getEmpsByConditionForeach(Arrays.asList(1, 2, 3, 4));
+            for (Employee byConditionForeach : empsByConditionForeach) &#123;
+                System.out.println(byConditionForeach);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p><strong>foreach的批量保存</strong></p>
+<pre><code class="xml">&lt;!--foreach批量保存--&gt;
+    &lt;!-- 批量保存 --&gt;
+    &lt;!--public void addEmps(@Param(&quot;emps&quot;)List&lt;Employee&gt; emps);  --&gt;
+    &lt;!--MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法--&gt;
+    &lt;insert id=&quot;addEmps&quot;&gt;
+        insert into tbl_employee(last_name,email,gender)
+        values
+        &lt;foreach collection=&quot;emps&quot; item=&quot;emp&quot; separator=&quot;,&quot;&gt;
+            (#&#123;emp.lastName&#125;,#&#123;emp.email&#125;,#&#123;emp.gender&#125;)
+        &lt;/foreach&gt;
+    &lt;/insert&gt;&lt;!--   --&gt;
+
+    &lt;!-- 这种方式需要数据库连接属性allowMultiQueries=true；
+         这种分号分隔多个sql可以用于其他的批量操作（删除，修改） --&gt;
+     &lt;!--&lt;insert id=&quot;addEmps&quot;&gt;
+        &lt;foreach collection=&quot;emps&quot; item=&quot;emp&quot; separator=&quot;;&quot;&gt;
+            insert into tbl_employee(last_name,email,gender)
+            values(#&#123;emp.lastName&#125;,#&#123;emp.email&#125;,#&#123;emp.gender&#125;)
+        &lt;/foreach&gt;
+    &lt;/insert&gt; --&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//测试foreach批量保存
+    @Test
+    public void test6() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            List&lt;Employee&gt; emps=new ArrayList&lt;&gt;();
+            emps.add(new Employee(null,&quot;jerry&quot;,&quot;jerry@163.com&quot;,&quot;0&quot;));
+            emps.add(new Employee(null,&quot;smith&quot;,&quot;smith@163.com&quot;,&quot;1&quot;));
+            emps.add(new Employee(null,&quot;test&quot;,&quot;test@163.com&quot;,&quot;0&quot;));
+            mapper.addEmps(emps);
+
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-7-内置参数"><a href="#1-7-内置参数" class="headerlink" title="1.7 内置参数"></a>1.7 内置参数</h3><pre><code class="xml">&lt;!-- 两个内置参数：
+         不只是方法传递过来的参数可以被用来判断，取值。。。
+         mybatis默认还有两个内置参数：
+         _parameter:代表整个参数
+             单个参数：_parameter就是这个参数
+             多个参数：参数会被封装为一个map；_parameter就是代表这个map
+
+         _databaseId:如果配置了databaseIdProvider标签。
+             _databaseId就是代表当前数据库的别名oracle
+      --&gt;
+
+    &lt;!--public List&lt;Employee&gt; getEmpsTestInnerParameter(Employee employee);  --&gt;
+    &lt;select id=&quot;getEmpsTestInnerParameter&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        &lt;!-- bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值 --&gt;
+        &lt;bind name=&quot;_lastName&quot; value=&quot;&#39;%&#39;+lastName+&#39;%&#39;&quot;/&gt;
+        &lt;if test=&quot;_databaseId==&#39;mysql&#39;&quot;&gt;
+            select * from tbl_employee
+            &lt;if test=&quot;_parameter!=null&quot;&gt;
+                where last_name like #&#123;lastName&#125;
+            &lt;/if&gt;
+        &lt;/if&gt;
+        &lt;if test=&quot;_databaseId==&#39;oracle&#39;&quot;&gt;
+            select * from employees
+            &lt;if test=&quot;_parameter!=null&quot;&gt;
+                where last_name like #&#123;_parameter.lastName&#125;
+            &lt;/if&gt;
+        &lt;/if&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> //测试mybatis的两个内置参数_parameter和_databaseId
+    @Test
+    public void test7() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            Employee employee2 = new Employee();
+            employee2.setLastName(&quot;%e%&quot;);
+            List&lt;Employee&gt; list = mapper.getEmpsTestInnerParameter(employee2);
+            for (Employee employee : list) &#123;
+                System.out.println(employee);
+            &#125;
+
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSM/" rel="tag"># SSM</a>
+              <a href="/tags/MyBatis/" rel="tag"># MyBatis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/05/MyBatis%E6%98%A0%E5%B0%84%E6%96%87%E4%BB%B6Select%E5%85%83%E7%B4%A0/" rel="prev" title="MyBatis映射文件Select元素">
+                  <i class="fa fa-chevron-left"></i> MyBatis映射文件Select元素
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/07/MyBatis%E7%BC%93%E5%AD%98/" rel="next" title="MyBatis缓存">
+                  MyBatis缓存 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

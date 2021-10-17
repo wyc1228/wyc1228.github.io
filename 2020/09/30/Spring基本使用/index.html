@@ -1,0 +1,1429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Spring基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Spring基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/spring-overview.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/jar%E5%8C%85.jpg">
+<meta property="article:published_time" content="2020-09-30T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-08T14:14:59.286Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="Spring">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/spring-overview.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Spring基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring5%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">Spring5基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Spring%E5%85%A5%E9%97%A8"><span class="nav-text">1.2 Spring入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-IOC%E6%A6%82%E8%BF%B0"><span class="nav-text">1.3 IOC概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-IOC%E6%8E%A5%E5%8F%A3"><span class="nav-text">1.4 IOC接口</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-IOC%E6%93%8D%E4%BD%9Cbean%E7%AE%A1%E7%90%86"><span class="nav-text">1.5 IOC操作bean管理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E5%9F%BA%E4%BA%8EXML%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0bean%E7%AE%A1%E7%90%86"><span class="nav-text">1.6 基于XML方式实现bean管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-1-%E5%9F%BA%E4%BA%8EXML%E6%96%B9%E5%BC%8F%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1"><span class="nav-text">1.6.1 基于XML方式创建对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-2-%E5%9F%BA%E4%BA%8EXML%E6%96%B9%E5%BC%8F%E6%B3%A8%E5%85%A5%E5%B1%9E%E6%80%A7"><span class="nav-text">1.6.2 基于XML方式注入属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-3-xml%E6%B3%A8%E5%85%A5%E5%85%B6%E4%BB%96%E7%B1%BB%E5%9E%8B%E5%B1%9E%E6%80%A7"><span class="nav-text">1.6.3 xml注入其他类型属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-4-XML%E6%B3%A8%E5%85%A5%E9%9B%86%E5%90%88%E5%B1%9E%E6%80%A7"><span class="nav-text">1.6.4 XML注入集合属性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-5-Bean%E7%AE%A1%E7%90%86-FactoryBean"><span class="nav-text">1.6.5 Bean管理(FactoryBean)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-6-Bean%E4%BD%9C%E7%94%A8%E5%9F%9F"><span class="nav-text">1.6.6 Bean作用域</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-6-7-Bean%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="nav-text">1.6.7 Bean生命周期</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0bean%E7%AE%A1%E7%90%86"><span class="nav-text">1.7 基于注解方式实现bean管理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-1-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E5%AE%9E%E7%8E%B0%E5%AF%B9%E8%B1%A1%E5%88%9B%E5%BB%BA"><span class="nav-text">1.7.1 基于注解实现对象创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-2-%E7%BB%84%E4%BB%B6%E6%89%AB%E6%8F%8F%E7%BB%86%E8%8A%82%E9%85%8D%E7%BD%AE"><span class="nav-text">1.7.2 组件扫描细节配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-7-3-%E5%9F%BA%E4%BA%8E%E6%B3%A8%E8%A7%A3%E6%96%B9%E5%BC%8F%E5%AE%9E%E7%8E%B0%E5%B1%9E%E6%80%A7%E6%B3%A8%E5%85%A5"><span class="nav-text">1.7.3 基于注解方式实现属性注入</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-%E5%AE%8C%E5%85%A8%E6%B3%A8%E8%A7%A3%E5%BC%80%E5%8F%91"><span class="nav-text">1.8 完全注解开发</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Spring基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-30 21:46:45" itemprop="dateCreated datePublished" datetime="2020-09-30T21:46:45+08:00">2020-09-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Spring基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Spring5基本使用"><a href="#Spring5基本使用" class="headerlink" title="Spring5基本使用"></a>Spring5基本使用</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ol>
+<li>Spring 是轻量级的开源的 JavaEE 框架 </li>
+<li>Spring可以解决企业应用开发的复杂性 </li>
+<li>Spring 有两个核心部分：IOC 和 Aop <ol>
+<li>IOC：控制反转，把创建对象过程交给 Spring 进行管理，包括DI，依赖注入</li>
+<li>Aop：面向切面，不修改源代码进行功能增强 </li>
+</ol>
+</li>
+<li>Spring 特点 <ol>
+<li>方便解耦，简化开发 </li>
+<li>Aop 编程支持 </li>
+<li>方便程序测试 </li>
+<li>方便和其他框架进行整合 </li>
+<li>方便进行事务操作 </li>
+<li>降低 API 开发难度 </li>
+</ol>
+</li>
+</ol>
+<p>Spring4的模块划分图：从底向上看</p>
+<p><img src="/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/spring-overview.png" alt="spring-overview"></p>
+<p><strong>Test</strong>：Spring的单元测试模块，spring-test-4.2.6.RELEASE.jar</p>
+<p><strong>Core Container</strong>：核心容器（IOC）；黑色代表这部分功能由哪些jar包组成，要使用这部分的完整功能，这些jar包都需要导入：</p>
+<ul>
+<li>Bean：spring-beans-4.2.6.RELEASE.jar  </li>
+</ul>
+<ul>
+<li>Core：spring-core-4.2.6.RELEASE.jar </li>
+</ul>
+<ul>
+<li>Context： spring-context-4.2.6.RELEASE.jar  </li>
+</ul>
+<ul>
+<li>SpEL(Spring Expression Language:Spring表达式语言)：spring-expression-4.2.6.RELEASE.jar</li>
+</ul>
+<p><strong>AOP+Aspects</strong>：面向切面模块 spring-aop-4.2.6.RELEASE.jar spring-aspects-4.2.6.RELEASE.jar</p>
+<p><strong>Data Access/Integration</strong>：数据访问/集成</p>
+<ul>
+<li>数据访问相关：<ul>
+<li>JDBC：spring-jdbc-4.2.6.RELEASE.jar</li>
+<li>ORM(Object Relation Mapping)：对象关系映射 spring-orm-4.2.6.RELEASE.jar</li>
+<li>Transactions：事务处理简写tx spring-tx-4.2.6.RELEASE.jar</li>
+</ul>
+</li>
+<li>集成相关：OXM：spring-oxm-4.2.6.RELEASE.jar  JMS：spring-jms-4.2.6.RELEASE.jar</li>
+</ul>
+<p><strong>Web</strong>：Spring开发web应用的模块</p>
+<ul>
+<li>WebSocket：一门新技术，spring-websocket-4.2.6.RELEASE.jar</li>
+</ul>
+<ul>
+<li>servlet：spring-web-4.2.6.RELEASE.jar，和原生web相关(Servlet)</li>
+</ul>
+<ul>
+<li>Web：spring-webmvc-4.2.6.RELEASE.jar，开发web项目的(web)</li>
+</ul>
+<ul>
+<li>portlet：spring-webmvc-portlet-4.2.6.RELEASE.jar，开发web应用的组件集成</li>
+</ul>
+<p>用哪个模块导哪个包</p>
+<p>IOC(Inversion of Controller) ：控制反转</p>
+<ul>
+<li>控制：资源获取的方式;<ul>
+<li>主动式：(要什么资源自给创造)</li>
+<li>被动式：资源的获取不是我们自己创建，而是交给一个容器来创建和设置</li>
+</ul>
+</li>
+</ul>
+<p><strong>容器</strong>：管理所有的组件(有功能的类)；假设BookServlet受容器管理，BookService也受容器管理，容器可以自动探查出哪些组件(类)需要用到另一些组件(类)；容器帮我们创建BookService对象，并把BookService对象赋值过去</p>
+<p>容器：主动的new资源变为被动的接受资源，称为控制反转</p>
+<p>DI(Dependency Injection)：依赖注入；容器能知道哪个组件(类)运行的时候，需要另一个类(组件)；容器通过反射的形式，将容器中准备好的BookService对象注入(利用反射给属性赋值)到BookServlet中</p>
+<p>只要容器管理的组件，都能使用容器提供的强大的功能；</p>
+<h3 id="1-2-Spring入门"><a href="#1-2-Spring入门" class="headerlink" title="1.2 Spring入门"></a>1.2 Spring入门</h3><ol>
+<li>导入Spring相关的jar包</li>
+</ol>
+<p><img src="/2020/09/30/Spring%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/jar%E5%8C%85.jpg" alt="jar包"></p>
+<ol start="2">
+<li>创建测试类</li>
+</ol>
+<pre><code class="java">package com.review.spring5;
+
+public class User &#123;
+    public void add()&#123;
+        System.out.println(&quot;hello spring5&quot;);
+    &#125;
+&#125;
+</code></pre>
+<ol start="3">
+<li>创建spring配置文件，在配置文件中配置测试的类</li>
+</ol>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;bean id=&quot;user&quot; class=&quot;com.review.spring5.User&quot;&gt;&lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ol start="4">
+<li>编写测试代码</li>
+</ol>
+<pre><code class="java">public class UserTest &#123;
+    @Test
+    public void test1()&#123;
+        //加载spring配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean1.xml&quot;);
+        //获取配置文件的创建对象
+        User user = context.getBean(&quot;user&quot;, User.class);
+        System.out.println(user);
+        user.add();
+    &#125;
+&#125;
+</code></pre>
+<blockquote>
+<p>会发现我们并未创建user类的对象，而成功调用了user的add方法</p>
+</blockquote>
+<h3 id="1-3-IOC概述"><a href="#1-3-IOC概述" class="headerlink" title="1.3 IOC概述"></a>1.3 IOC概述</h3><ol>
+<li>IOC是什么<ol>
+<li>控制反转，把对象创建和对象之间的调用过程，交给 Spring 进行管理 </li>
+<li>使用 IOC 目的：为了耦合度降低</li>
+<li>IOC包括依赖注入(DI)和依赖查找(DL)</li>
+</ol>
+</li>
+<li>IOC的底层原理<ol>
+<li>xml 解析、工厂模式、反射</li>
+</ol>
+</li>
+</ol>
+<h3 id="1-4-IOC接口"><a href="#1-4-IOC接口" class="headerlink" title="1.4 IOC接口"></a>1.4 IOC接口</h3><ol>
+<li><p>IOC 思想基于 IOC 容器完成，IOC 容器底层就是对象工厂 </p>
+</li>
+<li><p>Spring 提供 IOC 容器实现两种方式：（两个接口） </p>
+<ol>
+<li>BeanFactory：IOC 容器基本实现，是 Spring 内部的使用接口，不提供开发人员进行使用<ul>
+<li> 加载配置文件时候不会创建对象，在获取对象（使用）才去创建对象 </li>
+</ul>
+</li>
+<li>ApplicationContext：BeanFactory 接口的子接口，提供更多更强大的功能，一般由开发人 员进行使用<ul>
+<li>加载配置文件时候就会把在配置文件对象进行创建 </li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>ApplicationContext 接口两个常用的实现类</p>
+<ol>
+<li>ClassPathXmlApplicationContext</li>
+<li>FileSystemXmlApplicationContext</li>
+</ol>
+</li>
+</ol>
+<h3 id="1-5-IOC操作bean管理"><a href="#1-5-IOC操作bean管理" class="headerlink" title="1.5 IOC操作bean管理"></a>1.5 IOC操作bean管理</h3><ol>
+<li>什么是 Bean 管理 ，Bean 管理指的是两个操作 <ol>
+<li>Spring 创建对象 </li>
+<li>Spirng 注入属性 </li>
+</ol>
+</li>
+<li>Bean 管理操作有两种方式 <ol>
+<li>基于 xml 配置文件方式实现 </li>
+<li>基于注解方式实现</li>
+</ol>
+</li>
+</ol>
+<h3 id="1-6-基于XML方式实现bean管理"><a href="#1-6-基于XML方式实现bean管理" class="headerlink" title="1.6 基于XML方式实现bean管理"></a>1.6 基于XML方式实现bean管理</h3><h4 id="1-6-1-基于XML方式创建对象"><a href="#1-6-1-基于XML方式创建对象" class="headerlink" title="1.6.1 基于XML方式创建对象"></a>1.6.1 基于XML方式创建对象</h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;bean id=&quot;user&quot; class=&quot;com.review.spring5.User&quot;&gt;&lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ol>
+<li>在 spring 配置文件中，使用 bean 标签，标签里面添加对应属性，就可以实现对象创建 </li>
+<li>在 bean 标签有很多属性，介绍常用的属性<ul>
+<li>id 属性：唯一标识 </li>
+<li>class 属性：类全路径（包类路径） </li>
+</ul>
+</li>
+<li>创建对象时候，默认也是执行无参数构造方法完成对象创建</li>
+</ol>
+<h4 id="1-6-2-基于XML方式注入属性"><a href="#1-6-2-基于XML方式注入属性" class="headerlink" title="1.6.2 基于XML方式注入属性"></a>1.6.2 基于XML方式注入属性</h4><ul>
+<li>DI：依赖注入，就是注入属性</li>
+</ul>
+<p><strong>第一种方式</strong>：set方式注入属性</p>
+<ul>
+<li>先创建带有属性的类</li>
+</ul>
+<pre><code class="java">package com.review.spring5.bean;
+
+public class Bean &#123;
+    //属性
+    private String name;
+    private String author;
+    //设置属性对应的set方法
+    public void setName(String name) &#123;
+        this.name = name;
+    &#125;
+
+    public void setAuthor(String author) &#123;
+        this.author = author;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>创建spring配置文件</li>
+</ul>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;book&quot; class=&quot;com.review.spring5.bean.Book&quot;&gt;
+        &lt;!--使用 property 完成属性注入
+        name：类里面属性名称
+        value：向属性注入的值
+        --&gt;
+        &lt;property name=&quot;name&quot; value=&quot;红楼梦&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;author&quot; value=&quot;曹雪芹&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ul>
+<li>测试类</li>
+</ul>
+<pre><code class="java">public class IOCTest &#123;
+    @Test
+    public void test01()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean1.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Book book = context.getBean(&quot;book&quot;, Book.class);
+        System.out.println(book);//Book&#123;name=&#39;红楼梦&#39;, author=&#39;曹雪芹&#39;&#125;
+    &#125;
+&#125;
+</code></pre>
+<blockquote>
+<p>注意：配置文件中的id值和context.getBean()方法中的第一个参数值保持一致</p>
+</blockquote>
+<p><strong>第二种方式</strong>：使用有参构造进行属性注入</p>
+<ul>
+<li>创建测试类</li>
+</ul>
+<pre><code class="java">public class Orders &#123;
+    //属性
+    private String name;
+    private int age;
+    //有参构造器
+    public Orders(String name, int age) &#123;
+        this.name = name;
+        this.age = age;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>创建spring配置文件</li>
+</ul>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;order&quot; class=&quot;com.review.spring5.bean.Orders&quot;&gt;
+        &lt;!--有参构造注入属性--&gt;
+        &lt;constructor-arg name=&quot;name&quot; value=&quot;曹雪芹&quot;&gt;&lt;/constructor-arg&gt;
+        &lt;constructor-arg name=&quot;age&quot; value=&quot;23&quot;&gt;&lt;/constructor-arg&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ul>
+<li>测试类</li>
+</ul>
+<pre><code class="java">@Test
+    public void test02()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean2.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Orders order = context.getBean(&quot;order&quot;, Orders.class);
+        System.out.println(order);//Orders&#123;name=&#39;曹雪芹&#39;, age=23&#125;
+    &#125;
+</code></pre>
+<p><strong>第三种方式</strong>：</p>
+<p><code>P名称空间注入</code>，需要有set方法(了解)</p>
+<p>以Book测试类为例，xml配置文件，beans中设置<code>xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</code></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:p=&quot;http://www.springframework.org/schema/p&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建，再使用p命名空间--&gt;
+    &lt;bean id=&quot;book1&quot; class=&quot;com.review.spring5.bean.Book&quot; p:name=&quot;红楼梦&quot; p:author=&quot;曹雪芹&quot;&gt;&lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<p><code>c命名空间注入</code>，需要有有参构造方法(了解)</p>
+<p>以Orders测试类为例，xml配置文件，beans中设置<code>xmlns:c=&quot;http://www.springframework.org/schema/c&quot;</code></p>
+<pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:c=&quot;http://www.springframework.org/schema/c&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建，再使用p命名空间--&gt;
+    &lt;bean id=&quot;orders&quot; class=&quot;com.review.spring5.bean.Orders&quot; c:name=&quot;曹雪芹&quot; c:age=&quot;23&quot;&gt;&lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<h4 id="1-6-3-xml注入其他类型属性"><a href="#1-6-3-xml注入其他类型属性" class="headerlink" title="1.6.3 xml注入其他类型属性"></a>1.6.3 xml注入其他类型属性</h4><ol>
+<li><p><strong>字面值</strong></p>
+<ol>
+<li>注入null值</li>
+</ol>
+<pre><code class="xml">&lt;property name=&quot;name&quot;&gt;
+ &lt;null/&gt;
+&lt;/property&gt;
+</code></pre>
+<ol start="2">
+<li>属性值有特殊符号</li>
+</ol>
+<pre><code class="xml">&lt;!--属性值包含特殊符号
+    1 把&lt;&gt;进行转义 &amp;lt; &amp;gt;
+    2 把带特殊符号内容写到 CDATA
+    --&gt;
+    &lt;property name=&quot;name&quot;&gt;
+        &lt;value&gt;&lt;![CDATA[&lt;&lt;红楼梦&gt;&gt;]]&gt;&lt;/value&gt;
+    &lt;/property&gt;
+</code></pre>
+</li>
+<li><p><strong>注入属性-外部bean</strong></p>
+<ol>
+<li>创建两个类 service 类和 dao 类</li>
+<li>在 service 调用 dao 里面的方法</li>
+</ol>
+<pre><code class="java">public class UserDaoImpl implements UserDao &#123;
+    @Override
+    public void userDaoTest() &#123;
+        System.out.println(&quot;userDao...........&quot;);
+    &#125;
+&#125;
+
+public class UserService &#123;
+    //创建userDao属性，生成set方法
+    private UserDao userDao;
+
+    public void setUserDao(UserDao userDao) &#123;
+        this.userDao = userDao;
+    &#125;
+
+    public void UserServiceTest()&#123;
+        System.out.println(&quot;UserServiceTest..........&quot;);
+        userDao.userDaoTest();
+    &#125;
+&#125;
+</code></pre>
+<ol start="3">
+<li>在 spring 配置文件中进行配置</li>
+</ol>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建,在Service中调用dao--&gt;
+    &lt;bean id=&quot;userService&quot; class=&quot;com.review.spring5.service.UserService&quot;&gt;
+        &lt;!--注入 userDao 对象
+        name 属性：类里面属性名称
+        ref 属性：创建userDao对象bean标签id值
+        --&gt;
+        &lt;property name=&quot;userDao&quot; ref=&quot;userDaoImpl&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;userDaoImpl&quot; class=&quot;com.review.spring5.dao.impl.UserDaoImpl&quot;&gt;&lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<ol start="4">
+<li>测试类</li>
+</ol>
+<pre><code class="java">@Test
+    public void test03()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean4.xml&quot;);
+        //获取配置文件中需要创建的对象
+        UserService userService = context.getBean(&quot;userService&quot;, UserService.class);
+        userService.UserServiceTest();
+        System.out.println(userService);
+    &#125;
+</code></pre>
+</li>
+<li><p><strong>注入属性-内部bean</strong></p>
+<ol>
+<li>一对多关系：部门和员工 一个部门有多个员工，一个员工属于一个部门 部门是一，员工是多 </li>
+<li>在实体类之间表示一对多关系，员工表示所属部门，使用对象类型属性进行表示</li>
+</ol>
+<pre><code class="java">public class Dept &#123;
+    private String dname;
+
+    public void setDname(String dname) &#123;
+        this.dname = dname;
+    &#125;
+&#125;
+public class Emp &#123;
+    private String name;
+    private int age;
+    //员工属于某一个部门，使用对象形式表示
+    private Dept dept;
+
+    public void setName(String name) &#123;
+        this.name = name;
+    &#125;
+
+    public void setAge(int age) &#123;
+        this.age = age;
+    &#125;
+
+    public void setDept(Dept dept) &#123;
+        this.dept = dept;
+    &#125;
+    @Override
+    public String toString() &#123;
+        return &quot;Emp&#123;&quot; +
+                &quot;name=&#39;&quot; + name + &#39;\&#39;&#39; +
+                &quot;, age=&quot; + age +
+                &quot;, dept=&quot; + dept +
+                &#39;&#125;&#39;;
+    &#125;
+&#125;
+</code></pre>
+<ol start="3">
+<li>在spring配置文件中进行配置</li>
+</ol>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;emp&quot; class=&quot;com.review.spring5.bean.Emp&quot;&gt;
+        &lt;!--使用 property 完成属性注入--&gt;
+        &lt;property name=&quot;name&quot; value=&quot;张三&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;23&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;dept&quot;&gt;
+            &lt;bean id=&quot;dept&quot; class=&quot;com.review.spring5.bean.Dept&quot;&gt;
+                &lt;property name=&quot;dname&quot; value=&quot;安保部&quot;&gt;&lt;/property&gt;
+            &lt;/bean&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ol start="4">
+<li>测试类</li>
+</ol>
+<pre><code class="java">@Test
+    public void test04()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean5.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Emp emp = context.getBean(&quot;emp&quot;, Emp.class);
+        System.out.println(emp);//Emp&#123;name=&#39;张三&#39;, age=23, dept=com.review.spring5.bean.Dept@3bf7ca37&#125;
+    &#125;
+</code></pre>
+</li>
+<li><p><strong>注入属性-级联赋值</strong></p>
+<ol>
+<li>第一种方式</li>
+</ol>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;emp&quot; class=&quot;com.review.spring5.bean.Emp&quot;&gt;
+        &lt;!--p普通属性--&gt;
+        &lt;property name=&quot;name&quot; value=&quot;红楼梦&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;age&quot; value=&quot;23&quot;&gt;&lt;/property&gt;
+        &lt;!--级联赋值--&gt;
+        &lt;property name=&quot;dept&quot; ref=&quot;dept&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;dept&quot; class=&quot;com.review.spring5.bean.Dept&quot;&gt;
+        &lt;property name=&quot;dname&quot; value=&quot;安保部&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+</li>
+</ol>
+<h4 id="1-6-4-XML注入集合属性"><a href="#1-6-4-XML注入集合属性" class="headerlink" title="1.6.4 XML注入集合属性"></a>1.6.4 XML注入集合属性</h4><ol>
+<li>测试类</li>
+</ol>
+<pre><code class="java">public class Stu &#123;
+    //1 数组类型属性
+    private String[] courses;
+    //2 list 集合类型属性
+    private List&lt;String&gt; list;
+    //3 map 集合类型属性
+    private Map&lt;String,String&gt; maps;
+    //4 set 集合类型属性
+    private Set&lt;String&gt; sets;
+    public void setSets(Set&lt;String&gt; sets) &#123;
+        this.sets = sets;
+    &#125;
+    public void setCourses(String[] courses) &#123;
+        this.courses = courses;
+    &#125;
+    public void setList(List&lt;String&gt; list) &#123;
+        this.list = list;
+    &#125;
+    public void setMaps(Map&lt;String, String&gt; maps) &#123;
+        this.maps = maps;
+    &#125;
+&#125;
+</code></pre>
+<ol start="2">
+<li>配置文件</li>
+</ol>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;bean id=&quot;stu&quot; class=&quot;com.review.spring5.bean.Stu&quot;&gt;
+        &lt;!--数组类型属性注入--&gt;
+        &lt;property name=&quot;courses&quot;&gt;
+            &lt;array&gt;
+                &lt;value&gt;java 课程&lt;/value&gt;
+                &lt;value&gt;数据库课程&lt;/value&gt;
+            &lt;/array&gt;
+        &lt;/property&gt;
+        &lt;!--list 类型属性注入--&gt;
+        &lt;property name=&quot;list&quot;&gt;
+            &lt;list&gt;
+                &lt;value&gt;张三&lt;/value&gt;
+                &lt;value&gt;小三&lt;/value&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+        &lt;!--map 类型属性注入--&gt;
+        &lt;property name=&quot;maps&quot;&gt;
+            &lt;map&gt;
+                &lt;entry key=&quot;JAVA&quot; value=&quot;java&quot;&gt;&lt;/entry&gt;
+                &lt;entry key=&quot;PHP&quot; value=&quot;php&quot;&gt;&lt;/entry&gt;
+            &lt;/map&gt;
+        &lt;/property&gt;
+        &lt;!--set 类型属性注入--&gt;
+        &lt;property name=&quot;sets&quot;&gt;
+            &lt;set&gt;
+                &lt;value&gt;MySQL&lt;/value&gt;
+                &lt;value&gt;Redis&lt;/value&gt;
+            &lt;/set&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ul>
+<li>集合属性中如果存入的值为对象时</li>
+</ul>
+<pre><code class="xml">&lt;!--创建多个 course 对象--&gt;
+    &lt;bean id=&quot;course1&quot; class=&quot;com.review.spring5.bean.Course&quot;&gt;
+        &lt;property name=&quot;cname&quot; value=&quot;Spring5 框架&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;course2&quot; class=&quot;com.review.spring5.bean.Course&quot;&gt;
+        &lt;property name=&quot;cname&quot; value=&quot;MyBatis 框架&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;!--注入 list 集合类型，值是对象--&gt;
+    &lt;bean id=&quot;stu&quot; class=&quot;com.review.spring5.bean.Stu&quot;&gt;
+    &lt;property name=&quot;courseList&quot;&gt;
+        &lt;list&gt;
+            &lt;ref bean=&quot;course1&quot;&gt;&lt;/ref&gt;
+            &lt;ref bean=&quot;course2&quot;&gt;&lt;/ref&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;/bean&gt;
+</code></pre>
+<ul>
+<li>把集合注入部分提取出来：在 spring 配置文件中引入名称空间 util</li>
+</ul>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:util=&quot;http://www.springframework.org/schema/util&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd&quot;&gt;
+
+    &lt;util:list id=&quot;bookList&quot;&gt;
+        &lt;value&gt;西游记&lt;/value&gt;
+        &lt;value&gt;三国演义&lt;/value&gt;
+        &lt;value&gt;水浒传&lt;/value&gt;
+    &lt;/util:list&gt;
+    &lt;!--2 提取 list 集合类型属性注入使用--&gt;
+    &lt;bean id=&quot;book&quot; class=&quot;com.review.spring5.bean.Book&quot;&gt;
+        &lt;property name=&quot;bookList&quot; ref=&quot;bookList&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+<h4 id="1-6-5-Bean管理-FactoryBean"><a href="#1-6-5-Bean管理-FactoryBean" class="headerlink" title="1.6.5 Bean管理(FactoryBean)"></a>1.6.5 Bean管理(FactoryBean)</h4><p>Spring 有两种类型 bean，一种普通 bean，另外一种工厂 bean（FactoryBean）</p>
+<ul>
+<li><p>普通 bean：在配置文件中定义 bean 类型就是返回类型</p>
+<pre><code class="xml">&lt;bean id=&quot;book&quot; class=&quot;com.review.spring5.bean.Book&quot;&gt;
+        &lt;property name=&quot;bookList&quot; ref=&quot;bookList&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+Book book = context.getBean(&quot;book&quot;, Book.class);
+</code></pre>
+<blockquote>
+<p>例如此配置文件中的class属性配置包路径Book，当你实现的时候返回的只能是Book类型，这就是普通bean</p>
+</blockquote>
+</li>
+<li><p>工厂 bean：在配置文件定义 bean 类型可以和返回类型不一样 </p>
+<ul>
+<li>第一步 创建类，让这个类作为工厂 bean，实现接口 FactoryBean </li>
+<li>第二步 实现接口里面的方法，在实现的方法中定义返回的 bean 类型</li>
+</ul>
+</li>
+</ul>
+<pre><code class="java">public class MyBean implements FactoryBean&lt;Book&gt; &#123;
+    @Override
+    public Book getObject() throws Exception &#123;
+        Book book = new Book();
+        book.setName(&quot;红楼梦&quot;);
+        return book;
+    &#125;
+
+    @Override
+    public Class&lt;?&gt; getObjectType() &#123;
+        return null;
+    &#125;
+
+    @Override
+    public boolean isSingleton() &#123;
+        return false;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>配置文件</li>
+</ul>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;myBean&quot; class=&quot;com.review.spring5.bean.MyBean&quot;&gt;
+    &lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<ul>
+<li>测试类</li>
+</ul>
+<pre><code class="java">@Test
+    public void test05()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean9.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Book book = context.getBean(&quot;myBean&quot;, Book.class);
+        System.out.println(book);
+    &#125;
+</code></pre>
+<blockquote>
+<p>虽然class配置的是MyBean但是我获取的是Book</p>
+</blockquote>
+<h4 id="1-6-6-Bean作用域"><a href="#1-6-6-Bean作用域" class="headerlink" title="1.6.6 Bean作用域"></a>1.6.6 Bean作用域</h4><p>在 Spring 里面，创建 bean 实例有单实例和多实例 </p>
+<p>在 Spring 里面，默认情况下，bean 是单实例对象</p>
+<p>例如：的到的book1和book2相同，说明是同一个对象</p>
+<pre><code class="java">@Test
+    public void test05()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean1.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Book book1 = context.getBean(&quot;book&quot;, Book.class);
+        Book book2 = context.getBean(&quot;book&quot;, Book.class);
+        System.out.println(book1==book2);
+    &#125;
+</code></pre>
+<p><strong>设置单实例和多实例</strong> </p>
+<ul>
+<li>在 spring 配置文件 bean 标签里面有属性（scope）用于设置单实例还是多实例 </li>
+<li>scope 属性值 第一个值 默认值，singleton，表示是单实例对象 第二个值 prototype，表示是多实例对象</li>
+</ul>
+<pre><code class="xml">&lt;!--先配置对象创建，设置多实例--&gt;
+    &lt;bean id=&quot;book&quot; class=&quot;com.review.spring5.bean.Book&quot; scope=&quot;prototype&quot;&gt;
+        &lt;property name=&quot;name&quot; value=&quot;红楼梦&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;author&quot; value=&quot;曹雪芹&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+</code></pre>
+<pre><code class="java">@Test
+    public void test05()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean10.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Book book1 = context.getBean(&quot;book&quot;, Book.class);
+        Book book2 = context.getBean(&quot;book&quot;, Book.class);
+        System.out.println(book1);
+        System.out.println(book2);
+        //com.review.spring5.bean.Book@6771beb3
+        //com.review.spring5.bean.Book@51399530
+    &#125;
+</code></pre>
+<p><strong>singleton 和 prototype 区别</strong> </p>
+<ul>
+<li>singleton 单实例，prototype 多实例 </li>
+<li>设置 scope 值是 singleton 时候，加载 spring 配置文件时候就会创建单实例对象 </li>
+<li>设置 scope 值是 prototype 时候，不是在加载 spring 配置文件时候创建对象，在调用 getBean 方法时候创建多实例对象</li>
+</ul>
+<h4 id="1-6-7-Bean生命周期"><a href="#1-6-7-Bean生命周期" class="headerlink" title="1.6.7 Bean生命周期"></a>1.6.7 Bean生命周期</h4><p>Bean生命周期：从对象创建到对象销毁的过程 </p>
+<ol>
+<li>通过构造器创建 bean 实例（无参数构造） </li>
+<li>为 bean 的属性设置值和对其他 bean 引用（调用 set 方法）</li>
+<li>调用 bean 的初始化的方法（需要进行配置初始化的方法）</li>
+<li>bean 可以使用了（对象获取到了）</li>
+<li>当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）</li>
+</ol>
+<pre><code class="java">public class Order &#123;
+    //无参数构造
+    public Order() &#123;
+        System.out.println(&quot;第一步 执行无参数构造创建 bean 实例&quot;);
+    &#125;
+    private String oname;
+    public void setOname(String oname) &#123;
+        this.oname = oname;
+        System.out.println(&quot;第二步 调用 set 方法设置属性值&quot;);
+    &#125;
+    //创建执行的初始化的方法
+    public void initMethod() &#123;
+        System.out.println(&quot;第三步 执行初始化的方法&quot;);
+    &#125;
+    //创建执行的销毁的方法
+    public void destroyMethod() &#123;
+        System.out.println(&quot;第五步 执行销毁的方法&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>设置spring配置文件，需要配置初始化方法<code>init-method</code>，配置销毁属性<code>destroy-method</code></p>
+<pre><code class="xml">&lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;order&quot; class=&quot;com.review.spring5.bean.Order&quot; init-method=&quot;initMethod&quot; destroy-method=&quot;destroyMethod&quot;&gt;
+        &lt;property name=&quot;oname&quot; value=&quot;手机&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+</code></pre>
+<p>测试</p>
+<pre><code class="java">@Test
+    public void test06()&#123;
+        //加载配置文件
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean11.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Order order = context.getBean(&quot;order&quot;, Order.class);
+        System.out.println(&quot;第四步，获得创建的bean对象&quot;);
+        context.close();
+    &#125;
+</code></pre>
+<p><strong>bean 的后置处理器</strong>，bean 生命周期有七步 </p>
+<ol>
+<li>通过构造器创建 bean 实例（无参数构造） </li>
+<li>为 bean 的属性设置值和对其他 bean 引用（调用 set 方法） </li>
+<li>把 bean 实例传递 bean 后置处理器的方法 postProcessBeforeInitialization </li>
+<li>调用 bean 的初始化的方法（需要进行配置初始化的方法） </li>
+<li>把 bean 实例传递 bean 后置处理器的方法 postProcessAfterInitialization </li>
+<li>bean 可以使用了（对象获取到了） </li>
+<li>当容器关闭时候，调用 bean 的销毁的方法（需要进行配置销毁的方法）</li>
+</ol>
+<p><strong>添加后置处理器效果</strong>：</p>
+<p>创建类，实现接口 <strong>BeanPostProcessor</strong>，创建后置处理器</p>
+<pre><code class="java">public class MyBeanPost implements BeanPostProcessor &#123;
+    @Override
+    public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException &#123;
+        System.out.println(&quot;在初始化之前执行的方法&quot;);
+        return bean;
+    &#125;
+
+    @Override
+    public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException &#123;
+        System.out.println(&quot;在初始化之后执行的方法&quot;);
+        return bean;
+    &#125;
+&#125;
+</code></pre>
+<p>配置文件</p>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd&quot;&gt;
+
+    &lt;!--先配置对象创建--&gt;
+    &lt;bean id=&quot;order&quot; class=&quot;com.review.spring5.bean.Order&quot; init-method=&quot;initMethod&quot; destroy-method=&quot;destroyMethod&quot;&gt;
+        &lt;property name=&quot;oname&quot; value=&quot;手机&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+    &lt;bean id=&quot;myBeanPost&quot; class=&quot;com.review.spring5.bean.MyBeanPost&quot;&gt;&lt;/bean&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>测试类</p>
+<pre><code class="java">@Test
+    public void test06()&#123;
+        //加载配置文件
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean11.xml&quot;);
+        //获取配置文件中需要创建的对象
+        Order order = context.getBean(&quot;order&quot;, Order.class);
+        System.out.println(&quot;第四步，获得创建的bean对象&quot;);
+        context.close();
+    &#125;
+结果：
+第一步 执行无参数构造创建 bean 实例
+第二步 调用 set 方法设置属性值
+在初始化之前执行的方法
+第三步 执行初始化的方法
+在初始化之后执行的方法
+第四步，获得创建的bean对象
+第五步 执行销毁的方法
+</code></pre>
+<h3 id="1-7-基于注解方式实现bean管理"><a href="#1-7-基于注解方式实现bean管理" class="headerlink" title="1.7 基于注解方式实现bean管理"></a>1.7 基于注解方式实现bean管理</h3><p>注解格式：@注解名称(属性名称=属性值, 属性名称=属性值..)</p>
+<p>注解可以作用在类上面，方法上面，属性上面</p>
+<p>使用注解目的：简化 xml 配置 </p>
+<p>Spring 针对 Bean 管理中创建对象提供注解 </p>
+<ul>
+<li>@Component</li>
+<li>@Service</li>
+<li>@Controller</li>
+<li>@Repository </li>
+</ul>
+<p>上面四个注解功能是一样的，都可以用来创建 bean 实例</p>
+<h4 id="1-7-1-基于注解实现对象创建"><a href="#1-7-1-基于注解实现对象创建" class="headerlink" title="1.7.1 基于注解实现对象创建"></a>1.7.1 基于注解实现对象创建</h4><p>步骤：</p>
+<p>第一步 引入依赖：<code>spring-aop-5.2.6.RELEASE.jar</code></p>
+<p>第二步开启组件扫描，要设置命名空间：<code>xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</code></p>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;!--开启组件扫描
+    1 如果扫描多个包，多个包使用逗号隔开
+    2 扫描包上层目录
+    --&gt;
+    &lt;context:component-scan base-package=&quot;com.review.spring5&quot;&gt;&lt;/context:component-scan&gt;
+&lt;/beans&gt;
+</code></pre>
+<p>第三步创建类，添加注解</p>
+<pre><code class="java">//在注解里面 value 属性值可以省略不写，
+//四个注解一样，都可以写
+//默认值是类名称，首字母小写
+//UserService -- userService
+@Service
+public class UserService &#123;
+    public void add()&#123;
+        System.out.println(&quot;add......&quot;);
+    &#125;
+&#125;
+</code></pre>
+<p>测试类</p>
+<pre><code class="java">@Test
+    public void test1()&#123;
+        //加载配置文件
+        ApplicationContext context = new ClassPathXmlApplicationContext(&quot;bean1.xml&quot;);
+        UserService userService = context.getBean(&quot;userService&quot;, UserService.class);
+        userService.add();
+    &#125;
+</code></pre>
+<h4 id="1-7-2-组件扫描细节配置"><a href="#1-7-2-组件扫描细节配置" class="headerlink" title="1.7.2 组件扫描细节配置"></a>1.7.2 组件扫描细节配置</h4><pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd&quot;&gt;
+
+    &lt;!--开启组件扫描
+    1 如果扫描多个包，多个包使用逗号隔开
+    2 扫描包上层目录
+    --&gt;
+    &lt;context:component-scan base-package=&quot;com.review.spring5&quot;&gt;&lt;/context:component-scan&gt;
+
+    &lt;!--示例 1
+    use-default-filters=&quot;false&quot; 表示现在不使用默认 filter，自己配置 filter
+    context:include-filter ，设置扫描哪些内容
+    --&gt;
+    &lt;context:component-scan base-package=&quot;com.review&quot; use-default-filters=&quot;false&quot;&gt;
+        &lt;!--只扫描带有controller注解的类--&gt;
+        &lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;
+    &lt;/context:component-scan&gt;
+    &lt;!--示例 2
+     下面配置扫描包所有内容
+     context:exclude-filter： 设置哪些内容不进行扫描
+    --&gt;
+    &lt;context:component-scan base-package=&quot;com.review&quot;&gt;
+        &lt;!--不扫描带有controller注解的类--&gt;
+        &lt;context:exclude-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;
+    &lt;/context:component-scan&gt;
+&lt;/beans&gt;
+</code></pre>
+<h4 id="1-7-3-基于注解方式实现属性注入"><a href="#1-7-3-基于注解方式实现属性注入" class="headerlink" title="1.7.3 基于注解方式实现属性注入"></a>1.7.3 基于注解方式实现属性注入</h4><p>@Autowired：根据属性类型进行自动装配</p>
+<ul>
+<li>把 service 和 dao 对象创建，在 service 和 dao 类<strong>添加创建对象注解</strong></li>
+<li>在 service 注入 dao 对象，在 service 类添加 dao 类型属性，在<strong>属性上面使用注解</strong></li>
+</ul>
+<pre><code class="java">@Repository
+public class UserDaoImpl implements UserDao &#123;
+    @Override
+    public void add() &#123;
+        System.out.println(&quot;daoAdd....&quot;);
+    &#125;
+&#125;
+@Service
+public class UserService &#123;
+    //定义 dao 类型属性
+    //不需要添加 set 方法
+    //添加注入属性注解
+    @Autowired
+    private UserDao userDao;
+    public void add() &#123;
+        System.out.println(&quot;service add.......&quot;);
+        userDao.add();
+    &#125;
+&#125;
+</code></pre>
+<p>@Qualifier：根据名称进行注入 这个@Qualifier 注解的使用，和上面@Autowired 一起使用</p>
+<p>如果一个接口有多个实现类，可以使用这个，单独使用@Autowired不清楚使用的是哪个实现类</p>
+<pre><code class="java">@Repository
+public class UserDaoImpl2 implements UserDao &#123;
+    @Override
+    public void add() &#123;
+        System.out.println(&quot;daoAdd2....&quot;);
+    &#125;
+&#125;
+@Service
+public class UserService &#123;
+    //定义 dao 类型属性
+    //不需要添加 set 方法
+    //添加注入属性注解
+    @Autowired //根据类型进行注入
+    @Qualifier(value = &quot;userDaoImpl2&quot;) //根据名称进行注入，注入userDaoImpl2的不注入userDaoImpl
+    private UserDao userDao;
+    public void add() &#123;
+        System.out.println(&quot;service add.......&quot;);
+        userDao.add();
+    &#125;
+&#125;
+</code></pre>
+<p>@Resource：可以根据类型注入，可以根据名称注入</p>
+<pre><code class="java">//@Resource //根据类型进行注入
+@Resource(name = &quot;userDaoImpl2&quot;) //根据名称进行注入
+private UserDao userDao;
+</code></pre>
+<p>以上三个注解都是针对对象类型</p>
+<p>@Value：注入普通类型属性</p>
+<pre><code class="java">@Value(value = &quot;abc&quot;)
+private String name;
+</code></pre>
+<h3 id="1-8-完全注解开发"><a href="#1-8-完全注解开发" class="headerlink" title="1.8 完全注解开发"></a>1.8 完全注解开发</h3><ol>
+<li>创建配置类，替代 xml 配置文件，@Configuration注解表示将当前类设置为配置类，@ComponentScan开启注解扫描</li>
+</ol>
+<pre><code class="java">@Configuration
+@ComponentScan(basePackages = &#123;&quot;com.review&quot;&#125;)
+public class SpringConfig &#123;
+&#125;
+</code></pre>
+<ol start="2">
+<li>编写测试类，替代了xml文件所以用的<code>AnnotationConfigApplicationContext</code></li>
+</ol>
+<pre><code class="java"> @Test
+    public void testService2() &#123;
+        //加载配置类
+        ApplicationContext context = new AnnotationConfigApplicationContext(SpringConfig.class);
+        UserService userService = context.getBean(&quot;userService&quot;, UserService.class);
+        System.out.println(userService);
+        userService.add();
+    &#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSM/" rel="tag"># SSM</a>
+              <a href="/tags/Spring/" rel="tag"># Spring</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/29/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8B%E7%AF%87/" rel="prev" title="SpringMVC基本使用-下篇">
+                  <i class="fa fa-chevron-left"></i> SpringMVC基本使用-下篇
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/01/Spring%20AOP&%20AspectJ%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="next" title="Spring AOP& AspectJ基本使用">
+                  Spring AOP& AspectJ基本使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

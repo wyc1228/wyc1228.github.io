@@ -1,0 +1,1218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Git基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Git基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210325201127712.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310175741833.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310182252278.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310182827338.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310190645261.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310191427441.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310192108061.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310192511965.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310192844251.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310193453379.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310193818373.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310194428905.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310195202706.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310200729683.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310200850194.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310201035540.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310203223644.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310211651287.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310212031041.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310213128406.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310213934720.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310214225619.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310214700454.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311085810087.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311085930059.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311090112619.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311090654244.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311091352130.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311092603821.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311093044343.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311093835348.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311094154222.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311094717222.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311123102997.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311125657555.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311131514656.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311131821124.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321092115267.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311134007431.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311134500378.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311135324348.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311141341193.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311142208811.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311142423063.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311142457060.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311145154629.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311145216836.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311150058764.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311150422810.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311150625229.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154240563.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154400871.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154453020.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154709216.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154909449.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154925259.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155522145.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155642149.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155725646.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155901863.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311160102612.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311161713867.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311162304960.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311163624275.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311163749120.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311163900876.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311165129555.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311165249153.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171259987.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171343873.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171555506.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171620559.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171709518.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312095827811.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312095854898.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312100720764.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312100838303.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312100959848.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312101626156.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312101829265.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312102049358.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312122046312.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312122522170.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312123039232.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312125859750.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312125936293.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312130005269.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312130117103.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312130208515.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312131908494.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312132107242.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312132140491.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312132218540.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133011520.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133105246.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133352626.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133503950.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134051283.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134215373.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134249145.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134445235.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135007817.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135129350.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135220815.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135242532.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135447196.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135515823.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140213605.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140327963.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140517852.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140804201.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140910593.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140938569.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141029875.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141429686.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141550593.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141634291.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141805020.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141914508.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312142713879.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312143456553.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312143757449.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312144812008.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312144835299.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312144916382.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145135815.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145228649.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145343400.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145830275.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312150522107.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185255337.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185323129.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320190404837.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185950523.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321093019644.png">
+<meta property="article:published_time" content="2020-10-15T13:46:45.000Z">
+<meta property="article:modified_time" content="2021-03-25T12:11:38.268Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="Git">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210325201127712.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Git基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">Git基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="nav-text">1、版本控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81Git%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-text">2、Git的优势</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81Git%E7%BB%93%E6%9E%84"><span class="nav-text">3、Git结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81Git%E5%92%8C%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%AD%E5%BF%83"><span class="nav-text">4、Git和代码托管中心</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81-%E6%9C%AC%E5%9C%B0%E7%9A%84%E6%9C%AC%E5%9C%B0%E5%BA%93%E5%92%8C%E4%BB%A3%E7%A0%81%E6%89%98%E7%AE%A1%E4%B8%AD%E5%BF%83%E7%9A%84%E8%BF%9C%E7%A8%8B%E5%BA%93"><span class="nav-text">5、 本地的本地库和代码托管中心的远程库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81Git%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%93%8D%E4%BD%9C"><span class="nav-text">6、Git命令行操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#6-1-%E6%9C%AC%E5%9C%B0%E5%BA%93%E5%88%9D%E5%A7%8B%E5%8C%96"><span class="nav-text">6.1 本地库初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-2-%E8%AE%BE%E7%BD%AE%E7%AD%BE%E5%90%8D"><span class="nav-text">6.2 设置签名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-3-%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C"><span class="nav-text">6.3 基本操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-1-%E7%8A%B6%E6%80%81%E6%9F%A5%E7%9C%8B"><span class="nav-text">6.3.1 状态查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-2-%E6%9F%A5%E7%9C%8B%E5%8E%86%E5%8F%B2%E8%AE%B0%E5%BD%95"><span class="nav-text">6.3.2 查看历史记录</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-3-%E5%89%8D%E8%BF%9B%E5%90%8E%E9%80%80-%E4%BF%AE%E6%94%B9%E5%8E%86%E5%8F%B2%E7%89%88%E6%9C%AC"><span class="nav-text">6.3.3 前进后退(修改历史版本)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-4-%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6"><span class="nav-text">6.3.4 删除文件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#6-3-5-%E6%AF%94%E8%BE%83%E6%96%87%E4%BB%B6%E5%B7%AE%E5%BC%82"><span class="nav-text">6.3.5 比较文件差异</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86"><span class="nav-text">7、分支管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8%E3%80%81GitHub%E6%93%8D%E4%BD%9C"><span class="nav-text">8、GitHub操作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E5%BA%93"><span class="nav-text">8.1 创建远程库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-%E5%9C%A8%E6%9C%AC%E5%9C%B0%E5%88%9B%E5%BB%BA%E8%BF%9C%E7%A8%8B%E5%BA%93%E5%88%AB%E5%90%8D-%E6%8E%A8%E9%80%81-%E5%85%8B%E9%9A%86-%E6%8B%89%E5%8F%96"><span class="nav-text">8.2 在本地创建远程库别名&#x2F;推送&#x2F;克隆&#x2F;拉取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-3-%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81"><span class="nav-text">8.3 解决冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-4-%E8%B7%A8%E5%9B%A2%E9%98%9F%E5%8D%8F%E4%BD%9C"><span class="nav-text">8.4 跨团队协作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#9%E3%80%81IDEA%E4%B8%ADGit%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">9、IDEA中Git的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#9-1-IDEA%E5%88%9B%E5%BB%BA%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-text">9.1 IDEA创建本地库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-2-add%E5%88%B0%E6%9A%82%E5%AD%98%E5%8C%BA-commit%E5%88%B0%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-text">9.2 add到暂存区&#x2F;commit到本地库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-3-%E5%88%87%E6%8D%A2%E7%89%88%E6%9C%AC"><span class="nav-text">9.3 切换版本</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-4-%E5%88%9B%E5%BB%BA%E5%88%86%E6%94%AF%E4%B8%8E%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF"><span class="nav-text">9.4 创建分支与合并分支</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-5-%E8%A7%A3%E5%86%B3%E5%86%B2%E7%AA%81"><span class="nav-text">9.5 解决冲突</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-6-%E6%9C%AC%E5%9C%B0%E5%BA%93%E4%B8%8A%E4%BC%A0%E5%88%B0%E8%BF%9C%E7%A8%8B%E5%BA%93-GitHub"><span class="nav-text">9.6 本地库上传到远程库(GitHub)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-7-%E6%9B%B4%E6%96%B0%E6%9C%AC%E5%9C%B0%E5%BA%93"><span class="nav-text">9.7 更新本地库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-8-%E5%85%8B%E9%9A%86GitHub%E9%A1%B9%E7%9B%AE"><span class="nav-text">9.8 克隆GitHub项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#10%E3%80%81SSH%E5%AF%86%E5%8C%99%E6%96%B9%E5%BC%8F"><span class="nav-text">10、SSH密匙方式</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Git基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-15 21:46:45" itemprop="dateCreated datePublished" datetime="2020-10-15T21:46:45+08:00">2020-10-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Git/" itemprop="url" rel="index"><span itemprop="name">Git</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Git基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Git基本使用"><a href="#Git基本使用" class="headerlink" title="Git基本使用"></a>Git基本使用</h1><p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210325201127712.png" alt="image-20210325201127712"></p>
+<h2 id="1、版本控制"><a href="#1、版本控制" class="headerlink" title="1、版本控制"></a>1、版本控制</h2><p>版本控制工具应该具备的功能</p>
+<ul>
+<li>协同修改<ul>
+<li>多人并行不悖的修改服务器端的同一个文件</li>
+</ul>
+</li>
+<li>数据备份<ul>
+<li>不仅保存目录和文件的当前状态，还能保存每一个提交过的历史状态</li>
+</ul>
+</li>
+<li>版本管理<ul>
+<li>在保存每一个版本的文件信息的时候要做到不保存重复数据，以节约存储空间，提高运行效率，Git采用了文件系统快照的方式</li>
+</ul>
+</li>
+<li>权限控制<ul>
+<li>对团队中参与开发的人员进行权限控制</li>
+<li>对团队外开发者贡献的代码进行审核–Git独有</li>
+</ul>
+</li>
+<li>历史记录<ul>
+<li>查看修改人，修改时间，修改内容，日志信息</li>
+<li>将本地文件恢复到某一个历史状态</li>
+</ul>
+</li>
+<li>分支管理<ul>
+<li>允许开发团队在工作过程中多条生产线同时推进任务，进一步提高效率</li>
+</ul>
+</li>
+</ul>
+<p>版本控制工具分类</p>
+<ul>
+<li>集中式版本控制工具：CVS、<strong>SVN</strong>、VSS·····</li>
+<li>分布式版本控制工具：<strong>Git</strong>、Mercurial、Bazaar·····</li>
+</ul>
+<p><strong>分布式版本控制工具 比 集中式版本控制工具 首要的优势是 能够避免单点故障</strong></p>
+<h2 id="2、Git的优势"><a href="#2、Git的优势" class="headerlink" title="2、Git的优势"></a>2、Git的优势</h2><ul>
+<li>大部分操作在本地完成，不需要联网</li>
+<li>完整性保证</li>
+<li>尽可能添加数据而不是删除或修改数据</li>
+<li>分支操作非常快捷流畅</li>
+<li>与Linux命令全面兼容</li>
+</ul>
+<h2 id="3、Git结构"><a href="#3、Git结构" class="headerlink" title="3、Git结构"></a>3、Git结构</h2><p>Git分为工作区，暂存区、本地库</p>
+<p>工作区用来写代码，暂存区用来临时存储、本地库存储历史版本</p>
+<p>在工作区写完代码通过git add命令临时存储到暂存区，然后git commit提交到本地库</p>
+<h2 id="4、Git和代码托管中心"><a href="#4、Git和代码托管中心" class="headerlink" title="4、Git和代码托管中心"></a>4、Git和代码托管中心</h2><p>代码托管中心任务：维护远程库</p>
+<p>局域网环境下代码托管中心有：GitLab服务器</p>
+<p>外网环境下代码托管中心有：码云，github</p>
+<h2 id="5、-本地的本地库和代码托管中心的远程库"><a href="#5、-本地的本地库和代码托管中心的远程库" class="headerlink" title="5、 本地的本地库和代码托管中心的远程库"></a>5、 本地的本地库和代码托管中心的远程库</h2><ul>
+<li>团队内部协作</li>
+<li>跨团队协作</li>
+</ul>
+<h2 id="6、Git命令行操作"><a href="#6、Git命令行操作" class="headerlink" title="6、Git命令行操作"></a>6、Git命令行操作</h2><h3 id="6-1-本地库初始化"><a href="#6-1-本地库初始化" class="headerlink" title="6.1 本地库初始化"></a>6.1 本地库初始化</h3><p>新建一个文件夹，在此文件夹中打开git bash，输入初始化命令git init</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310175741833.png" alt="image-20210310175741833"></p>
+<p>注意：.git隐藏目录下存放的是本地库相关的子目录和文件，不要删除，也不要修改</p>
+<h3 id="6-2-设置签名"><a href="#6-2-设置签名" class="headerlink" title="6.2 设置签名"></a>6.2 设置签名</h3><p>形式</p>
+<ul>
+<li>用户名：wyc</li>
+<li>Email地址：<a href="mailto:&#119;&#x61;&#x6e;&#103;&#64;&#x31;&#x36;&#x33;&#46;&#x63;&#111;&#x6d;">&#119;&#x61;&#x6e;&#103;&#64;&#x31;&#x36;&#x33;&#46;&#x63;&#111;&#x6d;</a></li>
+</ul>
+<p>作用：区分不同开发人员的身份</p>
+<p>辨析：登录远程库(代码托管中心)的账号，密码和这个设置的签名没有任何关系</p>
+<p>命令：</p>
+<ul>
+<li>项目级别/仓库级别：仅在当前本地库范围内有效<ul>
+<li>git config user.name wyc_pro</li>
+<li>git config user.email <a href="mailto:&#119;&#97;&#110;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#x31;&#54;&#x33;&#46;&#x63;&#111;&#x6d;">&#119;&#97;&#110;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#x31;&#54;&#x33;&#46;&#x63;&#111;&#x6d;</a></li>
+<li>信息保存位置：.git/config</li>
+</ul>
+</li>
+<li>系统用户级别：登陆当前操作系统的用户范围<ul>
+<li>git config –global user.name wyc_glb</li>
+<li>git config –globle user.email <a href="mailto:&#x77;&#97;&#x6e;&#x67;&#95;&#x67;&#108;&#x62;&#64;&#x31;&#54;&#51;&#46;&#99;&#111;&#x6d;">&#x77;&#97;&#x6e;&#x67;&#95;&#x67;&#108;&#x62;&#64;&#x31;&#54;&#51;&#46;&#99;&#111;&#x6d;</a></li>
+<li>信息保存位置：家目录下的gitconfig隐藏文件，~/.gitconfig文件</li>
+</ul>
+</li>
+<li>级别优先级：就近原则，项目级别优先于系统用户级别，二者都有，采用项目级别</li>
+<li>二者都没有，不允许这种操作，两种级别最少要设置一个</li>
+<li><strong>实际开发中，设置系统用户级别就够了</strong></li>
+</ul>
+<p>设置项目级别</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310182252278.png" alt="image-20210310182252278"></p>
+<p>设置系统用户级别</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310182827338.png" alt="image-20210310182827338"></p>
+<h3 id="6-3-基本操作"><a href="#6-3-基本操作" class="headerlink" title="6.3 基本操作"></a>6.3 基本操作</h3><h4 id="6-3-1-状态查看"><a href="#6-3-1-状态查看" class="headerlink" title="6.3.1 状态查看"></a>6.3.1 状态查看</h4><ul>
+<li>git status：查看工作区，暂存区状态<ul>
+<li>On branch master：在master分区下</li>
+<li>No commits yet：本地库没有东西</li>
+<li>nothing to commit：暂存区也没有东西</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310190645261.png" alt="image-20210310190645261"></p>
+<ul>
+<li><p>在创建了一个文件之后再git status，还未放入暂存区</p>
+<ul>
+<li>Untracked files：表示未被追踪的文件</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310191427441.png" alt="image-20210310191427441"></p>
+</li>
+<li><p>将创建的文件放入暂存区</p>
+<ul>
+<li>放入暂存区命令：git add 文件名</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310192108061.png" alt="image-20210310192108061"></p>
+</li>
+<li><p>将加入暂存区的文件撤回来，只是将暂存区的文件删除，并不会动工作区文件</p>
+<ul>
+<li>命令：git rm –cached 文件名</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310192511965.png" alt="image-20210310192511965"></p>
+</li>
+<li><p>将加入暂存区的文件提交到本地库</p>
+<ul>
+<li>提交命令：git commit 文件名</li>
+<li>快捷方式：git commit -m ”备注的信息“ 文件名</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310192844251.png" alt="image-20210310192844251"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310193453379.png" alt="image-20210310193453379"></p>
+</li>
+<li><p>修改文件之后，再status</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310193818373.png" alt="image-20210310193818373"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310194428905.png" alt="image-20210310194428905"></p>
+</li>
+</ul>
+<h4 id="6-3-2-查看历史记录"><a href="#6-3-2-查看历史记录" class="headerlink" title="6.3.2 查看历史记录"></a>6.3.2 查看历史记录</h4><ul>
+<li><p>命令：git log</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310195202706.png" alt="image-20210310195202706"></p>
+</li>
+<li><p>以一行的方式显示：git log –pretty=oneline</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310200729683.png" alt="image-20210310200729683"></p>
+</li>
+<li><p>显示一部分hash值的命令：git log –oneline</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310200850194.png" alt="image-20210310200850194"></p>
+</li>
+<li><p>显示回到历史版本需要移动几步的命令：git reflog</p>
+<ul>
+<li>HEAD@{1}：表示移动到此版本需要移动一步</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310201035540.png" alt="image-20210310201035540"></p>
+</li>
+</ul>
+<h4 id="6-3-3-前进后退-修改历史版本"><a href="#6-3-3-前进后退-修改历史版本" class="headerlink" title="6.3.3 前进后退(修改历史版本)"></a>6.3.3 前进后退(修改历史版本)</h4><ul>
+<li><p>基于索引值操作【推荐】，reset既可以前进又可以后退，加哪个索引值就跳到哪个版本</p>
+<ul>
+<li>git reset –hard 索引值</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310203223644.png" alt="image-20210310203223644"></p>
+</li>
+<li><p>使用^符号：只能后退，一个^表示后退一步，n个后退n步</p>
+<ul>
+<li>往后退一步命令：git reset –hard HEAD^</li>
+<li>往后退两步命令：git reset –hard HEAD^^</li>
+</ul>
+</li>
+<li><p>使用~符号：只能后退</p>
+<ul>
+<li>往后退n步命令：git reset –hard HEAD~n</li>
+</ul>
+</li>
+<li><p>reset命令的三个参数对比</p>
+<ul>
+<li>git reset –hard：在本地库移动HEAD指针，重置暂存区，重置工作区</li>
+<li>git reset –soft：仅仅在本地库移动HEAD指针</li>
+<li>git reset –mixed：在本地库移动HEAD指针，重置暂存区</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-3-4-删除文件"><a href="#6-3-4-删除文件" class="headerlink" title="6.3.4 删除文件"></a>6.3.4 删除文件</h4><ul>
+<li><p>将aaa.txt添加到本地库中再删除文件</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310211651287.png" alt="image-20210310211651287"></p>
+</li>
+<li><p>再查询历史记录，发现指向delete aaa.txt这条记录，回退到上一条new aaa.txt则能重新找回aaa.txt</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310212031041.png" alt="image-20210310212031041"></p>
+</li>
+<li><p>当删除文件之后提交到暂存区，未提交到本地库中，该如何恢复</p>
+<ul>
+<li>命令 git reset –hard HEAD</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310213128406.png" alt="image-20210310213128406"></p>
+</li>
+<li><p>删除的文件并找回</p>
+<ul>
+<li>前提：删除前，这个文件存在时的状态提交到了本地库</li>
+<li>操作：用git reset –hard [指针位置]，<ul>
+<li>删除操作已经提交到本地库：指针位置找历史存在的记录</li>
+<li>删除操作尚未提交到本地库：指针位置使用HEAD</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-3-5-比较文件差异"><a href="#6-3-5-比较文件差异" class="headerlink" title="6.3.5 比较文件差异"></a>6.3.5 比较文件差异</h4><ul>
+<li><p>修改apple.txt文件之后比较与原apple.txt之间的差异(添加到暂存区之后就没有区别)</p>
+<ul>
+<li>命令：git diff 文件名<ul>
+<li>将工作区中的文件和暂存区的文件进行比较</li>
+</ul>
+</li>
+<li>git diff [本地库中历史版本] 文件名<ul>
+<li>将工作区中的文件和本地库历史记录比较</li>
+</ul>
+</li>
+<li>不带文件名比较多个文件</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310213934720.png" alt="image-20210310213934720"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310214225619.png" alt="image-20210310214225619"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210310214700454.png" alt="image-20210310214700454"></p>
+</li>
+</ul>
+<h2 id="7、分支管理"><a href="#7、分支管理" class="headerlink" title="7、分支管理"></a>7、分支管理</h2><p>什么是分支？</p>
+<ul>
+<li>在版本控制过程中，使用多条线同时推进多个任务</li>
+</ul>
+<p>分支的好处</p>
+<ul>
+<li>同时并行推进多个功能的开发，提高开发效率</li>
+<li>各个分支在开发过程中，如果某一个分支开发失败，不会对其他分支有任何影响，失败的分支删除重新开始即可</li>
+</ul>
+<p>命令</p>
+<ul>
+<li><p>查看所有分支：git branch -v</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311085810087.png" alt="image-20210311085810087"></p>
+</li>
+<li><p>创建一个hot_fix分支：git branch hot_fix</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311085930059.png" alt="image-20210311085930059"></p>
+</li>
+<li><p>切换分支：git checkout hot_fix</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311090112619.png" alt="image-20210311090112619"></p>
+</li>
+<li><p>在hot_fix分支修改文件，在提交到暂存区和本地库，此时查看分支状态，发现hot_fix版本往前推进一步</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311090654244.png" alt="image-20210311090654244"></p>
+</li>
+<li><p>合并分支：</p>
+<ul>
+<li>第一步：切换到接受修改的分支上(被合并的)</li>
+<li>第二步：执行merge命令</li>
+<li>例如，hot_fix分支的修改合并到master上，先切换到master</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311091352130.png" alt="image-20210311091352130"></p>
+</li>
+<li><p>解决冲突：当两个分支同时修改同一个文件的同一处，而内容又不一致，则当合并后应该遵循哪个修改的，这就会导致冲突</p>
+<ul>
+<li>两个分支都修改good.txt文件第一行，全都提交到本地库，则会发现两个分支的所在版本不同，此时合并，修改内容相同则冲突</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311092603821.png" alt="image-20210311092603821"></p>
+<ul>
+<li>在hot_fix分支下合并master分支，显示合并失败，此时后面分支为hot_fix|MERGING，需要手动合并</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311093044343.png" alt="image-20210311093044343"></p>
+<ul>
+<li>打开修改过后的文件，good.txt</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311093835348.png" alt="image-20210311093835348"></p>
+<ul>
+<li>删除特殊符号，修改文件至满意为止</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311094154222.png" alt="image-20210311094154222"></p>
+<ul>
+<li>然后git add将good.txt标记为已解决，使用get commit结束合并</li>
+<li>注意：<strong>此时git commit命令后面不能跟文件名</strong></li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311094717222.png" alt="image-20210311094717222"></p>
+</li>
+</ul>
+<h2 id="8、GitHub操作"><a href="#8、GitHub操作" class="headerlink" title="8、GitHub操作"></a>8、GitHub操作</h2><h3 id="8-1-创建远程库"><a href="#8-1-创建远程库" class="headerlink" title="8.1 创建远程库"></a>8.1 创建远程库</h3><ul>
+<li>登录Github，创建远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311123102997.png" alt="image-20210311123102997"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311125657555.png" alt="image-20210311125657555"></p>
+<h3 id="8-2-在本地创建远程库别名-推送-克隆-拉取"><a href="#8-2-在本地创建远程库别名-推送-克隆-拉取" class="headerlink" title="8.2 在本地创建远程库别名/推送/克隆/拉取"></a>8.2 在本地创建远程库别名/推送/克隆/拉取</h3><ul>
+<li>远程库地址</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311131514656.png" alt="image-20210311131514656"></p>
+<ul>
+<li>在本地库给远程库地址起别名，以后用别名代替地址比较方便<ul>
+<li>命令：git remote add 别名 地址</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311131821124.png" alt="image-20210311131821124"></p>
+<ul>
+<li><p>移除远程库别名</p>
+<ul>
+<li>命令：git remote remove 别名</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321092115267.png" alt="image-20210321092115267"></p>
+</li>
+<li><p>推送：git push 别名 分支名，需要输入github账户和密码</p>
+<ul>
+<li>此时，已经将本地库中的文件推送到远程库中了</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311134007431.png" alt="image-20210311134007431"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311134500378.png" alt="image-20210311134500378"></p>
+<ul>
+<li>克隆：git clone 远程地址<ul>
+<li>完整的把远程库下载到本地</li>
+<li>创建origin远程地址别名</li>
+<li>初始化本地库</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311135324348.png" alt="image-20210311135324348"></p>
+<p><strong>注意：</strong>现在test00本地库是上传到HaloTest00账号的远程库，而在test01本地库中克隆了test00远程库，此时在test01本地库中修改文件，然后再上传到远程库，因为上传到远程库需要输入账号密码，而继续上传到HaloTest00账号的远程库没有问题，但是如果使用别的账号上传则会报错，因为需要添加团队成员</p>
+<ul>
+<li>此时，test01修改文件，提交到本地库没有问题</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311141341193.png" alt="image-20210311141341193"></p>
+<ul>
+<li>此时使用HaloTest01的账号密码将本地库推送到HaloTest00的远程库，发现失败，因为HaloTest01未加如HaloTest00团队</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311142208811.png" alt="image-20210311142208811"></p>
+<ul>
+<li>将HaloTest01加入到HaloTest00团队，在邮件中同意邀请就可以了</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311142423063.png" alt="image-20210311142423063"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311142457060.png" alt="image-20210311142457060"></p>
+<ul>
+<li>此时HaloTest01加入团队，使用HaloTest01账号推送到远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311145154629.png" alt="image-20210311145154629"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311145216836.png" alt="image-20210311145216836"></p>
+<ul>
+<li>HaloTest01修改文件提交到远程库之后HaloTest00拉取远程库</li>
+<li>使用git fetch origin master抓取之后，发现工作区的文件内容还是未变</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311150058764.png" alt="image-20210311150058764"></p>
+<ul>
+<li>通过git checkout origin/master 命令可以查看下载下来的远程库中文件内容</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311150422810.png" alt="image-20210311150422810"></p>
+<ul>
+<li>整个抓取pull操作，分为fetch和merge两步，fetch先下载到本地库(此时未修改工作区文件)看看有没有什么错误，然后merge再合并过来<ul>
+<li>git fetch [远程地址别名] [远程分支名]</li>
+<li>git merge [远程地址别名/远程分支名]</li>
+</ul>
+</li>
+<li>也可以直接使用pull来操作<ul>
+<li>git pull origin master</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311150625229.png" alt="image-20210311150625229"></p>
+<h3 id="8-3-解决冲突"><a href="#8-3-解决冲突" class="headerlink" title="8.3 解决冲突"></a>8.3 解决冲突</h3><p>要点：</p>
+<ul>
+<li>如果不是基于GitHub远程库的最新版所做的修改，不能推送，必须拉取</li>
+<li>拉取下来后如果进入冲突状态，则按照“分支冲突解决”操作解决即可</li>
+</ul>
+<p>操作：</p>
+<ul>
+<li>首先HostTest00修改文件上传到远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154240563.png" alt="image-20210311154240563"></p>
+<ul>
+<li>此时HaloTest01中用的还是老版本</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154400871.png" alt="image-20210311154400871"></p>
+<ul>
+<li>然后HaloTest01在此基础上修改文件</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154453020.png" alt="image-20210311154453020"></p>
+<ul>
+<li>然后提交到本地库中，准备上传到远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154709216.png" alt="image-20210311154709216"></p>
+<ul>
+<li>上传到远程库，使用HaloTest01账号，因为是团队成员，结果发现上传失败，因为修改冲突</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154909449.png" alt="image-20210311154909449"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311154925259.png" alt="image-20210311154925259"></p>
+<ul>
+<li>上传不上去，此时提醒你必须先拿到远程库中的最新文件，此时发现进入解决冲突模式</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155522145.png" alt="image-20210311155522145"></p>
+<ul>
+<li>然后将文件修改至满意为止</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155642149.png" alt="image-20210311155642149"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155725646.png" alt="image-20210311155725646"></p>
+<ul>
+<li>之后上传到本地库，解决冲突</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311155901863.png" alt="image-20210311155901863"></p>
+<ul>
+<li>之后可以再次上传到远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311160102612.png" alt="image-20210311160102612"></p>
+<h3 id="8-4-跨团队协作"><a href="#8-4-跨团队协作" class="headerlink" title="8.4 跨团队协作"></a>8.4 跨团队协作</h3><ul>
+<li>HaloTest02这个团队想要和HaloTest00团队(包含队员HaloTest01)合作</li>
+<li>HaloTest02需要<strong>fork</strong> HaloTest00的远程库项目</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311161713867.png" alt="image-20210311161713867"></p>
+<ul>
+<li>fork完成之后</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311162304960.png" alt="image-20210311162304960"></p>
+<ul>
+<li>此时创建HaloTest02的文件夹，从HaloTest02的远程库中clone文件下来</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311163624275.png" alt="image-20210311163624275"></p>
+<ul>
+<li>克隆下来，本地库已经初始化好了，修改文件</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311163749120.png" alt="image-20210311163749120"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311163900876.png" alt="image-20210311163900876"></p>
+<ul>
+<li>然后进行上传到远程库操作，使用HaloTest02的账号密码</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311165129555.png" alt="image-20210311165129555"></p>
+<ul>
+<li>此时HaloTest02对文件操作完成</li>
+<li>然后向HaloTest00执行pull request操作</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311165249153.png" alt="image-20210311165249153"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171259987.png" alt="image-20210311171259987"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171343873.png" alt="image-20210311171343873"></p>
+<ul>
+<li>然后进入HaloTest00中</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171555506.png" alt="image-20210311171555506"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171620559.png" alt="image-20210311171620559"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210311171709518.png" alt="image-20210311171709518"></p>
+<h2 id="9、IDEA中Git的使用"><a href="#9、IDEA中Git的使用" class="headerlink" title="9、IDEA中Git的使用"></a>9、IDEA中Git的使用</h2><ul>
+<li>IDEA中配置Git路径，GitHub账号密码</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312095827811.png" alt="image-20210312095827811"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312095854898.png" alt="image-20210312095854898"></p>
+<h3 id="9-1-IDEA创建本地库"><a href="#9-1-IDEA创建本地库" class="headerlink" title="9.1 IDEA创建本地库"></a>9.1 IDEA创建本地库</h3><p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312100720764.png" alt="image-20210312100720764"></p>
+<ul>
+<li>选择本地库文件夹，点击OK，发现此文件夹下出现.git文件夹，因此，git_practice文件夹成为为本地库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312100838303.png" alt="image-20210312100838303"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312100959848.png" alt="image-20210312100959848"></p>
+<ul>
+<li>称为本地库之后，发现文件变红，表示未添加到暂存区，同时上方工具栏也会出现Git常用的操作</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312101626156.png" alt="image-20210312101626156"></p>
+<ul>
+<li>并且此时设置中也会显示git_practice文件夹被Git管理</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312101829265.png" alt="image-20210312101829265"></p>
+<ul>
+<li>此时创建新文件会显示是否要将此文件添加到暂存区，选择取消，以后手动添加</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312102049358.png" alt="image-20210312102049358"></p>
+<ul>
+<li>此时我们自己创建的文件以后需要放入远程库，但是IDEA自动生成的文件却不需要放入暂存区，以免不同版本IDEA会发生冲突，所以我们需要忽略这些IDEA自动生成的文件</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312122046312.png" alt="image-20210312122046312"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312122522170.png" alt="image-20210312122522170"></p>
+<ul>
+<li>忽略之后iml文件颜色变了</li>
+</ul>
+<h3 id="9-2-add到暂存区-commit到本地库"><a href="#9-2-add到暂存区-commit到本地库" class="headerlink" title="9.2 add到暂存区/commit到本地库"></a>9.2 add到暂存区/commit到本地库</h3><ul>
+<li>添加到暂存区</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312123039232.png" alt="image-20210312123039232"></p>
+<ul>
+<li>添加到暂存区之后颜色改变，.gitignore也提交到暂存区</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312125859750.png" alt="image-20210312125859750"></p>
+<ul>
+<li>commit到本地库，两种方式</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312125936293.png" alt="image-20210312125936293"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312130005269.png" alt="image-20210312130005269"></p>
+<ul>
+<li>之后直接commit就可以</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312130117103.png" alt="image-20210312130117103"></p>
+<ul>
+<li>提交到本地库之后颜色再次变化</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312130208515.png" alt="image-20210312130208515"></p>
+<h3 id="9-3-切换版本"><a href="#9-3-切换版本" class="headerlink" title="9.3 切换版本"></a>9.3 切换版本</h3><ul>
+<li>修改之后直接提交，一共四个版本</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312131908494.png" alt="image-20210312131908494"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312132107242.png" alt="image-20210312132107242"></p>
+<ul>
+<li>查看历史版本，出现此界面</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312132140491.png" alt="image-20210312132140491"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312132218540.png" alt="image-20210312132218540"></p>
+<ul>
+<li>选择你要切换回的历史版本，右键复制版本号</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133011520.png" alt="image-20210312133011520"></p>
+<ul>
+<li>然后reset HEAD</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133105246.png" alt="image-20210312133105246"></p>
+<ul>
+<li>填入历史版本号</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133352626.png" alt="image-20210312133352626"></p>
+<ul>
+<li>之后就回退到版本1</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312133503950.png" alt="image-20210312133503950"></p>
+<ul>
+<li>回退之后就不能再回到最新的版本3了，如果想回到版本3，需要用命令行形式</li>
+</ul>
+<h3 id="9-4-创建分支与合并分支"><a href="#9-4-创建分支与合并分支" class="headerlink" title="9.4 创建分支与合并分支"></a>9.4 创建分支与合并分支</h3><ul>
+<li>创建分支</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134051283.png" alt="image-20210312134051283"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134215373.png" alt="image-20210312134215373"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134249145.png" alt="image-20210312134249145"></p>
+<p>到此，hot_fix分支创建完成，</p>
+<ul>
+<li>查看所处分支，与切换分支</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312134445235.png" alt="image-20210312134445235"></p>
+<ul>
+<li>合并分支，先在hot_fix分支上修改，然后commit</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135007817.png" alt="image-20210312135007817"></p>
+<ul>
+<li>切换回master分支，合并hot_fix分支内容</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135129350.png" alt="image-20210312135129350"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135220815.png" alt="image-20210312135220815"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135242532.png" alt="image-20210312135242532"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135447196.png" alt="image-20210312135447196"></p>
+<ul>
+<li>分支合并完成</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312135515823.png" alt="image-20210312135515823"></p>
+<h3 id="9-5-解决冲突"><a href="#9-5-解决冲突" class="headerlink" title="9.5 解决冲突"></a>9.5 解决冲突</h3><ul>
+<li>分支与主干在同一个地方添加代码，然后再合并就会出现冲突</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140213605.png" alt="image-20210312140213605"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140327963.png" alt="image-20210312140327963"></p>
+<ul>
+<li>切换到master分支，合并hot_fix分支内容</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140517852.png" alt="image-20210312140517852"></p>
+<ul>
+<li>此时出现冲突问题，点击merge</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140804201.png" alt="image-20210312140804201"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140910593.png" alt="image-20210312140910593"></p>
+<ul>
+<li>移过来之后或者自定义的结果，然后点击apply</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312140938569.png" alt="image-20210312140938569"></p>
+<ul>
+<li>此时冲突解决，并自动commit了</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141029875.png" alt="image-20210312141029875"></p>
+<h3 id="9-6-本地库上传到远程库-GitHub"><a href="#9-6-本地库上传到远程库-GitHub" class="headerlink" title="9.6 本地库上传到远程库(GitHub)"></a>9.6 本地库上传到远程库(GitHub)</h3><ul>
+<li>在GitHub上创建一个远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141429686.png" alt="image-20210312141429686"></p>
+<ul>
+<li>复制地址</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141550593.png" alt="image-20210312141550593"></p>
+<ul>
+<li>本地库push到远程库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141634291.png" alt="image-20210312141634291"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141805020.png" alt="image-20210312141805020"></p>
+<ul>
+<li>点击push即可提交</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312141914508.png" alt="image-20210312141914508"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312142713879.png" alt="image-20210312142713879"></p>
+<h3 id="9-7-更新本地库"><a href="#9-7-更新本地库" class="headerlink" title="9.7 更新本地库"></a>9.7 更新本地库</h3><ul>
+<li>当远程库有修改时，更新本地库</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312143456553.png" alt="image-20210312143456553"></p>
+<ul>
+<li>此时远程库有改动，本地库此时先push到远程库会失败，会被push rejected，拒绝</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312143757449.png" alt="image-20210312143757449"></p>
+<p>此时需要将远程库的文件merge到本地库，再上传到远程库，点击merge，此时本地库就会同步远程库</p>
+<ul>
+<li>第二种方式直接将远程库的文件拉取下来</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312144812008.png" alt="image-20210312144812008"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312144835299.png" alt="image-20210312144835299"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312144916382.png" alt="image-20210312144916382"></p>
+<h3 id="9-8-克隆GitHub项目"><a href="#9-8-克隆GitHub项目" class="headerlink" title="9.8 克隆GitHub项目"></a>9.8 克隆GitHub项目</h3><ul>
+<li>打开github项目，复制地址</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145135815.png" alt="image-20210312145135815"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145228649.png" alt="image-20210312145228649"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145343400.png" alt="image-20210312145343400"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312145830275.png" alt="image-20210312145830275"></p>
+<ul>
+<li>复制下来的文件</li>
+</ul>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210312150522107.png" alt="image-20210312150522107"></p>
+<h2 id="10、SSH密匙方式"><a href="#10、SSH密匙方式" class="headerlink" title="10、SSH密匙方式"></a>10、SSH密匙方式</h2><p>首先生成密匙，输入此命令</p>
+<p>ssh-keygen -t rsa -C “github邮箱”</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185255337.png" alt="image-20210320185255337"></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185323129.png" alt="image-20210320185323129"></p>
+<p>此时，密匙已经生成到c/Users/王迎春/.ssh/id_rsa.pub文件中</p>
+<p>此时复制id_rsa.pub文件的内容，在github中添加key</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320190404837.png" alt="image-20210320190404837"></p>
+<p>检查测试连接，执行命令，显示success则成功</p>
+<p>ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185950523.png" alt="image-20210320185950523"></p>
+<p>之后就可以直接使用ssh密匙来clone和push项目，不用输入密码</p>
+<p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321093019644.png" alt="image-20210321093019644"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Git/" rel="tag"># Git</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/" rel="prev" title="linux组管理">
+                  <i class="fa fa-chevron-left"></i> linux组管理
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/15/SpringCloud-01/" rel="next" title="SpringCloud-01(生产者和消费者模块构建)">
+                  SpringCloud-01(生产者和消费者模块构建) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

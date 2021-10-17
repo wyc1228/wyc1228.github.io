@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="linux组管理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux组管理">
+<meta property="og:url" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="linux组管理">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170453271.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170854559.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011171228494.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011171931762.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011093656038.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011204420867.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011204855871.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011205001906.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011205822422.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011220523450.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011221616512.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011221804492.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012090034652.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012090755617.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091154311.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091559210.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091725141.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091952665.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012092130731.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012092526166.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012100415532.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012101247970.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012101926636.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012102229010.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012113537748.png">
+<meta property="article:published_time" content="2020-10-11T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-12-17T03:00:51.040Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170453271.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>linux组管理 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#linux%E7%BB%84%E7%AE%A1%E7%90%86"><span class="nav-text">linux组管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E4%BB%8B%E7%BB%8D"><span class="nav-text">权限介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%BB%E5%8A%A1%E8%B0%83%E5%BA%A6"><span class="nav-text">任务调度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A3%81%E7%9B%98%E5%88%86%E5%8C%BA%EF%BC%8C%E6%8C%82%E8%BD%BD"><span class="nav-text">磁盘分区，挂载</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86"><span class="nav-text">进程管理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RPM%E4%B8%8EYUM"><span class="nav-text">RPM与YUM</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          linux组管理
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-10-11 21:46:45" itemprop="dateCreated datePublished" datetime="2020-10-11T21:46:45+08:00">2020-10-11</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">linux组管理</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="linux组管理"><a href="#linux组管理" class="headerlink" title="linux组管理"></a>linux组管理</h2><p>基本介绍：</p>
+<ul>
+<li>在linux中，每个用户必须属于一个组，不能独立在组外。</li>
+<li>在linux中每个文件都有所有者，所在组，和其他组</li>
+<li>一般谁创建了改文件，改文件的所有者就是谁，改文件的所在组就是该用户的所在组，出去该用户所在的组，称为其他组</li>
+</ul>
+<p>查看文件的所有者：ls -ahl</p>
+<p>案例：创建一个组police，在创建一个用户tom，将tom加入到这个组，在使用tom创建一个文件</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170453271.png" alt="image-20201011170453271"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011170854559.png" alt="image-20201011170854559"></p>
+<p>修改文件所有者</p>
+<ul>
+<li><p>chown 用户名 文件名</p>
+</li>
+<li><p>chown newowner:newgroup file 改变文件的所有者和所有组</p>
+</li>
+<li><p>chown -R 用户名 目录名 如果是目录，则使其下所有子文件或目录递归生效</p>
+</li>
+<li><p>使用root创建一个文件apple.txt，然后将其所有者修改为tom，第一列为所有者，第二列为所在组</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011171228494.png" alt="image-20201011171228494"></p>
+</li>
+</ul>
+<p>查看文件所在组</p>
+<ul>
+<li><p>当某个用户创建了一个文件后，默认这个文件的所在组就是该用户所在的组</p>
+</li>
+<li><p>查看文件所在组：ls -ahl</p>
+</li>
+<li><p>修改<strong>文件所在组</strong>：chgrp 组名 文件名</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011171931762.png" alt="image-20201011171931762"></p>
+</li>
+</ul>
+<p>其他组：</p>
+<ul>
+<li>除文件的所有者和所在组的用户外，系统的其他用户都是文件的其他组</li>
+</ul>
+<p>修改<strong>用户所在组</strong>：</p>
+<ul>
+<li><p>usermod -g 组名 用户名</p>
+</li>
+<li><p>usermod -d 目录名 用户名 ：改变该用户登录的初始目录</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011093656038.png" alt="image-20201011093656038"></p>
+</li>
+</ul>
+<h2 id="权限介绍"><a href="#权限介绍" class="headerlink" title="权限介绍"></a>权限介绍</h2><p>ls -l中显示的内容如下：</p>
+<p>drwxr-xr-x. 2 root root：drwxr-xr-x【0-9位说明】</p>
+<ul>
+<li>0：d，表示文件的类型（d：目录，-：普通文件，l：软连接，c：字符设备[键盘，鼠标]，b：块文件）</li>
+<li>1-3：rwx，表示文件所有者权限rwx   —User</li>
+<li>4-6：r-x，表示文件所在组的用户拥有的权限，-代表没有权限，r-x：表示只有r和x的权限  —Group</li>
+<li>7-9：r-x，表示文件其他组的用户拥有的权限  —Other</li>
+</ul>
+<p>rwx：可用数字表示为: r=4,w=2,x=1 因此rwx=4+2+1=7 </p>
+<ul>
+<li> [ r ]代表可读(read): 可以读取,查看</li>
+<li> [ w ]代表可写(write): 可以修改,但是不代表可以删除该文件,删除一个文件的前提条件是 对该文件所在的目录有写权限，才能删除该文件</li>
+<li>[ x ]代表可执行(execute):可以被执行</li>
+</ul>
+<p>表示不同用户能对文件干什么</p>
+<ul>
+<li>第一组rwx : 文件拥有者的权限是读、写和执行 </li>
+<li>第二组r-x : 与文件拥有者同一组的用户对此文件的权限是读、执行但不能写</li>
+<li>第三组r-x: 不与文件拥有者同组的其他用户对这个文件的权限是读、执行但不能写</li>
+</ul>
+<p>修改权限：</p>
+<ul>
+<li>通过chmod指令，可以修改文件或者目录的权限。</li>
+</ul>
+<p>第一种修改权限方式</p>
+<ul>
+<li>u:所有者 g:所有组 o:其他人 a:所有人(u、g、o的总和) </li>
+<li>chmod u=rwx,g=rx,o=x 文件目录名 </li>
+<li>chmod o+w 文件目录名 //给other增加一个w权限</li>
+<li>chmod a-x 文件目录名//给all减去一个x权限</li>
+</ul>
+<p>案例：</p>
+<ul>
+<li> 给test文件的所有者读写执行的权限，给所在组读执行权限，给其它组读执行权限。</li>
+<li>给test文件的所有者除去执行的权限，增加组写的权限 </li>
+<li>给abc文件的所有用户添加读的权限</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011204420867.png" alt="image-20201011204420867"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011204855871.png" alt="image-20201011204855871"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011205001906.png" alt="image-20201011205001906"></p>
+<p>第二种方式，通过数字变更权限</p>
+<ul>
+<li>r=4 w=2 x=1 rwx=4+2+1=7 </li>
+<li>chmod u=rwx,g=rx,o=x 文件目录名 相当于 chmod 751 文件目录名</li>
+</ul>
+<p>案例：将 a.txt 文件的权限修改成 rwxr-xr-x, 使用给数字的方式实现</p>
+<ul>
+<li><p>rwx=4+2+1，r-x=4+1，r-x=4+1</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011205822422.png" alt="image-20201011205822422"></p>
+</li>
+</ul>
+<h2 id="任务调度"><a href="#任务调度" class="headerlink" title="任务调度"></a>任务调度</h2><p>概述</p>
+<ul>
+<li><p>任务调度：是指系统在某个时间执行挺稳定的命令或程序</p>
+</li>
+<li><p>任务调度分类</p>
+<ul>
+<li>系统工作：有些工作需要周而复始的执行，如病毒扫描</li>
+<li>个别用户工作：固定时间对数据库备份</li>
+</ul>
+</li>
+<li><p>语法 ：crontab [选项]</p>
+</li>
+<li><p>常用选项</p>
+<table>
+<thead>
+<tr>
+<th>-e</th>
+<th>编辑crontab定时任务</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-l</td>
+<td>查询crontab任务</td>
+</tr>
+<tr>
+<td>-r</td>
+<td>删除当前用户所有的crontab任务</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>service crond restart [重启任务调度]</p>
+</li>
+</ul>
+<p>案例：设置任务调度文件，是指每分钟执行一次</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011220523450.png" alt="image-20201011220523450"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011221616512.png" alt="image-20201011221616512"></p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201011221804492.png" alt="image-20201011221804492"></p>
+<ul>
+<li><p>5个占位符说明</p>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th>含义</th>
+<th>范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>第一个“*”</td>
+<td>一小时当中的第几分钟</td>
+<td>0-59</td>
+</tr>
+<tr>
+<td>第二个“*”</td>
+<td>一天当中的第几小时</td>
+<td>0-23</td>
+</tr>
+<tr>
+<td>第三个“*”</td>
+<td>一个月当中的第几天</td>
+<td>1-31</td>
+</tr>
+<tr>
+<td>第四个“*”</td>
+<td>一年当中的第几月</td>
+<td>1-12</td>
+</tr>
+<tr>
+<td>第五个“*”</td>
+<td>一周当中的星期几</td>
+<td>0-7（0和7都代表星期日）</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>特殊符号说明</p>
+<table>
+<thead>
+<tr>
+<th>特殊符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>*</td>
+<td>代表任何时间。比如第一个“*”就代表一小时中每分钟都执行一 次的意思。</td>
+</tr>
+<tr>
+<td>，</td>
+<td>代表不连续的时间。比如“0 8,12,16 * * * 命令”，就代表在每天 的8点0分，12点0分，16点0分都执行一次命令</td>
+</tr>
+<tr>
+<td>-</td>
+<td>代表连续的时间范围。比如“0 5 * * 1-6命令”，代表在周一到周 六的凌晨5点0分执行命令</td>
+</tr>
+<tr>
+<td>*/n</td>
+<td>代表每隔多久执行一次。比如“*/10 * * * * 命令”，代表每隔 10分钟就执行一遍命令</td>
+</tr>
+</tbody></table>
+</li>
+<li><p>特定时间执行任务案例</p>
+<table>
+<thead>
+<tr>
+<th>时间</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>45 22 * * * 命令</td>
+<td>在22点45分执行命令</td>
+</tr>
+<tr>
+<td>0 17 * * 1 命令</td>
+<td>每周1 的17点0分执行命令</td>
+</tr>
+<tr>
+<td>0 5 1,15 * * 命令</td>
+<td>每月1号和15号的凌晨5点0分执行命令</td>
+</tr>
+<tr>
+<td>40 4 * * 1-5 命令</td>
+<td>每周一到周五的凌晨4点40分执行命令</td>
+</tr>
+<tr>
+<td>*/10 4 * * * 命令</td>
+<td>每天的凌晨4点，每隔10分钟执行一次命令</td>
+</tr>
+<tr>
+<td>0 0 1,15 * 1 命令</td>
+<td>每月1号和15号，每周1的0点0分都会执行命令。注意：星期几和 几号最好不要同时出现，因为他们定义的都是天。非常容易让管 理员混乱。</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h2 id="磁盘分区，挂载"><a href="#磁盘分区，挂载" class="headerlink" title="磁盘分区，挂载"></a>磁盘分区，挂载</h2><p>分区的两种方式</p>
+<p>mbr分区：</p>
+<ul>
+<li>最多支持四个主分区</li>
+<li>系统只能安装在主分区 </li>
+<li>扩展分区要占一个主分区 </li>
+<li>MBR最大只支持2TB，但拥有最好的兼容性</li>
+</ul>
+<p>gpt分区: </p>
+<ul>
+<li>支持无限多个主分区（但操作系统可能限制，比如 windows下最多128个分区）</li>
+<li>最大支持18EB的大容量（1EB=1024 PB，1PB=1024 TB ） </li>
+<li>windows7 64位以后支持gtp</li>
+</ul>
+<p>linux分区：</p>
+<ul>
+<li>Linux来说无论有几个分区，分给哪一目录使用，它归根结底就只有一个根目录，一个独 立且唯一的文件结构 , Linux中每个分区都是用来组成整个文件系统的一部分。</li>
+<li>Linux采用了一种叫“载入”的处理方法，它的整个文件系统中包含了一整套的文件和目 录，且将一个分区和一个目录联系起来。这时要载入的一个分区将使它的存储空间在一 个目录下获得。</li>
+</ul>
+<p>linux硬盘说明：</p>
+<ul>
+<li>Linux硬盘分IDE硬盘和SCSI硬盘，目前基本上是SCSI硬盘 </li>
+<li>对于IDE硬盘，驱动器标识符为“hdx<del>”,其中“hd”表明分区所在设备的类型，这里是指 IDE硬盘了。“x”为盘号（a为基本盘，b为基本从属盘，c为辅助主盘，d为辅助从属盘）,“</del>”代表分区，前四个分区用数字1到4表示，它们是主分区或扩展分区，从5开始就 是逻辑分区。例，hda3表示为第一个IDE硬盘上的第三个主分区或扩展分区,hdb2表示为 第二个IDE硬盘上的第二个主分区或扩展分区。</li>
+<li>对于SCSI硬盘则标识为“sdx~”，SCSI硬盘是用“sd”来表示分区所在设备的类型的，其余 则和IDE硬盘的表示方法一样。</li>
+</ul>
+<p>lsblk命令查看分区挂载情况</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012090034652.png" alt="image-20201012090034652"></p>
+<p>磁盘相关命令</p>
+<ul>
+<li>查询系统整体磁盘使用情况：df -h</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012090755617.png" alt="image-20201012090755617"></p>
+<ul>
+<li>查询指定目录的磁盘占用情况：du -h /目录<ul>
+<li>-h：带有计量单位</li>
+<li>-s：指定目录占用大小汇总</li>
+<li>-a：含文件</li>
+<li>–max-depth=1 子目录深度</li>
+<li>-c：列出明细的同时，增加汇总值</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091154311.png" alt="image-20201012091154311"></p>
+<ul>
+<li>统计/home文件夹下文件的个数，”^-“：表示以-开头的文件，wc统计指令</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091559210.png" alt="image-20201012091559210"></p>
+<ul>
+<li>统计/home文件夹下目录的个数，”^d”：表示以-开头的文件，wc统计指令</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091725141.png" alt="image-20201012091725141"></p>
+<ul>
+<li>统计/home文件夹下文件的个数，包括子文件夹里的，-lR：R表示递归统计子目录的，linux是区分大小写的，不能写r，大写的R表示递归，r表示逆序</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012091952665.png" alt="image-20201012091952665"></p>
+<ul>
+<li>统计/home文件夹下目录的个数，包括子文件夹里的，</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012092130731.png" alt="image-20201012092130731"></p>
+<ul>
+<li><p>以树状结构显示目录结构</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012092526166.png" alt="image-20201012092526166"></p>
+</li>
+</ul>
+<h2 id="进程管理"><a href="#进程管理" class="headerlink" title="进程管理"></a>进程管理</h2><p>基本介绍</p>
+<ul>
+<li>在LINUX中，每个执行的程序（代码）都称为一个进程。每一个进程都分配一 个ID号。</li>
+<li>每一个进程，都会对应一个父进程，而这个父进程可以复制多个子进程。例 如www服务器。</li>
+<li>每个进程都可能以两种方式存在的。前台与后台，所谓前台进程就是用户目 前的屏幕上可以进行操作的。后台进程则是实际在操作，但由于屏幕上无法 看到的进程，通常使用后台方式执行。</li>
+<li>一般系统的服务都是以后台进程的方式存在，而且都会常驻在系统中。直到 关机才才结束。</li>
+</ul>
+<p>显示系统执行的进程：ps指令，ps -aux</p>
+<ul>
+<li>ps -a：显示当前终端的所有进程信息</li>
+<li>ps -u：以用户的格式显示进程信息</li>
+<li>ps -x：显示后台进程运行的参数</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012100415532.png" alt="image-20201012100415532"></p>
+<p>第一行进程指令说明：</p>
+<ul>
+<li>System V展示风格 </li>
+<li>USER：用户名称 </li>
+<li>PID：进程号 </li>
+<li>%CPU：进程占用CPU的百分比 </li>
+<li>%MEM：进程占用物理内存的百分比</li>
+<li>VSZ：进程占用的虚拟内存大小（单位：KB） </li>
+<li>RSS：进程占用的物理内存大小（单位：KB）</li>
+<li>TT：终端名称,缩写 .</li>
+<li>STAT：进程状态，其中S-睡眠，s-表示该进程是会话的先导进程，N-表示进程拥有比普通 优先级更低的优先级，R-正在运行，D-短期等待，Z-僵死进程，T-被跟踪或者被停止等等 </li>
+<li>STARTED：进程的启动时间 </li>
+<li>TIME：CPU时间，即进程使用CPU的总时间</li>
+<li>COMMAND：启动进程所用的命令和参数，如果过长会被截断显示</li>
+</ul>
+<p>全格式显示当前所有进程，查看进程的父进程，ps -ef，PPID为父进程</p>
+<ul>
+<li><p>ps -e：显示所有进程(也显示父进程)</p>
+</li>
+<li><p>ps -f：全格式</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012101247970.png" alt="image-20201012101247970"></p>
+</li>
+</ul>
+<p>终止进程kill和killall</p>
+<ul>
+<li>若是某个进程执行一半需要停止时，或是已消了很大的系统资源时，此时可以考虑停止该 进程。使用kill命令来完成此项任务。</li>
+<li>kill [选项] 进程号（功能描述：通过进程号杀死进程） ，-9 :表示强迫进程立即停止</li>
+<li>killall 进程名称 （功能描述：通过进程名称杀死进程，也支持通配符，这在系统因负载过大而变得很慢时很有用）</li>
+</ul>
+<p>查看进程树pstree</p>
+<ul>
+<li><p>pstree [选项] ,可以直观的来查看进程信息，-p：显示进程的PID，-u：显示进程的所属用户</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012101926636.png" alt="image-20201012101926636"></p>
+</li>
+</ul>
+<p>服务(Service)管理</p>
+<ul>
+<li><p>服务(service) 本质就是进程，但是是运行在后台的，通常都会监听某个端口，等待其它程序的请求，比如(mysql , sshd 防火墙等)，因此我们又称为守护进程，在Linux中非常重要。</p>
+</li>
+<li><p>service管理指令： </p>
+<ul>
+<li>service 服务名 [start | stop | restart | reload | status] </li>
+<li>在CentOS7.0后 不再使用service ,而是 systemctl</li>
+</ul>
+</li>
+<li><p>查看当前防火墙状况</p>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012102229010.png" alt="image-20201012102229010"></p>
+</li>
+</ul>
+<p>Linux系统有7种运行级别(runlevel)：常用的是级别3和5 </p>
+<ul>
+<li>运行级别0：系统停机状态，系统默认运行级别不能设为0，否则不能正常启动</li>
+<li>运行级别1：单用户工作状态，root权限，用于系统维护，禁止远程登陆</li>
+<li>运行级别2：多用户状态(没有NFS)，不支持网络</li>
+<li>运行级别3：完全的多用户状态(有NFS)，登陆后进入控制台命令行模式</li>
+<li>运行级别4：系统未使用，保留</li>
+<li>运行级别5：X11控制台，登陆后进入图形GUI模式</li>
+<li>运行级别6：系统正常关闭并重启，默认运行级别不能设为6，否则不能正常启动</li>
+</ul>
+<p>chkconfig指令</p>
+<ul>
+<li>通过chkconfig 命令可以给每个服务的各个运行级别设置自启动/关闭</li>
+<li>查看服务 chkconfig –list|grep xxx </li>
+<li> chkconfig 服务名 –list </li>
+<li>chkconfig –level 5 服务名 on/off </li>
+</ul>
+<h2 id="RPM与YUM"><a href="#RPM与YUM" class="headerlink" title="RPM与YUM"></a>RPM与YUM</h2><p>rpm包的管理</p>
+<ul>
+<li>一种用于互联网下载包的打包及安装工具，它包含在某些Linux分发版中。它生成具有.RPM扩展名的文件。RPM是RedHat Package Manager（RedHat软件包管理工 具）的缩写，类似windows的setup.exe，这一文件格式名称虽然打上了RedHat的 标志，但理念是通用的。 </li>
+<li>Linux的分发版本都有采用（suse,redhat, centos 等等），可以算是公认的行业标 准了。</li>
+</ul>
+<p>rpm包的简单查询指令：</p>
+<ul>
+<li>查询已安装的rpm列表 ：rpm -qa|grep xx</li>
+</ul>
+<p><img src="/2020/10/11/linux%E7%BB%84%E7%AE%A1%E7%90%86/image-20201012113537748.png" alt="image-20201012113537748"></p>
+<ul>
+<li>卸载rpm包：rpm -e rpm包的名称</li>
+<li>安装rpm包：rpm -ivh rpm包全路径名称<ul>
+<li>i=install 安装 </li>
+<li>v=verbose 提示</li>
+<li>h=hash 进度条</li>
+</ul>
+</li>
+</ul>
+<p>yum包管理</p>
+<ul>
+<li>Yum 是一个Shell前端软件包管理器。基于RPM包管理，能够从指定 的服务器自动下载RPM包并且安装，可以自动处理依赖性关系，并 且一次安装所有依赖的软件包。</li>
+</ul>
+<p>yum的基本指令</p>
+<ul>
+<li>查询yum服务器是否有需要安装的软件 yum list|grep xx软件列表</li>
+<li>安装指定的yum包 yum install xxx 下载安装</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/" rel="prev" title="Linux实用指令">
+                  <i class="fa fa-chevron-left"></i> Linux实用指令
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/" rel="next" title="Git基本使用">
+                  Git基本使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

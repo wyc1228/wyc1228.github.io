@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Hystrix服务熔断，降级">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringCloud-05(Hystrix服务熔断，降级)">
+<meta property="og:url" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Hystrix服务熔断，降级">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318153247226.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318161446529.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318165209511.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318165303960.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318165610934.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318165707536.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319085613644.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319090614513.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319090501669.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319091035408.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319091408836.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319091826666.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319092207866.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319094202930.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319101127760.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319101314758.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319101449727.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319105744458.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319105921154.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319110247721.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319131103041.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319134056775.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319133719121.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319134608424.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319140737400.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319140645252.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319143733213.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319144653251.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319145913139.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319150325579.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319155435378.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319155744719.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319161021277.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319161052968.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319161956403.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319162442538.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319183804145.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319184703159.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319194926935.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319200044743.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319201105574.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319201356050.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319201342494.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319201630672.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319201810515.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319202309294.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319203106441.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319203138698.png">
+<meta property="og:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210319203210884.png">
+<meta property="article:published_time" content="2020-11-19T13:46:45.000Z">
+<meta property="article:modified_time" content="2021-03-25T11:57:02.046Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SpringCloud">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/11/19/SpringCloud-05/image-20210318153247226.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/11/19/SpringCloud-05/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>SpringCloud-05(Hystrix服务熔断，降级) | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#SpringCloud-05"><span class="nav-text">SpringCloud-05</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81Hystrix%E6%96%AD%E8%B7%AF%E5%99%A8"><span class="nav-text">1、Hystrix断路器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-Hystrix%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 Hystrix概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-Hystrix%E9%87%8D%E8%A6%81%E6%A6%82%E5%BF%B5"><span class="nav-text">1.2 Hystrix重要概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-%E6%9C%8D%E5%8A%A1%E9%99%8D%E7%BA%A7%EF%BC%88fallback%EF%BC%89"><span class="nav-text">1.2.1 服务降级（fallback）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD%EF%BC%88break%EF%BC%89"><span class="nav-text">1.2.2 服务熔断（break）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3-%E6%9C%8D%E5%8A%A1%E9%99%90%E6%B5%81%EF%BC%88flowlimit%EF%BC%89"><span class="nav-text">1.2.3 服务限流（flowlimit）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-Hystrix%E6%A1%88%E4%BE%8B"><span class="nav-text">1.3 Hystrix案例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-1-%E5%BB%BAModule"><span class="nav-text">1.3.1 建Module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-2-%E6%94%B9POM"><span class="nav-text">1.3.2 改POM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-3-%E5%BB%BAyml"><span class="nav-text">1.3.3 建yml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-4-%E4%B8%BB%E5%90%AF%E5%8A%A8"><span class="nav-text">1.3.4 主启动</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-5-%E4%B8%9A%E5%8A%A1%E7%B1%BB"><span class="nav-text">1.3.5 业务类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-3-6-%E6%B5%8B%E8%AF%95"><span class="nav-text">1.3.6 测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E9%AB%98%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95"><span class="nav-text">1.4 高并发测试</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-1-Jmeter%E5%8E%8B%E6%B5%8B%E6%B5%8B%E8%AF%95"><span class="nav-text">1.4.1 Jmeter压测测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-4-5-JMeter%E5%8E%8B%E6%B5%8B%E7%BB%93%E8%AE%BA"><span class="nav-text">1.4.5 JMeter压测结论</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-80%E6%B6%88%E8%B4%B9%E7%AB%AF%E5%8A%A0%E5%85%A5"><span class="nav-text">1.5 80消费端加入</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-1-%E6%96%B0%E5%BB%BAmodule"><span class="nav-text">1.5.1 新建module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-2-%E6%94%B9POM"><span class="nav-text">1.5.2 改POM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-3-%E5%BB%BAyml"><span class="nav-text">1.5.3 建yml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-4-%E4%B8%BB%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="nav-text">1.5.4 主启动类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-5-%E4%B8%9A%E5%8A%A1%E7%B1%BB"><span class="nav-text">1.5.5 业务类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-6-%E6%AD%A3%E5%B8%B8%E6%B5%8B%E8%AF%95"><span class="nav-text">1.5.6 正常测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-7-%E9%AB%98%E5%B9%B6%E5%8F%91%E6%B5%8B%E8%AF%95"><span class="nav-text">1.5.7 高并发测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-5-8-%E5%A6%82%E4%BD%95%E8%A7%A3%E5%86%B3%E9%AB%98%E5%B9%B6%E5%8F%91"><span class="nav-text">1.5.8 如何解决高并发</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E6%9C%8D%E5%8A%A1%E9%99%8D%E7%BA%A7%EF%BC%88fallback%EF%BC%89"><span class="nav-text">2、服务降级（fallback）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-8001-fallback"><span class="nav-text">2.1 8001 fallback</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-80-fallback"><span class="nav-text">2.2 80 fallback</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-3-%E8%A7%A3%E5%86%B3%E4%BB%A3%E7%A0%81%E8%86%A8%E8%83%80%E9%97%AE%E9%A2%98"><span class="nav-text">2.3 解决代码膨胀问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-4-%E8%A7%A3%E5%86%B3%E4%BB%A3%E7%A0%81%E8%80%A6%E5%90%88%E5%BA%A6%E9%AB%98%E7%9A%84%E9%97%AE%E9%A2%98"><span class="nav-text">2.4 解决代码耦合度高的问题</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3%E3%80%81%E6%9C%8D%E5%8A%A1%E7%86%94%E6%96%AD"><span class="nav-text">3、服务熔断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-%E7%86%94%E6%96%AD%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">3.1 熔断是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-%E5%AE%9E%E9%99%85%E6%93%8D%E4%BD%9C"><span class="nav-text">3.2 实际操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-%E5%B0%8F%E7%BB%93"><span class="nav-text">3.3 小结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4%E3%80%81ALI%E9%85%8D%E7%BD%AE"><span class="nav-text">4、ALI配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5%E3%80%81%E6%9C%8D%E5%8A%A1%E9%99%90%E6%B5%81"><span class="nav-text">5、服务限流</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6%E3%80%81Hystrix%E5%B7%A5%E4%BD%9C%E6%B5%81%E7%A8%8B"><span class="nav-text">6、Hystrix工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7%E3%80%81%E6%9C%8D%E5%8A%A1%E7%9B%91%E6%8E%A7hystrixDashboard"><span class="nav-text">7、服务监控hystrixDashboard</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#7-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">7.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-2-%E4%BB%AA%E8%A1%A8%E7%9B%989001"><span class="nav-text">7.2 仪表盘9001</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-1-%E5%BB%BAModule"><span class="nav-text">7.2.1 建Module</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-2-%E6%94%B9POM"><span class="nav-text">7.2.2 改POM</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-3-%E6%94%B9YML"><span class="nav-text">7.2.3 改YML</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-4-%E4%B8%BB%E5%90%AF%E5%8A%A8%E7%B1%BB"><span class="nav-text">7.2.4 主启动类</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-5-%E7%9B%91%E6%8E%A7%E4%BE%9D%E8%B5%96%E9%85%8D%E7%BD%AE"><span class="nav-text">7.2.5 监控依赖配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#7-2-6-%E6%B5%8B%E8%AF%95"><span class="nav-text">7.2.6 测试</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-3-%E6%96%AD%E8%B7%AF%E5%99%A8%E6%BC%94%E7%A4%BA"><span class="nav-text">7.3 断路器演示</span></a></li></ol></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/11/19/SpringCloud-05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringCloud-05(Hystrix服务熔断，降级)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-11-19 21:46:45" itemprop="dateCreated datePublished" datetime="2020-11-19T21:46:45+08:00">2020-11-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SpringCloud/" itemprop="url" rel="index"><span itemprop="name">SpringCloud</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Hystrix服务熔断，降级</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="SpringCloud-05"><a href="#SpringCloud-05" class="headerlink" title="SpringCloud-05"></a>SpringCloud-05</h1><h2 id="1、Hystrix断路器"><a href="#1、Hystrix断路器" class="headerlink" title="1、Hystrix断路器"></a>1、Hystrix断路器</h2><p>分布式系统所面临的问题</p>
+<ul>
+<li>复杂分布式体系结构中的应用程序   有数10个依赖关系,每个依赖关系在某些时候将不可避免地失败</li>
+</ul>
+<p>服务雪崩</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210318153247226.png" alt="image-20210318153247226"></p>
+<ul>
+<li>多个微服务之间调用的时候，假设微服务A调用微服务B和微服务C，微服务B和微服务C又调用其他的微服务，这就是所谓的“扇出”。</li>
+<li>如果扇出的链路上某个微服务的调用响应时间过长或者不可用，对微服务A的调用就会占用越来越多的系统资源，进而引起系统崩溃，所谓的“雪崩效应‘</li>
+<li>对于高流量的应用来说，单一的后端依赖可能会导致所有的服务器上的所有资源都在几秒钟内饱和，比失败更糟糕的是，这些应用程序还可能导致服务之间延迟增加，备份队列，线程和其他系统资源紧张，导致整个系统发生更多的级联故障，这些都表示需要对故障和延迟进行隔离和管理，以便单个依赖关系的失败，不能取消整个应用程序或系统</li>
+<li>所以，通常当你发现一个模块下的某个实例失败后，这时候这个模块依然还会接收流量，然后这个有问题的模块还调用了其他模块，这样就会发生级联故障，或者叫雪崩</li>
+</ul>
+<h3 id="1-1-Hystrix概述"><a href="#1-1-Hystrix概述" class="headerlink" title="1.1 Hystrix概述"></a>1.1 Hystrix概述</h3><p><strong>Hystrix是什么</strong></p>
+<ul>
+<li>Hystrix是一个用于处理分布式系统的<strong>延迟</strong>和<strong>容错</strong>的开源库，在分布式系统中，许多依赖不可避免的会调用失败，比如超时，异常等，Hystrix能够保证在一个依赖出问题的情况下，<strong>不会导致整体服务失败，避免级联故障，以提高分布式系统的弹性。</strong></li>
+<li>“断路器”本身是一种开关装置，当某个服务单元发生故障之后，通过断路器的故障监控(类似熔断保险丝)，<strong>向调用方法返回一个符合预期的，可处理的备选响应(FallBack)，而不是长时间的等待或者抛出调用方法无法处理的异常</strong>，这样就保证了服务调用方的线程不会被长时间，不必要的被占用，从而避免了故障在分布式系统中的蔓延，乃至雪崩</li>
+</ul>
+<p><strong>Hystrix能干什么</strong></p>
+<ul>
+<li>服务降级</li>
+<li>服务熔断</li>
+<li>接近实时的监控</li>
+</ul>
+<p><strong>官网资料：</strong><a target="_blank" rel="noopener" href="https://github.com/Netflix/hystrix/wiki">https://github.com/Netflix/hystrix/wiki</a></p>
+<p><strong>Hystrix官宣，停更进维，停止更新，进入维护阶段</strong></p>
+<h3 id="1-2-Hystrix重要概念"><a href="#1-2-Hystrix重要概念" class="headerlink" title="1.2 Hystrix重要概念"></a>1.2 Hystrix重要概念</h3><h4 id="1-2-1-服务降级（fallback）"><a href="#1-2-1-服务降级（fallback）" class="headerlink" title="1.2.1 服务降级（fallback）"></a>1.2.1 服务降级（fallback）</h4><p>服务器忙，稍后再试，不让客户端等待并立刻返回一个友好提示，fallback</p>
+<p>哪些情况下会发生降级</p>
+<ul>
+<li>程序运行异常</li>
+<li>超时</li>
+<li>服务熔断触发服务降级</li>
+<li>线程池/信号量打满也会导致服务降级</li>
+</ul>
+<h4 id="1-2-2-服务熔断（break）"><a href="#1-2-2-服务熔断（break）" class="headerlink" title="1.2.2 服务熔断（break）"></a>1.2.2 服务熔断（break）</h4><p>类比保险丝达到最大服务访问后，直接拒绝访问，拉闸限电，然后调用服务降级的方法并返回友好提示</p>
+<p>服务的降级-&gt;进而熔断-&gt;恢复调用链路</p>
+<h4 id="1-2-3-服务限流（flowlimit）"><a href="#1-2-3-服务限流（flowlimit）" class="headerlink" title="1.2.3 服务限流（flowlimit）"></a>1.2.3 服务限流（flowlimit）</h4><p>秒杀高并发等操作，严禁一窝蜂的过来拥挤，大家排队，一秒钟N个，有序进行</p>
+<h3 id="1-3-Hystrix案例"><a href="#1-3-Hystrix案例" class="headerlink" title="1.3 Hystrix案例"></a>1.3 Hystrix案例</h3><h4 id="1-3-1-建Module"><a href="#1-3-1-建Module" class="headerlink" title="1.3.1 建Module"></a>1.3.1 建Module</h4><p>新建<code>cloud-provider-hystrix-payment8001</code></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210318161446529.png" alt="image-20210318161446529"></p>
+<h4 id="1-3-2-改POM"><a href="#1-3-2-改POM" class="headerlink" title="1.3.2 改POM"></a>1.3.2 改POM</h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud2020&lt;/artifactId&gt;
+        &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;cloud-provider-hystrix-payment8001&lt;/artifactId&gt;
+    &lt;description&gt;服务提供模块hystrix&lt;/description&gt;
+
+    &lt;dependencies&gt;
+        &lt;!--hystrix--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--eureka client--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-client&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+            &lt;artifactId&gt;cloud-api-commons&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--监控--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--热部署--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h4 id="1-3-3-建yml"><a href="#1-3-3-建yml" class="headerlink" title="1.3.3 建yml"></a>1.3.3 建yml</h4><pre><code class="yml">server:
+  port: 8001
+spring:
+  application:
+    name: cloud-provider-hystrix-payment
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+</code></pre>
+<h4 id="1-3-4-主启动"><a href="#1-3-4-主启动" class="headerlink" title="1.3.4 主启动"></a>1.3.4 主启动</h4><pre><code class="java">@SpringBootApplication
+@EnableEurekaClient
+public class PaymentHystrixMain8001 &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(PaymentHystrixMain8001.class, args);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-3-5-业务类"><a href="#1-3-5-业务类" class="headerlink" title="1.3.5 业务类"></a>1.3.5 业务类</h4><p>service</p>
+<pre><code class="java">package com.practice.springcloud.service;
+
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class PaymentService &#123;
+    /**
+     * 正常访问
+     *
+     * @param id
+     * @return
+     */
+    public String paymentInfo_OK(Integer id) &#123;
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; paymentInfo_OK,id:&quot; + id + &quot;\t&quot; + &quot;O(∩_∩)O哈哈~&quot;;
+    &#125;
+
+    /**
+     * 超时访问
+     *
+     * @param id
+     * @return
+     */
+    public String paymentInfo_TimeOut(Integer id) &#123;
+        int timeNumber = 3;
+        try &#123;
+            // 暂停3秒钟
+            TimeUnit.SECONDS.sleep(timeNumber);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; paymentInfo_TimeOut,id:&quot; + id + &quot;\t&quot; +
+                &quot;O(∩_∩)O哈哈~  耗时(秒)&quot; + timeNumber;
+    &#125;
+&#125;
+</code></pre>
+<p>Controller</p>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@RestController
+@Slf4j
+public class PaymentController &#123;
+    @Resource
+    private PaymentService paymentService;
+
+    @Value(&quot;$&#123;server.port&#125;&quot;)
+    private String servicePort;
+
+    /**
+     * 正常访问
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/payment/hystrix/ok/&#123;id&#125;&quot;)
+    public String paymentInfo_OK(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        String result = paymentService.paymentInfo_OK(id);
+        log.info(&quot;*****result:&quot; + result);
+        return result;
+    &#125;
+
+    /**
+     * 超时访问
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/payment/hystrix/timeout/&#123;id&#125;&quot;)
+    public String paymentInfo_TimeOut(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        String result = paymentService.paymentInfo_TimeOut(id);
+        log.info(&quot;*****result:&quot; + result);
+        return result;
+
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-3-6-测试"><a href="#1-3-6-测试" class="headerlink" title="1.3.6 测试"></a>1.3.6 测试</h4><ul>
+<li>可以先将Eureka7001和Hystrix8001改成单机版，然后启动这两个模块</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210318165209511.png" alt="image-20210318165209511"></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210318165303960.png" alt="image-20210318165303960"></p>
+<ul>
+<li>正常访问<a target="_blank" rel="noopener" href="http://localhost:8001/payment/hystrix/ok/31%EF%BC%8C%E6%97%A0%E5%BB%B6%E8%BF%9F">http://localhost:8001/payment/hystrix/ok/31，无延迟</a></li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210318165610934.png" alt="image-20210318165610934"></p>
+<ul>
+<li>每次调用耗费3秒钟的访问<a target="_blank" rel="noopener" href="http://localhost:8001/payment/hystrix/timeout/31">http://localhost:8001/payment/hystrix/timeout/31</a></li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210318165707536.png" alt="image-20210318165707536"></p>
+<h3 id="1-4-高并发测试"><a href="#1-4-高并发测试" class="headerlink" title="1.4 高并发测试"></a>1.4 高并发测试</h3><p>上述Hystrix案例在非高并发情形下，还能勉强满足</p>
+<h4 id="1-4-1-Jmeter压测测试"><a href="#1-4-1-Jmeter压测测试" class="headerlink" title="1.4.1 Jmeter压测测试"></a>1.4.1 Jmeter压测测试</h4><p>JMeter下载安装</p>
+<ul>
+<li>在<a target="_blank" rel="noopener" href="https://jmeter.apache.org/%E4%B8%8B%E8%BD%BDJMeter%EF%BC%8C%E7%84%B6%E5%90%8E%E8%A7%A3%E5%8E%8B%E5%88%B0%E4%B8%80%E4%B8%AA%E6%96%87%E4%BB%B6%E5%A4%B9%EF%BC%8C%E5%8F%8C%E5%87%BBbin%E7%9B%AE%E5%BD%95%E4%B8%8B%E7%9A%84jmeter.bat%E6%96%87%E4%BB%B6%E5%8D%B3%E5%8F%AF%E5%90%AF%E5%8A%A8%E6%88%90%E5%8A%9F">https://jmeter.apache.org/下载JMeter，然后解压到一个文件夹，双击bin目录下的jmeter.bat文件即可启动成功</a></li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319085613644.png" alt="image-20210319085613644"></p>
+<ul>
+<li>修改JMeter语言为中文</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319090614513.png" alt="image-20210319090614513"></p>
+<ul>
+<li><p>开启Jmeter，来20000个并发压死8001,20000个请求都去访问paymentInfo_TimeOut服务</p>
+<ul>
+<li>添加线程组</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319090501669.png" alt="image-20210319090501669"></p>
+<ul>
+<li>设置线程数200，循环次数100，则有20000，然后Ctrl+s保存</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319091035408.png" alt="image-20210319091035408"></p>
+<ul>
+<li>发送Http请求，全部发向延迟三秒钟的<code>timeout/31</code>服务</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319091408836.png" alt="image-20210319091408836"></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319091826666.png" alt="image-20210319091826666"></p>
+</li>
+</ul>
+<p>此时测试<a target="_blank" rel="noopener" href="http://localhost:8001/payment/hystrix/ok/31%E5%92%8Chttp://localhost:8001/payment/hystrix/timeout/31">http://localhost:8001/payment/hystrix/ok/31和http://localhost:8001/payment/hystrix/timeout/31</a></p>
+<ul>
+<li>发现两份请求都有延迟响应，由此可见当高并发情况下<code>timeout/31</code>延迟三秒的服务会拖慢<code>hystrix/ok/31</code>正常的服务，因为tomcat默认的工作线程数全都去帮助<code>timeout/31</code>服务，没什么线程去访问正常的<code>hystrix/ok/31</code>服务，没有多余的线程来分解压力和处理</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319092207866.png" alt="image-20210319092207866"></p>
+<h4 id="1-4-5-JMeter压测结论"><a href="#1-4-5-JMeter压测结论" class="headerlink" title="1.4.5 JMeter压测结论"></a>1.4.5 JMeter压测结论</h4><ul>
+<li>上面还只是服务提供者8001自己测试，假如此时外部的消费者80也来访问，那消费者只能干等，最终导致消费端80不满意，服务端8001直接被拖死</li>
+</ul>
+<h3 id="1-5-80消费端加入"><a href="#1-5-80消费端加入" class="headerlink" title="1.5 80消费端加入"></a>1.5 80消费端加入</h3><h4 id="1-5-1-新建module"><a href="#1-5-1-新建module" class="headerlink" title="1.5.1 新建module"></a>1.5.1 新建module</h4><ul>
+<li>cloud-consumer-feign-hystrix-order80</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319094202930.png" alt="image-20210319094202930"></p>
+<h4 id="1-5-2-改POM"><a href="#1-5-2-改POM" class="headerlink" title="1.5.2 改POM"></a>1.5.2 改POM</h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud2020&lt;/artifactId&gt;
+        &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;cloud-consumer-feign-hystrix-order80&lt;/artifactId&gt;
+    &lt;description&gt;服务消费模块hystrix&lt;/description&gt;
+    
+    &lt;dependencies&gt;
+        &lt;!--openfeign--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--eureka client--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-eureka-server&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+            &lt;artifactId&gt;cloud-api-commons&lt;/artifactId&gt;
+            &lt;version&gt;$&#123;project.version&#125;&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--监控--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--热部署--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h4 id="1-5-3-建yml"><a href="#1-5-3-建yml" class="headerlink" title="1.5.3 建yml"></a>1.5.3 建yml</h4><pre><code class="yml">server:
+  port: 80
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+</code></pre>
+<h4 id="1-5-4-主启动类"><a href="#1-5-4-主启动类" class="headerlink" title="1.5.4 主启动类"></a>1.5.4 主启动类</h4><pre><code class="java">package com.practice.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.cloud.openfeign.EnableFeignClients;
+
+@SpringBootApplication
+@EnableEurekaClient
+@EnableFeignClients
+public class OrderHystrixMain80 &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(OrderHystrixMain80.class, args);
+    &#125;
+&#125;
+
+</code></pre>
+<h4 id="1-5-5-业务类"><a href="#1-5-5-业务类" class="headerlink" title="1.5.5 业务类"></a>1.5.5 业务类</h4><ul>
+<li>Service</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.service;
+
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+@Component
+@FeignClient(value = &quot;CLOUD-PROVIDER-HYSTRIX-PAYMENT&quot;)
+public interface PaymentHystrixService &#123;
+
+    /**
+     * 正常访问
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/payment/hystrix/ok/&#123;id&#125;&quot;)
+    public String paymentInfo_OK(@PathVariable(&quot;id&quot;) Integer id);
+
+    /**
+     * 超时访问
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/payment/hystrix/timeout/&#123;id&#125;&quot;)
+    public String paymentInfo_TimeOut(@PathVariable(&quot;id&quot;) Integer id);
+
+&#125;
+</code></pre>
+<ul>
+<li>controller</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.service.PaymentHystrixService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@RestController
+@Slf4j
+public class OrderHystrixController &#123;
+
+
+    @Resource
+    private PaymentHystrixService paymentHystrixService;
+
+    @GetMapping(&quot;/consumer/payment/hystrix/ok/&#123;id&#125;&quot;)
+    public String paymentInfo_OK(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        String result = paymentHystrixService.paymentInfo_OK(id);
+
+        return result;
+    &#125;
+    @GetMapping(&quot;/consumer/payment/hystrix/timeout/&#123;id&#125;&quot;)
+    public String paymentInfo_TimeOut(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        String result = paymentHystrixService.paymentInfo_TimeOut(id);
+        return result;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="1-5-6-正常测试"><a href="#1-5-6-正常测试" class="headerlink" title="1.5.6 正常测试"></a>1.5.6 正常测试</h4><ul>
+<li><a target="_blank" rel="noopener" href="http://localhost/consumer/payment/hystrix/ok/32">http://localhost/consumer/payment/hystrix/ok/32</a></li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319101127760.png" alt="image-20210319101127760"></p>
+<h4 id="1-5-7-高并发测试"><a href="#1-5-7-高并发测试" class="headerlink" title="1.5.7 高并发测试"></a>1.5.7 高并发测试</h4><ul>
+<li>启动JMeter，发送Http请求</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319101314758.png" alt="image-20210319101314758"></p>
+<ul>
+<li>再查看<a target="_blank" rel="noopener" href="http://localhost/consumer/payment/hystrix/ok/32">http://localhost/consumer/payment/hystrix/ok/32</a><ul>
+<li>要么转圈圈等待，要么消费端报超时错误</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319101449727.png" alt="image-20210319101449727"></p>
+<p>故障和导致现象：</p>
+<ul>
+<li>8001同一层次的其他接口被困死，因为tomcat线程池里面的工作线程已经被挤占完毕，80此时调用8001，客户端访问响应缓慢，转圈圈</li>
+</ul>
+<p>因此，降级/容错/限流等技术诞生</p>
+<h4 id="1-5-8-如何解决高并发"><a href="#1-5-8-如何解决高并发" class="headerlink" title="1.5.8 如何解决高并发"></a>1.5.8 如何解决高并发</h4><p>超时导致服务器变慢(转圈)</p>
+<ul>
+<li>超时不再等待</li>
+</ul>
+<p>出错(宕机或程序运行出错)</p>
+<ul>
+<li>出错要有兜底</li>
+</ul>
+<p>解决：</p>
+<ul>
+<li><p><strong>对方服务(8001)超时了，调用者(80)不能一直卡死等待，必须有服务降级</strong></p>
+</li>
+<li><p><strong>对方服务(8001)宕机了，调用者(80)不能一直卡死等待，必须有服务降级</strong></p>
+</li>
+<li><p><strong>对方服务(8001)ok，调用者(80)自己有故障或有自我要求(自己等待时间小于服务提供者)</strong></p>
+</li>
+</ul>
+<h2 id="2、服务降级（fallback）"><a href="#2、服务降级（fallback）" class="headerlink" title="2、服务降级（fallback）"></a>2、服务降级（fallback）</h2><p>fallback服务降级，既可以放在消费端80，也可以放在支付端8001，但是我们一般放在消费端80</p>
+<p>降级配置</p>
+<ul>
+<li><code>@HystrixCommand</code>注解</li>
+</ul>
+<p>8001先从自身找问题</p>
+<ul>
+<li>设置自身调用超时时间的峰值，峰值时间内可以正常运行，超过了需要有兜底的方法处理，做服务降级fallback</li>
+</ul>
+<h3 id="2-1-8001-fallback"><a href="#2-1-8001-fallback" class="headerlink" title="2.1 8001 fallback"></a>2.1 8001 fallback</h3><p>业务类启用 @HystrixCommand 注解(在8001的Service)</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319105744458.png" alt="image-20210319105744458"></p>
+<p>一旦调用服务方法失败并抛出了错误信息后，会自动的调用@HystrixCommand标注好的fallbackMethod调用类中指定方法</p>
+<pre><code class="java">package com.practice.springcloud.service;
+
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.springframework.stereotype.Service;
+
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class PaymentService &#123;
+    /**
+     * 正常访问
+     *
+     * @param id
+     * @return
+     */
+    public String paymentInfo_OK(Integer id) &#123;
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; paymentInfo_OK,id:&quot; + id + &quot;\t&quot; + &quot;O(∩_∩)O哈哈~&quot;;
+    &#125;
+
+    /**
+     * 超时访问
+     *
+     * @param id
+     * @return
+     */
+    @HystrixCommand(fallbackMethod = &quot;payment_TimeOutHandler&quot;, commandProperties = &#123;
+            @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;3000&quot;)
+    &#125;)
+    public String paymentInfo_TimeOut(Integer id) &#123;
+        int timeNumber = 3;
+        try &#123;
+            // 暂停3秒钟
+            TimeUnit.SECONDS.sleep(timeNumber);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; paymentInfo_TimeOut,id:&quot; + id + &quot;\t&quot; +
+                &quot;O(∩_∩)O哈哈~  耗时(秒)&quot; + timeNumber;
+    &#125;
+
+    public String payment_TimeOutHandler(Integer id) &#123;
+
+        return &quot;/(ToT)/调用支付接口超时或异常：\t&quot;+&quot;\t当前线程池名字&quot;+Thread.currentThread().getName();
+    &#125;
+
+&#125;
+</code></pre>
+<ul>
+<li>主启动类激活@EnableCircuitBreaker</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319105921154.png" alt="image-20210319105921154"></p>
+<ul>
+<li>测试，因为8001，会等待5秒，所以会走payment_TimeOutHandler方法</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319110247721.png" alt="image-20210319110247721"></p>
+<p>当出现异常时，也会服务降级，所以，不管是超时，还是运行报错，都会执行payment_TimeOutHandler方法</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319131103041.png" alt="image-20210319131103041"></p>
+<h3 id="2-2-80-fallback"><a href="#2-2-80-fallback" class="headerlink" title="2.2 80 fallback"></a>2.2 80 fallback</h3><ul>
+<li><p>80订单微服务，也可以更好的保护自己，当请求8001迟迟没有回应，也对自己进行客户端降级保护</p>
+</li>
+<li><p>注意：若配置了热部署方法对java代码改动会自动重启，但对@HystrixCommand内 属性的修改修改，建议手动重启微服务</p>
+</li>
+<li><p>改POM</p>
+</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319134056775.png" alt="image-20210319134056775"></p>
+<pre><code class="xml">&lt;!--hystrix--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<ul>
+<li>修改YML</li>
+</ul>
+<pre><code class="yml">server:
+  port: 80
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka #单机版
+#      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka #集群版
+feign:
+  hystrix:
+    enabled: true
+</code></pre>
+<ul>
+<li>主启动类上加上@EnableHystrix注解</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319133719121.png" alt="image-20210319133719121"></p>
+<ul>
+<li>业务类，controller</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.service.PaymentHystrixService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+
+import javax.annotation.Resource;
+
+@RestController
+@Slf4j
+public class OrderHystrixController &#123;
+
+
+    @Resource
+    private PaymentHystrixService paymentHystrixService;
+
+    @GetMapping(&quot;/consumer/payment/hystrix/ok/&#123;id&#125;&quot;)
+    public String paymentInfo_OK(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        String result = paymentHystrixService.paymentInfo_OK(id);
+
+        return result;
+    &#125;
+
+
+    @GetMapping(&quot;/consumer/payment/hystrix/timeout/&#123;id&#125;&quot;)
+    @HystrixCommand(fallbackMethod = &quot;paymentTimeOutFallbackMethod&quot;, commandProperties = &#123;
+            @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;1500&quot;)
+    &#125;)
+    public String paymentInfo_TimeOut(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        //int age = 10/0;
+        return paymentHystrixService.paymentInfo_TimeOut(id);
+    &#125;
+
+    public String paymentTimeOutFallbackMethod(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        return &quot;我是消费者80,对方支付系统繁忙请10秒种后再试或者自己运行出错请检查自己,o(╥﹏╥)o&quot;;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>测试，消费端，访问8001服务支付端，此时8001延迟3秒响应，80设置只等1.5秒</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319134608424.png" alt="image-20210319134608424"></p>
+<ul>
+<li>此时发现，8001设置延迟两秒响应，80设置等待三秒，也会服务降级，因为ribbon默认时间为1秒，所以需要在配置文件中设置ribbon，还要将feign.hystrix.enabled=false</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319140737400.png" alt="image-20210319140737400"></p>
+<ul>
+<li>此时测试通过</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319140645252.png" alt="image-20210319140645252"></p>
+<p>此时，每个业务方法对应一个兜底的方法，代码膨胀</p>
+<p><strong>统一和自定义的分开</strong></p>
+<ul>
+<li>每个方法都有一个兜底的方法，这样不方便，需要设置一个全局的兜底的方法，这个兜底的方法涵盖大部分的方法，只有小部分的方法需要自定义兜底的方法</li>
+</ul>
+<h3 id="2-3-解决代码膨胀问题"><a href="#2-3-解决代码膨胀问题" class="headerlink" title="2.3 解决代码膨胀问题"></a>2.3 解决代码膨胀问题</h3><p>@DefaultProperties(defaultFallback=””)</p>
+<ul>
+<li>1对1，每个方法都配置一个服务降级方法，技术上可以，实际很傻</li>
+<li>1对N，除了个别核心业务有专属服务降级方法，其他的普通的可以通过@DefaultProperties(defaultFallback=””)统一跳转到统一结果处理页面</li>
+<li>通用的和独享的分开，避免了代码膨胀，合理减少了代码量。</li>
+</ul>
+<p>修改controller</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319143733213.png" alt="image-20210319143733213"></p>
+<pre><code class="java">package com.practice.springcloud.controller;
+import com.netflix.hystrix.contrib.javanica.annotation.DefaultProperties;
+import com.practice.springcloud.service.PaymentHystrixService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+
+import javax.annotation.Resource;
+
+@RestController
+@Slf4j
+@DefaultProperties(defaultFallback=&quot;payment_Global_FallbackMethod&quot;)
+public class OrderHystrixController &#123;
+
+    @Resource
+    private PaymentHystrixService paymentHystrixService;
+
+    @GetMapping(&quot;/consumer/payment/hystrix/ok/&#123;id&#125;&quot;)
+    public String paymentInfo_OK(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        String result = paymentHystrixService.paymentInfo_OK(id);
+
+        return result;
+    &#125;
+
+    @GetMapping(&quot;/consumer/payment/hystrix/timeout/&#123;id&#125;&quot;)
+//    @HystrixCommand(fallbackMethod = &quot;paymentTimeOutFallbackMethod&quot;, commandProperties = &#123;
+//            @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;2000&quot;)
+//    &#125;)
+    @HystrixCommand
+    public String paymentInfo_TimeOut(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        int age = 10/0;
+        return paymentHystrixService.paymentInfo_TimeOut(id);
+    &#125;
+
+    public String paymentTimeOutFallbackMethod(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        return &quot;我是消费者80,对方支付系统繁忙请10秒种后再试或者自己运行出错请检查自己,o(╥﹏╥)o&quot;;
+    &#125;
+
+    //下面是全局fallback
+    public String payment_Global_FallbackMethod()&#123;
+        return &quot;Global异常处理信息，请稍后再试&quot;;
+    &#125;
+&#125;
+</code></pre>
+<h3 id="2-4-解决代码耦合度高的问题"><a href="#2-4-解决代码耦合度高的问题" class="headerlink" title="2.4 解决代码耦合度高的问题"></a>2.4 解决代码耦合度高的问题</h3><p>服务降级，客户端去调用服务端，碰上服务端宕机或关闭</p>
+<p>本次案例服务降级处理是<strong>在客户端80</strong>实现完成，与服务端8001没有任何关系，只需要为Feign客户端定义的接口添加一个服务降级处理的实现类即可实现解耦</p>
+<p>未来我们要面对的异常：运行、超时、宕机</p>
+<p>再看看我们的业务类OrderHystrixController，混合在一起，每一个业务方法都要提供一个</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319144653251.png" alt="image-20210319144653251"></p>
+<p>修改<code>cloud-consumer-feign-hystrix-order80</code></p>
+<p>根据<code>cloud-consumer-feign-hystrix-order80</code>已经有的<code>PaymentHystrixService</code>接口，重新新建一个类(<code>PaymentFallbackService</code>)实现接口，统一为接口里面的方法进行异常处理</p>
+<pre><code class="java">package com.practice.springcloud.service;
+
+
+public class PaymentFallbackService implements PaymentHystrixService &#123;
+    @Override
+    public String paymentInfo_OK(Integer id) &#123;
+        return &quot;-----PaymentFallbackService fall back paymentInfo_OK o(╥﹏╥)o&quot;;
+    &#125;
+
+    @Override
+    public String paymentInfo_TimeOut(Integer id) &#123;
+        return &quot;-----PaymentFallbackService fall back paymentInfo_TimeOut o(╥﹏╥)o&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>修改YML</p>
+<pre><code class="yml">feign:
+  hystrix:
+    enabled: true #在Feign中开启Hystrix
+</code></pre>
+<p>将<code>PaymentFallbackService</code>类配到<code>PaymentHystrixService</code>接口中</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319145913139.png" alt="image-20210319145913139">测试：</p>
+<p>启动7001,8001,80，此时正常访问<a target="_blank" rel="noopener" href="http://localhost/consumer/payment/hystrix/ok/32%EF%BC%8C%E5%BD%93%E5%85%B3%E9%97%AD8001%E6%A8%A1%E6%8B%9F%E5%AE%95%E6%9C%BA%E6%97%B6%EF%BC%8C%E8%B5%B7%E5%88%B0%E6%9C%8D%E5%8A%A1%E9%99%8D%E7%BA%A7%E4%BD%9C%E7%94%A8">http://localhost/consumer/payment/hystrix/ok/32，当关闭8001模拟宕机时，起到服务降级作用</a></p>
+<p>此时服务器provider已经down，但是我们做了服务降级处理，让客户端在服务端不可用时也会获得提示信息而不会挂起耗死服务器</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319150325579.png" alt="image-20210319150325579"></p>
+<h2 id="3、服务熔断"><a href="#3、服务熔断" class="headerlink" title="3、服务熔断"></a>3、服务熔断</h2><p>断路器：相当于保险丝</p>
+<h3 id="3-1-熔断是什么"><a href="#3-1-熔断是什么" class="headerlink" title="3.1 熔断是什么"></a>3.1 熔断是什么</h3><p>熔断机制概述：</p>
+<ul>
+<li>熔断机制是应对雪崩效应的一种微服务链路保护机制，当扇出链路的某个微服务出错不可用或者响应时间太长时，会进行服务的降级，进而熔断该节点微服务的调用，快速返回错误信息</li>
+<li><strong>当检测到该节点微服务调用响应正常后，恢复调用链路</strong></li>
+<li>在Spring Cloud框架里，熔断机制通过Hystrix实现，Hystrix会监控微服务间调用的状况，当失败的调用到一定阈值，缺省是5秒内20次调用失败，就会启动熔断机制，熔断机制注解是@HystrixCommand</li>
+</ul>
+<h3 id="3-2-实际操作"><a href="#3-2-实际操作" class="headerlink" title="3.2 实际操作"></a>3.2 实际操作</h3><p>修改<code>cloud-provider-hystrix-payment8001</code></p>
+<p>PaymentService</p>
+<pre><code class="java">package com.practice.springcloud.service;
+
+import cn.hutool.core.util.IdUtil;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import java.util.concurrent.TimeUnit;
+
+@Service
+public class PaymentService &#123;
+    /**
+     * 正常访问
+     *
+     * @param id
+     * @return
+     */
+    public String paymentInfo_OK(Integer id) &#123;
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; paymentInfo_OK,id:&quot; + id + &quot;\t&quot; + &quot;O(∩_∩)O哈哈~&quot;;
+    &#125;
+
+    /**
+     * 超时访问
+     *
+     * @param id
+     * @return
+     */
+    @HystrixCommand(fallbackMethod = &quot;payment_TimeOutHandler&quot;, commandProperties = &#123;
+            @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;5000&quot;)
+    &#125;)
+    public String paymentInfo_TimeOut(Integer id) &#123;
+//        int a = 10/0;
+        int timeNumber = 5000;
+        try &#123;
+            // 暂停5秒钟
+            TimeUnit.MILLISECONDS.sleep(timeNumber);
+        &#125; catch (InterruptedException e) &#123;
+            e.printStackTrace();
+        &#125;
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; paymentInfo_TimeOut,id:&quot; + id + &quot;\t&quot; +
+                &quot;O(∩_∩)O哈哈~  耗时(秒)&quot; + timeNumber;
+    &#125;
+
+    public String payment_TimeOutHandler(Integer id) &#123;
+
+        return &quot;线程池:&quot; + Thread.currentThread().getName() + &quot; 系统繁忙或者运行报错，稍后再试,id:&quot; + id + &quot;\t&quot; +&quot;o(╥﹏╥)o&quot;;
+    &#125;
+
+
+    //====服务熔断
+
+    @HystrixCommand(fallbackMethod = &quot;paymentCircuitBreaker_fallback&quot;,commandProperties = &#123;
+            @HystrixProperty(name = &quot;circuitBreaker.enabled&quot;,value = &quot;true&quot;),//是否开启断路器
+            @HystrixProperty(name = &quot;circuitBreaker.requestVolumeThreshold&quot;,value = &quot;10&quot;),//请求次数
+            @HystrixProperty(name = &quot;circuitBreaker.sleepWindowInMilliseconds&quot;,value = &quot;10000&quot;),//时间窗口期
+            @HystrixProperty(name = &quot;circuitBreaker.errorThresholdPercentage&quot;,value = &quot;60&quot;),//失败率达到多少跳闸
+    &#125;)
+    public String paymentCircuitBreaker(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        if (id&lt;0)&#123;
+            throw new RuntimeException(&quot;****id不能为负数&quot;);
+        &#125;
+
+        String serialNumber = IdUtil.simpleUUID();
+        return Thread.currentThread().getName()+&quot;\t&quot;+&quot;调用成功，流水号：&quot;+serialNumber;
+    &#125;
+
+    public  String paymentCircuitBreaker_fallback(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        return &quot;id 不能负数，请稍后再试，/(ToT)/~~ id: &quot;+id;
+    &#125;
+&#125;
+</code></pre>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319155435378.png" alt="image-20210319155435378"></p>
+<p>PaymentController</p>
+<pre><code class="java">package com.practice.springcloud.controller;
+
+import com.practice.springcloud.service.PaymentService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.Resource;
+
+@RestController
+@Slf4j
+public class PaymentController &#123;
+    @Resource
+    private PaymentService paymentService;
+
+    @Value(&quot;$&#123;server.port&#125;&quot;)
+    private String servicePort;
+
+    /**
+     * 正常访问
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/payment/hystrix/ok/&#123;id&#125;&quot;)
+    public String paymentInfo_OK(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        String result = paymentService.paymentInfo_OK(id);
+        log.info(&quot;*****result:&quot; + result);
+        return result;
+    &#125;
+
+    /**
+     * 超时访问
+     *
+     * @param id
+     * @return
+     */
+    @GetMapping(&quot;/payment/hystrix/timeout/&#123;id&#125;&quot;)
+    public String paymentInfo_TimeOut(@PathVariable(&quot;id&quot;) Integer id) &#123;
+        String result = paymentService.paymentInfo_TimeOut(id);
+        log.info(&quot;*****result:&quot; + result);
+        return result;
+    &#125;
+
+    @GetMapping(&quot;/payment/circuit/&#123;id&#125;&quot;)
+    public String paymentCircuitBreaker(@PathVariable(&quot;id&quot;) Integer id)&#123;
+        String result = paymentService.paymentCircuitBreaker(id);
+        log.info(&quot;result: &quot;+result);
+        return result;
+    &#125; 
+    
+&#125;
+</code></pre>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319155744719.png" alt="image-20210319155744719"></p>
+<p>测试：启动7001和8001</p>
+<p>输入正数，返回成功</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319161021277.png" alt="image-20210319161021277"></p>
+<p>输入负数，返回失败</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319161052968.png" alt="image-20210319161052968"></p>
+<p>测试：当多次请求负数，8001会启动熔断机制，此时再输入正确数字也不会访问成功，当多次访问正确数字，会恢复调用链路，此时会出现成功页面</p>
+<h3 id="3-3-小结"><a href="#3-3-小结" class="headerlink" title="3.3 小结"></a>3.3 小结</h3><p>熔断的论文：<a target="_blank" rel="noopener" href="https://martinfowler.com/bliki/CircuitBreaker.html">https://martinfowler.com/bliki/CircuitBreaker.html</a></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319161956403.png" alt="image-20210319161956403"></p>
+<p><strong>熔断类型：</strong></p>
+<ul>
+<li>熔断打开：请求不再调用当前服务，内部设置一般为MTTR(平均故障处理时间)，当打开时长达到所设时钟则进入半熔断状态</li>
+<li>熔断关闭：熔断关闭后不会对服务进行熔断</li>
+<li>熔断半开：部分请求根据规则调用当前服务器，如果请求成功且符合规则则认为当前服务恢复正常，关闭熔断</li>
+</ul>
+<p><strong>断路器在什么情况下起作用</strong></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319162442538.png" alt="image-20210319162442538"></p>
+<p>涉及到断路器的三个重要参数：快照时间窗，请求总数阈值，错误百分比阈值</p>
+<ol>
+<li>快照时间窗：断路器确定是否打开需要统计一些请求和错误数据，而统计的时间范围就是快照时间窗，默认为最近的10秒</li>
+<li>请求总数阈值：在快照时间窗内，必须满足请求总数阈值才有资格熔断。默认为20，意味着在10秒内，如果该Hystrix命令的调用次数不足20次，即使所有的请求都超时或其他原因失败，断路器都不会打开</li>
+<li>错误百分比阈值：当请求总数在快照时间窗内超过了阈值，比如发生了30次调用，如果在这30次调用中，有15次发生了超时异常，也就是超过50%错误比百分，在默认设定50%阈值情况下，这时候就会将断路器打开</li>
+</ol>
+<p><strong>断路器开启或关闭条件</strong></p>
+<ul>
+<li>当满足一定的阈值的时候(默认10秒钟超过20个请求次数)</li>
+<li>当失败率达到一定的时候(默认10秒内超过50%的请求次数)</li>
+<li>到达以上阈值,断路器将会开启</li>
+<li>当开启的时候,所有请求都不会进行转发</li>
+<li>一段时间之后(默认5秒),这个时候断路器是半开状态,会让其中一个请求进行转发. 如果成功,断路器会关闭,若失败,继续开启.重复4和5</li>
+</ul>
+<p><strong>断路器打开之后：</strong></p>
+<ul>
+<li>再有请求调用的时候，将不会调用主逻辑，而是直接调用降级fallback，通过断路器，实现了自动的发现错误并将降级逻辑切换为主逻辑，减少响应延迟的效果</li>
+</ul>
+<p>原来的主逻辑要如何恢复呢？</p>
+<ul>
+<li>对于这一问题，Hystrix也为我们实现了自动恢复功能。</li>
+<li>当断路器打开，对主逻辑进行熔断之后，Hystrix会启动一个休眠时间窗，这个时间窗内，降级逻辑是临时的成为主逻辑，当休眠时间窗到期，断路器将进入半开状态，释放一次请求到原来的主逻辑上，如果此次请求正常返回，那么断路器将继续闭合，主逻辑恢复，如果这次请求依然有问题，断路器将继续进入打开状态，休眠时间窗重新计时</li>
+</ul>
+<h2 id="4、ALI配置"><a href="#4、ALI配置" class="headerlink" title="4、ALI配置"></a>4、ALI配置</h2><pre><code class="java">@HystrixCommand(fallbackMethod = &quot;str_fallbackMethod&quot;,
+            groupKey = &quot;strGroupCommand&quot;,
+            commandKey = &quot;strCommand&quot;,
+            threadPoolKey = &quot;strThreadPool&quot;,
+
+            commandProperties = &#123;
+                    //设置隔离策略，THREAD，表示线程池 SEMAPHORE：信号池隔离
+                    @HystrixProperty(name = &quot;execution.isolation.strategy&quot;, value = &quot;THREAD&quot;),
+                    //当隔离策略选择信号池隔离的时候，用来设置信号池的大小（最大并发数）
+                    @HystrixProperty(name = &quot;execution.isolation.semaphore.maxConcurrentRequests&quot;, value = &quot;10&quot;),
+                    //配置命令执行的超时时间
+                    @HystrixProperty(name = &quot;execution.isolation.thread.timeoutInMilliseconds&quot;, value = &quot;10&quot;),
+                    //是否启用超时时间
+                    @HystrixProperty(name = &quot;execution.timeout.enabled&quot;, value = &quot;true&quot;),
+                    //执行超时的时候是否中断
+                    @HystrixProperty(name = &quot;execution.isolation.thread.interruptOnTimeout&quot;, value = &quot;true&quot;),
+                    //执行被取消的时候是否中断
+                    @HystrixProperty(name = &quot;execution.isolation.thread.interruptOnFutureCancel&quot;, value = &quot;true&quot;),
+                    //允许回调方法执行的最大并发数
+                    @HystrixProperty(name = &quot;fallback.isolation.semaphore.maxConcurrentRequests&quot;, value = &quot;10&quot;),
+                    //服务降级是否启用，是否执行回调函数
+                    @HystrixProperty(name = &quot;fallback.enabled&quot;, value = &quot;true&quot;),
+                    //是否启用断路器
+                    @HystrixProperty(name = &quot;circuitBreaker.enabled&quot;, value = &quot;true&quot;),
+                    //该属性用来设置在滚动时间窗中，断路器熔断的最小请求数，例如，默认该值是20的时候，如果滚动时间窗(默认10秒)
+                    //内仅收到19个请求，即使这十九个请求都失败了，断路器也不会打开
+                    @HystrixProperty(name = &quot;circuitBreaker.requestVolumeThreshold&quot;, value = &quot;20&quot;),
+                    //该属性用来设置在滚动时间窗中，表示滚动时间窗中，在请求数量超过circuitBreaker.requestVolumeThreshold
+                    //的情况下，如果错误请求数的百分比超过50，就把断路器设置为“打开”状态，否则设置为“关闭”状态
+                    @HystrixProperty(name = &quot;circuitBreaker.errorThresholdPercentage&quot;, value = &quot;50&quot;),
+                    //该属性用来设置当断路器打开之后的休眠时间窗，休眠时间窗结束后，会将断路器设置为&quot;半开&quot;状态
+                    //尝试熔断的请求命令，如果依然失败就将断路器继续设置为“打开”状态，如果成功设置为“关闭”状态
+                    @HystrixProperty(name = &quot;circuitBreaker.sleepWindowInMilliseconds&quot;, value = &quot;5000&quot;),
+                    //断路器强制打开
+                    @HystrixProperty(name = &quot;circuitBreaker.forceOpen&quot;, value = &quot;false&quot;),
+                    //断路器强制关闭
+                    @HystrixProperty(name = &quot;circuitBreaker.forceClosed&quot;, value = &quot;false&quot;),
+                    //滚动时间窗设置，该时间用于断路器判断健康度时需要收集信息的持续时间
+                    @HystrixProperty(name = &quot;metrics.rollingStats.timeInMilliseconds&quot;, value = &quot;10000&quot;),
+                    //该属性用来设置滚动时间窗统计指标信息时划分&quot;桶&quot;的数量，断路器在收集指标信息的时候
+                    // 会根据设置的时间窗长度拆分成多个“桶”来累计各度量值，每个“桶”记录了一段时间内的采集指标。比如
+                    //10秒内拆分成10个“桶”收集这样，所以timeInMilliseconds必须能被numBuckets整除，否则会抛异常
+                    @HystrixProperty(name = &quot;metrics.rollingStats.numBuckets&quot;, value = &quot;10&quot;),
+                    //该属性用来设置对命令执行的延迟是否使用百分位数来跟踪和计算，如果设置为false，那么所有的概要统计
+                    //都将返回-1
+                    @HystrixProperty(name = &quot;metrics.rollingPercentile.enabled&quot;, value = &quot;false&quot;),
+                    //该属性用来设置百分位统计的滚动窗口的持续时间，单位为毫秒
+                    @HystrixProperty(name = &quot;metrics.rollingPercentile.timeInMilliseconds&quot;, value = &quot;60000&quot;),
+                    //该属性用来设置百分位统计的滚动窗口中使用“桶”的数量
+                    @HystrixProperty(name = &quot;metrics.rollingPercentile.numBuckets&quot;, value = &quot;60000&quot;),
+                    //该属性用来设置在执行过程中每个“桶”中保留的最大执行次数，如果在滚动时间窗内发生超过该设定值的执行次数
+                    //就从最初的位置开始重写，例如，将该值设为100，滚动窗口为10秒，若在10秒内一个“桶”中发生了500次执行，
+                    //那么该“桶”中只保留了最后的100次执行的统计。另外增加该值的大小会增加内存量的消耗，并增加排序百分位数所需的计算时间
+                    @HystrixProperty(name = &quot;metrics.rollingPercentile.bucketSize&quot;, value = &quot;100&quot;),
+                    //该属性用来设置采集影响断路器状态的健康快照(请求1成功，错误百分比)的间隔等待时间
+                    @HystrixProperty(name = &quot;metrics.healthSnapshot.intervalInMilliseconds&quot;, value = &quot;500&quot;),
+                    //是否开启请求缓存
+                    @HystrixProperty(name = &quot;requestCache.enabled&quot;, value = &quot;true&quot;),
+                    //HystrixCommand的执行和时间是否打印日志到HystrixRequestLog中
+                    @HystrixProperty(name = &quot;requestLog.enabled&quot;, value = &quot;true&quot;),
+            &#125;,
+            threadPoolProperties = &#123;
+                    //该参数用来设置执行命令线程池的核心线程数，该值也就是命令执行的最大并发量
+                    @HystrixProperty(name = &quot;coreSize&quot;,value = &quot;10&quot;),
+                    //该参数用来设置线程池的最大队列大小，当设置为-1是，线程池将使用SynchronousQueue实现的队列
+                    //否则将使用LinkedBlockingQueue实现的队列
+                    @HystrixProperty(name = &quot;maxQueueSize&quot;,value = &quot;-1&quot;),
+                    //该参数用来为队列设置拒绝阈值，通过该参数，即使队列没有达到最大值也能拒绝请求，
+                    //该参数主要是对LinkedBlockingQueue队列的补充，因为LinkedBlockingQueue队列
+                    //不能动态的修改它的对象大小，而通过该属性就可以调整拒绝请求的队列大小了
+                    @HystrixProperty(name = &quot;queueSizeRejectionThreshold&quot;,value = &quot;5&quot;),
+    &#125;)
+    public String  strConsumer()&#123;
+        return &quot;cloud 2020&quot;;
+    &#125;
+</code></pre>
+<h2 id="5、服务限流"><a href="#5、服务限流" class="headerlink" title="5、服务限流"></a>5、服务限流</h2><ul>
+<li>在alibaba的Sentinel中说明</li>
+</ul>
+<h2 id="6、Hystrix工作流程"><a href="#6、Hystrix工作流程" class="headerlink" title="6、Hystrix工作流程"></a>6、Hystrix工作流程</h2><p>文档：<a target="_blank" rel="noopener" href="https://github.com/Netflix/Hystrix/wiki/How-it-Works">https://github.com/Netflix/Hystrix/wiki/How-it-Works</a></p>
+<p>官网图例：</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319183804145.png" alt="image-20210319183804145"></p>
+<p>步骤说明：</p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319184703159.png" alt="image-20210319184703159"></p>
+<h2 id="7、服务监控hystrixDashboard"><a href="#7、服务监控hystrixDashboard" class="headerlink" title="7、服务监控hystrixDashboard"></a>7、服务监控hystrixDashboard</h2><h3 id="7-1-概述"><a href="#7-1-概述" class="headerlink" title="7.1 概述"></a>7.1 概述</h3><p>除了隔离依赖服务的调用以外，Hystrix还提供了**准实时的调用监控(Hystrix Dashboard)**，Hystrix会持续地记录所有通过Hystrix发起的请求的执行信息，并以统计报表和图形的形式展示给用户，包括每秒执行多少请求多少成功，多少失败等，Netflix通过hystrix-metrics-event-stream项目实现了对以上指标的监控。Spring Cloud也提供了Hystrix Dashboard的整合，对监控内容转化成可视化界面</p>
+<h3 id="7-2-仪表盘9001"><a href="#7-2-仪表盘9001" class="headerlink" title="7.2 仪表盘9001"></a>7.2 仪表盘9001</h3><h4 id="7-2-1-建Module"><a href="#7-2-1-建Module" class="headerlink" title="7.2.1 建Module"></a>7.2.1 建Module</h4><ul>
+<li>新建<code>cloud-consumer-hystrix-dashboard9001</code></li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319194926935.png" alt="image-20210319194926935"></p>
+<h4 id="7-2-2-改POM"><a href="#7-2-2-改POM" class="headerlink" title="7.2.2 改POM"></a>7.2.2 改POM</h4><pre><code class="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;parent&gt;
+        &lt;artifactId&gt;cloud2020&lt;/artifactId&gt;
+        &lt;groupId&gt;com.practice.springcloud&lt;/groupId&gt;
+        &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;/parent&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+
+    &lt;artifactId&gt;cloud-consumer-hystrix-dashboard9001&lt;/artifactId&gt;
+
+
+    &lt;dependencies&gt;
+        &lt;!--hystrix dashboard--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-netflix-hystrix-dashboard&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--监控--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!--热部署--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-devtools&lt;/artifactId&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+            &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+            &lt;optional&gt;true&lt;/optional&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+
+&lt;/project&gt;
+</code></pre>
+<h4 id="7-2-3-改YML"><a href="#7-2-3-改YML" class="headerlink" title="7.2.3 改YML"></a>7.2.3 改YML</h4><pre><code class="yml">server:
+  port: 9001
+</code></pre>
+<h4 id="7-2-4-主启动类"><a href="#7-2-4-主启动类" class="headerlink" title="7.2.4 主启动类"></a>7.2.4 主启动类</h4><ul>
+<li>加@EnableHystrixDashboard注解</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
+
+@SpringBootApplication
+@EnableHystrixDashboard
+public class HystrixDashboardMain9001 &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(HystrixDashboardMain9001.class);
+    &#125;
+&#125;
+</code></pre>
+<h4 id="7-2-5-监控依赖配置"><a href="#7-2-5-监控依赖配置" class="headerlink" title="7.2.5 监控依赖配置"></a>7.2.5 监控依赖配置</h4><p>所有的Provider微服务提供类(8001/8002/8003)都需要监控依赖配置</p>
+<pre><code class="xml">&lt;!--监控--&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+</code></pre>
+<h4 id="7-2-6-测试"><a href="#7-2-6-测试" class="headerlink" title="7.2.6 测试"></a>7.2.6 测试</h4><ul>
+<li>启动9001</li>
+<li><a target="_blank" rel="noopener" href="http://localhost:9001/hystrix">http://localhost:9001/hystrix</a></li>
+<li>后序将会监控其他服务</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319200044743.png" alt="image-20210319200044743"></p>
+<h3 id="7-3-断路器演示"><a href="#7-3-断路器演示" class="headerlink" title="7.3 断路器演示"></a>7.3 断路器演示</h3><p><strong>9001来监控8001</strong></p>
+<ul>
+<li><p>修改<code>cloud-provider-hystrix-payment8001</code></p>
+</li>
+<li><p>新版本Hystrix需要在主启动类PaymentHystrixMain8001中指定监控路径</p>
+</li>
+</ul>
+<pre><code class="java">package com.practice.springcloud;
+
+import com.netflix.hystrix.contrib.metrics.eventstream.HystrixMetricsStreamServlet;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import org.springframework.context.annotation.Bean;
+
+@SpringBootApplication
+@EnableEurekaClient
+@EnableCircuitBreaker
+public class PaymentHystrixMain8001 &#123;
+    public static void main(String[] args) &#123;
+        SpringApplication.run(PaymentHystrixMain8001.class, args);
+    &#125;
+
+    /**
+     * 此配置是为了服务监控而配置，与服务容错本身无观，springCloud 升级之后的坑
+     * ServletRegistrationBean因为springboot的默认路径不是/hystrix.stream
+     * 只要在自己的项目中配置上下面的servlet即可
+     * @return
+     */
+    @Bean
+    public ServletRegistrationBean getServlet()&#123;
+        HystrixMetricsStreamServlet streamServlet = new HystrixMetricsStreamServlet();
+        ServletRegistrationBean&lt;HystrixMetricsStreamServlet&gt; registrationBean = new ServletRegistrationBean&lt;&gt;(streamServlet);
+        registrationBean.setLoadOnStartup(1);
+        registrationBean.addUrlMappings(&quot;/hystrix.stream&quot;);
+        registrationBean.setName(&quot;HystrixMetricsStreamServlet&quot;);
+        return registrationBean;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>启动一个Eureka或者三个Eureka集群均可</li>
+</ul>
+<p>9001监控8001，填写监控地址</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8001/hystrix.stream">http://localhost:8001/hystrix.stream</a></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319201105574.png" alt="image-20210319201105574"></p>
+<p>此时启动8001，测试两个地址</p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8001/payment/circuit/31">http://localhost:8001/payment/circuit/31</a></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319201356050.png" alt="image-20210319201356050"></p>
+<p><a target="_blank" rel="noopener" href="http://localhost:8001/payment/circuit/-31">http://localhost:8001/payment/circuit/-31</a></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319201342494.png" alt="image-20210319201342494"></p>
+<p>说明8001自测没问题</p>
+<p>连续点击正确地址<a target="_blank" rel="noopener" href="http://localhost:8001/payment/circuit/31%EF%BC%8C%E6%9F%A5%E7%9C%8BHystrix%E7%9B%91%E6%8E%A7">http://localhost:8001/payment/circuit/31，查看Hystrix监控</a></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319201630672.png" alt="image-20210319201630672"></p>
+<p>连续点击错误地址<a target="_blank" rel="noopener" href="http://localhost:8001/payment/circuit/-31%EF%BC%8C%E6%9F%A5%E7%9C%8BHystrix%E7%9B%91%E6%8E%A7%EF%BC%8C%E5%8F%91%E7%8E%B0%E6%96%AD%E8%B7%AF%E5%99%A8%E5%B7%B2%E7%BB%8F%E6%89%93%E5%BC%80">http://localhost:8001/payment/circuit/-31，查看Hystrix监控，发现断路器已经打开</a></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319201810515.png" alt="image-20210319201810515"></p>
+<p>监控如何看</p>
+<ul>
+<li>七色</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319202309294.png" alt="image-20210319202309294"></p>
+<ul>
+<li>1圈</li>
+</ul>
+<p>实心圆：共有两种含义，它通过颜色的变化代表了实例的健康程度，它的健康度从绿色&lt;黄色&lt;橙色&lt;红色递减。</p>
+<p>该实心圆除了颜色的变化外，它的大小也会根据实例的请求流量发生变化，流量越大该实心圆越大，所以通过该实心圆的展示，就可以在大量的实例中快速的发现<strong>故障实例和高压力实例</strong>。</p>
+<ul>
+<li>1线</li>
+</ul>
+<p>曲线：用来记录2分钟内流量的相对变化，可以通过它来观察到流量的上升和下降趋势</p>
+<ul>
+<li>整图说明</li>
+</ul>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319203106441.png" alt="image-20210319203106441"></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319203138698.png" alt="image-20210319203138698"></p>
+<p><img src="/2020/11/19/SpringCloud-05/image-20210319203210884.png" alt="image-20210319203210884"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SpringCloud/" rel="tag"># SpringCloud</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/11/18/SpringCloud-04/" rel="prev" title="SpringCloud-04(Ribbon负载均衡/OpenFeign服务调用)">
+                  <i class="fa fa-chevron-left"></i> SpringCloud-04(Ribbon负载均衡/OpenFeign服务调用)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/11/20/SpringCloud-06/" rel="next" title="SpringCloud-06(Gateway网关)">
+                  SpringCloud-06(Gateway网关) <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

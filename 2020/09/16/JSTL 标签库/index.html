@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="JSTL 标签库的基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSTL 标签库的基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="JSTL 标签库的基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-16T03:46:45.000Z">
+<meta property="article:modified_time" content="2020-09-16T08:22:28.379Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JSTL 标签库的基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSTL-%E6%A0%87%E7%AD%BE%E5%BA%93"><span class="nav-text">JSTL 标签库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">1.2 使用步骤</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-core-%E6%A0%B8%E5%BF%83%E5%BA%93%E4%BD%BF%E7%94%A8"><span class="nav-text">1.3 core 核心库使用</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JSTL 标签库的基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-16 11:46:45" itemprop="dateCreated datePublished" datetime="2020-09-16T11:46:45+08:00">2020-09-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">JSTL 标签库的基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="JSTL-标签库"><a href="#JSTL-标签库" class="headerlink" title="JSTL 标签库"></a>JSTL 标签库</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>JSTL 标签库 全称是指  JSP   Standard   Tag   Library   JSP 标准标签库。是一个不断完善的开放源代码的 JSP 标签库。</p>
+<p>EL 表达式主要是为了替换 jsp 中的<strong>表达式脚本</strong>，而标签库则是为了替换<strong>代码脚本</strong>。这样使得整个 jsp 页面 变得更佳简洁。</p>
+<p>JSTL 由五个不同功能的标签库组成。 </p>
+<table>
+<thead>
+<tr>
+<th>功能范围</th>
+<th>URI</th>
+<th>前缀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心标签库–重点</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/core">http://java.sun.com/jsp/jstl/core</a></td>
+<td>c</td>
+</tr>
+<tr>
+<td>格式化</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/fmt">http://java.sun.com/jsp/jstl/fmt</a></td>
+<td>fmt</td>
+</tr>
+<tr>
+<td>函数</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/functions">http://java.sun.com/jsp/jstl/functions</a></td>
+<td>fn</td>
+</tr>
+<tr>
+<td>数据库(不使用)</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/sql">http://java.sun.com/jsp/jstl/sql</a></td>
+<td>sql</td>
+</tr>
+<tr>
+<td>XML(不使用)</td>
+<td><a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/xml">http://java.sun.com/jsp/jstl/xml</a></td>
+<td>x</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-使用步骤"><a href="#1-2-使用步骤" class="headerlink" title="1.2 使用步骤"></a>1.2 使用步骤</h3><ol>
+<li>先导入 jstl 标签库的 jar 包。 <ul>
+<li>taglibs-standard-impl-1.2.1.jar </li>
+<li>taglibs-standard-spec-1.2.1.jar</li>
+</ul>
+</li>
+<li>第二步，使用 taglib 指令引入标签库。 (输入JSTL标签时会自动引入)</li>
+</ol>
+<p>CORE 标签库 ：&lt;%@ taglib prefix=”c” uri=”<a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/core&quot;">http://java.sun.com/jsp/jstl/core&quot;</a> %&gt; </p>
+<p>XML 标签库：&lt;%@ taglib prefix=”x” uri=”<a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/xml&quot;">http://java.sun.com/jsp/jstl/xml&quot;</a> %&gt; </p>
+<p>FMT 标签库： &lt;%@ taglib prefix=”fmt” uri=”<a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/fmt&quot;">http://java.sun.com/jsp/jstl/fmt&quot;</a> %&gt; </p>
+<p>SQL 标签库： &lt;%@ taglib prefix=”sql” uri=”<a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/sql&quot;">http://java.sun.com/jsp/jstl/sql&quot;</a> %&gt; </p>
+<p>FUNCTIONS 标签库  &lt;%@ taglib prefix=”fn” uri=”<a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/functions&quot;">http://java.sun.com/jsp/jstl/functions&quot;</a> %&gt;</p>
+<h3 id="1-3-core-核心库使用"><a href="#1-3-core-核心库使用" class="headerlink" title="1.3 core 核心库使用"></a>1.3 core 核心库使用</h3><p> &lt;c:set/&gt;（使用很少）作用：set 标签可以往域中保存数据</p>
+<pre><code class="jsp">&lt;%--
+    i.&lt;c:set /&gt;
+        作用：set标签可以往域中保存数据
+
+        域对象.setAttribute(key,value);
+        scope 属性设置保存到哪个域
+            page表示PageContext域（默认值）
+            request表示Request域
+            session表示Session域
+            application表示ServletContext域
+        var属性设置key是多少
+        value属性设置值
+    --%&gt;
+    保存之前：$&#123; sessionScope.abc &#125; &lt;br&gt;
+    &lt;c:set scope=&quot;session&quot; var=&quot;abc&quot; value=&quot;abcValue&quot;/&gt;
+    保存之后：$&#123; sessionScope.abc &#125; &lt;br&gt;
+    &lt;hr&gt;
+</code></pre>
+<p> &lt;c:if/&gt;  if 标签用来做 if 判断。</p>
+<pre><code class="jsp">&lt;%--
+       ii.&lt;c:if /&gt;
+         if标签用来做if判断。
+         test属性表示判断的条件（使用EL表达式输出）
+    --%&gt;
+    &lt;c:if test=&quot;$&#123; 12 == 12 &#125;&quot;&gt;
+        &lt;h1&gt;12等于12&lt;/h1&gt;
+    &lt;/c:if&gt;
+    &lt;c:if test=&quot;$&#123; 12 != 12 &#125;&quot;&gt;
+        &lt;h1&gt;12不等于12&lt;/h1&gt;
+    &lt;/c:if&gt;
+</code></pre>
+<p> &lt;c:choose&gt;   &lt;c:when&gt;    &lt;c:otherwise&gt;   标签  作用：多路判断。跟 switch…case….default 非常接近</p>
+<pre><code class="java"> &lt;%--
+    iii.&lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签
+    作用：多路判断。跟switch ... case .... default非常接近
+
+    choose标签开始选择判断
+    when标签表示每一种判断情况
+        test属性表示当前这种判断情况的值
+    otherwise标签表示剩下的情况
+
+    &lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签使用时需要注意的点：
+        1、标签里不能使用html注释，要使用jsp注释
+        2、when标签的父标签一定要是choose标签
+    --%&gt;
+    &lt;%
+        request.setAttribute(&quot;height&quot;, 180);
+    %&gt;
+    &lt;c:choose&gt;
+        &lt;%-- 这是html注释 --%&gt;
+        &lt;c:when test=&quot;$&#123; requestScope.height &gt; 190 &#125;&quot;&gt;
+            &lt;h2&gt;小巨人&lt;/h2&gt;
+        &lt;/c:when&gt;
+         &lt;c:when test=&quot;$&#123; requestScope.height &gt; 180 &#125;&quot;&gt;
+            &lt;h2&gt;很高&lt;/h2&gt;
+        &lt;/c:when&gt;
+        &lt;c:when test=&quot;$&#123; requestScope.height &gt; 170 &#125;&quot;&gt;
+            &lt;h2&gt;还可以&lt;/h2&gt;
+        &lt;/c:when&gt;
+        &lt;c:otherwise&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 160&#125;&quot;&gt;
+                    &lt;h3&gt;大于160&lt;/h3&gt;
+                &lt;/c:when&gt;
+                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 150&#125;&quot;&gt;
+                    &lt;h3&gt;大于150&lt;/h3&gt;
+                &lt;/c:when&gt;
+                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 140&#125;&quot;&gt;
+                    &lt;h3&gt;大于140&lt;/h3&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    其他小于140
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/c:otherwise&gt;
+    &lt;/c:choose&gt;
+</code></pre>
+<p> &lt;c:forEach/&gt;  作用：遍历输出使用。</p>
+<pre><code class="jsp">&lt;%@ page import=&quot;java.util.Map&quot; %&gt;
+&lt;%@ page import=&quot;java.util.HashMap&quot; %&gt;
+&lt;%@ page import=&quot;java.util.List&quot; %&gt;
+&lt;%@ page import=&quot;com.review.entity.Student&quot; %&gt;
+&lt;%@ page import=&quot;java.util.ArrayList&quot; %&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+
+&lt;body&gt;
+    &lt;%--1.遍历1到10，输出
+        begin属性设置开始的索引
+        end 属性设置结束的索引
+        var 属性表示循环的变量(也是当前正在遍历到的数据)
+        for (int i = 1; i &lt; 10; i++)
+
+    &lt;table border=&quot;1&quot;&gt;
+        &lt;c:forEach begin=&quot;1&quot; end=&quot;10&quot; var=&quot;i&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;第$&#123;i&#125;行&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;--%&gt;
+    &lt;hr&gt;
+   &lt;%-- 2.遍历Object数组
+        for (Object item: arr)
+        items 表示遍历的数据源（遍历的集合）
+        var 表示当前遍历到的数据
+
+    &lt;%
+        request.setAttribute(&quot;arr&quot;, new String[]&#123;&quot;18610541354&quot;,&quot;18688886666&quot;,&quot;18699998888&quot;&#125;);
+    %&gt;
+    &lt;c:forEach items=&quot;$&#123; requestScope.arr &#125;&quot; var=&quot;item&quot;&gt;
+        $&#123; item &#125; &lt;br&gt;
+    &lt;/c:forEach&gt; --%&gt;
+    &lt;hr&gt;
+    &lt;%
+        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
+        map.put(&quot;key1&quot;, &quot;value1&quot;);
+        map.put(&quot;key2&quot;, &quot;value2&quot;);
+        map.put(&quot;key3&quot;, &quot;value3&quot;);
+//        for ( Map.Entry&lt;String,Object&gt; entry : map.entrySet()) &#123;
+//        &#125;
+        request.setAttribute(&quot;map&quot;, map);
+    %&gt;
+    &lt;c:forEach items=&quot;$&#123; requestScope.map &#125;&quot; var=&quot;entry&quot;&gt;
+        &lt;h1&gt;$&#123;entry.key&#125; = $&#123;entry.value&#125;&lt;/h1&gt;
+    &lt;/c:forEach&gt;
+    &lt;hr&gt;
+    &lt;%--4.遍历List集合---list中存放 Student类，有属性：编号，用户名，密码，年龄，电话信息--%&gt;
+    &lt;%
+        List&lt;Student&gt; studentList = new ArrayList&lt;Student&gt;();
+        for (int i = 1; i &lt;= 10; i++) &#123;
+            studentList.add(new Student(i,&quot;username&quot;+i ,&quot;pass&quot;+i,18+i,&quot;phone&quot;+i));
+        &#125;
+        request.setAttribute(&quot;stus&quot;, studentList);
+    %&gt;
+    &lt;form action=&quot;&quot; enctype=&quot;&quot;&gt;&lt;/form&gt;
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;th&gt;编号&lt;/th&gt;
+            &lt;th&gt;用户名&lt;/th&gt;
+            &lt;th&gt;密码&lt;/th&gt;
+            &lt;th&gt;年龄&lt;/th&gt;
+            &lt;th&gt;电话&lt;/th&gt;
+            &lt;th&gt;操作&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;%--
+            items 表示遍历的集合
+            var 表示遍历到的数据
+            begin表示遍历的开始索引值
+            end 表示结束的索引值
+            step 属性表示遍历的步长值
+            varStatus 属性表示当前遍历到的数据的状态
+            for（int i = 1; i &lt; 10; i+=2）
+        --%&gt;
+    &lt;c:forEach begin=&quot;2&quot; end=&quot;7&quot; step=&quot;2&quot; varStatus=&quot;status&quot; items=&quot;$&#123;requestScope.stus&#125;&quot; var=&quot;stu&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;$&#123;stu.id&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.username&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.password&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.phone&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;status.step&#125;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/table&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="EL表达式">
+                  <i class="fa fa-chevron-left"></i> EL表达式
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/17/XML/" rel="next" title="XML基本使用">
+                  XML基本使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

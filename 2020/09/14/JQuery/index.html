@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="JQuery基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JQuery基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/14/JQuery/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="JQuery基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-14T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-09-14T12:11:51.926Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/14/JQuery/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JQuery基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JQuery"><span class="nav-text">JQuery</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E5%BF%B5"><span class="nav-text">1.1 概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8"><span class="nav-text">1.2 快速入门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-JQuery%E5%AF%B9%E8%B1%A1%E5%92%8CDOM%E5%AF%B9%E8%B1%A1"><span class="nav-text">1.3 JQuery对象和DOM对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">1.4 选择器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">基本选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%82%E7%BA%A7%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">层级选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">属性选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E8%BF%87%E6%BB%A4%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">基本过滤选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A1%A8%E5%8D%95%E8%BF%87%E6%BB%A4%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">表单过滤选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AE%B9%E8%BF%87%E6%BB%A4%E9%80%89%E6%8B%A9%E5%99%A8"><span class="nav-text">内容过滤选择器</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%85%83%E7%B4%A0%E7%AD%9B%E9%80%89%E7%9A%84%E6%96%B9%E6%B3%95"><span class="nav-text">元素筛选的方法</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-JQuery%E6%96%B9%E6%B3%95"><span class="nav-text">1.5 JQuery方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-JQuery%E5%8A%A8%E7%94%BB"><span class="nav-text">1.6 JQuery动画</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-JQuery%E4%BA%8B%E4%BB%B6"><span class="nav-text">1.7 JQuery事件</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/14/JQuery/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JQuery基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-14 21:46:45" itemprop="dateCreated datePublished" datetime="2020-09-14T21:46:45+08:00">2020-09-14</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">JQuery基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="JQuery"><a href="#JQuery" class="headerlink" title="JQuery"></a>JQuery</h2><h3 id="1-1-概念"><a href="#1-1-概念" class="headerlink" title="1.1 概念"></a>1.1 概念</h3><ul>
+<li>什么是 jQuery? jQuery，顾名思义，也就是 JavaScript 和查询（Query），它就是辅助 JavaScript 开发的 js 类库。</li>
+<li>jQuery 核心思想！！！ 它的核心思想是 write less,do more(写得更少,做得更多)，所以它实现了很多浏览器的兼容问题。</li>
+<li>jQuery 流行程度 jQuery 现在已经成为最流行的 JavaScript 库，在世界前 10000 个访问最多的网站中，有超过 55%在使用 jQuery。</li>
+<li>jQuery 好处！！！ jQuery 是免费、开源的，jQuery 的语法设计可以使开发更加便捷，例如操作文档对象、选择 DOM 元素、 制作动画效果、事件处理、使用 Ajax 以及其他功能</li>
+</ul>
+<h3 id="1-2-快速入门"><a href="#1-2-快速入门" class="headerlink" title="1.2 快速入门"></a>1.2 快速入门</h3><ol>
+<li><p>下载JQuery</p>
+<ul>
+<li>目前jQuery有三个大版本：<ul>
+<li><p>1.x：兼容ie678,使用最为广泛的，官方只做BUG维护，<br>功能不再新增。因此一般项目来说，使用1.x版本就可以了，<br>最终版本：1.12.4 (2016年5月20日)</p>
+</li>
+<li><p>2.x：不兼容ie678，很少有人使用，官方只做BUG维护，<br>功能不再新增。如果不考虑兼容低版本的浏览器可以使用2.x，<br>最终版本：2.2.4 (2016年5月20日)</p>
+</li>
+<li><p>3.x：不兼容ie678，只支持最新的浏览器。除非特殊要求，<br>一般不会使用3.x版本的，很多老的jQuery插件不支持这个版本。<br>目前该版本是官方主要更新维护的版本。最新版本：3.2.1（2017年3月20日）</p>
+</li>
+</ul>
+</li>
+<li>jquery-xxx.js 与 jquery-xxx.min.js区别：<pre><code> - jquery-xxx.js：开发版本。给程序员看的，有良好的缩进和注释。体积大一些
+ - jquery-xxx.min.js：生产版本。程序中使用，没有缩进。体积小一些。程序加载更快
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>导入JQuery的js文件：导入min.js文件</p>
+</li>
+<li><p>使用</p>
+</li>
+</ol>
+<pre><code class="javascript">    &lt;script type=&quot;text/javascript&quot; src=&quot;../../js/jquery-3.3.1.min.js&quot;&gt;&lt;/script&gt;
+    &lt;script type=&quot;text/javascript&quot;&gt;
+        // window.onload = function () &#123;
+        //     var btnObj = document.getElementById(&quot;btnId&quot;);
+        //     // alert(btnObj);//[object HTMLButtonElement]   ====&gt;&gt;&gt;  dom对象
+        //     btnObj.onclick = function () &#123;
+        //         alert(&quot;js 原生的单击事件&quot;);
+        //     &#125;
+        // &#125;
+        //使用$()代替window.onload,表示页面加载完成之后，相当于window.onload = function () &#123;&#125;
+        $(function()&#123;
+            //使用选择器获取按钮对象，随后绑定单击响应函数
+            $(&quot;#btnId&quot;).click(function()&#123;
+                //弹出Hello
+                alert(&#39;Hello&#39;);
+            &#125;);
+        &#125;);
+    
+    &lt;/script&gt;
+    &lt;/head&gt;
+    &lt;body&gt;
+        &lt;button id=&quot;btnId&quot;&gt;SayHello&lt;/button&gt;
+    &lt;/body&gt;
+</code></pre>
+<blockquote>
+<p>$ 是 jQuery 的核心函数，能完成 jQuery 的很多功能。$()就是调用$这个函数</p>
+</blockquote>
+<h3 id="1-3-JQuery对象和DOM对象"><a href="#1-3-JQuery对象和DOM对象" class="headerlink" title="1.3 JQuery对象和DOM对象"></a>1.3 JQuery对象和DOM对象</h3><ul>
+<li><p>Dom对象 </p>
+<ul>
+<li>通过 getElementById()查询出来的标签对象是 Dom 对象 </li>
+<li>通过 getElementsByName()查询出来的标签对象是 Dom 对象 </li>
+<li>通过 getElementsByTagName()查询出来的标签对象是 Dom 对象 </li>
+<li>通过 createElement() 方法创建的对象，是 Dom 对象</li>
+<li>DOM 对象 Alert 出来的效果是：[object HTML标 签 名 Element]</li>
+</ul>
+</li>
+<li><p>jQuery对象 </p>
+<ul>
+<li>通过 JQuery 提供的 API 创建的对象，是 JQuery 对象 </li>
+<li>通过 JQuery 包装的 Dom 对象，也是 JQuery 对象 </li>
+<li>通过 JQuery 提供的 API 查询到的对象，是 JQuery 对象</li>
+<li>jQuery 对象 Alert 出来的效果是：[object Object]</li>
+</ul>
+</li>
+<li><p>区别</p>
+<ul>
+<li>jQuery 对象不能使用 DOM 对象的属性和方法</li>
+<li>DOM 对象也不能使用 jQuery 对象的属性和方法</li>
+</ul>
+</li>
+<li><p>联系</p>
+<ul>
+<li>jQuery 对象是 dom 对象的数组 +jQuery 提供的一系列功能函数。</li>
+</ul>
+</li>
+<li><p>转换</p>
+<ul>
+<li>dom对象转化为 jQuery 对象（重点） 1、先有 DOM 对象  2、$(DOM 对象 ) 就可以转换成为 jQuery 对象</li>
+<li>jQuery 对象转为 dom 对象（重点） 1、先有 jQuery 对象  2、jQuery 对象[下标]或get(下标)取出相应的 DOM 对象</li>
+</ul>
+</li>
+</ul>
+<pre><code class="JavaScript">&lt;div id=&quot;div1&quot;&gt;
+    div1...
+&lt;/div&gt;
+&lt;div id=&quot;div2&quot;&gt;
+    div2...
+&lt;/div&gt;
+&lt;script&gt;
+    //js方式获取名称叫div的所有html元素对象
+    var divs = document.getElementsByTagName(&quot;div&quot;);
+    alert(divs.length);//2
+    //对divs中所有div让其标签内容变为aaa，js方式
+    for(var i=0;i&lt;divs.length;i++)&#123;
+        divs[i].innerHTML=&quot;aaa&quot;;
+        //转换为jq对象
+        $(divs[i]).html(&quot;ccc&quot;);
+    &#125;
+    //通过JQuery方式获取名称叫div的所有html元素对象
+    var $divs = $(&quot;div&quot;);
+    alert($divs.length);//2
+    //对divs中所有div让其标签内容变为bbb，jq方式
+    $divs.html(&quot;bbb&quot;);//操作更加方便
+    //js方式，JQuery转为js，只需要在JQuery对象后加索引[],或者用get方法
+    $divs[0].innerHTML=&quot;ddd&quot;;
+    $divs.get(1).innerHTML=&quot;eee&quot;;
+    /*
+    JQuery对象与JS对象方法是不通用的
+    两者相互转换
+    jq--&gt;js:jq对象[索引] 或者 jq对象.get(索引)
+    js--&gt;jq:$(js对象)
+     */
+&lt;/script&gt;
+</code></pre>
+<h3 id="1-4-选择器"><a href="#1-4-选择器" class="headerlink" title="1.4 选择器"></a>1.4 选择器</h3><h4 id="基本选择器"><a href="#基本选择器" class="headerlink" title="基本选择器"></a>基本选择器</h4><ul>
+<li><p>标签选择器（元素选择器）</p>
+<ul>
+<li>语法： $(“html标签名”) 获得所有匹配标签名称的元素</li>
+</ul>
+</li>
+<li><p>id选择器 </p>
+<ul>
+<li>语法： $(“#id的属性值”) 获得与指定id属性值匹配的元素</li>
+</ul>
+</li>
+<li><p>类选择器</p>
+<ul>
+<li>语法： $(“.class的属性值”) 获得与指定的class属性值匹配的元素</li>
+</ul>
+</li>
+<li><p>并集选择器：</p>
+<ul>
+<li>语法： $(“选择器1,选择器2….”) 获取多个选择器选中的所有元素</li>
+</ul>
+</li>
+<li><p>全局选择器</p>
+<ul>
+<li>语法：$(“*”)获得所有的元素</li>
+</ul>
+</li>
+</ul>
+<pre><code class="JavaScript">$(function () &#123;
+//1.选择 id 为 one 的元素 &quot;background-color&quot;,&quot;#bbffaa&quot;
+$(&quot;#btn1&quot;).click(function () &#123;
+// css() 方法 可以设置和获取样式
+$(&quot;#one&quot;).css(&quot;background-color&quot;,&quot;#bbffaa&quot;);
+&#125;);
+
+//2.选择 class 为 mini 的所有元素
+$(&quot;#btn2&quot;).click(function () &#123;
+$(&quot;.mini&quot;).css(&quot;background-color&quot;,&quot;#bbffaa&quot;);
+&#125;);
+
+//3.选择 元素名是 div 的所有元素
+$(&quot;#btn3&quot;).click(function () &#123;
+$(&quot;div&quot;).css(&quot;background-color&quot;,&quot;#bbffaa&quot;);
+&#125;);
+
+//4.选择所有的元素
+$(&quot;#btn4&quot;).click(function () &#123;
+$(&quot;*&quot;).css(&quot;background-color&quot;,&quot;#bbffaa&quot;);
+&#125;);
+
+//5.选择所有的 span 元素和id为two的元素
+$(&quot;#btn5&quot;).click(function () &#123;
+$(&quot;span,#two&quot;).css(&quot;background-color&quot;,&quot;#bbffaa&quot;);
+&#125;);
+
+&#125;);
+</code></pre>
+<h4 id="层级选择器"><a href="#层级选择器" class="headerlink" title="层级选择器"></a>层级选择器</h4><ul>
+<li><p>后代选择器</p>
+<ul>
+<li>语法： $(“A B “) 选择A元素内部的所有B元素        </li>
+</ul>
+</li>
+<li><p>子选择器</p>
+<ul>
+<li>语法： $(“A &gt; B”) 选择A元素内部的所有B子元素</li>
+</ul>
+</li>
+</ul>
+<pre><code class="JavaScript">$(document).ready(function()&#123;
+                //1.选择 body 内的所有 div 元素
+                $(&quot;#btn1&quot;).click(function()&#123;
+                    $(&quot;body div&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //2.在 body 内, 选择div子元素  
+                $(&quot;#btn2&quot;).click(function()&#123;
+                    $(&quot;body &gt; div&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //3.选择 id 为 one 的下一个 div 元素 
+                $(&quot;#btn3&quot;).click(function()&#123;
+                    $(&quot;#one+div&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //4.选择 id 为 two 的元素后面的所有 div 兄弟元素
+                $(&quot;#btn4&quot;).click(function()&#123;
+                    $(&quot;#two~div&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+            &#125;);
+</code></pre>
+<h4 id="属性选择器"><a href="#属性选择器" class="headerlink" title="属性选择器"></a>属性选择器</h4><ul>
+<li><p>属性名称选择器 </p>
+<ul>
+<li>语法： $(“A[属性名]”) 包含指定属性的选择器</li>
+</ul>
+</li>
+<li><p>属性选择器</p>
+<ul>
+<li>语法： $(“A[属性名=’值’]”) 包含指定属性等于指定值的选择器</li>
+</ul>
+</li>
+<li><p>复合属性选择器</p>
+<ul>
+<li>语法： $(“A[属性名=’值’][]…”) 包含多个属性条件的选择器</li>
+</ul>
+</li>
+</ul>
+<pre><code class="javascript">$(function() &#123;
+        //1.选取含有 属性title 的div元素
+        $(&quot;#btn1&quot;).click(function() &#123;
+            $(&quot;div[title]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        //2.选取 属性title值等于&#39;test&#39;的div元素
+        $(&quot;#btn2&quot;).click(function() &#123;
+            $(&quot;div[title=&#39;test&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        //3.选取 属性title值不等于&#39;test&#39;的div元素(*没有属性title的也将被选中)
+        $(&quot;#btn3&quot;).click(function() &#123;
+            $(&quot;div[title!=&#39;test&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        //4.选取 属性title值 以&#39;te&#39;开始 的div元素
+        $(&quot;#btn4&quot;).click(function() &#123;
+            $(&quot;div[title^=&#39;te&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        //5.选取 属性title值 以&#39;est&#39;结束 的div元素
+        $(&quot;#btn5&quot;).click(function() &#123;
+            $(&quot;div[title$=&#39;est&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        //6.选取 属性title值 含有&#39;es&#39;的div元素
+        $(&quot;#btn6&quot;).click(function() &#123;
+            $(&quot;div[title*=&#39;es&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        
+        //7.首先选取有属性id的div元素，然后在结果中 选取属性title值 含有&#39;es&#39;的 div 元素
+        $(&quot;#btn7&quot;).click(function() &#123;
+            $(&quot;div[id][title*=&#39;es&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+        //8.选取 含有 title 属性值, 且title 属性值不等于 test 的 div 元素
+        $(&quot;#btn8&quot;).click(function() &#123;
+            $(&quot;div[title][title!=&#39;test&#39;]&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+        &#125;);
+    &#125;);
+&lt;/script&gt;
+</code></pre>
+<h4 id="基本过滤选择器"><a href="#基本过滤选择器" class="headerlink" title="基本过滤选择器"></a>基本过滤选择器</h4><ul>
+<li><p>首元素选择器 </p>
+<ul>
+<li>语法： :first 获得选择的元素中的第一个元素</li>
+</ul>
+</li>
+<li><p>尾元素选择器 </p>
+<ul>
+<li>语法： :last 获得选择的元素中的最后一个元素</li>
+</ul>
+</li>
+<li><p>非元素选择器</p>
+<ul>
+<li>语法： :not(selector) 不包括指定内容的元素</li>
+</ul>
+</li>
+<li><p>偶数选择器</p>
+<ul>
+<li>语法： :even 偶数，从 0 开始计数</li>
+</ul>
+</li>
+<li><p>奇数选择器</p>
+<ul>
+<li>语法： :odd 奇数，从 0 开始计数</li>
+</ul>
+</li>
+<li><p>等于索引选择器</p>
+<ul>
+<li>语法： :eq(index) 指定索引元素</li>
+</ul>
+</li>
+<li><p>大于索引选择器 </p>
+<ul>
+<li>语法： :gt(index) 大于指定索引元素</li>
+</ul>
+</li>
+<li><p>小于索引选择器 </p>
+<ul>
+<li>语法： :lt(index) 小于指定索引元素</li>
+</ul>
+</li>
+<li><p>标题选择器</p>
+<ul>
+<li>语法： :header 获得标题（h1~h6）元素，固定写法</li>
+</ul>
+</li>
+</ul>
+<pre><code class="JavaScript">&lt;script type=&quot;text/javascript&quot;&gt;
+            $(document).ready(function()&#123;
+                function anmateIt()&#123;
+                    $(&quot;#mover&quot;).slideToggle(&quot;slow&quot;, anmateIt);
+                &#125;
+                anmateIt();
+            &#125;);
+            
+            $(document).ready(function()&#123;
+                //1.选择第一个 div 元素  
+                $(&quot;#btn1&quot;).click(function()&#123;
+                    $(&quot;div:first&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //2.选择最后一个 div 元素
+                $(&quot;#btn2&quot;).click(function()&#123;
+                    $(&quot;div:last&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //3.选择class不为 one 的所有 div 元素
+                $(&quot;#btn3&quot;).click(function()&#123;
+                    $(&quot;div:not(.one)&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //4.选择索引值为偶数的 div 元素
+                $(&quot;#btn4&quot;).click(function()&#123;
+                    $(&quot;div:even&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //5.选择索引值为奇数的 div 元素
+                $(&quot;#btn5&quot;).click(function()&#123;
+                    $(&quot;div:odd&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //6.选择索引值为大于 3 的 div 元素
+                $(&quot;#btn6&quot;).click(function()&#123;
+                    $(&quot;div:gt(3)&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //7.选择索引值为等于 3 的 div 元素
+                $(&quot;#btn7&quot;).click(function()&#123;
+                    $(&quot;div:eq(3)&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //8.选择索引值为小于 3 的 div 元素
+                $(&quot;#btn8&quot;).click(function()&#123;
+                    $(&quot;div:lt(3)&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //9.选择所有的标题元素
+                $(&quot;#btn9&quot;).click(function()&#123;
+                    $(&quot;:header&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //10.选择当前正在执行动画的所有元素
+                $(&quot;#btn10&quot;).click(function()&#123;
+                    $(&quot;:animated&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+                //11.选择没有执行动画的最后一个div
+                $(&quot;#btn11&quot;).click(function()&#123;
+                    $(&quot;div:not(:animated):last&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+            &#125;);
+        &lt;/script&gt;
+</code></pre>
+<h4 id="表单过滤选择器"><a href="#表单过滤选择器" class="headerlink" title="表单过滤选择器"></a>表单过滤选择器</h4><ul>
+<li><p>可用元素选择器 </p>
+<ul>
+<li>语法： :enabled 获得可用元素</li>
+</ul>
+</li>
+<li><p>不可用元素选择器 </p>
+<ul>
+<li>语法： :disabled 获得不可用元素</li>
+</ul>
+</li>
+<li><p>选中选择器 </p>
+<ul>
+<li>语法： :checked 获得单选/复选框选中的元素</li>
+</ul>
+</li>
+<li><p>选中选择器 </p>
+<ul>
+<li>语法： :selected 获得下拉框选中的元素</li>
+</ul>
+</li>
+</ul>
+<pre><code class="JavaScript">$(function()&#123;                            
+        /**
+        :input         
+        :text         
+        :password     
+        :radio         
+        :checkbox     
+        :submit     
+        :image         
+        :reset         
+        :button     
+        :file         
+        :hidden             
+        表单对象的属性
+        :enabled         
+        :disabled         
+        :checked         
+        :selected         
+        */                    
+                //1.对表单内 可用input 赋值操作
+                $(&quot;#btn1&quot;).click(function()&#123;
+                    // val()可以操作表单项的value属性值
+                    // 它可以设置和获取
+                    $(&quot;:text:enabled&quot;).val(&quot;我是万能的程序员&quot;);
+                &#125;);
+                //2.对表单内 不可用input 赋值操作
+                $(&quot;#btn2&quot;).click(function()&#123;
+                    $(&quot;:text:disabled&quot;).val(&quot;管你可用不可用，反正我是万能的程序员&quot;);
+                &#125;);
+                //3.获取多选框选中的个数  使用size()方法获取选取到的元素集合的元素个数
+                $(&quot;#btn3&quot;).click(function()&#123;
+                    alert( $(&quot;:checkbox:checked&quot;).length );
+                &#125;);
+                //4.获取多选框，每个选中的value值
+                $(&quot;#btn4&quot;).click(function()&#123;
+                    // 获取全部选中的复选框标签对象
+                    var $checkboies = $(&quot;:checkbox:checked&quot;);
+                    // 老式遍历
+                    // for (var i = 0; i &lt; $checkboies.length; i++)&#123;
+                    //     alert( $checkboies[i].value );
+                    // &#125;
+                    // each方法是jQuery对象提供用来遍历元素的方法
+                    // 在遍历的function函数中，有一个this对象，这个this对象，就是当前遍历到的dom对象
+                    $checkboies.each(function () &#123;
+                        alert( this.value );
+                    &#125;);
+                &#125;);
+                //5.获取下拉框选中的内容  
+                $(&quot;#btn5&quot;).click(function()&#123;
+                    // 获取选中的option标签对象
+                    var $options = $(&quot;select option:selected&quot;);
+                    // 遍历，获取option标签中的文本内容
+                    $options.each(function () &#123;
+                        // 在each遍历的function函数中，有一个this对象。这个this对象是当前正在遍历到的dom对象
+                        alert(this.innerHTML);
+                    &#125;);
+                &#125;);
+            &#125;)    
+        &lt;/script&gt;
+</code></pre>
+<h4 id="内容过滤选择器"><a href="#内容过滤选择器" class="headerlink" title="内容过滤选择器"></a>内容过滤选择器</h4><p>:contains(text) 匹配包含给定文本的元素 </p>
+<p>:empty 匹配所有不包含子元素或者文本的空元素 </p>
+<p>:parent 匹配含有子元素或者文本的元素 </p>
+<p>:has(selector) 匹配含有选择器所匹配的元素的元素</p>
+<pre><code class="JavaScript">$(document).ready(function()&#123;
+                //1.选择 含有文本 &#39;di&#39; 的 div 元素
+                $(&quot;#btn1&quot;).click(function()&#123;
+                    $(&quot;div:contains(&#39;di&#39;)&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //2.选择不包含子元素(或者文本元素) 的 div 空元素
+                $(&quot;#btn2&quot;).click(function()&#123;
+                    $(&quot;div:empty&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+                //3.选择含有 class 为 mini 元素的 div 元素
+                $(&quot;#btn3&quot;).click(function()&#123;
+                    $(&quot;div:has(.mini)&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+
+                //4.选择含有子元素(或者文本元素)的div元素
+                $(&quot;#btn4&quot;).click(function()&#123;
+                    $(&quot;div:parent&quot;).css(&quot;background&quot;, &quot;#bbffaa&quot;);
+                &#125;);
+            &#125;);
+</code></pre>
+<h4 id="元素筛选的方法"><a href="#元素筛选的方法" class="headerlink" title="元素筛选的方法"></a>元素筛选的方法</h4><pre><code class="JavaScript">&lt;script type=&quot;text/javascript&quot;&gt;
+            $(document).ready(function()&#123;
+                function anmateIt()&#123;
+                    $(&quot;#mover&quot;).slideToggle(&quot;slow&quot;, anmateIt);
+                &#125;
+                anmateIt();        
+    /**                    
+    过滤
+    eq(index|-index)             
+    first()                     
+    last()                         
+    hasClass(class)             
+    filter(expr|obj|ele|fn)     
+    is(expr|obj|ele|fn)1.6*     
+    has(expr|ele)                 
+    not(expr|ele|fn)             
+    slice(start,[end])             
+    查找
+    children([expr])             
+    closest(expr,[con]|obj|ele)1.6*   
+    find(expr|obj|ele)                 
+    next([expr])                     
+    nextall([expr])                 
+    nextUntil([exp|ele][,fil])1.6*     
+    parent([expr])                     
+    parents([expr])                 
+    parentsUntil([exp|ele][,fil])1.6*  
+    prev([expr])                     
+    prevall([expr])                 
+    prevUntil([exp|ele][,fil])1.6*     
+    siblings([expr])                 
+    串联
+    add(expr|ele|html|obj[,con])     
+    */
+                
+                //(1)eq()  选择索引值为等于 3 的 div 元素
+                $(&quot;#btn1&quot;).click(function()&#123;
+                    $(&quot;div&quot;).eq(3).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(2)first()选择第一个 div 元素
+                 $(&quot;#btn2&quot;).click(function()&#123;
+                     //first()   选取第一个元素
+                    $(&quot;div&quot;).first().css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(3)last()选择最后一个 div 元素
+                $(&quot;#btn3&quot;).click(function()&#123;
+                    //last()  选取最后一个元素
+                    $(&quot;div&quot;).last().css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(4)filter()在div中选择索引为偶数的
+                $(&quot;#btn4&quot;).click(function()&#123;
+                    //filter()  过滤   传入的是选择器字符串
+                    $(&quot;div&quot;).filter(&quot;:even&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                 //(5)is()判断#one是否为:empty或:parent
+                //is用来检测jq对象是否符合指定的选择器
+                $(&quot;#btn5&quot;).click(function()&#123;
+                    alert( $(&quot;#one&quot;).is(&quot;:empty&quot;) );
+                &#125;);
+                
+                //(6)has()选择div中包含.mini的
+                $(&quot;#btn6&quot;).click(function()&#123;
+                    //has(selector)  选择器字符串    是否包含selector
+                    $(&quot;div&quot;).has(&quot;.mini&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(7)not()选择div中class不为one的
+                $(&quot;#btn7&quot;).click(function()&#123;
+                    //not(selector)  选择不是selector的元素
+                    $(&quot;div&quot;).not(&#39;.one&#39;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(8)children()在body中选择所有class为one的div子元素
+                $(&quot;#btn8&quot;).click(function()&#123;
+                    //children()  选出所有的子元素
+                    $(&quot;body&quot;).children(&quot;div.one&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);    
+                //(9)find()在body中选择所有class为mini的div元素
+                $(&quot;#btn9&quot;).click(function()&#123;
+                    //find()  选出所有的后代元素
+                    $(&quot;body&quot;).find(&quot;div.mini&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(10)next() #one的下一个div
+                $(&quot;#btn10&quot;).click(function()&#123;
+                    //next()  选择下一个兄弟元素
+                    $(&quot;#one&quot;).next(&quot;div&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(11)nextAll() #one后面所有的span元素
+                $(&quot;#btn11&quot;).click(function()&#123;
+                    //nextAll()   选出后面所有的元素
+                    $(&quot;#one&quot;).nextAll(&quot;span&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(12)nextUntil() #one和span之间的元素
+                $(&quot;#btn12&quot;).click(function()&#123;
+                    //
+                    $(&quot;#one&quot;).nextUntil(&quot;span&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;)
+                &#125;);
+                //(13)parent() .mini的父元素
+                $(&quot;#btn13&quot;).click(function()&#123;
+                    $(&quot;.mini&quot;).parent().css(&quot;background-color&quot;,&quot;#bfa&quot;);
+                &#125;);
+                //(14)prev() #two的上一个div
+                $(&quot;#btn14&quot;).click(function()&#123;
+                    //prev()  
+                    $(&quot;#two&quot;).prev(&quot;div&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;)
+                &#125;);
+                //(15)prevAll() span前面所有的div
+                $(&quot;#btn15&quot;).click(function()&#123;
+                    //prevAll()   选出前面所有的元素
+                    $(&quot;span&quot;).prevAll(&quot;div&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;)
+                &#125;);
+                //(16)prevUntil() span向前直到#one的元素
+                $(&quot;#btn16&quot;).click(function()&#123;
+                    //prevUntil(exp)   找到之前所有的兄弟元素直到找到exp停止
+                    $(&quot;span&quot;).prevUntil(&quot;#one&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;)
+                &#125;);
+                //(17)siblings() #two的所有兄弟元素
+                $(&quot;#btn17&quot;).click(function()&#123;
+                    //siblings()    找到所有的兄弟元素，包括前面的和后面的
+                    $(&quot;#two&quot;).siblings().css(&quot;background-color&quot;,&quot;#bfa&quot;)
+                &#125;);    
+                //(18)add()选择所有的 span 元素和id为two的元素
+                $(&quot;#btn18&quot;).click(function()&#123;    
+                    //   $(&quot;span,#two,.mini,#one&quot;)
+                    $(&quot;span&quot;).add(&quot;#two&quot;).add(&quot;#one&quot;).css(&quot;background-color&quot;,&quot;#bfa&quot;);    
+                &#125;);
+            &#125;);            
+        &lt;/script&gt;
+</code></pre>
+<h3 id="1-5-JQuery方法"><a href="#1-5-JQuery方法" class="headerlink" title="1.5 JQuery方法"></a>1.5 JQuery方法</h3><p>内容操作</p>
+<ol>
+<li><code>html()</code> 它可以设置和获取起始标签和结束标签中的内容。 跟 dom 属性 innerHTML 一样。 </li>
+<li><code>text()</code> 它可以设置和获取起始标签和结束标签中的文本。 跟 dom 属性 innerText 一样。 </li>
+<li><code>val()</code> 它可以设置和获取表单项的 value 属性值。 跟 dom 属性 value 一样</li>
+</ol>
+<pre><code class="JavaScript">$(function () &#123;
+                // 获取myinput 的value值
+                alert($(&quot;#myinput&quot;).val());
+                //设置
+                $(&quot;#myinput&quot;).val(&quot;李四&quot;);
+                // 获取mydiv的标签体内容
+                alert($(&quot;#mydiv&quot;).html());
+                //设置
+                $(&quot;#mydiv&quot;).html(&quot;&lt;p&gt;aaa&lt;/p&gt;&quot;);
+                // 获取mydiv文本内容
+                alert($(&quot;#mydiv&quot;).text());
+                //设置
+                $(&quot;#mydiv&quot;).text(&quot;bbb&quot;)
+            &#125;)
+</code></pre>
+<p>属性操作</p>
+<ol>
+<li><p>通用属性操作</p>
+<ul>
+<li><p><code>attr()</code>: 获取/设置元素的属性</p>
+</li>
+<li><p><code>removeAttr()</code>:删除属性</p>
+</li>
+<li><p><code>prop()</code>:获取/设置元素的属性</p>
+</li>
+<li><p><code>removeProp()</code>:删除属性</p>
+</li>
+<li><p>attr和prop区别？</p>
+<ul>
+<li>如果操作的是元素的固有属性，则建议使用prop</li>
+<li>如果操作的是元素自定义的属性，则建议使用attr</li>
+</ul>
+<pre><code class="JavaScript">&lt;script type=&quot;text/javascript&quot;&gt;
+       $(function () &#123;
+           //获取北京节点的name属性值
+           alert($(&quot;#bj&quot;).attr(&quot;name&quot;));
+           //设置北京节点的name属性的值为dabeijing
+           $(&quot;#bj&quot;).attr(&quot;name&quot;,&quot;dabeijing&quot;);
+           //新增北京节点的discription属性 属性值是didu
+           $(&quot;#bj&quot;).attr(&quot;discription&quot;,&quot;didu&quot;);
+           //删除北京节点的name属性并检验name属性是否存在
+           $(&quot;#bj&quot;).removeAttr(&quot;name&quot;);
+           //获得hobby的的选中状态
+           alert($(&quot;#hobby&quot;).prop(&quot;checked&quot;));
+       &#125;)
+
+   &lt;/script&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+<li><p>对class属性操作</p>
+<ul>
+<li><p><code>addClass()</code>:添加class属性值</p>
+</li>
+<li><p><code>emoveClass()</code>:删除class属性值</p>
+</li>
+<li><p><code>toggleClass()</code>:切换class属性</p>
+</li>
+<li><p><code>toggleClass(&quot;one&quot;)</code>: 判断如果元素对象上存在class=”one”，则将属性值one删除掉。  如果元素对象上不存在class=”one”，则添加</p>
+</li>
+<li><p><code>css()</code>:设置css</p>
+</li>
+</ul>
+<pre><code class="JavaScript">$(function () &#123;
+            //&lt;input type=&quot;button&quot; value=&quot;采用属性增加样式(改变id=one的样式)&quot;  id=&quot;b1&quot;/&gt;
+            $(&quot;#b1&quot;).click(function () &#123;
+                $(&quot;#one&quot;).prop(&quot;class&quot;,&quot;second&quot;);
+            &#125;);
+            //&lt;input type=&quot;button&quot; value=&quot; addClass&quot;  id=&quot;b2&quot;/&gt;
+            $(&quot;#b2&quot;).click(function () &#123;
+                $(&quot;#one&quot;).addClass(&quot;second&quot;);
+            &#125;);
+            //&lt;input type=&quot;button&quot; value=&quot;removeClass&quot;  id=&quot;b3&quot;/&gt;
+            $(&quot;#b3&quot;).click(function () &#123;
+                $(&quot;#one&quot;).removeClass(&quot;second&quot;);
+            &#125;);
+            //&lt;input type=&quot;button&quot; value=&quot; 切换样式&quot;  id=&quot;b4&quot;/&gt;
+            $(&quot;#b4&quot;).click(function () &#123;
+                $(&quot;#one&quot;).toggleClass(&quot;second&quot;);
+            &#125;);
+            //&lt;input type=&quot;button&quot; value=&quot; 通过css()获得id为one背景颜色&quot;  id=&quot;b5&quot;/&gt;
+            $(&quot;#b5&quot;).click(function () &#123;
+                var background = $(&quot;#one&quot;).css(&quot;backgroundColor&quot;);
+                alert(background)
+            &#125;);
+            //&lt;input type=&quot;button&quot; value=&quot; 通过css()设置id为one背景颜色为绿色&quot;  id=&quot;b6&quot;/&gt;
+            $(&quot;#b5&quot;).click(function () &#123;
+                $(&quot;#one&quot;).css(&quot;backgroundColor&quot;,&quot;green&quot;);
+            &#125;);
+        &#125;)
+</code></pre>
+</li>
+<li><p>CRUD操作:</p>
+<ul>
+<li><p><code>append()</code>:父元素将子元素追加到末尾</p>
+<ul>
+<li>对象1.append(对象2): 将对象2添加到对象1元素内部，并且在末尾</li>
+</ul>
+</li>
+<li><p><code>prepend()</code>:父元素将子元素追加到开头</p>
+<ul>
+<li>对象1.prepend(对象2):将对象2添加到对象1元素内部，并且在开头</li>
+</ul>
+</li>
+<li><p><code>appendTo()</code>:</p>
+<ul>
+<li>对象1.appendTo(对象2):将对象1添加到对象2内部，并且在末尾</li>
+</ul>
+</li>
+<li><p><code>prependTo()</code>：</p>
+<ul>
+<li>对象1.prependTo(对象2):将对象1添加到对象2内部，并且在开头</li>
+</ul>
+</li>
+<li><p><code>after()</code>:添加元素到元素后边</p>
+<ul>
+<li>对象1.after(对象2)： 将对象2添加到对象1后边。对象1和对象2是兄弟关系</li>
+</ul>
+</li>
+<li><p><code>before()</code>:添加元素到元素前边</p>
+<ul>
+<li>对象1.before(对象2)： 将对象2添加到对象1前边。对象1和对象2是兄弟关系</li>
+</ul>
+</li>
+<li><p><code>insertAfter()</code></p>
+<ul>
+<li>对象1.insertAfter(对象2)：将对象1添加到对象2后边。对象1和对象2是兄弟关系</li>
+</ul>
+</li>
+<li><p><code>insertBefore()</code></p>
+<ul>
+<li>对象1.insertBefore(对象2)： 将对象1添加到对象2前边。对象1和对象2是兄弟关系</li>
+</ul>
+</li>
+<li><p><code>remove()</code>:移除元素</p>
+<ul>
+<li>对象.remove():将对象删除掉</li>
+</ul>
+</li>
+<li><p><code>empty()</code>:清空元素的所有后代元素。</p>
+<ul>
+<li>对象.empty():将对象的后代元素全部清空，但是保留当前对象以及其属性节点</li>
+</ul>
+<pre><code class="JavaScript">$(function () &#123;
+           // &lt;input type=&quot;button&quot; value=&quot;将反恐放置到city的后面&quot;  id=&quot;b1&quot;/&gt;
+           $(&quot;#b1&quot;).click(function () &#123;
+               $(&quot;#fk&quot;).appendTo($(&quot;#city&quot;));
+           &#125;);
+           // &lt;input type=&quot;button&quot; value=&quot;将反恐放置到city的最前面&quot;  id=&quot;b2&quot;/&gt;
+           $(&quot;#b2&quot;).click(function () &#123;
+               $(&quot;#fk&quot;).prependTo($(&quot;#city&quot;));
+           &#125;);
+           // &lt;input type=&quot;button&quot; value=&quot;将反恐插入到天津后面&quot;  id=&quot;b3&quot;/&gt;
+           $(&quot;#b3&quot;).click(function () &#123;
+               $(&quot;#fk&quot;).insertAfter($(&quot;#tj&quot;));
+           &#125;);
+           // &lt;input type=&quot;button&quot; value=&quot;将反恐插入到天津前面&quot;  id=&quot;b4&quot;/&gt;
+           $(&quot;#b4&quot;).click(function () &#123;
+               $(&quot;#fk&quot;).insertBefore($(&quot;#tj&quot;));
+           &#125;);
+           // &lt;input type=&quot;button&quot; value=&quot;删除&lt;li id=&#39;bj&#39; name=&#39;beijing&#39;&gt;北京&lt;/li&gt;&quot;  id=&quot;b1&quot;/&gt;
+          $(&quot;#b1&quot;).click(function () &#123;
+              $(&quot;#bj&quot;).remove();
+          &#125;)
+          // &lt;input type=&quot;button&quot; value=&quot;删除city所有的li节点   清空元素中的所有后代节点(不包含属性节点)&quot;  id=&quot;b2&quot;/&gt;
+          $(&quot;#b2&quot;).click(function () &#123;
+              $(&quot;#city&quot;).empty();
+          &#125;)
+       &#125;)
+</code></pre>
+<h3 id="1-6-JQuery动画"><a href="#1-6-JQuery动画" class="headerlink" title="1.6 JQuery动画"></a>1.6 JQuery动画</h3></li>
+</ul>
+</li>
+<li><p>默认显示和隐藏方式</p>
+</li>
+</ol>
+<ul>
+<li><p>show([speed,[easing],[fn]])</p>
+<ul>
+<li>speed：动画的速度。三个预定义的值(“slow”,”normal”, “fast”)或表示动画时长的毫秒数值(如：1000)</li>
+<li>easing：用来指定切换效果，默认是”swing”，可用参数”linear”<ul>
+<li>swing：动画执行时效果是 先慢，中间快，最后又慢</li>
+<li>linear：动画执行时速度是匀速的</li>
+<li>fn：在动画完成时执行的函数，每个元素执行一次。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>hide([speed,[easing],[fn]])</p>
+</li>
+<li><p>toggle([speed],[easing],[fn])</p>
+</li>
+</ul>
+<ol start="2">
+<li>滑动显示和隐藏方式</li>
+</ol>
+<ul>
+<li>slideDown([speed],[easing],[fn])</li>
+<li>slideUp([speed,[easing],[fn]])</li>
+<li>slideToggle([speed],[easing],[fn])</li>
+</ul>
+<ol start="3">
+<li>淡入淡出显示和隐藏方式</li>
+</ol>
+<ul>
+<li>fadeIn([speed],[easing],[fn])</li>
+<li>fadeOut([speed],[easing],[fn])</li>
+<li>fadeToggle([speed,[easing],[fn]])</li>
+</ul>
+<pre><code class="javascript">&lt;script&gt;
+        //隐藏
+        function hideFn()&#123;
+            $(&quot;div&quot;).hide(&quot;slow&quot;,&quot;swing&quot;,function () &#123;
+                alert(&quot;隐藏&quot;)
+            &#125;);
+        &#125;
+        //显示
+        function showFn()&#123;
+            $(&quot;div&quot;).show();
+        &#125;;
+        //显示和隐藏
+        function toggleFn()&#123;
+            $(&quot;div&quot;).toggle();
+        &#125;;
+    &lt;/script&gt;
+</code></pre>
+<h3 id="1-7-JQuery事件"><a href="#1-7-JQuery事件" class="headerlink" title="1.7 JQuery事件"></a>1.7 JQuery事件</h3><p><code>$(function()&#123;&#125;)</code>; 和 <code>window.onload=function()&#123;&#125;</code> 的区别？<br>他们分别是在什么时候触发？ </p>
+<p>1、jQuery 的页面加载完成之后是浏览器的内核解析完页面的标签创建好 DOM 对象之后就会马上执行。 </p>
+<p>2、原生 js 的页面加载完成之后，除了要等浏览器内核解析完标签创建好 DOM 对象，还要等标签显示时需要的内容加载完成。</p>
+<p>window.onload 只能定义一次,如果定义多次，后边的会将前边的覆盖掉</p>
+<p>$(function)可以定义多次的。</p>
+<ul>
+<li><code>click()</code> 它可以绑定单击事件，以及触发单击事件 </li>
+<li><code>mouseover()</code> 鼠标移入事件 </li>
+<li><code>mouseout()</code> 鼠标移出事件 </li>
+<li><code>bind()</code> 可以给元素一次性绑定一个或多个事件。 </li>
+<li><code>one()</code> 使用上跟 bind 一样。但是 one 方法绑定的事件只会响应一次。 </li>
+<li><code>unbind()</code> 跟 bind 方法相反的操作，解除事件的绑定 </li>
+<li><code>live()</code> 也是用来绑定事件。它可以用来绑定选择器匹配的所有元素的事件。哪怕这个元素是后面动态创建出 来的也有效</li>
+</ul>
+<p><strong>事件的冒泡</strong></p>
+<p>事件的冒泡是指，父子元素同时监听同一个事件。当触发子元素的事件的时候，同一个事件也被传递到了父元素的事件里去响应。</p>
+<p>如何阻止事件冒泡： 在子元素事件函数体内，returnfalse; 可以阻止事件的冒泡传递。</p>
+<pre><code class="JavaScript">            $(function()&#123;
+                //*1.通常绑定事件的方式
+                //给元素绑定事件  
+                //jquery对象.事件方法(回调函数()&#123; 触发事件执行的代码 &#125;).事件方法(回调函数()&#123; 触发事件执行的代码 &#125;).事件方法(回调函数()&#123; 触发事件执行的代码 &#125;)
+                //绑定事件可以链式操作
+                $(&quot;.head&quot;).click(function()&#123;
+                    $(&quot;.content&quot;).toggle();
+                &#125;).mouseover(function()&#123;
+                    $(&quot;.content&quot;).toggle();
+                &#125;); 
+                
+                //*2.jQuery提供的绑定方式：bind(type,[data],fn)函数把元素和事件绑定起来
+                //type表示要绑定的事件   [data]表示传入的数据   fn表示事件的处理方法
+                //bind(事件字符串,回调函数),后来添加的元素不会绑定事件
+                //使用bind()绑定多个事件   type可以接受多个事件类型，使用空格分割多个事件
+                 $(&quot;.head&quot;).bind(&quot;click mouseover&quot;,function()&#123;
+                    $(&quot;.content&quot;).toggle();
+                &#125;); 
+            
+                
+                //3.one()只绑定一次,绑定的事件只会发生一次one(type,[data],fn)函数把元素和事件绑定起来
+                //type表示要绑定的事件   [data]表示传入的数据   fn表示事件的处理方法
+                 $(&quot;.head&quot;).one(&quot;click mouseover&quot;,function()&#123;
+                    $(&quot;.content&quot;).toggle();
+                &#125;); 
+
+                //4.live方法会为现在及以后添加的元素都绑定上相应的事件
+                $(&quot;.head&quot;).live(&quot;click&quot;,function()&#123;
+                    $(&quot;.content&quot;).toggle();
+                &#125;);
+                $(&quot;#name&quot;).focus();//让文本输入框获得焦点
+                $(&quot;#panel&quot;).before(&quot;&lt;h5 class=&#39;head&#39;&gt;什么是jQuery?&lt;/h5&gt;&quot;);
+                //点击第一个button，将#bj上的mouseenter事件移除
+                //unbind()可以移除指定的事件，只需要传一个事件名作为参数
+                //unbind(type,[data|fn]])
+                //type事件类型  当传入type的时候会解除type事件
+                //如果没有传入type值，会移除所有事件
+                $(&quot;button:eq(0)&quot;).click(function()&#123;
+                    $(&quot;li&quot;).unbind(&quot;click mouseenter&quot;);
+                &#125;);
+            &#125;);
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/13/JavaScript/" rel="prev" title="JavaScript基本使用">
+                  <i class="fa fa-chevron-left"></i> JavaScript基本使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="next" title="EL表达式">
+                  EL表达式 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

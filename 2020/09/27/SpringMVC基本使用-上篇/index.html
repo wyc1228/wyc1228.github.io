@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="SpringMVC基本使用-上篇">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SpringMVC基本使用-上篇">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="SpringMVC基本使用-上篇">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/%E5%9B%BE1.jpg">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/image-20200925095553733.png">
+<meta property="article:published_time" content="2020-09-27T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-10-08T13:58:00.184Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="SSM">
+<meta property="article:tag" content="SpringMVC">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/%E5%9B%BE1.jpg">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>SpringMVC基本使用-上篇 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87"><span class="nav-text">SpringMVC基本使用-上篇</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E5%B8%B8%E7%94%A8%E7%BB%84%E4%BB%B6"><span class="nav-text">1.2 常用组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-SpringMVC-%E5%85%A5%E9%97%A8%E6%A1%88%E4%BE%8B"><span class="nav-text">1.3 SpringMVC 入门案例</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-RequestMapping%E6%B3%A8%E8%A7%A3"><span class="nav-text">1.4 RequestMapping注解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E7%BB%91%E5%AE%9A"><span class="nav-text">1.5 请求参数绑定</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0%E4%B9%B1%E7%A0%81%E9%97%AE%E9%A2%98"><span class="nav-text">1.6 请求参数乱码问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-%E5%85%B6%E4%BB%96%E8%AF%B7%E6%B1%82%E5%8F%82%E6%95%B0"><span class="nav-text">1.7 其他请求参数</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SpringMVC基本使用-上篇
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-27 21:46:45" itemprop="dateCreated datePublished" datetime="2020-09-27T21:46:45+08:00">2020-09-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/SSM/" itemprop="url" rel="index"><span itemprop="name">SSM</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">SpringMVC基本使用-上篇</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="SpringMVC基本使用-上篇"><a href="#SpringMVC基本使用-上篇" class="headerlink" title="SpringMVC基本使用-上篇"></a>SpringMVC基本使用-上篇</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>使用Java语言基本上都是开发B/S架构的程序，B/S架构又分成了三层架构 </p>
+<ul>
+<li>三层架构<ul>
+<li><strong>表现层</strong>：WEB层，用来和客户端进行数据交互的。表现层包括展示层和控制层：控制层负责接收请求，展示层负责结果的展示。 表现层依赖业务层，接收到客户端请求一般会调用业务层进行业务处理，并将处理结果响应给客户端。 表现层的设计一般都使用 MVC 模型。（MVC 是表现层的设计模型，和其他层没有关系）</li>
+<li><strong>业务层</strong>：也就是我们常说的 service 层。它负责业务逻辑处理，和我们开发项目的需求息息相关。web 层依赖业务层，但是业务层不依赖 web 层。 业务层在业务处理时可能会依赖持久层，如果要对数据持久化需要保证事务一致性。（也就是我们说的， 事务应该放到业务层来控制）</li>
+<li><strong>持久层</strong>：也就是我们是常说的 dao 层。负责数据持久化，包括数据层即数据库和数据访问层，数据库是对数据进行持久化的载体，数据访问层是业务层和持久层交互的接口，业务层需要通过数据访问层将数据持久化到数据库 中。通俗的讲，持久层就是和数据库交互，对数据库表进行曾删改查的。</li>
+</ul>
+</li>
+<li>MVC模型 <ul>
+<li>MVC全名是Model View Controller 模型视图控制器，每个部分各司其职。 </li>
+<li><strong>Model</strong>：数据模型，JavaBean的类，用来进行数据封装。</li>
+<li><strong>View</strong>：指JSP、HTML用来展示数据给用户</li>
+<li><strong>Controller</strong>：用来接收用户的请求，整个流程的控制器。用来进行数据校验等。</li>
+</ul>
+</li>
+</ul>
+<p>Spring MVC 通过一套 MVC 注解，让 POJO 成为处理请求的控制器，而无须实现任何接口。</p>
+<p>支持 REST 风格的 URL 请求。 Restful </p>
+<p>采用了松散耦合可插拔组件结构，比其他 MVC 框架更具扩展性和灵活性。</p>
+<p>Spring MVC 的入口是 Servlet</p>
+<p><strong>SpringMVC在三层架构中的位置</strong></p>
+<p><img src="/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/%E5%9B%BE1.jpg" alt="图1"></p>
+<h3 id="1-2-常用组件"><a href="#1-2-常用组件" class="headerlink" title="1.2 常用组件"></a>1.2 常用组件</h3><p>SpringMVC将 Web 层进行了职责解耦，基于请求-响应模型</p>
+<p>常用主要组件</p>
+<ul>
+<li><strong>DispatcherServlet</strong>：前端控制器</li>
+<li><strong>Controller</strong>：处理器/页面控制器，做的是 MVC 中的 C 的事情，但控制逻辑转移到 前端控制器了，用于对请求进行处理</li>
+<li><strong>HandlerMapping</strong> ：请求映射到处理器，找谁来处理，如果映射成功，返回一个 HandlerExecutionChain 对象（包含一个 Handler 处理器(页面控制器)对象、多个 HandlerInterceptor 拦截器对象）</li>
+<li><strong>HandlerAdapter</strong>：处理器适配器，作用是根据映射器找到的处理器 Handler 信息，按照特定的规则去执行相关的处理器 Handler。</li>
+<li><strong>View Resolver</strong> : 视图解析器，找谁来处理返回的页面。把逻辑视图解析为具体的 View,进行这种策略模式，很容易更换其他视图技术；  如 InternalResourceViewResolver 将逻辑视图名映射为 JSP 视图</li>
+<li><strong>LocalResolver</strong>：本地化、国际化 </li>
+<li><strong>MultipartResolver</strong>：文件上传解析器</li>
+<li><strong>HandlerExceptionResolver</strong>：异常处理器</li>
+</ul>
+<p>在 SpringMVC 的各个组件中，<strong>处理器映射器</strong>HandlerMapping、<strong>处理器适配器</strong>HandlerAdapter、<strong>视图解析器</strong>View Resolver称为 SpringMVC 的三大组件。</p>
+<h3 id="1-3-SpringMVC-入门案例"><a href="#1-3-SpringMVC-入门案例" class="headerlink" title="1.3 SpringMVC 入门案例"></a>1.3 SpringMVC 入门案例</h3><ol>
+<li><p>新建web工程加入jar包（最后两个为SpringMVC所需要的jar包，前六个为Spring注解IOC的jar包）</p>
+</li>
+<li><p>SpringMVC是Spring的web模块，所有模块运行都是依赖核心模块（IOC模块）</p>
+<ul>
+<li>IOC模块</li>
+<li>spring-aop-4.0.0.RELEASE.jar //支持注解的包</li>
+<li>spring-beans-4.0.0.RELEASE.jar </li>
+<li>spring-context-4.0.0.RELEASE.jar </li>
+<li>spring-core-4.0.0.RELEASE.jar </li>
+<li>spring-expression-4.0.0.RELEASE.jar </li>
+<li>commons-logging-1.1.3.jar </li>
+<li>web模块</li>
+<li><code>spring-web-4.0.0.RELEASE.jar</code> </li>
+<li><code>spring-webmvc-4.0.0.RELEASE.jar</code></li>
+</ul>
+</li>
+<li><p>配置一个核心控制器web.xml</p>
+<pre><code class="xml">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+         version=&quot;4.0&quot;&gt;
+    &lt;!-- 配置 spring mvc 的核心控制器 --&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;
+            org.springframework.web.servlet.DispatcherServlet
+        &lt;/servlet-class&gt;
+        
+        &lt;!-- 配置初始化参数，用于读取 SpringMVC 的配置文件 
+        解释配置文件的名称定义规则:
+        实际上也可以不通过 contextConfigLocation 来配置 SpringMVC 的配置文件, 而使用默认
+        的.默认的配置文件为: /WEB-INF/&lt;servlet-name&gt;-servlet.xml，例如默认文件名为springMVC-servlet.xml
+        --&gt;
+        &lt;init-param&gt;
+            &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+            &lt;param-value&gt;classpath:SpringMVC.xml&lt;/param-value&gt;
+        &lt;/init-param&gt;
+        &lt;!-- 配置 servlet 的对象的创建时间点：应用加载时创建。
+        取值只能是非 0 正整数，表示启动顺序 --&gt;
+        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
+</code></pre>
+</li>
+<li><p>创建SpringMVC的配置文件，由于web.xml指定了SpringMVC配置文件，所以名字只能为SpringMVC.xml</p>
+<pre><code class="xml">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;
+    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;
+    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd&quot;&gt;
+
+    &lt;!-- 扫描组件，将加上@Controller注解的类作为springMVC的控制层 --&gt;
+    &lt;context:component-scan base-package=&quot;com.review.test&quot;&gt;&lt;/context:component-scan&gt;
+    
+    &lt;!-- 
+        配置视图解析器:将控制器返回的结果字符串，转换为一个物理的视图文件
+        作用：将prefix + 视图名称 + suffix 确定最终要跳转的页面
+        /WEB-INF/view/success.jsp
+     --&gt;
+    &lt;bean id=&quot;viewResolver&quot; class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;
+        &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/view/&quot;&gt;&lt;/property&gt;
+        &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot;&gt;&lt;/property&gt;
+    &lt;/bean&gt;
+
+&lt;/beans&gt;
+</code></pre>
+</li>
+<li><p>编写控制器，测试代码</p>
+<pre><code class="java">@Controller//声明 Bean 对象，为一个控制器组件
+public class HelloController &#123;
+    /**
+     * 假设：localhost:8080/SpringMVC01/hello
+     */
+    @RequestMapping(&quot;/hello&quot;)
+    public String hello(String username, String password) &#123;
+        System.out.println(username + &quot;=====&quot; + password);
+        System.out.println(&quot;Hello Word&quot;);
+        return &quot;success&quot;;//视图名称
+    &#125;    
+&#125;
+</code></pre>
+<p><code>HelloController</code>类实现的就是servlet功能，不需要再创建servlet类，直接使用普通类加controller注解就能实现servlet功能</p>
+</li>
+</ol>
+<p><strong>此案例的执行过程</strong></p>
+<p><img src="/2020/09/27/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8A%E7%AF%87/image-20200925095553733.png" alt="image-20200925095553733"></p>
+<ol>
+<li>服务器启动，应用被加载。读取到 web.xml 中的配置创建 spring 容器并且初始化容器中的对象。从入门案例中可以看到的是：HelloController 和 InternalResourceViewResolver，但是远不 止这些。 </li>
+<li>浏览器发送请求，被 DispatherServlet 捕获，该 Servlet 并不处理请求，而是把请求转发出去。转发 的路径是根据请求 URL，匹配@RequestMapping 中的内容。</li>
+<li>匹配到了后，执行对应方法。该方法有一个返回值。 </li>
+<li>根据方法的返回值，借助 InternalResourceViewResolver 找到对应的结果视图。</li>
+<li>渲染结果视图，响应浏览器。</li>
+</ol>
+<p><strong>此案例中涉及到的组件</strong></p>
+<ol>
+<li>DispatcherServlet：前端控制器<ul>
+<li>用户请求到达前端控制器，它就相当于 mvc 模式中的 c，dispatcherServlet 是整个流程控制的中心，由它调用其它组件处理用户的请求，dispatcherServlet 的存在降低了组件之间的耦合性。</li>
+</ul>
+</li>
+<li>HandlerMapping：处理器映射器<ul>
+<li>HandlerMapping 负责根据用户请求找到 Handler 即处理器，SpringMVC 提供了不同的映射器实现不同的映射方式，例如：配置文件方式，实现接口方式，注解方式等。</li>
+</ul>
+</li>
+<li>Handler：处理器<ul>
+<li>它就是我们开发中要编写的具体业务控制器。由 DispatcherServlet 把用户请求转发到 Handler。由 Handler 对具体的用户请求进行处理。</li>
+</ul>
+</li>
+<li>HandlAdapter：处理器适配器<ul>
+<li>通过 HandlerAdapter 对处理器进行执行，这是适配器模式的应用，通过扩展适配器可以对更多类型的处理 器进行执行。</li>
+</ul>
+</li>
+<li>View Resolver：视图解析器<ul>
+<li>View Resolver 负责将处理结果生成 View 视图，View Resolver 首先根据逻辑视图名解析成物理视图名 即具体的页面地址，再生成 View 视图对象，最后对 View 进行渲染将处理结果通过页面展示给用户。</li>
+</ul>
+</li>
+<li>View：视图<ul>
+<li>SpringMVC 框架提供了很多的 View 视图类型的支持，包括：jstlView、freemarkerView、pdfView 等。我们最常用的视图就是 jsp。 一般情况下需要通过页面标签或页面模版技术将模型数据通过页面展示给用户，需要由程序员根据业务需求开发具体的页面</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-4-RequestMapping注解"><a href="#1-4-RequestMapping注解" class="headerlink" title="1.4 RequestMapping注解"></a>1.4 RequestMapping注解</h3><ol>
+<li><p>作用：DispatcherServlet 截获请求后，就通过控制器上 @RequestMapping 提供的映射信息确定请求所对应的处理方法。用于建立请求 URL 和处理请求方法之间的对应关系。</p>
+</li>
+<li><p>出现的位置：</p>
+<ol>
+<li>类上：请求 URL 的第一级访问目录。此处不写的话，就相当于应用的根目录。写的话需要以/开头。 它出现的目的是为了使我们的 URL 可以按照模块化管理，例如： <ul>
+<li>账户模块： /account/add   /account为一级目录  /add为二级访问目录</li>
+</ul>
+</li>
+<li>方法上：请求 URL 的第二级访问目录。</li>
+</ol>
+</li>
+<li><p>属性：</p>
+<ol>
+<li><p>value：用于指定请求的 URL。它和 path 属性的作用是一样的。 </p>
+</li>
+<li><p>method：用于指定请求的方式。 </p>
+</li>
+<li><p>params：用于指定限制请求参数的条件。它支持简单的表达式。要求请求参数的 key 和 value 必须和配置的一模一样。</p>
+<ul>
+<li><p>param1: 表示请求必须包含名为 param1 的请求参数 </p>
+</li>
+<li><p>!param1: 表示请求不能包含名为 param1 的请求参数 </p>
+</li>
+<li><p>param1 != value1: 表示请求包含名为 param1 的请求参数，但其值不能为 value1 </p>
+</li>
+<li><p>{“param1=value1”, “param2”}: 请求必须包含名为 param1 和 param2 的两个请求</p>
+</li>
+<li><p>例如： params = {“accountName”}，表示请求参数必须有 accountName </p>
+</li>
+<li><p>params = {“moeny!100”}，表示请求参数中 money 不能是 100。</p>
+</li>
+</ul>
+</li>
+<li><p>headers：用于指定限制请求消息头的条件。很少使用</p>
+</li>
+</ol>
+<ul>
+<li><strong>注意</strong>： 以上四个属性只要出现 2 个或以上时，他们的关系是<strong>与</strong>的关系</li>
+</ul>
+</li>
+<li><p>各个参数使用示例</p>
+<ol>
+<li><p>value</p>
+<pre><code class="java">@Controller(&quot;accountController&quot;)
+@RequestMapping(&quot;/account&quot;)
+public class AccountController &#123;
+    @RequestMapping(&quot;/findAccount&quot;)
+    public String findAccount() &#123;
+        System.out.println(&quot;查询了账户。。。。&quot;);
+        return &quot;success&quot;;
+    &#125;
+&#125;
+</code></pre>
+<p>jsp访问方式</p>
+<pre><code class="jsp">&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;&gt;
+    &lt;title&gt;requestmapping 的使用&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;!-- 第一种访问方式 --&gt;
+&lt;a href=&quot;$&#123;pageContext.request.contextPath&#125;/account/findAccount&quot;&gt;查询账户&lt;/a&gt;
+
+&lt;!-- 第二种访问方式 --&gt;
+&lt;a href=&quot;account/findAccount&quot;&gt;查询账户&lt;/a&gt; &lt;!--不要在访问 URL 前面加/，否则无法找到资源。--&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>注意</p>
+<pre><code class="java">java
+@RequestMapping(&quot;/hello&quot;)
+jsp
+&lt;a href=&quot;hello&quot;&gt;Hello SpringMVC&lt;/a&gt;//可以找到资源（推荐这种写法）
+&lt;a href=&quot;/hello&quot;&gt;Hello SpringMVC&lt;/a&gt;//无法找到资源   
+java
+@RequestMapping(&quot;hello&quot;)
+jsp
+&lt;a href=&quot;hello&quot;&gt;Hello SpringMVC&lt;/a&gt;//可以找到资源
+&lt;a href=&quot;/hello&quot;&gt;Hello SpringMVC&lt;/a&gt;//无法找到资源   
+</code></pre>
+</li>
+<li><p>method</p>
+<pre><code class="java">@RequestMapping(value=&quot;/saveAccount&quot;,method= RequestMethod.POST)
+    public String saveAccount() &#123;
+        System.out.println(&quot;保存了账户&quot;);
+        return &quot;success&quot;;
+    &#125;
+</code></pre>
+<p>jsp代码</p>
+<pre><code class="jsp">&lt;a href=&quot;account/saveAccount&quot;&gt;保存账户，get 请求&lt;/a&gt;
+&lt;br/&gt;
+&lt;form action=&quot;account/saveAccount&quot; method=&quot;post&quot;&gt;
+&lt;input type=&quot;submit&quot; value=&quot;保存账户，post 请求&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>指定post请求，如果是get请求，会报405错误，错误信息是 方法不支持 get 方式请求</p>
+<p><strong>注意</strong>：@RequestMapping 不写method，默认为get,post方式都支持</p>
+</li>
+<li><p>params</p>
+<pre><code class="java">@RequestMapping(value=&quot;/removeAccount&quot;,params= &#123;&quot;accountName&quot;,&quot;money&gt;100&quot;&#125;)
+public String removeAccount() &#123;
+    System.out.println(&quot;删除了账户&quot;);
+    return &quot;success&quot;;
+&#125;
+</code></pre>
+<p>jsp</p>
+<pre><code class="jsp">&lt;!-- 请求参数的示例 --&gt;
+&lt;a href=&quot;account/removeAccount?accountName=aaa&amp;money&gt;100&quot;&gt;删除账户，金额 100&lt;/a&gt;&lt;!--可以成功--&gt;
+&lt;br/&gt;
+&lt;a href=&quot;account/removeAccount?accountName=aaa&amp;money&gt;150&quot;&gt;删除账户，金额 150&lt;/a&gt;
+</code></pre>
+<p>其中请求的参数accountName和money必须和params的参数一致，表示接受的参数必须含有accountName而且money&gt;100</p>
+</li>
+</ol>
+</li>
+<li><p>RequestMapping 支持 Ant 路径风格</p>
+<ul>
+<li><p>Ant 风格资源地址支持 3 种匹配符：【了解】 </p>
+</li>
+<li><p>?：匹配文件名中的一个字符 </p>
+</li>
+<li><p>*：匹配文件名中的任意字符 ，无论几个字符都可以</p>
+</li>
+<li><p>**：匹配多层路径</p>
+<pre><code class="java">//Ant 风格资源地址支持 3 种匹配符
+//@RequestMapping(value=&quot;/testAntPath/*/abc&quot;)
+//@RequestMapping(value=&quot;/testAntPath/**/abc&quot;)
+@RequestMapping(value=&quot;/testAntPath/abc??&quot;)
+public String testAntPath()&#123;
+    System.out.println(&quot;testAntPath...&quot;);
+    return &quot;success&quot;;
+&#125;
+</code></pre>
+<p>jsp</p>
+<pre><code class="jsp">&lt;!-- Ant 风格资源地址支持 3 种匹配符 --&gt;
+&lt;a href=&quot;springmvc/testAntPath/*/abc&quot;&gt;testAntPath&lt;/a&gt;
+&lt;a href=&quot;springmvc/testAntPath/xxx/yyy/abc&quot;&gt;testAntPath&lt;/a&gt;
+&lt;a href=&quot;springmvc/testAntPath/abcxx&quot;&gt;testAntPath&lt;/a&gt;
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-5-请求参数绑定"><a href="#1-5-请求参数绑定" class="headerlink" title="1.5 请求参数绑定"></a>1.5 请求参数绑定</h3><ul>
+<li>我们都知道，表单中请求参数都是基于 key=value 的。 </li>
+<li>SpringMVC 绑定请求参数的过程是通过把表单提交请求参数，作为控制器中方法参数进行绑定的。</li>
+</ul>
+<pre><code class="java">&lt;a href=&quot;findAccount?accountId=10&quot;&gt;查询账户&lt;/a&gt;
+请求参数是：accountId=10
+/**
+* 查询账户
+*/
+@RequestMapping(&quot;/findAccount&quot;)
+public String findAccount(Integer accountId) &#123;
+    System.out.println(&quot;查询了账户。。。。&quot;+accountId);
+    return &quot;success&quot;;
+&#125;
+//将请求参数中的accountId和方法中的参数accountId绑定，保持名字一致
+</code></pre>
+<ol>
+<li><p>支持的数据类型</p>
+<ol>
+<li><strong>基本类型参数</strong>： 包括基本类型和 String 类型 </li>
+<li><strong>POJO 类型参数</strong>： 包括实体类，以及关联的实体类 </li>
+<li><strong>数组和集合类型参数</strong>： 包括 List 结构和 Map 结构的集合（包括数组）</li>
+<li>SpringMVC 绑定请求参数是自动实现的，但是要想使用，必须遵循使用要求</li>
+</ol>
+</li>
+<li><p>使用要求</p>
+<ol>
+<li>如果是基本类型或者 String 类型： 要求我们的参数名称必须和控制器中方法的形参名称保持一致。(严格区分大小写) </li>
+<li>如果是 POJO 类型，或者它的关联对象： 要求表单中参数名称和 POJO 类的属性名称保持一致。并且控制器方法的参数类型是 POJO 类型。 </li>
+<li>如果是集合类型,有两种方式：<ul>
+<li>第一种： 要求集合类型的请求参数必须在 POJO 中。在表单中请求参数名称要和 POJO 中集合属性名称相同。 给 List 集合中的元素赋值，使用下标。 给 Map 集合中的元素赋值，使用键值对。 </li>
+<li>第二种： 接收的请求参数是 json 格式数据。需要借助一个注解实现</li>
+</ul>
+</li>
+</ol>
+</li>
+<li><p>使用演示</p>
+<ol>
+<li><p>基本类型和 String 类型作为参数：参数名称必须和控制器中方法的形参名称保持一致</p>
+<pre><code class="java">jsp 代码：
+&lt;!-- 基本类型示例 --&gt;
+&lt;a href=&quot;findAccount?accountId=10&amp;accountName=zhangsan&quot;&gt;查询账户&lt;/a&gt;
+控制器代码：
+/**
+* 查询账户
+*/
+@RequestMapping(&quot;/findAccount&quot;)
+public String findAccount(Integer accountId,String accountName) &#123;
+    System.out.println(&quot;查询了账户。。。。&quot;+accountId+&quot;,&quot;+accountName);
+    return &quot;success&quot;;
+&#125;
+</code></pre>
+</li>
+<li><p>POJO 类型作为参数</p>
+<pre><code class="java">/**
+* 账户信息
+*/
+public class Account&#123;
+    private Integer id;
+    private String name;
+    private Float money;
+    private Address address;
+//getters and setters
+//toString()
+&#125;
+/**
+* 地址的实体类
+*/
+public class Address&#123;
+    private String provinceName;
+    private String cityName;
+//getters and setters
+//toString()
+&#125;
+</code></pre>
+<p>jsp代码</p>
+<pre><code class="jsp">&lt;!-- pojo 类型演示 --&gt;
+&lt;form action=&quot;account/saveAccount&quot; method=&quot;post&quot;&gt;
+账户名称：&lt;input type=&quot;text&quot; name=&quot;name&quot; &gt;&lt;br/&gt;
+账户金额：&lt;input type=&quot;text&quot; name=&quot;money&quot; &gt;&lt;br/&gt;
+账户省份：&lt;input type=&quot;text&quot; name=&quot;address.provinceName&quot; &gt;&lt;br/&gt;
+账户城市：&lt;input type=&quot;text&quot; name=&quot;address.cityName&quot; &gt;&lt;br/&gt;
+&lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>conroller</p>
+<pre><code class="java">/**
+* 保存账户
+*/
+@RequestMapping(&quot;/saveAccount&quot;)
+public String saveAccount(Account account) &#123;
+    System.out.println(&quot;保存了账户。。。。&quot;+account);
+    return &quot;success&quot;;
+&#125;
+//Account&#123;id=null, name=&#39;zhangsan&#39;, money=123.0, address=Address&#123;provinceName=&#39;zhans&#39;, cityName=&#39;dasasof&#39;&#125;&#125;
+</code></pre>
+</li>
+</ol>
+<ul>
+<li><p>POJO 类中包含集合类型参数</p>
+<pre><code class="java">public class User&#123;
+    private String username;
+    private String password;
+    private Integer age;
+    private List&lt;Account&gt; accounts;
+    private Map&lt;String,Account&gt; accountMap;
+    //getters and setters
+    //toString()
+&#125;
+</code></pre>
+<p>jsp格式</p>
+<pre><code class="jsp">&lt;form action=&quot;account/updateAccount&quot; method=&quot;post&quot;&gt;
+    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
+    用户密码：&lt;input type=&quot;password&quot; name=&quot;password&quot; &gt;&lt;br/&gt;
+    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
+    账户 1 名称：&lt;input type=&quot;text&quot; name=&quot;accounts[0].name&quot; &gt;&lt;br/&gt;
+    账户 1 金额：&lt;input type=&quot;text&quot; name=&quot;accounts[0].money&quot; &gt;&lt;br/&gt;
+    账户 2 名称：&lt;input type=&quot;text&quot; name=&quot;accounts[1].name&quot; &gt;&lt;br/&gt;
+    账户 2 金额：&lt;input type=&quot;text&quot; name=&quot;accounts[1].money&quot; &gt;&lt;br/&gt;
+    账户 3 名称：&lt;input type=&quot;text&quot; name=&quot;accountMap[&#39;one&#39;].name&quot; &gt;&lt;br/&gt;
+    账户 3 金额：&lt;input type=&quot;text&quot; name=&quot;accountMap[&#39;one&#39;].money&quot; &gt;&lt;br/&gt;
+    账户 4 名称：&lt;input type=&quot;text&quot; name=&quot;accountMap[&#39;two&#39;].name&quot; &gt;&lt;br/&gt;
+    账户 4 金额：&lt;input type=&quot;text&quot; name=&quot;accountMap[&#39;two&#39;].money&quot; &gt;&lt;br/&gt;
+&lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
+&lt;/form&gt;
+</code></pre>
+<p>测试</p>
+<pre><code class="java">@RequestMapping(&quot;/updateAccount&quot;)
+public String updateAccount(User user) &#123;
+    System.out.println(&quot;更新了账户。。。。&quot;+user);
+    return &quot;success&quot;;
+&#125;
+//结果：更新了账户。。。。User&#123;username=&#39;bychai&#39;, password=&#39;123&#39;, age=123, 
+//accounts=[Account&#123;id=null, name=&#39;hsnd&#39;, money=123.0, address=null&#125;, Account&#123;id=null, name=&#39;xjsdf&#39;, money=456.0, address=null&#125;], 
+//accountMap=&#123;one=Account&#123;id=null, name=&#39;xchoa&#39;, money=13.0, address=null&#125;, two=Account&#123;id=null, name=&#39;zhjka&#39;, money=56.0, address=null&#125;&#125;&#125;
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-6-请求参数乱码问题"><a href="#1-6-请求参数乱码问题" class="headerlink" title="1.6 请求参数乱码问题"></a>1.6 请求参数乱码问题</h3><ul>
+<li>如果中文有乱码，需要配置字符编码过滤器，且配置其他过滤器之前， 如（HiddenHttpMethodFilter），否则不起作用。</li>
+</ul>
+<pre><code class="xml">post 请求方式：
+在 web.xml 中配置一个过滤器
+&lt;!-- 配置 springMVC 编码过滤器 --&gt;
+&lt;filter&gt;
+    &lt;filter-name&gt;CharacterEncodingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt; 
+    &lt;!-- 设置过滤器中的属性值 --&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;encoding&lt;/param-name&gt;
+         &lt;param-value&gt;UTF-8&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;!-- 启动过滤器 --&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;forceEncoding&lt;/param-name&gt;
+         &lt;param-value&gt;true&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+&lt;!-- 过滤所有请求 --&gt;
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;CharacterEncodingFilter&lt;/filter-name&gt;
+    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+&lt;/filter-mapping&gt;
+
+get 请求方式：
+tomacat 对 GET 和 POST 请求处理方式是不同的，GET 请求的编码问题，要改 tomcat 的 server.xml
+配置文件，如下：
+&lt;Connector connectionTimeout=&quot;20000&quot; port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot; redirectPort=&quot;8443&quot;/&gt;
+改为：
+&lt;Connector connectionTimeout=&quot;20000&quot; port=&quot;8080&quot; protocol=&quot;HTTP/1.1&quot; redirectPort=&quot;8443&quot; useBodyEncodingForURI=&quot;true&quot;/&gt;
+如果遇到 ajax 请求仍然乱码，请把：useBodyEncodingForURI=&quot;true&quot;改为 URIEncoding=&quot;UTF-8&quot;即可。
+</code></pre>
+<h3 id="1-7-其他请求参数"><a href="#1-7-其他请求参数" class="headerlink" title="1.7 其他请求参数"></a>1.7 其他请求参数</h3><p>MVC 的 Handler 方法可以接受哪些 ServletAPI 类型的参数</p>
+<ul>
+<li>HttpServletRequest</li>
+<li>HttpServletResponse</li>
+<li>HttpSession</li>
+<li>java.security.Principal </li>
+<li>Locale</li>
+<li>InputStream </li>
+<li>OutputStream </li>
+<li>Reader</li>
+<li>Writer</li>
+</ul>
+<p>除了表单传进来的参数，还可以使用servlet中的参数</p>
+<pre><code class="java">/**
+* 可以使用 Serlvet 原生的 API 作为目标方法的参数 具体支持以下类型
+* HttpServletRequest
+* HttpServletResponse
+* HttpSession
+* java.security.Principal
+* Locale InputStream
+* OutputStream
+* Reader
+* Writer
+* @throws IOException
+*/
+@RequestMapping(&quot;/testServletAPI&quot;)
+public void testServletAPI(HttpServletRequest request,HttpServletResponse response, Writer out) throws IOException &#123;
+    //1、使用 request 转向页面，如下：
+    request.getRequestDispatcher(&quot;/WEB-INF/pages/success.jsp&quot;).forward(request,response);
+    //2、也可以通过 response 页面重定向：
+    response.sendRedirect(&quot;testRetrunString&quot;)
+    //3、也可以通过 response 指定响应结果，例如响应 json 数据：
+    response.setCharacterEncoding(&quot;utf-8&quot;);
+    response.setContentType(&quot;application/json;charset=utf-8&quot;);
+    response.getWriter().write(&quot;json 串&quot;);
+
+&#125;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/SSM/" rel="tag"># SSM</a>
+              <a href="/tags/SpringMVC/" rel="tag"># SpringMVC</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/26/%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%8A%E4%BC%A0%E4%B8%8E%E4%B8%8B%E8%BD%BD/" rel="prev" title="文件的上传与下载">
+                  <i class="fa fa-chevron-left"></i> 文件的上传与下载
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/28/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%AD%E7%AF%87/" rel="next" title="SpringMVC基本使用-中篇">
+                  SpringMVC基本使用-中篇 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

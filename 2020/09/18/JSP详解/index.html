@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="JSP基本使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JSP基本使用">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="JSP基本使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP2.jpg">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP1.jpg">
+<meta property="og:image" content="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP3.jpg">
+<meta property="article:published_time" content="2020-09-18T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-09-18T14:08:06.195Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="javaweb">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP2.jpg">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>JSP基本使用 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#JSP%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8"><span class="nav-text">JSP基本使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-JSP%E8%AF%AD%E6%B3%95"><span class="nav-text">1.2 JSP语法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-1-JSP%E6%8C%87%E4%BB%A4"><span class="nav-text">1.2.1 JSP指令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-2-JSP%E8%84%9A%E6%9C%AC"><span class="nav-text">1.2.2 JSP脚本</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#1-2-3%E6%B3%A8%E9%87%8A"><span class="nav-text">1.2.3注释</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-JSP%E7%9A%84%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1"><span class="nav-text">1.3 JSP的内置对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-jsp%E4%B8%AD%E7%9A%84out%E8%BE%93%E5%87%BA%E5%92%8Cresponse-getWriter%E8%BE%93%E5%87%BA%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">1.4 jsp中的out输出和response.getWriter输出的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-%E8%AF%B7%E6%B1%82%E8%BD%AC%E5%8F%91%E6%A0%87%E7%AD%BE"><span class="nav-text">1.5 请求转发标签</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-JSP%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.6 JSP的使用</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          JSP基本使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-18 21:46:45" itemprop="dateCreated datePublished" datetime="2020-09-18T21:46:45+08:00">2020-09-18</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/JavaWeb/" itemprop="url" rel="index"><span itemprop="name">JavaWeb</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">JSP基本使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="JSP基本使用"><a href="#JSP基本使用" class="headerlink" title="JSP基本使用"></a>JSP基本使用</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li>jsp : java server pages。Java 的服务器页面。</li>
+<li>jsp 的主要作用是代替 Servlet 程序回传 html 页面的数据。</li>
+<li>因为 Servlet 程序回传 html 页面数据是一件非常繁锁的事情。开发成本和维护成本都极高。</li>
+<li><strong>jsp 页面本质上是一个 Servlet 程序</strong>。</li>
+</ul>
+<p>当执行一个index.jsp页面，会生成对应的index_jsp.java文件，可以看出此java类继承于HttpJspBase</p>
+<pre><code class="java">public final class index_jsp extends org.apache.jasper.runtime.HttpJspBase implements org.apache.jasper.runtime.JspSourceDependent,org.apache.jasper.runtime.JspSourceImports &#123;&#125;
+</code></pre>
+<h3 id="1-2-JSP语法"><a href="#1-2-JSP语法" class="headerlink" title="1.2 JSP语法"></a>1.2 JSP语法</h3><h4 id="1-2-1-JSP指令"><a href="#1-2-1-JSP指令" class="headerlink" title="1.2.1 JSP指令"></a>1.2.1 JSP指令</h4><ol>
+<li><strong>page指令</strong>(最常用)</li>
+</ol>
+<p><strong>&lt;%@ page contentType=”text/html;charset=UTF-8” language=”java” %&gt;</strong></p>
+<ul>
+<li><p>jsp 的 page 指令可以修改 jsp 页面中一些重要的属性，或者行为。</p>
+</li>
+<li><p>language 属性      表示 jsp 翻译后是什么语言文件。暂时只支持 java。 </p>
+</li>
+<li><p>contentType 属性          表示 jsp 返回的数据类型是什么。也是源码中 response.setContentType()参数值 </p>
+</li>
+<li><p>pageEncoding 属性         表示当前 jsp 页面文件本身的字符集。 </p>
+</li>
+<li><p>import 属性 跟 java 源代码中一样。用于导包，导类。</p>
+</li>
+<li><p>errorPage 属性 设置当 jsp 页面运行时出错，自动跳转去的错误页面路径</p>
+</li>
+<li><p>isErrorPage 属性 设置当前 jsp 页面是否是错误信息页面。默认是 false。如果是 true 可以 获取异常信息。</p>
+</li>
+<li><p>ix.session 属性 设置访问当前 jsp 页面，是否会创建 HttpSession 对象。默认是 true。</p>
+</li>
+<li><p>extends 属性 设置 jsp 翻译出来的 java 类默认继承谁。<br>========================两个属性是给 out 输出流使用=============================</p>
+</li>
+<li><p>autoFlush 属性   设置当 out 输出流缓冲区满了之后，是否自动刷新冲级区。默认值是 true。</p>
+</li>
+<li><p>buffer 属性 设置 out 缓冲区的大小。默认是 8kb</p>
+</li>
+</ul>
+<ol start="2">
+<li><p><strong>include指令</strong></p>
+<p><strong>JSP静态包含</strong>(常用)</p>
+</li>
+</ol>
+<ul>
+<li><p>include    ： 页面包含的。导入页面的资源文件</p>
+<ul>
+<li><strong>&lt;%@ include file=”top.jsp”%&gt;</strong></li>
+</ul>
+</li>
+<li><p>此方式也称为jsp <strong>静态包含</strong></p>
+</li>
+<li><p>file属性指定你要包含的jsp页面的路径</p>
+</li>
+<li><p>地址中第一个斜杠/表示为<a href="http://ip:port/工程路径/映射到代码的web目">http://ip:port/工程路径/映射到代码的web目</a> 录</p>
+</li>
+<li><p>静态包含的特点： </p>
+<ul>
+<li>静态包含不会翻译被包含的jsp页面 。</li>
+<li>静态包含其实是把被包含的jsp页面的代码拷贝到包含的位置执行输 出 。</li>
+</ul>
+<p><strong>jsp动态包含</strong></p>
+<pre><code class="jsp">&lt;%--
+        &lt;jsp:include page=&quot;&quot;&gt;&lt;/jsp:include&gt;     这是动态包含
+        page 属性是指定你要包含的jsp页面的路径
+        动态包含也可以像静态包含一样。把被包含的内容执行输出到包含位置
+
+        动态包含的特点：
+            1、动态包含会把包含的jsp页面也翻译成为java代码
+            2、动态包含底层代码使用如下代码去调用被包含的jsp页面执行输出。
+                JspRuntimeLibrary.include(request, response, &quot;/include/footer.jsp&quot;, out, false);
+            3、动态包含，还可以传递参数
+    --%&gt;
+    &lt;jsp:include page=&quot;/include/footer.jsp&quot;&gt;
+        &lt;jsp:param name=&quot;username&quot; value=&quot;bbj&quot;/&gt;
+        &lt;jsp:param name=&quot;password&quot; value=&quot;root&quot;/&gt;
+    &lt;/jsp:include&gt;
+</code></pre>
+<p><strong>动态包含原理</strong></p>
+<p><img src="/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP2.jpg" alt="JSP"></p>
+</li>
+</ul>
+<ol start="3">
+<li><strong>taglib</strong>    ： 导入资源</li>
+</ol>
+<ul>
+<li><strong>&lt;%@ taglib prefix=”c” uri=”<a target="_blank" rel="noopener" href="http://java.sun.com/jsp/jstl/core&quot;">http://java.sun.com/jsp/jstl/core&quot;</a> %&gt;</strong></li>
+<li>prefix：前缀，自定义的</li>
+</ul>
+<h4 id="1-2-2-JSP脚本"><a href="#1-2-2-JSP脚本" class="headerlink" title="1.2.2 JSP脚本"></a>1.2.2 JSP脚本</h4><ol>
+<li><p><strong>声明脚本</strong>(不常用)</p>
+<ul>
+<li>格式： &lt;%! 声明 java 代码 %&gt; </li>
+<li>作用：可以给 jsp 翻译出来的 java 类定义属性和方法甚至是静态代码块。内部类等。</li>
+</ul>
+<pre><code class="jsp">&lt;%--1、声明类属性--%&gt;
+    &lt;%!
+        private Integer id;
+        private String name;
+        private static Map&lt;String,Object&gt; map;
+    %&gt;
+&lt;%--2、声明static静态代码块--%&gt;
+    &lt;%!
+        static &#123;
+            map = new HashMap&lt;String,Object&gt;();
+            map.put(&quot;key1&quot;, &quot;value1&quot;);
+            map.put(&quot;key2&quot;, &quot;value2&quot;);
+            map.put(&quot;key3&quot;, &quot;value3&quot;);
+        &#125;
+    %&gt;
+&lt;%--3、声明类方法--%&gt;
+    &lt;%!
+        public int abc()&#123;
+            return 12;
+        &#125;
+    %&gt;
+&lt;%--4、声明内部类--%&gt;
+    &lt;%!
+        public static class A &#123;
+            private Integer id = 12;
+            private String abc = &quot;abc&quot;;
+        &#125;
+    %&gt;
+</code></pre>
+</li>
+<li><p><strong>表达式脚本</strong></p>
+<ul>
+<li>格式是：&lt;%=表达式%&gt; </li>
+<li>作用是：的 jsp 页面上输出数据。</li>
+<li>表达式脚本的特点： <ul>
+<li>所有的表达式脚本都会被翻译到jspService() 方法中</li>
+<li>表达式脚本都会被翻译成为 out.print()输出到页面上</li>
+<li>由于表达式脚本翻译的内容都在jspService() 方法中,所以jspService()方法中的对象都可以直接使用。 </li>
+<li>表达式脚本中的表达式不能以分号结束。</li>
+</ul>
+</li>
+</ul>
+<pre><code class="jsp">1.输出整型
+2.输出浮点型
+3.输出字符串
+4.输出对象
+    &lt;%=12 %&gt; &lt;br&gt;
+
+    &lt;%=12.12 %&gt; &lt;br&gt;
+
+    &lt;%=&quot;我是字符串&quot; %&gt; &lt;br&gt;
+
+    &lt;%=map%&gt; &lt;br&gt;
+
+    &lt;%=request.getParameter(&quot;username&quot;)%&gt;
+</code></pre>
+</li>
+<li><p><strong>代码脚本</strong></p>
+<ul>
+<li>格式是： &lt;% java 语句 %&gt; </li>
+<li>作用是：可以在 jsp 页面中，编写我们自己需要的功能（写的是 java 语句）。</li>
+<li>代码脚本的特点是：<ul>
+<li>代码脚本翻译之后都在jspService 方法中 </li>
+<li>代码脚本由于翻译到jspService()方法中，所以在jspService()方法中的现有对象都可以直接使用。</li>
+<li>还可以由多个代码脚本块组合完成一个完整的 java 语句。</li>
+<li>代码脚本还可以和表达式脚本一起组合使用，在 jsp 页面上输出数据</li>
+</ul>
+</li>
+</ul>
+<pre><code class="jsp">&lt;%--1.代码脚本----if 语句--%&gt;
+    &lt;%
+        int i = 13 ;
+        if (i == 12) &#123;
+            System.out.println(&quot;Hello&quot;);
+        &#125; else &#123;
+            System.out.println(&quot;JSP&quot;);
+        &#125;
+    %&gt;
+&lt;br&gt;
+&lt;%--2.代码脚本----for 循环语句--%&gt;
+    &lt;table border=&quot;1&quot; cellspacing=&quot;0&quot;&gt;
+    &lt;%
+        for (int j = 0; j &lt; 10; j++) &#123;
+            System.out.println(&quot;第&quot;+j+&quot;行&quot;);
+        &#125;
+    %&gt;
+    &lt;/table&gt;
+&lt;%--3.翻译后java文件中_jspService方法内的代码都可以写--%&gt;
+    &lt;%
+        String username = request.getParameter(&quot;username&quot;);
+        System.out.println(&quot;用户名的请求参数值是：&quot; + username);
+    %&gt;
+</code></pre>
+</li>
+</ol>
+<p>所执行的java语句都会被放在jspService中</p>
+<pre><code class="java">public void _jspService(final javax.servlet.http.HttpServletRequest request, final javax.servlet.http.HttpServletResponse response)
+      throws java.io.IOException, javax.servlet.ServletException &#123;
+
+    if (!javax.servlet.DispatcherType.ERROR.equals(request.getDispatcherType())) &#123;
+      final java.lang.String _jspx_method = request.getMethod();
+      if (&quot;OPTIONS&quot;.equals(_jspx_method)) &#123;
+        response.setHeader(&quot;Allow&quot;,&quot;GET, HEAD, POST, OPTIONS&quot;);
+        return;
+      &#125;
+      if (!&quot;GET&quot;.equals(_jspx_method) &amp;&amp; !&quot;POST&quot;.equals(_jspx_method) &amp;&amp; !&quot;HEAD&quot;.equals(_jspx_method)) &#123;
+        response.setHeader(&quot;Allow&quot;,&quot;GET, HEAD, POST, OPTIONS&quot;);
+        response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED, &quot;JSP 只允许 GET、POST 或 HEAD。Jasper 还允许 OPTIONS&quot;);
+        return;
+      &#125;
+    &#125;
+
+    final javax.servlet.jsp.PageContext pageContext;
+    javax.servlet.http.HttpSession session = null;
+    final javax.servlet.ServletContext application;
+    final javax.servlet.ServletConfig config;
+    javax.servlet.jsp.JspWriter out = null;
+    final java.lang.Object page = this;
+    javax.servlet.jsp.JspWriter _jspx_out = null;
+    javax.servlet.jsp.PageContext _jspx_page_context = null;
+&#125;
+</code></pre>
+<p><strong>因为所有的jsp页面代码都放在jspService方法中，所以jspService方法中声明的对象，我们都可以直接在jsp页面使用，不需要再创建，所以jspService方法中的对象称为内置对象</strong></p>
+<h4 id="1-2-3注释"><a href="#1-2-3注释" class="headerlink" title="1.2.3注释"></a>1.2.3注释</h4><ol>
+<li><p>html 注释：<!-- 这是 html注释 --></p>
+<ul>
+<li>html 注释会被翻译到 java 源代码中。在_jspService 方法里，以 out.writer 输出到客户端。</li>
+</ul>
+</li>
+<li><p>java注释：</p>
+<pre><code>&lt;%
+//单行java注释
+/*多行java注释*/
+%&gt;
+</code></pre>
+<ul>
+<li>java 注释会被翻译到 java 源代码中。</li>
+</ul>
+</li>
+<li><p>jsp 注释：&lt;%– 这是jsp注释 –%&gt;</p>
+<ul>
+<li>jsp 注释可以注掉，jsp 页面中所有代码。</li>
+</ul>
+</li>
+</ol>
+<h3 id="1-3-JSP的内置对象"><a href="#1-3-JSP的内置对象" class="headerlink" title="1.3 JSP的内置对象"></a>1.3 JSP的内置对象</h3><ul>
+<li>jsp 中的内置对象，是指 Tomcat 在翻译 jsp 页面成为 Servlet 源代码后，内部提供的九大对象，叫内置对象</li>
+<li>jsp一共有9个内置对象。内置对象在jsp页面中不需要获取和创建，可以直接使用</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>变量名</th>
+<th>真实类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContext</td>
+<td>当前页面共享数据，还可以获取其他八个内置对象</td>
+</tr>
+<tr>
+<td>request</td>
+<td>HttpServletRequest</td>
+<td>一次请求访问的多个资源(转发)</td>
+</tr>
+<tr>
+<td>session</td>
+<td>HttpSession</td>
+<td>一次会话的多个请求间</td>
+</tr>
+<tr>
+<td>application</td>
+<td>ServletContext</td>
+<td>所有用户间共享数据</td>
+</tr>
+<tr>
+<td>response</td>
+<td>HttpServletResponse</td>
+<td>响应对象</td>
+</tr>
+<tr>
+<td>page</td>
+<td>Object</td>
+<td>当前页面(Servlet)的对象  this</td>
+</tr>
+<tr>
+<td>out</td>
+<td>JspWriter</td>
+<td>输出对象，数据输出到页面上</td>
+</tr>
+<tr>
+<td>config</td>
+<td>ServletConfig</td>
+<td>Servlet的配置对象</td>
+</tr>
+<tr>
+<td>exception</td>
+<td>Throwable</td>
+<td>异常对象</td>
+</tr>
+</tbody></table>
+<ul>
+<li><p>前四个为域对象</p>
+<ul>
+<li>四个域对象分别是： <ul>
+<li>pageContext (PageContextImpl 类) 当前 jsp 页面范围内有效</li>
+<li>request (HttpServletRequest 类)、 一次请求内有效 </li>
+<li>session (HttpSession 类)、 一个会话范围内有效（打开浏览器访问服务器，直到关闭浏览器） </li>
+<li>application (ServletContext 类) 整个 web 工程范围内都有效（只要 web 工程不停止，数据都在）</li>
+</ul>
+</li>
+<li>域对象是可以像 Map 一样存取数据的对象。四个域对象功能一样。不同的是它们对数据的存取范围。</li>
+<li>虽然四个域对象都可以存取数据。在使用上它们是有优先顺序的。</li>
+<li>四个域在使用的时候，优先顺序分别是，他们从小到大的范围的顺序。</li>
+<li>pageContext ====&gt;&gt;&gt; request ====&gt;&gt;&gt; session ====&gt;&gt;&gt; application</li>
+</ul>
+<pre><code class="jsp">&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;Title&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;h1&gt;scope.jsp页面&lt;/h1&gt;
+    &lt;%
+        // 往四个域中都分别保存了数据
+        pageContext.setAttribute(&quot;key&quot;, &quot;pageContext&quot;);
+        request.setAttribute(&quot;key&quot;, &quot;request&quot;);
+        session.setAttribute(&quot;key&quot;, &quot;session&quot;);
+        application.setAttribute(&quot;key&quot;, &quot;application&quot;);
+    %&gt;
+    pageContext域是否有值：&lt;%=pageContext.getAttribute(&quot;key&quot;)%&gt; &lt;br&gt;
+    request域是否有值：&lt;%=request.getAttribute(&quot;key&quot;)%&gt; &lt;br&gt;
+    session域是否有值：&lt;%=session.getAttribute(&quot;key&quot;)%&gt; &lt;br&gt;
+    application域是否有值：&lt;%=application.getAttribute(&quot;key&quot;)%&gt; &lt;br&gt;
+    &lt;%
+//        request.getRequestDispatcher(&quot;/scope2.jsp&quot;).forward(request,response);
+    //请求转发，request也有值，但是pageContext置为null
+    %&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+</li>
+</ul>
+<h3 id="1-4-jsp中的out输出和response-getWriter输出的区别"><a href="#1-4-jsp中的out输出和response-getWriter输出的区别" class="headerlink" title="1.4 jsp中的out输出和response.getWriter输出的区别"></a>1.4 jsp中的out输出和response.getWriter输出的区别</h3><ul>
+<li><p>JSP的内置对象response有getwriter方法输出，JSP的内置对象out也有write方法输出，两者区别</p>
+</li>
+<li><p>response和jsp都有各自的缓冲区</p>
+</li>
+<li><p>response 中表示响应，我们经常用于设置返回给客户端的内容（输出） out 也是给用户做输出使用的</p>
+<p><img src="/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP1.jpg" alt="jsp"></p>
+</li>
+<li><p>由于 jsp 翻译之后，底层源代码都是使用 out 来进行输出，所以一般情况下。我们在 jsp 页面中统一使用 out 来进行输出。避免打乱页面输出内容的顺序。</p>
+</li>
+<li><p>out.write() 输出字符串没有问题 </p>
+</li>
+<li><p>out.print() 输出任意数据都没有问题（都转换成为字符串后调用的 write 输出）</p>
+</li>
+<li><p>深入源码，浅出结论：在 jsp 页面中，可以统一使用 out.print()来进行输出 </p>
+</li>
+</ul>
+<h3 id="1-5-请求转发标签"><a href="#1-5-请求转发标签" class="headerlink" title="1.5 请求转发标签"></a>1.5 请求转发标签</h3><pre><code class="jsp">&lt;%--
+        &lt;jsp:forward page=&quot;&quot;&gt;&lt;/jsp:forward&gt; 是请求转发标签，它的功能就是请求转发
+            page 属性设置请求转发的路径
+    --%&gt;
+    &lt;jsp:forward page=&quot;/scope2.jsp&quot;&gt;&lt;/jsp:forward&gt;
+</code></pre>
+<h3 id="1-6-JSP的使用"><a href="#1-6-JSP的使用" class="headerlink" title="1.6 JSP的使用"></a>1.6 JSP的使用</h3><p><img src="/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/JSP3.jpg" alt="JSP3"></p>
+<pre><code class="java">@Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException &#123;
+        // 获取请求的参数
+        // 发sql语句查询学生的信息
+        // 使用for循环生成查询到的数据做模拟
+        List&lt;Student&gt; studentList = new ArrayList&lt;Student&gt;();
+        for (int i = 0; i &lt; 10; i++) &#123;
+            int t = i + 1;
+            studentList.add(new Student(t,&quot;name&quot;+t, 18+t,&quot;phone&quot;+t));
+        &#125;
+        //自己设置的参数，不是请求传来的参数，所以要用setAttribute保存
+        // 保存查询到的结果（学生信息）到request域中
+        req.setAttribute(&quot;stuList&quot;, studentList);
+        // 请求转发到showStudent.jsp页面
+        req.getRequestDispatcher(&quot;/test/showStudent.jsp&quot;).forward(req,resp);
+    &#125;
+</code></pre>
+<p>JSP显示数据，通过getAttribute方法</p>
+<pre><code class="jsp">&lt;%
+        List&lt;Student&gt; studentList = (List&lt;Student&gt;) request.getAttribute(&quot;stuList&quot;);
+    %&gt;
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;td&gt;编号&lt;/td&gt;
+            &lt;td&gt;姓名&lt;/td&gt;
+            &lt;td&gt;年龄&lt;/td&gt;
+            &lt;td&gt;电话&lt;/td&gt;
+            &lt;td&gt;操作&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;% for (Student student : studentList) &#123; %&gt;
+        &lt;tr&gt;
+            &lt;td&gt;&lt;%=student.getId()%&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%=student.getName()%&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%=student.getAge()%&gt;&lt;/td&gt;
+            &lt;td&gt;&lt;%=student.getPhone()%&gt;&lt;/td&gt;
+            &lt;td&gt;删除、修改&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;% &#125; %&gt;
+    &lt;/table&gt;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/javaweb/" rel="tag"># javaweb</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/17/XML/" rel="prev" title="XML基本使用">
+                  <i class="fa fa-chevron-left"></i> XML基本使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/19/Servlet/" rel="next" title="Servlet基本使用">
+                  Servlet基本使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

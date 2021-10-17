@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="EL表达式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="EL表达式">
+<meta property="og:url" content="https://wyc1228.github.io/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="EL表达式">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2020-09-15T13:46:45.000Z">
+<meta property="article:modified_time" content="2020-09-15T12:40:15.298Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="前端">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>EL表达式 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#EL%E8%A1%A8%E8%BE%BE%E5%BC%8F"><span class="nav-text">EL表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%A6%82%E8%BF%B0"><span class="nav-text">1.1 概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-EL-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%90%9C%E7%B4%A2%E5%9F%9F%E6%95%B0%E6%8D%AE%E7%9A%84%E9%A1%BA%E5%BA%8F"><span class="nav-text">1.2 EL 表达式搜索域数据的顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-3-EL-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BE%93%E5%87%BA%E7%B1%BB%E5%9E%8B"><span class="nav-text">1.3 EL 表达式输出类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-4-EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E8%BF%90%E7%AE%97"><span class="nav-text">1.4 EL表达式运算</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-5-EL-%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84-11-%E4%B8%AA%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1"><span class="nav-text">1.5 EL 表达式的 11 个隐含对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-6-EL%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%8411%E4%B8%AA%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1%E4%B8%AD%E7%9A%84%E5%9B%9B%E4%B8%AA%E5%9F%9F%E5%AF%B9%E8%B1%A1"><span class="nav-text">1.6 EL表达式的11个隐含对象中的四个域对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-7-pageContext-%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.7 pageContext 对象的使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-8-%E5%85%B6%E4%BB%96%E9%9A%90%E5%90%AB%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">1.8 其他隐含对象的使用</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">47</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">8</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          EL表达式
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2020-09-15 21:46:45" itemprop="dateCreated datePublished" datetime="2020-09-15T21:46:45+08:00">2020-09-15</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">EL表达式</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>概念：Expression Language 表达式语言</p>
+<p>作用：：EL表达式主要是代替 jsp 页面中的表达式脚本在 jsp 页面中进行数据的输出。 因为EL表达式在输出数据的时候，要比 jsp的表达式脚本要简洁很多。</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        request.setAttribute(&quot;key&quot;,&quot;值&quot;);
+    %&gt;
+    表达式脚本输出key的值是：&lt;%=request.getAttribute(&quot;key1&quot;)==null?&quot;&quot;:request.getAttribute(&quot;key1&quot;)%&gt;&lt;br/&gt;
+    EL表达式输出key的值是：$&#123;key1&#125;
+&lt;/body&gt;
+</code></pre>
+<p>EL 表达式的格式是：${表达式} </p>
+<p>EL 表达式在输出 null 值的时候，输出的是空串。（不显示）</p>
+<p>jsp 表达式脚本输出 null 值的时候，输出的是 null 字符串。（显示null）</p>
+<p><strong>注意</strong>：</p>
+<blockquote>
+<p>jsp默认支持el表达式的。如果要忽略el表达式</p>
+<p>设置jsp中page指令中：isELIgnored=”true” 忽略当前jsp页面中所有的el表达式</p>
+<p> ${表达式} ：忽略当前这个el表达式</p>
+</blockquote>
+<h3 id="1-2-EL-表达式搜索域数据的顺序"><a href="#1-2-EL-表达式搜索域数据的顺序" class="headerlink" title="1.2 EL 表达式搜索域数据的顺序"></a>1.2 EL 表达式搜索域数据的顺序</h3><p>EL 表达式主要是在 jsp 页面中输出数据。 <strong>主要是输出域对象中的数据</strong>。</p>
+<p>当四个域中都有相同的 key 的数据的时候，EL 表达式会按照四个域的从小到大的顺序去进行搜索，找到就输出。</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        //往四个域中都保存了相同的key的数据。
+        request.setAttribute(&quot;key&quot;, &quot;request&quot;);
+        session.setAttribute(&quot;key&quot;, &quot;session&quot;);
+        application.setAttribute(&quot;key&quot;, &quot;application&quot;);
+        pageContext.setAttribute(&quot;key&quot;, &quot;pageContext&quot;);
+    %&gt;
+    $&#123; key &#125;//先输出pageContext，找不到就找request输出，从小到大搜索，输出
+
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-3-EL-表达式输出类型"><a href="#1-3-EL-表达式输出类型" class="headerlink" title="1.3 EL 表达式输出类型"></a>1.3 EL 表达式输出类型</h3><p>输出Bean 的普通属性，数组属性，List 集合属性，map 集合属性</p>
+<pre><code class="java">public class Person &#123;
+//    i.需求——输出Person类中普通属性，数组属性。list集合属性和map集合属性。
+    private String name;
+    private String[] phones;
+    private List&lt;String&gt; cities;
+    private Map&lt;String,Object&gt; map;
+    private int age;
+&#125;
+</code></pre>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        Person person = new Person();
+        person.setName(&quot;张三&quot;);
+        person.setPhones(new String[]&#123;&quot;18610541354&quot;,&quot;18688886666&quot;,&quot;18699998888&quot;&#125;);
+
+        List&lt;String&gt; cities = new ArrayList&lt;String&gt;();
+        cities.add(&quot;北京&quot;);
+        cities.add(&quot;上海&quot;);
+        cities.add(&quot;深圳&quot;);
+        person.setCities(cities);
+
+        Map&lt;String,Object&gt;map = new HashMap&lt;&gt;();
+        map.put(&quot;key1&quot;,&quot;value1&quot;);
+        map.put(&quot;key2&quot;,&quot;value2&quot;);
+        map.put(&quot;key3&quot;,&quot;value3&quot;);
+        person.setMap(map);
+
+        pageContext.setAttribute(&quot;p&quot;, person);
+    %&gt;
+
+    输出Person：$&#123; p &#125;&lt;br/&gt;
+    输出Person的name属性：$&#123;p.name&#125; &lt;br&gt;
+    输出Person的pnones数组属性值：$&#123;p.phones[2]&#125; &lt;br&gt;
+    输出Person的cities集合中的元素值：$&#123;p.cities&#125; &lt;br&gt;
+    输出Person的List集合中个别元素值：$&#123;p.cities[2]&#125; &lt;br&gt;
+    输出Person的Map集合: $&#123;p.map&#125; &lt;br&gt;
+    输出Person的Map集合中某个key的值: $&#123;p.map.key3&#125; &lt;br&gt;
+    输出Person的age属性：$&#123;p.age&#125; &lt;br&gt;
+&lt;/body&gt;
+</code></pre>
+<p>结果：</p>
+<pre><code>输出Person：Person&#123;name=张三, phones=[18610541354, 18688886666, 18699998888], cities=[北京, 上海, 深圳], map=&#123;key1=value1, key2=value2, key3=value3&#125;&#125;
+输出Person的name属性：张三 
+输出Person的pnones数组属性值：18699998888 
+输出Person的cities集合中的元素值：[北京, 上海, 深圳] 
+输出Person的List集合中个别元素值：深圳 
+输出Person的Map集合: &#123;key1=value1, key2=value2, key3=value3&#125; 
+输出Person的Map集合中某个key的值: value3 
+输出Person的age属性：18 
+</code></pre>
+<h3 id="1-4-EL表达式运算"><a href="#1-4-EL表达式运算" class="headerlink" title="1.4 EL表达式运算"></a>1.4 EL表达式运算</h3><p>算数运算符： + - * /(div) %(mod)</p>
+<p>比较运算符： &gt; &lt; &gt;= &lt;= == !=</p>
+<p>逻辑运算符： &amp;&amp;(and) ||(or) !(not)</p>
+<p>三元运算：表达式 1？表达式 2：表达式 3 </p>
+<p>如果表达式 1 的值为真，返回表达式 2 的值，如果表达式 1 的值为假，返回表达式 3 的值。</p>
+<p>演示：</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;!--比较运算--&gt;
+    $&#123; 12 == 12 &#125; 或 $&#123; 12 eq 12 &#125; &lt;br&gt;
+    $&#123; 12 != 12 &#125; 或 $&#123; 12 ne 12 &#125; &lt;br&gt;
+    $&#123; 12 &lt; 12 &#125; 或 $&#123; 12 lt 12 &#125; &lt;br&gt;
+    $&#123; 12 &gt; 12 &#125; 或 $&#123; 12 gt 12 &#125; &lt;br&gt;
+    $&#123; 12 &lt;= 12 &#125; 或 $&#123; 12 le 12 &#125; &lt;br&gt;
+    $&#123; 12 &gt;= 12 &#125; 或 $&#123; 12 ge 12 &#125; &lt;br&gt;
+    &lt;hr&gt;
+    &lt;!--逻辑运算--&gt;
+    $&#123; 12 == 12 &amp;&amp; 12 &gt; 11 &#125; 或 $&#123; 12 == 12 and 12 &gt; 11 &#125; &lt;br&gt;
+    $&#123; 12 == 12 || 12 &gt; 11 &#125; 或 $&#123; 12 == 12 or 12 &gt; 11 &#125; &lt;br&gt;
+    $&#123; ! true &#125; 或 $&#123; not true &#125; &lt;br&gt;
+    &lt;hr&gt;
+    &lt;!--算数运算--&gt;
+    $&#123; 12 + 12 &#125; &lt;br&gt;
+    $&#123; 12 - 12 &#125; &lt;br&gt;
+    $&#123; 12 * 12 &#125; &lt;br&gt;
+    $&#123; 18 / 12 &#125; 或 $&#123; 18 div 12 &#125;&lt;br&gt;
+    $&#123; 18 % 12 &#125; 或 $&#123; 18 mod 12 &#125; &lt;br&gt;
+    &lt;!--三元运算--&gt;
+    $&#123; 12 != 12 ? &quot;hello&quot;:&quot;EL&quot; &#125;
+&lt;/body&gt;
+//结果
+true 或 true 
+false 或 false 
+false 或 false 
+false 或 false 
+true 或 true 
+true 或 true 
+true 或 true 
+true 或 true 
+false 或 false 
+24 
+0 
+144 
+1.5 或 1.5
+6 或 6 
+</code></pre>
+<p><strong>empty 运算</strong></p>
+<p>empty 运算可以判断一个数据是否为空，如果为空，则输出 true,不为空输出 false。</p>
+<p>以下几种情况为空：</p>
+<ul>
+<li>值为 null 值的时候，为空 </li>
+<li>值为空串的时候，为空 </li>
+<li>值是 Object 类型数组，长度为零的时候 </li>
+<li>ist 集合，元素个数为零</li>
+<li>map 集合，元素个数为零</li>
+</ul>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+//        1、值为null值的时候，为空
+        request.setAttribute(&quot;emptyNull&quot;, null);
+//        2、值为空串的时候，为空
+        request.setAttribute(&quot;emptyStr&quot;, &quot;&quot;);
+//        3、值是Object类型数组，长度为零的时候
+        request.setAttribute(&quot;emptyArr&quot;, new Object[]&#123;&#125;);
+//        4、list集合，元素个数为零
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+//        list.add(&quot;abc&quot;);
+        request.setAttribute(&quot;emptyList&quot;, list);
+//        5、map集合，元素个数为零
+        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
+//        map.put(&quot;key1&quot;, &quot;value1&quot;);
+        request.setAttribute(&quot;emptyMap&quot;, map);
+    %&gt;
+    $&#123; empty emptyNull &#125; &lt;br/&gt;
+    $&#123; empty emptyStr &#125; &lt;br/&gt;
+    $&#123; empty emptyArr &#125; &lt;br/&gt;
+    $&#123; empty emptyList &#125; &lt;br/&gt;
+    $&#123; empty emptyMap &#125; &lt;br/&gt;
+    &lt;!--结果全为true--&gt;
+&lt;/body&gt;
+</code></pre>
+<p><strong>“.”点运算 和 [] 中括号运算符</strong><br>点运算，可以输出 Bean 对象中某个属性的值。 </p>
+<p>[]中括号运算，可以输出有序集合中某个元素的值。 </p>
+<p>并且[]中括号运算，还可以输出 map 集合中 key 里含有特殊字符的 key 的值</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
+        map.put(&quot;a.a.a&quot;, &quot;aaaValue&quot;);
+        map.put(&quot;b+b+b&quot;, &quot;bbbValue&quot;);
+        map.put(&quot;c-c-c&quot;, &quot;cccValue&quot;);
+        request.setAttribute(&quot;map&quot;, map);
+    %&gt;
+        $&#123; map[&#39;a.a.a&#39;] &#125; &lt;br&gt;
+        $&#123; map[&quot;b+b+b&quot;] &#125; &lt;br&gt;
+        $&#123; map[&#39;c-c-c&#39;] &#125; &lt;br&gt;
+
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-5-EL-表达式的-11-个隐含对象"><a href="#1-5-EL-表达式的-11-个隐含对象" class="headerlink" title="1.5 EL 表达式的 11 个隐含对象"></a>1.5 EL 表达式的 11 个隐含对象</h3><p>EL 个达式中 11 个隐含对象，是 EL 表达式中自己定义的，可以直接使用</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContextImpl</td>
+<td>它可以获取 jsp 中的九大内置对象</td>
+</tr>
+<tr>
+<td>pageScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 pageContext 域中的数据</td>
+</tr>
+<tr>
+<td>requestScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 Request 域中的数据</td>
+</tr>
+<tr>
+<td>sessionScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 Session 域中的数据</td>
+</tr>
+<tr>
+<td>applicationScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 ServletContext 域中的数据</td>
+</tr>
+<tr>
+<td>param</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取请求参数的值</td>
+</tr>
+<tr>
+<td>paramValues</td>
+<td>Map&lt;String,String[]&gt;</td>
+<td>它也可以获取请求参数的值，获取多个值的时候使用。</td>
+</tr>
+<tr>
+<td>header</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取请求头的信息</td>
+</tr>
+<tr>
+<td>headerValues</td>
+<td>Map&lt;String,String[]&gt;</td>
+<td>它可以获取请求头的信息，它可以获取多个值的情况</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>Map&lt;String,Cookie&gt;</td>
+<td>它可以获取当前请求的 Cookie 信息</td>
+</tr>
+<tr>
+<td>initParam</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取在 web.xml 中配置的<context-param>上下文参数</context-param></td>
+</tr>
+</tbody></table>
+<h3 id="1-6-EL表达式的11个隐含对象中的四个域对象"><a href="#1-6-EL表达式的11个隐含对象中的四个域对象" class="headerlink" title="1.6 EL表达式的11个隐含对象中的四个域对象"></a>1.6 EL表达式的11个隐含对象中的四个域对象</h3><p>pageScope ====== pageContext 域 </p>
+<p>requestScope ====== Request 域 </p>
+<p>sessionScope ====== Session 域 </p>
+<p>applicationScope ====== ServletContext 域</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        pageContext.setAttribute(&quot;key1&quot;, &quot;pageContext1&quot;);
+        pageContext.setAttribute(&quot;key2&quot;, &quot;pageContext2&quot;);
+        request.setAttribute(&quot;key2&quot;, &quot;request&quot;);
+        session.setAttribute(&quot;key2&quot;, &quot;session&quot;);
+        application.setAttribute(&quot;key2&quot;, &quot;application&quot;);
+    %&gt;
+    $&#123; applicationScope.key2 &#125;
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-7-pageContext-对象的使用"><a href="#1-7-pageContext-对象的使用" class="headerlink" title="1.7 pageContext 对象的使用"></a>1.7 pageContext 对象的使用</h3><p>协议，服务器 ip：，服务器端口： ， 获取工程路径：，获取请求方法：， 获取客户端 ip 地址： ，获取会话的 id 编号：</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%--
+    request.getScheme() 它可以获取请求的协议
+    request.getServerName() 获取请求的服务器ip或域名
+    request.getServerPort() 获取请求的服务器端口号
+    getContextPath() 获取当前工程路径
+    request.getMethod() 获取请求的方式（GET或POST）
+    request.getRemoteHost()  获取客户端的ip 地址
+    session.getId() 获取会话的唯一标识
+    --%&gt;
+    &lt;%
+        pageContext.setAttribute(&quot;req&quot;, request);
+    %&gt;
+    &lt;%=request.getScheme() %&gt; &lt;br&gt;
+    1.协议： $&#123; req.scheme &#125;&lt;br&gt;
+    2.服务器ip：$&#123; pageContext.request.serverName &#125;&lt;br&gt;
+    3.服务器端口：$&#123; pageContext.request.serverPort &#125;&lt;br&gt;
+    4.获取工程路径：$&#123; pageContext.request.contextPath &#125;&lt;br&gt;
+    5.获取请求方法：$&#123; pageContext.request.method &#125;&lt;br&gt;
+    6.获取客户端ip地址：$&#123; pageContext.request.remoteHost &#125;&lt;br&gt;
+    7.获取会话的id编号：$&#123; pageContext.session.id &#125;&lt;br&gt;
+
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-8-其他隐含对象的使用"><a href="#1-8-其他隐含对象的使用" class="headerlink" title="1.8 其他隐含对象的使用"></a>1.8 其他隐含对象的使用</h3><pre><code class="java">&lt;body&gt;
+    &lt;!--param   Map&lt;String,String&gt;   它可以获取请求参数的值--&gt;
+    输出请求参数username的值：$&#123; param.username &#125; &lt;br&gt;
+    输出请求参数password的值：$&#123; param.password &#125; &lt;br&gt;
+    
+    &lt;!--paramValuesMap&lt;String,String[]&gt;它也可以获取请求参数的值，获取多个值的时候使用。--&gt;
+    输出请求参数username的值：$&#123; paramValues.username[0] &#125; &lt;br&gt;
+    输出请求参数hobby的值：$&#123; paramValues.hobby[0] &#125; &lt;br&gt;
+    输出请求参数hobby的值：$&#123; paramValues.hobby[1] &#125; &lt;br&gt;
+    &lt;hr&gt;
+    
+    &lt;!--headerMap&lt;String,String&gt;它可以获取请求头的信息--&gt;
+    输出请求头【User-Agent】的值：$&#123; header[&#39;User-Agent&#39;] &#125; &lt;br&gt;
+    输出请求头【Connection】的值：$&#123; header.Connection &#125; &lt;br&gt;
+    输出请求头【User-Agent】的值：$&#123; headerValues[&#39;User-Agent&#39;][0] &#125; &lt;br&gt;
+    &lt;hr&gt;
+    
+    &lt;!--cookie  Map&lt;String,Cookie&gt;  它可以获取当前请求的 Cookie 信息--&gt;
+    获取Cookie的名称：$&#123; cookie.JSESSIONID.name &#125; &lt;br&gt;
+    获取Cookie的值：$&#123; cookie.JSESSIONID.value &#125; &lt;br&gt;
+    &lt;hr&gt;
+
+    &lt;!--initParam   Map&lt;String,String&gt;  它可以获取在 web.xml 中配置的&lt;context-param&gt;上下文参数--&gt;
+    输出&amp;lt;Context-param&amp;gt;username的值：$&#123; initParam.username &#125; &lt;br&gt;
+    输出&amp;lt;Context-param&amp;gt;url的值：$&#123; initParam.url &#125; &lt;br&gt;
+
+&lt;/body&gt;
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/09/14/JQuery/" rel="prev" title="JQuery基本使用">
+                  <i class="fa fa-chevron-left"></i> JQuery基本使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/" rel="next" title="JSTL 标签库的基本使用">
+                  JSTL 标签库的基本使用 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
