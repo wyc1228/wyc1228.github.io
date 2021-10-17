@@ -208,6 +208,88 @@
       </tags>
   </entry>
   <entry>
+    <title>Angular学习总结-路由</title>
+    <url>/2021/09/25/AngularJs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-%E8%B7%AF%E7%94%B1/</url>
+    <content><![CDATA[<h2 id="Angular学习总结-路由"><a href="#Angular学习总结-路由" class="headerlink" title="Angular学习总结-路由"></a>Angular学习总结-路由</h2><p> AngularJs中的路由，应用比较广泛，主要是允许我们通过不同的url访问不同的内容，可实现多视图的单页web应用。下面看看具体怎么使用。</p>
+<h3 id="关于路由"><a href="#关于路由" class="headerlink" title="关于路由"></a>关于路由</h3><p>   通常我们的URL形式为<a href="https://wyc1228.github.io/page/%EF%BC%8C%E4%BD%86%E5%9C%A8%E5%8D%95%E9%A1%B5web%E5%BA%94%E7%94%A8%E4%B8%ADangularjs%E9%80%9A%E8%BF%87#+%E6%A0%87%E8%AE%B0%E5%AE%9E%E7%8E%B0%EF%BC%8C%E6%AF%94%E5%A6%82%E4%B8%8B%E9%9D%A2%E7%9A%84%E9%A1%B5%E9%9D%A2%EF%BC%8C%E5%B0%86%E6%98%AF%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E8%B7%AF%E7%94%B1%E5%88%97%E5%AD%90%E3%80%82">https://wyc1228.github.io/page/，但在单页web应用中angularjs通过#+标记实现，比如下面的页面，将是下文中的路由列子。</a></p>
+<pre><code>http://192.168.1.109:8000/angular-program/src/main.html#/pagetable/page1
+http://192.168.1.109:8000/angular-program/src/main.html#/pagetable/page2
+http://192.168.1.109:8000/angular-program/src/main.html#/pagetable/page3
+</code></pre>
+<p>当我们点击以上任一一个链接时，向服务器请求的地址都是<a href="http://192.168.1.109:8000/angular-program/src/main.html">http://192.168.1.109:8000/angular-program/src/main.html</a> ，而＃号之后的内容在向服务器端请求时会被浏览器忽略掉，所以我们在客户端实现＃号后面的功能实现即可。简单来说，路由通过＃＋标记帮助我们区分不同逻辑页面，并将其绑定到对应的控制器上。</p>
+<p><img src="/2021/09/25/AngularJs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-%E8%B7%AF%E7%94%B1/905548-20160806142738497-614875041.png" alt="img"></p>
+<p>每个页面均有一个控制器控制，通过路由，从而将不同的页面展示出来。</p>
+<h3 id="路由的使用"><a href="#路由的使用" class="headerlink" title="路由的使用"></a>路由的使用</h3><p>新建main.html</p>
+<pre><code class="html">&lt;!doctype html&gt;
+&lt;html ng-app=&quot;myapp&quot;&gt;
+     &lt;head&gt;
+         &lt;meta charset=&quot;utf-8&quot;&gt;
+         &lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;
+         &lt;script src=&quot;angular-ui-router.min.js&quot;&gt;&lt;/script&gt;         
+         &lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
+     &lt;/head&gt;
+     &lt;body&gt; 
+        &lt;!-- 引入angularjs框架和ui-router框架，引入app.js框架 --&gt;
+        &lt;h1&gt;AngularJS 路由跳转&lt;/h1&gt; 
+        &lt;div ui-view=&quot;&quot;&gt;&lt;/div&gt;     --展示page.html的页面内容
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+<p>新建pagetable.html页面</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;div&gt;
+     &lt;div&gt;
+         &lt;span style=&quot;width:100px&quot; ui-sref=&quot;.page1&quot;&gt;&lt;a href=&quot;&quot;&gt;首页&lt;/a&gt;&lt;/span&gt;
+         &lt;span style=&quot;width:100px&quot; ui-sref=&quot;.page2&quot;&gt;&lt;a href=&quot;&quot;&gt;关于我&lt;/a&gt;&lt;/span&gt;
+         &lt;span style=&quot;width:100px&quot; ui-sref=&quot;.page3&quot;&gt;&lt;a href=&quot;&quot;&gt;留言板&lt;/a&gt;&lt;/span&gt;
+     &lt;/div&gt;
+     &lt;div&gt;
+          &lt;div ui-view=&quot;&quot;&gt;&lt;/div&gt;  －－展示page1,page2,page3页面的内容
+     &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>新建page1.html、page2.html、page3.html页面</p>
+<pre><code class="html">&lt;!DOCTYPE html&gt;
+&lt;div&gt;
+    &lt;div&gt;
+       &lt;h1&gt;page1页面&lt;/h1&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p>app.js内容</p>
+<pre><code class="js">var app=angular.module(&quot;myapp&quot;,[&#39;ui.router&#39;]);//声明angualrjs模块，并把ui-router传人angularjs模块app.config(function ($stateProvider, $urlRouterProvider) &#123; //声明把$stateprovider和$urlrouterprovider路由引擎作为函数参数传人,为应用程序配置路由
+     $urlRouterProvider.otherwise(&quot;/pagetable&quot;); 
+     $stateProvider    
+        .state(&quot;pagetable&quot;, &#123;
+            url: &quot;/pagetable&quot;,
+            templateUrl: &quot;pagetable.html&quot;  //第一个显示出来的页面
+        &#125;)
+        .state(&quot;pagetable.page1&quot;, &#123;
+            url:&quot;/page1&quot;,
+            templateUrl: &quot;page1.html&quot; //
+        &#125;)
+        .state(&quot;pagetable.page2&quot;, &#123;
+            url:&quot;/page2&quot;,
+            templateUrl: &quot;page2.html&quot;
+        &#125;)
+        .state(&quot;pagetable.page3&quot;, &#123;
+            url:&quot;/page3&quot;,
+            templateUrl: &quot;page3.html&quot;
+        &#125;);
+&#125;);
+</code></pre>
+<p>配置路由：angularjs使用UI－rooter将其传人angularjs模块。我们将项目运行起来，如果是本地直接打开的话，在非safari下面运行，会出现跨域的问题，我们来看下。即只有在safari下才能正常打开，以本地的file://开头的在其它浏览器下是不能打开文件的。主要是js同源策略的影响。</p>
+<p><img src="/2021/09/25/AngularJs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-%E8%B7%AF%E7%94%B1/image-20211017135803680.png" alt="image-20211017135803680"></p>
+<p>点击不同的链接，下面将会显示不同的页面。那么简单的路由跳转就完成啦。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Java Annotation(注解)</title>
     <url>/2020/09/09/Annotation(%E6%B3%A8%E8%A7%A3)/</url>
     <content><![CDATA[<h2 id="Annotation-注解"><a href="#Annotation-注解" class="headerlink" title="Annotation(注解)"></a>Annotation(注解)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>注解是jdk 5.0 新增的功能，Annotation 其实就是代码里的特殊标记, 这些标记可以在编译, 类加载, 运行时被读取, 并执行相应的处理。</p>
@@ -549,79 +631,322 @@ public class getAllAnnotationInfo &#123;
       </tags>
   </entry>
   <entry>
-    <title>Angular学习总结-路由</title>
-    <url>/2021/09/25/AngularJs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-%E8%B7%AF%E7%94%B1/</url>
-    <content><![CDATA[<h2 id="Angular学习总结-路由"><a href="#Angular学习总结-路由" class="headerlink" title="Angular学习总结-路由"></a>Angular学习总结-路由</h2><p> AngularJs中的路由，应用比较广泛，主要是允许我们通过不同的url访问不同的内容，可实现多视图的单页web应用。下面看看具体怎么使用。</p>
-<h3 id="关于路由"><a href="#关于路由" class="headerlink" title="关于路由"></a>关于路由</h3><p>   通常我们的URL形式为<a href="https://wyc1228.github.io/page/%EF%BC%8C%E4%BD%86%E5%9C%A8%E5%8D%95%E9%A1%B5web%E5%BA%94%E7%94%A8%E4%B8%ADangularjs%E9%80%9A%E8%BF%87#+%E6%A0%87%E8%AE%B0%E5%AE%9E%E7%8E%B0%EF%BC%8C%E6%AF%94%E5%A6%82%E4%B8%8B%E9%9D%A2%E7%9A%84%E9%A1%B5%E9%9D%A2%EF%BC%8C%E5%B0%86%E6%98%AF%E4%B8%8B%E6%96%87%E4%B8%AD%E7%9A%84%E8%B7%AF%E7%94%B1%E5%88%97%E5%AD%90%E3%80%82">https://wyc1228.github.io/page/，但在单页web应用中angularjs通过#+标记实现，比如下面的页面，将是下文中的路由列子。</a></p>
-<pre><code>http://192.168.1.109:8000/angular-program/src/main.html#/pagetable/page1
-http://192.168.1.109:8000/angular-program/src/main.html#/pagetable/page2
-http://192.168.1.109:8000/angular-program/src/main.html#/pagetable/page3
+    <title>EL表达式</title>
+    <url>/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
+    <content><![CDATA[<h2 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>概念：Expression Language 表达式语言</p>
+<p>作用：：EL表达式主要是代替 jsp 页面中的表达式脚本在 jsp 页面中进行数据的输出。 因为EL表达式在输出数据的时候，要比 jsp的表达式脚本要简洁很多。</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        request.setAttribute(&quot;key&quot;,&quot;值&quot;);
+    %&gt;
+    表达式脚本输出key的值是：&lt;%=request.getAttribute(&quot;key1&quot;)==null?&quot;&quot;:request.getAttribute(&quot;key1&quot;)%&gt;&lt;br/&gt;
+    EL表达式输出key的值是：$&#123;key1&#125;
+&lt;/body&gt;
 </code></pre>
-<p>当我们点击以上任一一个链接时，向服务器请求的地址都是<a href="http://192.168.1.109:8000/angular-program/src/main.html">http://192.168.1.109:8000/angular-program/src/main.html</a> ，而＃号之后的内容在向服务器端请求时会被浏览器忽略掉，所以我们在客户端实现＃号后面的功能实现即可。简单来说，路由通过＃＋标记帮助我们区分不同逻辑页面，并将其绑定到对应的控制器上。</p>
-<p><img src="/2021/09/25/AngularJs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-%E8%B7%AF%E7%94%B1/905548-20160806142738497-614875041.png" alt="img"></p>
-<p>每个页面均有一个控制器控制，通过路由，从而将不同的页面展示出来。</p>
-<h3 id="路由的使用"><a href="#路由的使用" class="headerlink" title="路由的使用"></a>路由的使用</h3><p>新建main.html</p>
-<pre><code class="html">&lt;!doctype html&gt;
-&lt;html ng-app=&quot;myapp&quot;&gt;
-     &lt;head&gt;
-         &lt;meta charset=&quot;utf-8&quot;&gt;
-         &lt;script src=&quot;angular.min.js&quot;&gt;&lt;/script&gt;
-         &lt;script src=&quot;angular-ui-router.min.js&quot;&gt;&lt;/script&gt;         
-         &lt;script src=&quot;app.js&quot;&gt;&lt;/script&gt;
-     &lt;/head&gt;
-     &lt;body&gt; 
-        &lt;!-- 引入angularjs框架和ui-router框架，引入app.js框架 --&gt;
-        &lt;h1&gt;AngularJS 路由跳转&lt;/h1&gt; 
-        &lt;div ui-view=&quot;&quot;&gt;&lt;/div&gt;     --展示page.html的页面内容
-    &lt;/body&gt;
-&lt;/html&gt;
+<p>EL 表达式的格式是：${表达式} </p>
+<p>EL 表达式在输出 null 值的时候，输出的是空串。（不显示）</p>
+<p>jsp 表达式脚本输出 null 值的时候，输出的是 null 字符串。（显示null）</p>
+<p><strong>注意</strong>：</p>
+<blockquote>
+<p>jsp默认支持el表达式的。如果要忽略el表达式</p>
+<p>设置jsp中page指令中：isELIgnored=”true” 忽略当前jsp页面中所有的el表达式</p>
+<p> ${表达式} ：忽略当前这个el表达式</p>
+</blockquote>
+<h3 id="1-2-EL-表达式搜索域数据的顺序"><a href="#1-2-EL-表达式搜索域数据的顺序" class="headerlink" title="1.2 EL 表达式搜索域数据的顺序"></a>1.2 EL 表达式搜索域数据的顺序</h3><p>EL 表达式主要是在 jsp 页面中输出数据。 <strong>主要是输出域对象中的数据</strong>。</p>
+<p>当四个域中都有相同的 key 的数据的时候，EL 表达式会按照四个域的从小到大的顺序去进行搜索，找到就输出。</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        //往四个域中都保存了相同的key的数据。
+        request.setAttribute(&quot;key&quot;, &quot;request&quot;);
+        session.setAttribute(&quot;key&quot;, &quot;session&quot;);
+        application.setAttribute(&quot;key&quot;, &quot;application&quot;);
+        pageContext.setAttribute(&quot;key&quot;, &quot;pageContext&quot;);
+    %&gt;
+    $&#123; key &#125;//先输出pageContext，找不到就找request输出，从小到大搜索，输出
+
+&lt;/body&gt;
 </code></pre>
-<p>新建pagetable.html页面</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;div&gt;
-     &lt;div&gt;
-         &lt;span style=&quot;width:100px&quot; ui-sref=&quot;.page1&quot;&gt;&lt;a href=&quot;&quot;&gt;首页&lt;/a&gt;&lt;/span&gt;
-         &lt;span style=&quot;width:100px&quot; ui-sref=&quot;.page2&quot;&gt;&lt;a href=&quot;&quot;&gt;关于我&lt;/a&gt;&lt;/span&gt;
-         &lt;span style=&quot;width:100px&quot; ui-sref=&quot;.page3&quot;&gt;&lt;a href=&quot;&quot;&gt;留言板&lt;/a&gt;&lt;/span&gt;
-     &lt;/div&gt;
-     &lt;div&gt;
-          &lt;div ui-view=&quot;&quot;&gt;&lt;/div&gt;  －－展示page1,page2,page3页面的内容
-     &lt;/div&gt;
-&lt;/div&gt;
+<h3 id="1-3-EL-表达式输出类型"><a href="#1-3-EL-表达式输出类型" class="headerlink" title="1.3 EL 表达式输出类型"></a>1.3 EL 表达式输出类型</h3><p>输出Bean 的普通属性，数组属性，List 集合属性，map 集合属性</p>
+<pre><code class="java">public class Person &#123;
+//    i.需求——输出Person类中普通属性，数组属性。list集合属性和map集合属性。
+    private String name;
+    private String[] phones;
+    private List&lt;String&gt; cities;
+    private Map&lt;String,Object&gt; map;
+    private int age;
+&#125;
 </code></pre>
-<p>新建page1.html、page2.html、page3.html页面</p>
-<pre><code class="html">&lt;!DOCTYPE html&gt;
-&lt;div&gt;
-    &lt;div&gt;
-       &lt;h1&gt;page1页面&lt;/h1&gt;
-    &lt;/div&gt;
-&lt;/div&gt;
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        Person person = new Person();
+        person.setName(&quot;张三&quot;);
+        person.setPhones(new String[]&#123;&quot;18610541354&quot;,&quot;18688886666&quot;,&quot;18699998888&quot;&#125;);
+
+        List&lt;String&gt; cities = new ArrayList&lt;String&gt;();
+        cities.add(&quot;北京&quot;);
+        cities.add(&quot;上海&quot;);
+        cities.add(&quot;深圳&quot;);
+        person.setCities(cities);
+
+        Map&lt;String,Object&gt;map = new HashMap&lt;&gt;();
+        map.put(&quot;key1&quot;,&quot;value1&quot;);
+        map.put(&quot;key2&quot;,&quot;value2&quot;);
+        map.put(&quot;key3&quot;,&quot;value3&quot;);
+        person.setMap(map);
+
+        pageContext.setAttribute(&quot;p&quot;, person);
+    %&gt;
+
+    输出Person：$&#123; p &#125;&lt;br/&gt;
+    输出Person的name属性：$&#123;p.name&#125; &lt;br&gt;
+    输出Person的pnones数组属性值：$&#123;p.phones[2]&#125; &lt;br&gt;
+    输出Person的cities集合中的元素值：$&#123;p.cities&#125; &lt;br&gt;
+    输出Person的List集合中个别元素值：$&#123;p.cities[2]&#125; &lt;br&gt;
+    输出Person的Map集合: $&#123;p.map&#125; &lt;br&gt;
+    输出Person的Map集合中某个key的值: $&#123;p.map.key3&#125; &lt;br&gt;
+    输出Person的age属性：$&#123;p.age&#125; &lt;br&gt;
+&lt;/body&gt;
 </code></pre>
-<p>app.js内容</p>
-<pre><code class="js">var app=angular.module(&quot;myapp&quot;,[&#39;ui.router&#39;]);//声明angualrjs模块，并把ui-router传人angularjs模块app.config(function ($stateProvider, $urlRouterProvider) &#123; //声明把$stateprovider和$urlrouterprovider路由引擎作为函数参数传人,为应用程序配置路由
-     $urlRouterProvider.otherwise(&quot;/pagetable&quot;); 
-     $stateProvider    
-        .state(&quot;pagetable&quot;, &#123;
-            url: &quot;/pagetable&quot;,
-            templateUrl: &quot;pagetable.html&quot;  //第一个显示出来的页面
-        &#125;)
-        .state(&quot;pagetable.page1&quot;, &#123;
-            url:&quot;/page1&quot;,
-            templateUrl: &quot;page1.html&quot; //
-        &#125;)
-        .state(&quot;pagetable.page2&quot;, &#123;
-            url:&quot;/page2&quot;,
-            templateUrl: &quot;page2.html&quot;
-        &#125;)
-        .state(&quot;pagetable.page3&quot;, &#123;
-            url:&quot;/page3&quot;,
-            templateUrl: &quot;page3.html&quot;
-        &#125;);
-&#125;);
+<p>结果：</p>
+<pre><code>输出Person：Person&#123;name=张三, phones=[18610541354, 18688886666, 18699998888], cities=[北京, 上海, 深圳], map=&#123;key1=value1, key2=value2, key3=value3&#125;&#125;
+输出Person的name属性：张三 
+输出Person的pnones数组属性值：18699998888 
+输出Person的cities集合中的元素值：[北京, 上海, 深圳] 
+输出Person的List集合中个别元素值：深圳 
+输出Person的Map集合: &#123;key1=value1, key2=value2, key3=value3&#125; 
+输出Person的Map集合中某个key的值: value3 
+输出Person的age属性：18 
 </code></pre>
-<p>配置路由：angularjs使用UI－rooter将其传人angularjs模块。我们将项目运行起来，如果是本地直接打开的话，在非safari下面运行，会出现跨域的问题，我们来看下。即只有在safari下才能正常打开，以本地的file://开头的在其它浏览器下是不能打开文件的。主要是js同源策略的影响。</p>
-<p><img src="/2021/09/25/AngularJs%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93-%E8%B7%AF%E7%94%B1/image-20211017135803680.png" alt="image-20211017135803680"></p>
-<p>点击不同的链接，下面将会显示不同的页面。那么简单的路由跳转就完成啦。</p>
+<h3 id="1-4-EL表达式运算"><a href="#1-4-EL表达式运算" class="headerlink" title="1.4 EL表达式运算"></a>1.4 EL表达式运算</h3><p>算数运算符： + - * /(div) %(mod)</p>
+<p>比较运算符： &gt; &lt; &gt;= &lt;= == !=</p>
+<p>逻辑运算符： &amp;&amp;(and) ||(or) !(not)</p>
+<p>三元运算：表达式 1？表达式 2：表达式 3 </p>
+<p>如果表达式 1 的值为真，返回表达式 2 的值，如果表达式 1 的值为假，返回表达式 3 的值。</p>
+<p>演示：</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;!--比较运算--&gt;
+    $&#123; 12 == 12 &#125; 或 $&#123; 12 eq 12 &#125; &lt;br&gt;
+    $&#123; 12 != 12 &#125; 或 $&#123; 12 ne 12 &#125; &lt;br&gt;
+    $&#123; 12 &lt; 12 &#125; 或 $&#123; 12 lt 12 &#125; &lt;br&gt;
+    $&#123; 12 &gt; 12 &#125; 或 $&#123; 12 gt 12 &#125; &lt;br&gt;
+    $&#123; 12 &lt;= 12 &#125; 或 $&#123; 12 le 12 &#125; &lt;br&gt;
+    $&#123; 12 &gt;= 12 &#125; 或 $&#123; 12 ge 12 &#125; &lt;br&gt;
+    &lt;hr&gt;
+    &lt;!--逻辑运算--&gt;
+    $&#123; 12 == 12 &amp;&amp; 12 &gt; 11 &#125; 或 $&#123; 12 == 12 and 12 &gt; 11 &#125; &lt;br&gt;
+    $&#123; 12 == 12 || 12 &gt; 11 &#125; 或 $&#123; 12 == 12 or 12 &gt; 11 &#125; &lt;br&gt;
+    $&#123; ! true &#125; 或 $&#123; not true &#125; &lt;br&gt;
+    &lt;hr&gt;
+    &lt;!--算数运算--&gt;
+    $&#123; 12 + 12 &#125; &lt;br&gt;
+    $&#123; 12 - 12 &#125; &lt;br&gt;
+    $&#123; 12 * 12 &#125; &lt;br&gt;
+    $&#123; 18 / 12 &#125; 或 $&#123; 18 div 12 &#125;&lt;br&gt;
+    $&#123; 18 % 12 &#125; 或 $&#123; 18 mod 12 &#125; &lt;br&gt;
+    &lt;!--三元运算--&gt;
+    $&#123; 12 != 12 ? &quot;hello&quot;:&quot;EL&quot; &#125;
+&lt;/body&gt;
+//结果
+true 或 true 
+false 或 false 
+false 或 false 
+false 或 false 
+true 或 true 
+true 或 true 
+true 或 true 
+true 或 true 
+false 或 false 
+24 
+0 
+144 
+1.5 或 1.5
+6 或 6 
+</code></pre>
+<p><strong>empty 运算</strong></p>
+<p>empty 运算可以判断一个数据是否为空，如果为空，则输出 true,不为空输出 false。</p>
+<p>以下几种情况为空：</p>
+<ul>
+<li>值为 null 值的时候，为空 </li>
+<li>值为空串的时候，为空 </li>
+<li>值是 Object 类型数组，长度为零的时候 </li>
+<li>ist 集合，元素个数为零</li>
+<li>map 集合，元素个数为零</li>
+</ul>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+//        1、值为null值的时候，为空
+        request.setAttribute(&quot;emptyNull&quot;, null);
+//        2、值为空串的时候，为空
+        request.setAttribute(&quot;emptyStr&quot;, &quot;&quot;);
+//        3、值是Object类型数组，长度为零的时候
+        request.setAttribute(&quot;emptyArr&quot;, new Object[]&#123;&#125;);
+//        4、list集合，元素个数为零
+        List&lt;String&gt; list = new ArrayList&lt;&gt;();
+//        list.add(&quot;abc&quot;);
+        request.setAttribute(&quot;emptyList&quot;, list);
+//        5、map集合，元素个数为零
+        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
+//        map.put(&quot;key1&quot;, &quot;value1&quot;);
+        request.setAttribute(&quot;emptyMap&quot;, map);
+    %&gt;
+    $&#123; empty emptyNull &#125; &lt;br/&gt;
+    $&#123; empty emptyStr &#125; &lt;br/&gt;
+    $&#123; empty emptyArr &#125; &lt;br/&gt;
+    $&#123; empty emptyList &#125; &lt;br/&gt;
+    $&#123; empty emptyMap &#125; &lt;br/&gt;
+    &lt;!--结果全为true--&gt;
+&lt;/body&gt;
+</code></pre>
+<p><strong>“.”点运算 和 [] 中括号运算符</strong><br>点运算，可以输出 Bean 对象中某个属性的值。 </p>
+<p>[]中括号运算，可以输出有序集合中某个元素的值。 </p>
+<p>并且[]中括号运算，还可以输出 map 集合中 key 里含有特殊字符的 key 的值</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
+        map.put(&quot;a.a.a&quot;, &quot;aaaValue&quot;);
+        map.put(&quot;b+b+b&quot;, &quot;bbbValue&quot;);
+        map.put(&quot;c-c-c&quot;, &quot;cccValue&quot;);
+        request.setAttribute(&quot;map&quot;, map);
+    %&gt;
+        $&#123; map[&#39;a.a.a&#39;] &#125; &lt;br&gt;
+        $&#123; map[&quot;b+b+b&quot;] &#125; &lt;br&gt;
+        $&#123; map[&#39;c-c-c&#39;] &#125; &lt;br&gt;
+
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-5-EL-表达式的-11-个隐含对象"><a href="#1-5-EL-表达式的-11-个隐含对象" class="headerlink" title="1.5 EL 表达式的 11 个隐含对象"></a>1.5 EL 表达式的 11 个隐含对象</h3><p>EL 个达式中 11 个隐含对象，是 EL 表达式中自己定义的，可以直接使用</p>
+<table>
+<thead>
+<tr>
+<th>变量</th>
+<th>类型</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>pageContext</td>
+<td>PageContextImpl</td>
+<td>它可以获取 jsp 中的九大内置对象</td>
+</tr>
+<tr>
+<td>pageScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 pageContext 域中的数据</td>
+</tr>
+<tr>
+<td>requestScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 Request 域中的数据</td>
+</tr>
+<tr>
+<td>sessionScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 Session 域中的数据</td>
+</tr>
+<tr>
+<td>applicationScope</td>
+<td>Map&lt;String,Object&gt;</td>
+<td>它可以获取 ServletContext 域中的数据</td>
+</tr>
+<tr>
+<td>param</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取请求参数的值</td>
+</tr>
+<tr>
+<td>paramValues</td>
+<td>Map&lt;String,String[]&gt;</td>
+<td>它也可以获取请求参数的值，获取多个值的时候使用。</td>
+</tr>
+<tr>
+<td>header</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取请求头的信息</td>
+</tr>
+<tr>
+<td>headerValues</td>
+<td>Map&lt;String,String[]&gt;</td>
+<td>它可以获取请求头的信息，它可以获取多个值的情况</td>
+</tr>
+<tr>
+<td>cookie</td>
+<td>Map&lt;String,Cookie&gt;</td>
+<td>它可以获取当前请求的 Cookie 信息</td>
+</tr>
+<tr>
+<td>initParam</td>
+<td>Map&lt;String,String&gt;</td>
+<td>它可以获取在 web.xml 中配置的<context-param>上下文参数</context-param></td>
+</tr>
+</tbody></table>
+<h3 id="1-6-EL表达式的11个隐含对象中的四个域对象"><a href="#1-6-EL表达式的11个隐含对象中的四个域对象" class="headerlink" title="1.6 EL表达式的11个隐含对象中的四个域对象"></a>1.6 EL表达式的11个隐含对象中的四个域对象</h3><p>pageScope ====== pageContext 域 </p>
+<p>requestScope ====== Request 域 </p>
+<p>sessionScope ====== Session 域 </p>
+<p>applicationScope ====== ServletContext 域</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%
+        pageContext.setAttribute(&quot;key1&quot;, &quot;pageContext1&quot;);
+        pageContext.setAttribute(&quot;key2&quot;, &quot;pageContext2&quot;);
+        request.setAttribute(&quot;key2&quot;, &quot;request&quot;);
+        session.setAttribute(&quot;key2&quot;, &quot;session&quot;);
+        application.setAttribute(&quot;key2&quot;, &quot;application&quot;);
+    %&gt;
+    $&#123; applicationScope.key2 &#125;
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-7-pageContext-对象的使用"><a href="#1-7-pageContext-对象的使用" class="headerlink" title="1.7 pageContext 对象的使用"></a>1.7 pageContext 对象的使用</h3><p>协议，服务器 ip：，服务器端口： ， 获取工程路径：，获取请求方法：， 获取客户端 ip 地址： ，获取会话的 id 编号：</p>
+<pre><code class="jsp">&lt;body&gt;
+    &lt;%--
+    request.getScheme() 它可以获取请求的协议
+    request.getServerName() 获取请求的服务器ip或域名
+    request.getServerPort() 获取请求的服务器端口号
+    getContextPath() 获取当前工程路径
+    request.getMethod() 获取请求的方式（GET或POST）
+    request.getRemoteHost()  获取客户端的ip 地址
+    session.getId() 获取会话的唯一标识
+    --%&gt;
+    &lt;%
+        pageContext.setAttribute(&quot;req&quot;, request);
+    %&gt;
+    &lt;%=request.getScheme() %&gt; &lt;br&gt;
+    1.协议： $&#123; req.scheme &#125;&lt;br&gt;
+    2.服务器ip：$&#123; pageContext.request.serverName &#125;&lt;br&gt;
+    3.服务器端口：$&#123; pageContext.request.serverPort &#125;&lt;br&gt;
+    4.获取工程路径：$&#123; pageContext.request.contextPath &#125;&lt;br&gt;
+    5.获取请求方法：$&#123; pageContext.request.method &#125;&lt;br&gt;
+    6.获取客户端ip地址：$&#123; pageContext.request.remoteHost &#125;&lt;br&gt;
+    7.获取会话的id编号：$&#123; pageContext.session.id &#125;&lt;br&gt;
+
+&lt;/body&gt;
+</code></pre>
+<h3 id="1-8-其他隐含对象的使用"><a href="#1-8-其他隐含对象的使用" class="headerlink" title="1.8 其他隐含对象的使用"></a>1.8 其他隐含对象的使用</h3><pre><code class="java">&lt;body&gt;
+    &lt;!--param   Map&lt;String,String&gt;   它可以获取请求参数的值--&gt;
+    输出请求参数username的值：$&#123; param.username &#125; &lt;br&gt;
+    输出请求参数password的值：$&#123; param.password &#125; &lt;br&gt;
+    
+    &lt;!--paramValuesMap&lt;String,String[]&gt;它也可以获取请求参数的值，获取多个值的时候使用。--&gt;
+    输出请求参数username的值：$&#123; paramValues.username[0] &#125; &lt;br&gt;
+    输出请求参数hobby的值：$&#123; paramValues.hobby[0] &#125; &lt;br&gt;
+    输出请求参数hobby的值：$&#123; paramValues.hobby[1] &#125; &lt;br&gt;
+    &lt;hr&gt;
+    
+    &lt;!--headerMap&lt;String,String&gt;它可以获取请求头的信息--&gt;
+    输出请求头【User-Agent】的值：$&#123; header[&#39;User-Agent&#39;] &#125; &lt;br&gt;
+    输出请求头【Connection】的值：$&#123; header.Connection &#125; &lt;br&gt;
+    输出请求头【User-Agent】的值：$&#123; headerValues[&#39;User-Agent&#39;][0] &#125; &lt;br&gt;
+    &lt;hr&gt;
+    
+    &lt;!--cookie  Map&lt;String,Cookie&gt;  它可以获取当前请求的 Cookie 信息--&gt;
+    获取Cookie的名称：$&#123; cookie.JSESSIONID.name &#125; &lt;br&gt;
+    获取Cookie的值：$&#123; cookie.JSESSIONID.value &#125; &lt;br&gt;
+    &lt;hr&gt;
+
+    &lt;!--initParam   Map&lt;String,String&gt;  它可以获取在 web.xml 中配置的&lt;context-param&gt;上下文参数--&gt;
+    输出&amp;lt;Context-param&amp;gt;username的值：$&#123; initParam.username &#125; &lt;br&gt;
+    输出&amp;lt;Context-param&amp;gt;url的值：$&#123; initParam.url &#125; &lt;br&gt;
+
+&lt;/body&gt;
+</code></pre>
 ]]></content>
       <categories>
         <category>前端</category>
@@ -1003,331 +1328,6 @@ response.addCookie(c);
       </categories>
       <tags>
         <tag>javaweb</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>EL表达式</title>
-    <url>/2020/09/15/EL%E8%A1%A8%E8%BE%BE%E5%BC%8F/</url>
-    <content><![CDATA[<h2 id="EL表达式"><a href="#EL表达式" class="headerlink" title="EL表达式"></a>EL表达式</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>概念：Expression Language 表达式语言</p>
-<p>作用：：EL表达式主要是代替 jsp 页面中的表达式脚本在 jsp 页面中进行数据的输出。 因为EL表达式在输出数据的时候，要比 jsp的表达式脚本要简洁很多。</p>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%
-        request.setAttribute(&quot;key&quot;,&quot;值&quot;);
-    %&gt;
-    表达式脚本输出key的值是：&lt;%=request.getAttribute(&quot;key1&quot;)==null?&quot;&quot;:request.getAttribute(&quot;key1&quot;)%&gt;&lt;br/&gt;
-    EL表达式输出key的值是：$&#123;key1&#125;
-&lt;/body&gt;
-</code></pre>
-<p>EL 表达式的格式是：${表达式} </p>
-<p>EL 表达式在输出 null 值的时候，输出的是空串。（不显示）</p>
-<p>jsp 表达式脚本输出 null 值的时候，输出的是 null 字符串。（显示null）</p>
-<p><strong>注意</strong>：</p>
-<blockquote>
-<p>jsp默认支持el表达式的。如果要忽略el表达式</p>
-<p>设置jsp中page指令中：isELIgnored=”true” 忽略当前jsp页面中所有的el表达式</p>
-<p> ${表达式} ：忽略当前这个el表达式</p>
-</blockquote>
-<h3 id="1-2-EL-表达式搜索域数据的顺序"><a href="#1-2-EL-表达式搜索域数据的顺序" class="headerlink" title="1.2 EL 表达式搜索域数据的顺序"></a>1.2 EL 表达式搜索域数据的顺序</h3><p>EL 表达式主要是在 jsp 页面中输出数据。 <strong>主要是输出域对象中的数据</strong>。</p>
-<p>当四个域中都有相同的 key 的数据的时候，EL 表达式会按照四个域的从小到大的顺序去进行搜索，找到就输出。</p>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%
-        //往四个域中都保存了相同的key的数据。
-        request.setAttribute(&quot;key&quot;, &quot;request&quot;);
-        session.setAttribute(&quot;key&quot;, &quot;session&quot;);
-        application.setAttribute(&quot;key&quot;, &quot;application&quot;);
-        pageContext.setAttribute(&quot;key&quot;, &quot;pageContext&quot;);
-    %&gt;
-    $&#123; key &#125;//先输出pageContext，找不到就找request输出，从小到大搜索，输出
-
-&lt;/body&gt;
-</code></pre>
-<h3 id="1-3-EL-表达式输出类型"><a href="#1-3-EL-表达式输出类型" class="headerlink" title="1.3 EL 表达式输出类型"></a>1.3 EL 表达式输出类型</h3><p>输出Bean 的普通属性，数组属性，List 集合属性，map 集合属性</p>
-<pre><code class="java">public class Person &#123;
-//    i.需求——输出Person类中普通属性，数组属性。list集合属性和map集合属性。
-    private String name;
-    private String[] phones;
-    private List&lt;String&gt; cities;
-    private Map&lt;String,Object&gt; map;
-    private int age;
-&#125;
-</code></pre>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%
-        Person person = new Person();
-        person.setName(&quot;张三&quot;);
-        person.setPhones(new String[]&#123;&quot;18610541354&quot;,&quot;18688886666&quot;,&quot;18699998888&quot;&#125;);
-
-        List&lt;String&gt; cities = new ArrayList&lt;String&gt;();
-        cities.add(&quot;北京&quot;);
-        cities.add(&quot;上海&quot;);
-        cities.add(&quot;深圳&quot;);
-        person.setCities(cities);
-
-        Map&lt;String,Object&gt;map = new HashMap&lt;&gt;();
-        map.put(&quot;key1&quot;,&quot;value1&quot;);
-        map.put(&quot;key2&quot;,&quot;value2&quot;);
-        map.put(&quot;key3&quot;,&quot;value3&quot;);
-        person.setMap(map);
-
-        pageContext.setAttribute(&quot;p&quot;, person);
-    %&gt;
-
-    输出Person：$&#123; p &#125;&lt;br/&gt;
-    输出Person的name属性：$&#123;p.name&#125; &lt;br&gt;
-    输出Person的pnones数组属性值：$&#123;p.phones[2]&#125; &lt;br&gt;
-    输出Person的cities集合中的元素值：$&#123;p.cities&#125; &lt;br&gt;
-    输出Person的List集合中个别元素值：$&#123;p.cities[2]&#125; &lt;br&gt;
-    输出Person的Map集合: $&#123;p.map&#125; &lt;br&gt;
-    输出Person的Map集合中某个key的值: $&#123;p.map.key3&#125; &lt;br&gt;
-    输出Person的age属性：$&#123;p.age&#125; &lt;br&gt;
-&lt;/body&gt;
-</code></pre>
-<p>结果：</p>
-<pre><code>输出Person：Person&#123;name=张三, phones=[18610541354, 18688886666, 18699998888], cities=[北京, 上海, 深圳], map=&#123;key1=value1, key2=value2, key3=value3&#125;&#125;
-输出Person的name属性：张三 
-输出Person的pnones数组属性值：18699998888 
-输出Person的cities集合中的元素值：[北京, 上海, 深圳] 
-输出Person的List集合中个别元素值：深圳 
-输出Person的Map集合: &#123;key1=value1, key2=value2, key3=value3&#125; 
-输出Person的Map集合中某个key的值: value3 
-输出Person的age属性：18 
-</code></pre>
-<h3 id="1-4-EL表达式运算"><a href="#1-4-EL表达式运算" class="headerlink" title="1.4 EL表达式运算"></a>1.4 EL表达式运算</h3><p>算数运算符： + - * /(div) %(mod)</p>
-<p>比较运算符： &gt; &lt; &gt;= &lt;= == !=</p>
-<p>逻辑运算符： &amp;&amp;(and) ||(or) !(not)</p>
-<p>三元运算：表达式 1？表达式 2：表达式 3 </p>
-<p>如果表达式 1 的值为真，返回表达式 2 的值，如果表达式 1 的值为假，返回表达式 3 的值。</p>
-<p>演示：</p>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;!--比较运算--&gt;
-    $&#123; 12 == 12 &#125; 或 $&#123; 12 eq 12 &#125; &lt;br&gt;
-    $&#123; 12 != 12 &#125; 或 $&#123; 12 ne 12 &#125; &lt;br&gt;
-    $&#123; 12 &lt; 12 &#125; 或 $&#123; 12 lt 12 &#125; &lt;br&gt;
-    $&#123; 12 &gt; 12 &#125; 或 $&#123; 12 gt 12 &#125; &lt;br&gt;
-    $&#123; 12 &lt;= 12 &#125; 或 $&#123; 12 le 12 &#125; &lt;br&gt;
-    $&#123; 12 &gt;= 12 &#125; 或 $&#123; 12 ge 12 &#125; &lt;br&gt;
-    &lt;hr&gt;
-    &lt;!--逻辑运算--&gt;
-    $&#123; 12 == 12 &amp;&amp; 12 &gt; 11 &#125; 或 $&#123; 12 == 12 and 12 &gt; 11 &#125; &lt;br&gt;
-    $&#123; 12 == 12 || 12 &gt; 11 &#125; 或 $&#123; 12 == 12 or 12 &gt; 11 &#125; &lt;br&gt;
-    $&#123; ! true &#125; 或 $&#123; not true &#125; &lt;br&gt;
-    &lt;hr&gt;
-    &lt;!--算数运算--&gt;
-    $&#123; 12 + 12 &#125; &lt;br&gt;
-    $&#123; 12 - 12 &#125; &lt;br&gt;
-    $&#123; 12 * 12 &#125; &lt;br&gt;
-    $&#123; 18 / 12 &#125; 或 $&#123; 18 div 12 &#125;&lt;br&gt;
-    $&#123; 18 % 12 &#125; 或 $&#123; 18 mod 12 &#125; &lt;br&gt;
-    &lt;!--三元运算--&gt;
-    $&#123; 12 != 12 ? &quot;hello&quot;:&quot;EL&quot; &#125;
-&lt;/body&gt;
-//结果
-true 或 true 
-false 或 false 
-false 或 false 
-false 或 false 
-true 或 true 
-true 或 true 
-true 或 true 
-true 或 true 
-false 或 false 
-24 
-0 
-144 
-1.5 或 1.5
-6 或 6 
-</code></pre>
-<p><strong>empty 运算</strong></p>
-<p>empty 运算可以判断一个数据是否为空，如果为空，则输出 true,不为空输出 false。</p>
-<p>以下几种情况为空：</p>
-<ul>
-<li>值为 null 值的时候，为空 </li>
-<li>值为空串的时候，为空 </li>
-<li>值是 Object 类型数组，长度为零的时候 </li>
-<li>ist 集合，元素个数为零</li>
-<li>map 集合，元素个数为零</li>
-</ul>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%
-//        1、值为null值的时候，为空
-        request.setAttribute(&quot;emptyNull&quot;, null);
-//        2、值为空串的时候，为空
-        request.setAttribute(&quot;emptyStr&quot;, &quot;&quot;);
-//        3、值是Object类型数组，长度为零的时候
-        request.setAttribute(&quot;emptyArr&quot;, new Object[]&#123;&#125;);
-//        4、list集合，元素个数为零
-        List&lt;String&gt; list = new ArrayList&lt;&gt;();
-//        list.add(&quot;abc&quot;);
-        request.setAttribute(&quot;emptyList&quot;, list);
-//        5、map集合，元素个数为零
-        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
-//        map.put(&quot;key1&quot;, &quot;value1&quot;);
-        request.setAttribute(&quot;emptyMap&quot;, map);
-    %&gt;
-    $&#123; empty emptyNull &#125; &lt;br/&gt;
-    $&#123; empty emptyStr &#125; &lt;br/&gt;
-    $&#123; empty emptyArr &#125; &lt;br/&gt;
-    $&#123; empty emptyList &#125; &lt;br/&gt;
-    $&#123; empty emptyMap &#125; &lt;br/&gt;
-    &lt;!--结果全为true--&gt;
-&lt;/body&gt;
-</code></pre>
-<p><strong>“.”点运算 和 [] 中括号运算符</strong><br>点运算，可以输出 Bean 对象中某个属性的值。 </p>
-<p>[]中括号运算，可以输出有序集合中某个元素的值。 </p>
-<p>并且[]中括号运算，还可以输出 map 集合中 key 里含有特殊字符的 key 的值</p>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%
-        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
-        map.put(&quot;a.a.a&quot;, &quot;aaaValue&quot;);
-        map.put(&quot;b+b+b&quot;, &quot;bbbValue&quot;);
-        map.put(&quot;c-c-c&quot;, &quot;cccValue&quot;);
-        request.setAttribute(&quot;map&quot;, map);
-    %&gt;
-        $&#123; map[&#39;a.a.a&#39;] &#125; &lt;br&gt;
-        $&#123; map[&quot;b+b+b&quot;] &#125; &lt;br&gt;
-        $&#123; map[&#39;c-c-c&#39;] &#125; &lt;br&gt;
-
-&lt;/body&gt;
-</code></pre>
-<h3 id="1-5-EL-表达式的-11-个隐含对象"><a href="#1-5-EL-表达式的-11-个隐含对象" class="headerlink" title="1.5 EL 表达式的 11 个隐含对象"></a>1.5 EL 表达式的 11 个隐含对象</h3><p>EL 个达式中 11 个隐含对象，是 EL 表达式中自己定义的，可以直接使用</p>
-<table>
-<thead>
-<tr>
-<th>变量</th>
-<th>类型</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>pageContext</td>
-<td>PageContextImpl</td>
-<td>它可以获取 jsp 中的九大内置对象</td>
-</tr>
-<tr>
-<td>pageScope</td>
-<td>Map&lt;String,Object&gt;</td>
-<td>它可以获取 pageContext 域中的数据</td>
-</tr>
-<tr>
-<td>requestScope</td>
-<td>Map&lt;String,Object&gt;</td>
-<td>它可以获取 Request 域中的数据</td>
-</tr>
-<tr>
-<td>sessionScope</td>
-<td>Map&lt;String,Object&gt;</td>
-<td>它可以获取 Session 域中的数据</td>
-</tr>
-<tr>
-<td>applicationScope</td>
-<td>Map&lt;String,Object&gt;</td>
-<td>它可以获取 ServletContext 域中的数据</td>
-</tr>
-<tr>
-<td>param</td>
-<td>Map&lt;String,String&gt;</td>
-<td>它可以获取请求参数的值</td>
-</tr>
-<tr>
-<td>paramValues</td>
-<td>Map&lt;String,String[]&gt;</td>
-<td>它也可以获取请求参数的值，获取多个值的时候使用。</td>
-</tr>
-<tr>
-<td>header</td>
-<td>Map&lt;String,String&gt;</td>
-<td>它可以获取请求头的信息</td>
-</tr>
-<tr>
-<td>headerValues</td>
-<td>Map&lt;String,String[]&gt;</td>
-<td>它可以获取请求头的信息，它可以获取多个值的情况</td>
-</tr>
-<tr>
-<td>cookie</td>
-<td>Map&lt;String,Cookie&gt;</td>
-<td>它可以获取当前请求的 Cookie 信息</td>
-</tr>
-<tr>
-<td>initParam</td>
-<td>Map&lt;String,String&gt;</td>
-<td>它可以获取在 web.xml 中配置的<context-param>上下文参数</context-param></td>
-</tr>
-</tbody></table>
-<h3 id="1-6-EL表达式的11个隐含对象中的四个域对象"><a href="#1-6-EL表达式的11个隐含对象中的四个域对象" class="headerlink" title="1.6 EL表达式的11个隐含对象中的四个域对象"></a>1.6 EL表达式的11个隐含对象中的四个域对象</h3><p>pageScope ====== pageContext 域 </p>
-<p>requestScope ====== Request 域 </p>
-<p>sessionScope ====== Session 域 </p>
-<p>applicationScope ====== ServletContext 域</p>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%
-        pageContext.setAttribute(&quot;key1&quot;, &quot;pageContext1&quot;);
-        pageContext.setAttribute(&quot;key2&quot;, &quot;pageContext2&quot;);
-        request.setAttribute(&quot;key2&quot;, &quot;request&quot;);
-        session.setAttribute(&quot;key2&quot;, &quot;session&quot;);
-        application.setAttribute(&quot;key2&quot;, &quot;application&quot;);
-    %&gt;
-    $&#123; applicationScope.key2 &#125;
-&lt;/body&gt;
-</code></pre>
-<h3 id="1-7-pageContext-对象的使用"><a href="#1-7-pageContext-对象的使用" class="headerlink" title="1.7 pageContext 对象的使用"></a>1.7 pageContext 对象的使用</h3><p>协议，服务器 ip：，服务器端口： ， 获取工程路径：，获取请求方法：， 获取客户端 ip 地址： ，获取会话的 id 编号：</p>
-<pre><code class="jsp">&lt;body&gt;
-    &lt;%--
-    request.getScheme() 它可以获取请求的协议
-    request.getServerName() 获取请求的服务器ip或域名
-    request.getServerPort() 获取请求的服务器端口号
-    getContextPath() 获取当前工程路径
-    request.getMethod() 获取请求的方式（GET或POST）
-    request.getRemoteHost()  获取客户端的ip 地址
-    session.getId() 获取会话的唯一标识
-    --%&gt;
-    &lt;%
-        pageContext.setAttribute(&quot;req&quot;, request);
-    %&gt;
-    &lt;%=request.getScheme() %&gt; &lt;br&gt;
-    1.协议： $&#123; req.scheme &#125;&lt;br&gt;
-    2.服务器ip：$&#123; pageContext.request.serverName &#125;&lt;br&gt;
-    3.服务器端口：$&#123; pageContext.request.serverPort &#125;&lt;br&gt;
-    4.获取工程路径：$&#123; pageContext.request.contextPath &#125;&lt;br&gt;
-    5.获取请求方法：$&#123; pageContext.request.method &#125;&lt;br&gt;
-    6.获取客户端ip地址：$&#123; pageContext.request.remoteHost &#125;&lt;br&gt;
-    7.获取会话的id编号：$&#123; pageContext.session.id &#125;&lt;br&gt;
-
-&lt;/body&gt;
-</code></pre>
-<h3 id="1-8-其他隐含对象的使用"><a href="#1-8-其他隐含对象的使用" class="headerlink" title="1.8 其他隐含对象的使用"></a>1.8 其他隐含对象的使用</h3><pre><code class="java">&lt;body&gt;
-    &lt;!--param   Map&lt;String,String&gt;   它可以获取请求参数的值--&gt;
-    输出请求参数username的值：$&#123; param.username &#125; &lt;br&gt;
-    输出请求参数password的值：$&#123; param.password &#125; &lt;br&gt;
-    
-    &lt;!--paramValuesMap&lt;String,String[]&gt;它也可以获取请求参数的值，获取多个值的时候使用。--&gt;
-    输出请求参数username的值：$&#123; paramValues.username[0] &#125; &lt;br&gt;
-    输出请求参数hobby的值：$&#123; paramValues.hobby[0] &#125; &lt;br&gt;
-    输出请求参数hobby的值：$&#123; paramValues.hobby[1] &#125; &lt;br&gt;
-    &lt;hr&gt;
-    
-    &lt;!--headerMap&lt;String,String&gt;它可以获取请求头的信息--&gt;
-    输出请求头【User-Agent】的值：$&#123; header[&#39;User-Agent&#39;] &#125; &lt;br&gt;
-    输出请求头【Connection】的值：$&#123; header.Connection &#125; &lt;br&gt;
-    输出请求头【User-Agent】的值：$&#123; headerValues[&#39;User-Agent&#39;][0] &#125; &lt;br&gt;
-    &lt;hr&gt;
-    
-    &lt;!--cookie  Map&lt;String,Cookie&gt;  它可以获取当前请求的 Cookie 信息--&gt;
-    获取Cookie的名称：$&#123; cookie.JSESSIONID.name &#125; &lt;br&gt;
-    获取Cookie的值：$&#123; cookie.JSESSIONID.value &#125; &lt;br&gt;
-    &lt;hr&gt;
-
-    &lt;!--initParam   Map&lt;String,String&gt;  它可以获取在 web.xml 中配置的&lt;context-param&gt;上下文参数--&gt;
-    输出&amp;lt;Context-param&amp;gt;username的值：$&#123; initParam.username &#125; &lt;br&gt;
-    输出&amp;lt;Context-param&amp;gt;url的值：$&#123; initParam.url &#125; &lt;br&gt;
-
-&lt;/body&gt;
-</code></pre>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
       </tags>
   </entry>
   <entry>
@@ -2038,236 +2038,6 @@ branch: master
       </tags>
   </entry>
   <entry>
-    <title>JSTL 标签库的基本使用</title>
-    <url>/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/</url>
-    <content><![CDATA[<h2 id="JSTL-标签库"><a href="#JSTL-标签库" class="headerlink" title="JSTL 标签库"></a>JSTL 标签库</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>JSTL 标签库 全称是指  JSP   Standard   Tag   Library   JSP 标准标签库。是一个不断完善的开放源代码的 JSP 标签库。</p>
-<p>EL 表达式主要是为了替换 jsp 中的<strong>表达式脚本</strong>，而标签库则是为了替换<strong>代码脚本</strong>。这样使得整个 jsp 页面 变得更佳简洁。</p>
-<p>JSTL 由五个不同功能的标签库组成。 </p>
-<table>
-<thead>
-<tr>
-<th>功能范围</th>
-<th>URI</th>
-<th>前缀</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>核心标签库–重点</td>
-<td><a href="http://java.sun.com/jsp/jstl/core">http://java.sun.com/jsp/jstl/core</a></td>
-<td>c</td>
-</tr>
-<tr>
-<td>格式化</td>
-<td><a href="http://java.sun.com/jsp/jstl/fmt">http://java.sun.com/jsp/jstl/fmt</a></td>
-<td>fmt</td>
-</tr>
-<tr>
-<td>函数</td>
-<td><a href="http://java.sun.com/jsp/jstl/functions">http://java.sun.com/jsp/jstl/functions</a></td>
-<td>fn</td>
-</tr>
-<tr>
-<td>数据库(不使用)</td>
-<td><a href="http://java.sun.com/jsp/jstl/sql">http://java.sun.com/jsp/jstl/sql</a></td>
-<td>sql</td>
-</tr>
-<tr>
-<td>XML(不使用)</td>
-<td><a href="http://java.sun.com/jsp/jstl/xml">http://java.sun.com/jsp/jstl/xml</a></td>
-<td>x</td>
-</tr>
-</tbody></table>
-<h3 id="1-2-使用步骤"><a href="#1-2-使用步骤" class="headerlink" title="1.2 使用步骤"></a>1.2 使用步骤</h3><ol>
-<li>先导入 jstl 标签库的 jar 包。 <ul>
-<li>taglibs-standard-impl-1.2.1.jar </li>
-<li>taglibs-standard-spec-1.2.1.jar</li>
-</ul>
-</li>
-<li>第二步，使用 taglib 指令引入标签库。 (输入JSTL标签时会自动引入)</li>
-</ol>
-<p>CORE 标签库 ：&lt;%@ taglib prefix=”c” uri=”<a href="http://java.sun.com/jsp/jstl/core&quot;">http://java.sun.com/jsp/jstl/core&quot;</a> %&gt; </p>
-<p>XML 标签库：&lt;%@ taglib prefix=”x” uri=”<a href="http://java.sun.com/jsp/jstl/xml&quot;">http://java.sun.com/jsp/jstl/xml&quot;</a> %&gt; </p>
-<p>FMT 标签库： &lt;%@ taglib prefix=”fmt” uri=”<a href="http://java.sun.com/jsp/jstl/fmt&quot;">http://java.sun.com/jsp/jstl/fmt&quot;</a> %&gt; </p>
-<p>SQL 标签库： &lt;%@ taglib prefix=”sql” uri=”<a href="http://java.sun.com/jsp/jstl/sql&quot;">http://java.sun.com/jsp/jstl/sql&quot;</a> %&gt; </p>
-<p>FUNCTIONS 标签库  &lt;%@ taglib prefix=”fn” uri=”<a href="http://java.sun.com/jsp/jstl/functions&quot;">http://java.sun.com/jsp/jstl/functions&quot;</a> %&gt;</p>
-<h3 id="1-3-core-核心库使用"><a href="#1-3-core-核心库使用" class="headerlink" title="1.3 core 核心库使用"></a>1.3 core 核心库使用</h3><p> &lt;c:set/&gt;（使用很少）作用：set 标签可以往域中保存数据</p>
-<pre><code class="jsp">&lt;%--
-    i.&lt;c:set /&gt;
-        作用：set标签可以往域中保存数据
-
-        域对象.setAttribute(key,value);
-        scope 属性设置保存到哪个域
-            page表示PageContext域（默认值）
-            request表示Request域
-            session表示Session域
-            application表示ServletContext域
-        var属性设置key是多少
-        value属性设置值
-    --%&gt;
-    保存之前：$&#123; sessionScope.abc &#125; &lt;br&gt;
-    &lt;c:set scope=&quot;session&quot; var=&quot;abc&quot; value=&quot;abcValue&quot;/&gt;
-    保存之后：$&#123; sessionScope.abc &#125; &lt;br&gt;
-    &lt;hr&gt;
-</code></pre>
-<p> &lt;c:if/&gt;  if 标签用来做 if 判断。</p>
-<pre><code class="jsp">&lt;%--
-       ii.&lt;c:if /&gt;
-         if标签用来做if判断。
-         test属性表示判断的条件（使用EL表达式输出）
-    --%&gt;
-    &lt;c:if test=&quot;$&#123; 12 == 12 &#125;&quot;&gt;
-        &lt;h1&gt;12等于12&lt;/h1&gt;
-    &lt;/c:if&gt;
-    &lt;c:if test=&quot;$&#123; 12 != 12 &#125;&quot;&gt;
-        &lt;h1&gt;12不等于12&lt;/h1&gt;
-    &lt;/c:if&gt;
-</code></pre>
-<p> &lt;c:choose&gt;   &lt;c:when&gt;    &lt;c:otherwise&gt;   标签  作用：多路判断。跟 switch…case….default 非常接近</p>
-<pre><code class="java"> &lt;%--
-    iii.&lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签
-    作用：多路判断。跟switch ... case .... default非常接近
-
-    choose标签开始选择判断
-    when标签表示每一种判断情况
-        test属性表示当前这种判断情况的值
-    otherwise标签表示剩下的情况
-
-    &lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签使用时需要注意的点：
-        1、标签里不能使用html注释，要使用jsp注释
-        2、when标签的父标签一定要是choose标签
-    --%&gt;
-    &lt;%
-        request.setAttribute(&quot;height&quot;, 180);
-    %&gt;
-    &lt;c:choose&gt;
-        &lt;%-- 这是html注释 --%&gt;
-        &lt;c:when test=&quot;$&#123; requestScope.height &gt; 190 &#125;&quot;&gt;
-            &lt;h2&gt;小巨人&lt;/h2&gt;
-        &lt;/c:when&gt;
-         &lt;c:when test=&quot;$&#123; requestScope.height &gt; 180 &#125;&quot;&gt;
-            &lt;h2&gt;很高&lt;/h2&gt;
-        &lt;/c:when&gt;
-        &lt;c:when test=&quot;$&#123; requestScope.height &gt; 170 &#125;&quot;&gt;
-            &lt;h2&gt;还可以&lt;/h2&gt;
-        &lt;/c:when&gt;
-        &lt;c:otherwise&gt;
-            &lt;c:choose&gt;
-                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 160&#125;&quot;&gt;
-                    &lt;h3&gt;大于160&lt;/h3&gt;
-                &lt;/c:when&gt;
-                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 150&#125;&quot;&gt;
-                    &lt;h3&gt;大于150&lt;/h3&gt;
-                &lt;/c:when&gt;
-                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 140&#125;&quot;&gt;
-                    &lt;h3&gt;大于140&lt;/h3&gt;
-                &lt;/c:when&gt;
-                &lt;c:otherwise&gt;
-                    其他小于140
-                &lt;/c:otherwise&gt;
-            &lt;/c:choose&gt;
-        &lt;/c:otherwise&gt;
-    &lt;/c:choose&gt;
-</code></pre>
-<p> &lt;c:forEach/&gt;  作用：遍历输出使用。</p>
-<pre><code class="jsp">&lt;%@ page import=&quot;java.util.Map&quot; %&gt;
-&lt;%@ page import=&quot;java.util.HashMap&quot; %&gt;
-&lt;%@ page import=&quot;java.util.List&quot; %&gt;
-&lt;%@ page import=&quot;com.review.entity.Student&quot; %&gt;
-&lt;%@ page import=&quot;java.util.ArrayList&quot; %&gt;
-&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
-&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
-
-&lt;body&gt;
-    &lt;%--1.遍历1到10，输出
-        begin属性设置开始的索引
-        end 属性设置结束的索引
-        var 属性表示循环的变量(也是当前正在遍历到的数据)
-        for (int i = 1; i &lt; 10; i++)
-
-    &lt;table border=&quot;1&quot;&gt;
-        &lt;c:forEach begin=&quot;1&quot; end=&quot;10&quot; var=&quot;i&quot;&gt;
-            &lt;tr&gt;
-                &lt;td&gt;第$&#123;i&#125;行&lt;/td&gt;
-            &lt;/tr&gt;
-        &lt;/c:forEach&gt;
-    &lt;/table&gt;--%&gt;
-    &lt;hr&gt;
-   &lt;%-- 2.遍历Object数组
-        for (Object item: arr)
-        items 表示遍历的数据源（遍历的集合）
-        var 表示当前遍历到的数据
-
-    &lt;%
-        request.setAttribute(&quot;arr&quot;, new String[]&#123;&quot;18610541354&quot;,&quot;18688886666&quot;,&quot;18699998888&quot;&#125;);
-    %&gt;
-    &lt;c:forEach items=&quot;$&#123; requestScope.arr &#125;&quot; var=&quot;item&quot;&gt;
-        $&#123; item &#125; &lt;br&gt;
-    &lt;/c:forEach&gt; --%&gt;
-    &lt;hr&gt;
-    &lt;%
-        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
-        map.put(&quot;key1&quot;, &quot;value1&quot;);
-        map.put(&quot;key2&quot;, &quot;value2&quot;);
-        map.put(&quot;key3&quot;, &quot;value3&quot;);
-//        for ( Map.Entry&lt;String,Object&gt; entry : map.entrySet()) &#123;
-//        &#125;
-        request.setAttribute(&quot;map&quot;, map);
-    %&gt;
-    &lt;c:forEach items=&quot;$&#123; requestScope.map &#125;&quot; var=&quot;entry&quot;&gt;
-        &lt;h1&gt;$&#123;entry.key&#125; = $&#123;entry.value&#125;&lt;/h1&gt;
-    &lt;/c:forEach&gt;
-    &lt;hr&gt;
-    &lt;%--4.遍历List集合---list中存放 Student类，有属性：编号，用户名，密码，年龄，电话信息--%&gt;
-    &lt;%
-        List&lt;Student&gt; studentList = new ArrayList&lt;Student&gt;();
-        for (int i = 1; i &lt;= 10; i++) &#123;
-            studentList.add(new Student(i,&quot;username&quot;+i ,&quot;pass&quot;+i,18+i,&quot;phone&quot;+i));
-        &#125;
-        request.setAttribute(&quot;stus&quot;, studentList);
-    %&gt;
-    &lt;form action=&quot;&quot; enctype=&quot;&quot;&gt;&lt;/form&gt;
-    &lt;table&gt;
-        &lt;tr&gt;
-            &lt;th&gt;编号&lt;/th&gt;
-            &lt;th&gt;用户名&lt;/th&gt;
-            &lt;th&gt;密码&lt;/th&gt;
-            &lt;th&gt;年龄&lt;/th&gt;
-            &lt;th&gt;电话&lt;/th&gt;
-            &lt;th&gt;操作&lt;/th&gt;
-        &lt;/tr&gt;
-        &lt;%--
-            items 表示遍历的集合
-            var 表示遍历到的数据
-            begin表示遍历的开始索引值
-            end 表示结束的索引值
-            step 属性表示遍历的步长值
-            varStatus 属性表示当前遍历到的数据的状态
-            for（int i = 1; i &lt; 10; i+=2）
-        --%&gt;
-    &lt;c:forEach begin=&quot;2&quot; end=&quot;7&quot; step=&quot;2&quot; varStatus=&quot;status&quot; items=&quot;$&#123;requestScope.stus&#125;&quot; var=&quot;stu&quot;&gt;
-        &lt;tr&gt;
-            &lt;td&gt;$&#123;stu.id&#125;&lt;/td&gt;
-            &lt;td&gt;$&#123;stu.username&#125;&lt;/td&gt;
-            &lt;td&gt;$&#123;stu.password&#125;&lt;/td&gt;
-            &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;
-            &lt;td&gt;$&#123;stu.phone&#125;&lt;/td&gt;
-            &lt;td&gt;$&#123;status.step&#125;&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/c:forEach&gt;
-    &lt;/table&gt;
-
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-]]></content>
-      <categories>
-        <category>前端</category>
-      </categories>
-      <tags>
-        <tag>前端</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JSP基本使用</title>
     <url>/2020/09/18/JSP%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h2 id="JSP基本使用"><a href="#JSP基本使用" class="headerlink" title="JSP基本使用"></a>JSP基本使用</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
@@ -2678,6 +2448,236 @@ branch: master
       </categories>
       <tags>
         <tag>javaweb</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JSTL 标签库的基本使用</title>
+    <url>/2020/09/16/JSTL%20%E6%A0%87%E7%AD%BE%E5%BA%93/</url>
+    <content><![CDATA[<h2 id="JSTL-标签库"><a href="#JSTL-标签库" class="headerlink" title="JSTL 标签库"></a>JSTL 标签库</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>JSTL 标签库 全称是指  JSP   Standard   Tag   Library   JSP 标准标签库。是一个不断完善的开放源代码的 JSP 标签库。</p>
+<p>EL 表达式主要是为了替换 jsp 中的<strong>表达式脚本</strong>，而标签库则是为了替换<strong>代码脚本</strong>。这样使得整个 jsp 页面 变得更佳简洁。</p>
+<p>JSTL 由五个不同功能的标签库组成。 </p>
+<table>
+<thead>
+<tr>
+<th>功能范围</th>
+<th>URI</th>
+<th>前缀</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>核心标签库–重点</td>
+<td><a href="http://java.sun.com/jsp/jstl/core">http://java.sun.com/jsp/jstl/core</a></td>
+<td>c</td>
+</tr>
+<tr>
+<td>格式化</td>
+<td><a href="http://java.sun.com/jsp/jstl/fmt">http://java.sun.com/jsp/jstl/fmt</a></td>
+<td>fmt</td>
+</tr>
+<tr>
+<td>函数</td>
+<td><a href="http://java.sun.com/jsp/jstl/functions">http://java.sun.com/jsp/jstl/functions</a></td>
+<td>fn</td>
+</tr>
+<tr>
+<td>数据库(不使用)</td>
+<td><a href="http://java.sun.com/jsp/jstl/sql">http://java.sun.com/jsp/jstl/sql</a></td>
+<td>sql</td>
+</tr>
+<tr>
+<td>XML(不使用)</td>
+<td><a href="http://java.sun.com/jsp/jstl/xml">http://java.sun.com/jsp/jstl/xml</a></td>
+<td>x</td>
+</tr>
+</tbody></table>
+<h3 id="1-2-使用步骤"><a href="#1-2-使用步骤" class="headerlink" title="1.2 使用步骤"></a>1.2 使用步骤</h3><ol>
+<li>先导入 jstl 标签库的 jar 包。 <ul>
+<li>taglibs-standard-impl-1.2.1.jar </li>
+<li>taglibs-standard-spec-1.2.1.jar</li>
+</ul>
+</li>
+<li>第二步，使用 taglib 指令引入标签库。 (输入JSTL标签时会自动引入)</li>
+</ol>
+<p>CORE 标签库 ：&lt;%@ taglib prefix=”c” uri=”<a href="http://java.sun.com/jsp/jstl/core&quot;">http://java.sun.com/jsp/jstl/core&quot;</a> %&gt; </p>
+<p>XML 标签库：&lt;%@ taglib prefix=”x” uri=”<a href="http://java.sun.com/jsp/jstl/xml&quot;">http://java.sun.com/jsp/jstl/xml&quot;</a> %&gt; </p>
+<p>FMT 标签库： &lt;%@ taglib prefix=”fmt” uri=”<a href="http://java.sun.com/jsp/jstl/fmt&quot;">http://java.sun.com/jsp/jstl/fmt&quot;</a> %&gt; </p>
+<p>SQL 标签库： &lt;%@ taglib prefix=”sql” uri=”<a href="http://java.sun.com/jsp/jstl/sql&quot;">http://java.sun.com/jsp/jstl/sql&quot;</a> %&gt; </p>
+<p>FUNCTIONS 标签库  &lt;%@ taglib prefix=”fn” uri=”<a href="http://java.sun.com/jsp/jstl/functions&quot;">http://java.sun.com/jsp/jstl/functions&quot;</a> %&gt;</p>
+<h3 id="1-3-core-核心库使用"><a href="#1-3-core-核心库使用" class="headerlink" title="1.3 core 核心库使用"></a>1.3 core 核心库使用</h3><p> &lt;c:set/&gt;（使用很少）作用：set 标签可以往域中保存数据</p>
+<pre><code class="jsp">&lt;%--
+    i.&lt;c:set /&gt;
+        作用：set标签可以往域中保存数据
+
+        域对象.setAttribute(key,value);
+        scope 属性设置保存到哪个域
+            page表示PageContext域（默认值）
+            request表示Request域
+            session表示Session域
+            application表示ServletContext域
+        var属性设置key是多少
+        value属性设置值
+    --%&gt;
+    保存之前：$&#123; sessionScope.abc &#125; &lt;br&gt;
+    &lt;c:set scope=&quot;session&quot; var=&quot;abc&quot; value=&quot;abcValue&quot;/&gt;
+    保存之后：$&#123; sessionScope.abc &#125; &lt;br&gt;
+    &lt;hr&gt;
+</code></pre>
+<p> &lt;c:if/&gt;  if 标签用来做 if 判断。</p>
+<pre><code class="jsp">&lt;%--
+       ii.&lt;c:if /&gt;
+         if标签用来做if判断。
+         test属性表示判断的条件（使用EL表达式输出）
+    --%&gt;
+    &lt;c:if test=&quot;$&#123; 12 == 12 &#125;&quot;&gt;
+        &lt;h1&gt;12等于12&lt;/h1&gt;
+    &lt;/c:if&gt;
+    &lt;c:if test=&quot;$&#123; 12 != 12 &#125;&quot;&gt;
+        &lt;h1&gt;12不等于12&lt;/h1&gt;
+    &lt;/c:if&gt;
+</code></pre>
+<p> &lt;c:choose&gt;   &lt;c:when&gt;    &lt;c:otherwise&gt;   标签  作用：多路判断。跟 switch…case….default 非常接近</p>
+<pre><code class="java"> &lt;%--
+    iii.&lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签
+    作用：多路判断。跟switch ... case .... default非常接近
+
+    choose标签开始选择判断
+    when标签表示每一种判断情况
+        test属性表示当前这种判断情况的值
+    otherwise标签表示剩下的情况
+
+    &lt;c:choose&gt; &lt;c:when&gt; &lt;c:otherwise&gt;标签使用时需要注意的点：
+        1、标签里不能使用html注释，要使用jsp注释
+        2、when标签的父标签一定要是choose标签
+    --%&gt;
+    &lt;%
+        request.setAttribute(&quot;height&quot;, 180);
+    %&gt;
+    &lt;c:choose&gt;
+        &lt;%-- 这是html注释 --%&gt;
+        &lt;c:when test=&quot;$&#123; requestScope.height &gt; 190 &#125;&quot;&gt;
+            &lt;h2&gt;小巨人&lt;/h2&gt;
+        &lt;/c:when&gt;
+         &lt;c:when test=&quot;$&#123; requestScope.height &gt; 180 &#125;&quot;&gt;
+            &lt;h2&gt;很高&lt;/h2&gt;
+        &lt;/c:when&gt;
+        &lt;c:when test=&quot;$&#123; requestScope.height &gt; 170 &#125;&quot;&gt;
+            &lt;h2&gt;还可以&lt;/h2&gt;
+        &lt;/c:when&gt;
+        &lt;c:otherwise&gt;
+            &lt;c:choose&gt;
+                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 160&#125;&quot;&gt;
+                    &lt;h3&gt;大于160&lt;/h3&gt;
+                &lt;/c:when&gt;
+                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 150&#125;&quot;&gt;
+                    &lt;h3&gt;大于150&lt;/h3&gt;
+                &lt;/c:when&gt;
+                &lt;c:when test=&quot;$&#123;requestScope.height &gt; 140&#125;&quot;&gt;
+                    &lt;h3&gt;大于140&lt;/h3&gt;
+                &lt;/c:when&gt;
+                &lt;c:otherwise&gt;
+                    其他小于140
+                &lt;/c:otherwise&gt;
+            &lt;/c:choose&gt;
+        &lt;/c:otherwise&gt;
+    &lt;/c:choose&gt;
+</code></pre>
+<p> &lt;c:forEach/&gt;  作用：遍历输出使用。</p>
+<pre><code class="jsp">&lt;%@ page import=&quot;java.util.Map&quot; %&gt;
+&lt;%@ page import=&quot;java.util.HashMap&quot; %&gt;
+&lt;%@ page import=&quot;java.util.List&quot; %&gt;
+&lt;%@ page import=&quot;com.review.entity.Student&quot; %&gt;
+&lt;%@ page import=&quot;java.util.ArrayList&quot; %&gt;
+&lt;%@ taglib prefix=&quot;c&quot; uri=&quot;http://java.sun.com/jsp/jstl/core&quot; %&gt;
+&lt;%@ page contentType=&quot;text/html;charset=UTF-8&quot; language=&quot;java&quot; %&gt;
+
+&lt;body&gt;
+    &lt;%--1.遍历1到10，输出
+        begin属性设置开始的索引
+        end 属性设置结束的索引
+        var 属性表示循环的变量(也是当前正在遍历到的数据)
+        for (int i = 1; i &lt; 10; i++)
+
+    &lt;table border=&quot;1&quot;&gt;
+        &lt;c:forEach begin=&quot;1&quot; end=&quot;10&quot; var=&quot;i&quot;&gt;
+            &lt;tr&gt;
+                &lt;td&gt;第$&#123;i&#125;行&lt;/td&gt;
+            &lt;/tr&gt;
+        &lt;/c:forEach&gt;
+    &lt;/table&gt;--%&gt;
+    &lt;hr&gt;
+   &lt;%-- 2.遍历Object数组
+        for (Object item: arr)
+        items 表示遍历的数据源（遍历的集合）
+        var 表示当前遍历到的数据
+
+    &lt;%
+        request.setAttribute(&quot;arr&quot;, new String[]&#123;&quot;18610541354&quot;,&quot;18688886666&quot;,&quot;18699998888&quot;&#125;);
+    %&gt;
+    &lt;c:forEach items=&quot;$&#123; requestScope.arr &#125;&quot; var=&quot;item&quot;&gt;
+        $&#123; item &#125; &lt;br&gt;
+    &lt;/c:forEach&gt; --%&gt;
+    &lt;hr&gt;
+    &lt;%
+        Map&lt;String,Object&gt; map = new HashMap&lt;String, Object&gt;();
+        map.put(&quot;key1&quot;, &quot;value1&quot;);
+        map.put(&quot;key2&quot;, &quot;value2&quot;);
+        map.put(&quot;key3&quot;, &quot;value3&quot;);
+//        for ( Map.Entry&lt;String,Object&gt; entry : map.entrySet()) &#123;
+//        &#125;
+        request.setAttribute(&quot;map&quot;, map);
+    %&gt;
+    &lt;c:forEach items=&quot;$&#123; requestScope.map &#125;&quot; var=&quot;entry&quot;&gt;
+        &lt;h1&gt;$&#123;entry.key&#125; = $&#123;entry.value&#125;&lt;/h1&gt;
+    &lt;/c:forEach&gt;
+    &lt;hr&gt;
+    &lt;%--4.遍历List集合---list中存放 Student类，有属性：编号，用户名，密码，年龄，电话信息--%&gt;
+    &lt;%
+        List&lt;Student&gt; studentList = new ArrayList&lt;Student&gt;();
+        for (int i = 1; i &lt;= 10; i++) &#123;
+            studentList.add(new Student(i,&quot;username&quot;+i ,&quot;pass&quot;+i,18+i,&quot;phone&quot;+i));
+        &#125;
+        request.setAttribute(&quot;stus&quot;, studentList);
+    %&gt;
+    &lt;form action=&quot;&quot; enctype=&quot;&quot;&gt;&lt;/form&gt;
+    &lt;table&gt;
+        &lt;tr&gt;
+            &lt;th&gt;编号&lt;/th&gt;
+            &lt;th&gt;用户名&lt;/th&gt;
+            &lt;th&gt;密码&lt;/th&gt;
+            &lt;th&gt;年龄&lt;/th&gt;
+            &lt;th&gt;电话&lt;/th&gt;
+            &lt;th&gt;操作&lt;/th&gt;
+        &lt;/tr&gt;
+        &lt;%--
+            items 表示遍历的集合
+            var 表示遍历到的数据
+            begin表示遍历的开始索引值
+            end 表示结束的索引值
+            step 属性表示遍历的步长值
+            varStatus 属性表示当前遍历到的数据的状态
+            for（int i = 1; i &lt; 10; i+=2）
+        --%&gt;
+    &lt;c:forEach begin=&quot;2&quot; end=&quot;7&quot; step=&quot;2&quot; varStatus=&quot;status&quot; items=&quot;$&#123;requestScope.stus&#125;&quot; var=&quot;stu&quot;&gt;
+        &lt;tr&gt;
+            &lt;td&gt;$&#123;stu.id&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.username&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.password&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.age&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;stu.phone&#125;&lt;/td&gt;
+            &lt;td&gt;$&#123;status.step&#125;&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/c:forEach&gt;
+    &lt;/table&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端</tag>
       </tags>
   </entry>
   <entry>
@@ -6169,7 +6169,7 @@ hexo d
 <h3 id="6-2-设置签名"><a href="#6-2-设置签名" class="headerlink" title="6.2 设置签名"></a>6.2 设置签名</h3><p>形式</p>
 <ul>
 <li>用户名：wyc</li>
-<li>Email地址：<a href="mailto:&#x77;&#97;&#x6e;&#103;&#x40;&#49;&#x36;&#51;&#x2e;&#99;&#111;&#x6d;">&#x77;&#97;&#x6e;&#103;&#x40;&#49;&#x36;&#51;&#x2e;&#99;&#111;&#x6d;</a></li>
+<li>Email地址：<a href="mailto:&#x77;&#x61;&#110;&#103;&#64;&#x31;&#x36;&#51;&#x2e;&#99;&#x6f;&#109;">&#x77;&#x61;&#110;&#103;&#64;&#x31;&#x36;&#51;&#x2e;&#99;&#x6f;&#109;</a></li>
 </ul>
 <p>作用：区分不同开发人员的身份</p>
 <p>辨析：登录远程库(代码托管中心)的账号，密码和这个设置的签名没有任何关系</p>
@@ -6177,13 +6177,13 @@ hexo d
 <ul>
 <li>项目级别/仓库级别：仅在当前本地库范围内有效<ul>
 <li>git config user.name wyc_pro</li>
-<li>git config user.email <a href="mailto:&#119;&#x61;&#x6e;&#x67;&#x5f;&#x70;&#x72;&#111;&#x40;&#x31;&#x36;&#51;&#x2e;&#99;&#x6f;&#109;">&#119;&#x61;&#x6e;&#x67;&#x5f;&#x70;&#x72;&#111;&#x40;&#x31;&#x36;&#51;&#x2e;&#99;&#x6f;&#109;</a></li>
+<li>git config user.email <a href="mailto:&#x77;&#x61;&#x6e;&#103;&#95;&#x70;&#114;&#x6f;&#x40;&#49;&#54;&#51;&#46;&#x63;&#111;&#x6d;">&#x77;&#x61;&#x6e;&#103;&#95;&#x70;&#114;&#x6f;&#x40;&#49;&#54;&#51;&#46;&#x63;&#111;&#x6d;</a></li>
 <li>信息保存位置：.git/config</li>
 </ul>
 </li>
 <li>系统用户级别：登陆当前操作系统的用户范围<ul>
 <li>git config –global user.name wyc_glb</li>
-<li>git config –globle user.email <a href="mailto:&#119;&#97;&#110;&#103;&#95;&#x67;&#108;&#x62;&#64;&#49;&#x36;&#51;&#46;&#x63;&#111;&#109;">&#119;&#97;&#110;&#103;&#95;&#x67;&#108;&#x62;&#64;&#49;&#x36;&#51;&#46;&#x63;&#111;&#109;</a></li>
+<li>git config –globle user.email <a href="mailto:&#119;&#97;&#110;&#103;&#x5f;&#x67;&#108;&#x62;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#x6f;&#x6d;">&#119;&#97;&#110;&#103;&#x5f;&#x67;&#108;&#x62;&#x40;&#x31;&#x36;&#x33;&#46;&#99;&#x6f;&#x6d;</a></li>
 <li>信息保存位置：家目录下的gitconfig隐藏文件，~/.gitconfig文件</li>
 </ul>
 </li>
@@ -6716,7 +6716,7 @@ hexo d
 <p>此时复制id_rsa.pub文件的内容，在github中添加key</p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320190404837.png" alt="image-20210320190404837"></p>
 <p>检查测试连接，执行命令，显示success则成功</p>
-<p>ssh -T <a href="mailto:&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;">&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#x6f;&#x6d;</a></p>
+<p>ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#99;&#111;&#x6d;">&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#99;&#111;&#x6d;</a></p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185950523.png" alt="image-20210320185950523"></p>
 <p>之后就可以直接使用ssh密匙来clone和push项目，不用输入密码</p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321093019644.png" alt="image-20210321093019644"></p>
@@ -14109,7 +14109,7 @@ public class MyLogGateWayFilter implements GlobalFilter, Ordered &#123;
 <li><p>用自己的GitHub账号在GitHub上新建一个名为springcloud-config的新Repository</p>
 </li>
 <li><p>获得SSH协议的git地址</p>
-<p><a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#x6d;">&#x67;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a>:wyc1228/springcloud-config.git</p>
+<p><a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#104;&#117;&#x62;&#46;&#99;&#111;&#x6d;">&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#104;&#117;&#x62;&#46;&#99;&#111;&#x6d;</a>:wyc1228/springcloud-config.git</p>
 <p><img src="/2021/03/03/SpringCloud-07/image-20210320171817426.png" alt="image-20210320171817426"></p>
 </li>
 <li><p>在本地硬盘目录上新建git仓库并clone（不需要初始化，直接clone）</p>
@@ -17242,410 +17242,6 @@ public void testServletAPI(HttpServletRequest request,HttpServletResponse respon
       </tags>
   </entry>
   <entry>
-    <title>SpringMVC基本使用-中篇</title>
-    <url>/2020/09/28/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%AD%E7%AF%87/</url>
-    <content><![CDATA[<h2 id="SpringMVC基本使用-中篇"><a href="#SpringMVC基本使用-中篇" class="headerlink" title="SpringMVC基本使用-中篇"></a>SpringMVC基本使用-中篇</h2><h3 id="1-1-REST"><a href="#1-1-REST" class="headerlink" title="1.1 REST"></a>1.1 REST</h3><h4 id="1-1-1-概述：："><a href="#1-1-1-概述：：" class="headerlink" title="1.1.1 概述：："></a>1.1.1 概述：：</h4><ul>
-<li>REST：即 Representational State Transfer。（资源）表现层状态转化。是目前最流行的一种互联网软件架构。它结构清晰、符合标准、易于理解、扩展方便，所以正得到越来越多网站的采用</li>
-<li>资源（Resources）：网络上的一个实体，或者说是网络上的一个具体信息。 它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的存在。可以用一个 URI（统一 资源定位符）指向它，每种资源对应一个特定的 URI 。要 获取这个资源，访问它的 URI 就可以，因此 URI 即为每一个资源的独一无二的识别符。 </li>
-<li>表现层（Representation）：把资源具体呈现出来的形式，叫做它的表现层 （Representation）。 比如，文本可以用 txt 格式表现，也可以用 HTML 格式、XML 格式、JSON 格式表现，甚至可以采用二 进制格式。 </li>
-<li>状态转化（State Transfer）：每 发出一个请求，就代表了客户端和服务器的一次交互过程。 HTTP 协议，是一个无状态协议，即所有的状态都保存在服务器端。因此，如果客户端想要操作服务器， 必须通过某种手段，让服务器端发生“状态转化”（State Transfer）。而这种转化是建立在表现层之上的，所以 就是 “表现层状态转化”。</li>
-<li>具体说，就是 HTTP 协议里面，四个表示操作方式的动词：GET 、POST 、PUT、 DELETE。它们分别对应四种基本操作：GET 用来获取资源，POST 用来新建资源，PUT 用来更新资源，DELETE 用来 删除资源。</li>
-</ul>
-<h4 id="1-1-2-HiddenHttpMethodFilter-过滤器"><a href="#1-1-2-HiddenHttpMethodFilter-过滤器" class="headerlink" title="1.1.2 HiddenHttpMethodFilter 过滤器"></a>1.1.2 HiddenHttpMethodFilter 过滤器</h4><ol>
-<li><p>浏览器 form 表单只支持 GET 与 POST 请求，而 DELETE、PUT 等 method 并不 支持，Spring3.0 添加了一个过滤器，可以将这些请求转换为标准的 http 方法，使 得支持 GET、POST、PUT 与 DELETE 请求。</p>
-</li>
-<li><p>使用方法： </p>
-<ul>
-<li>在 web.xml 中配置HiddenHttpMethodFilter过滤器。 </li>
-</ul>
-<p>web.xml配置文件</p>
-<pre><code class="xml">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
-         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
-         version=&quot;4.0&quot;&gt;
-    &lt;filter&gt;
-        &lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;
-        &lt;filter-class&gt;org.springframework.web.filter.HiddenHttpMethodFilter&lt;/filter-class&gt;
-    &lt;/filter&gt;
-    &lt;filter-mapping&gt;
-        &lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/filter-mapping&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-</code></pre>
-</li>
-</ol>
-<h4 id="1-1-3PathVariable-注解"><a href="#1-1-3PathVariable-注解" class="headerlink" title="1.1.3PathVariable 注解"></a>1.1.3PathVariable 注解</h4><ul>
-<li>作用： 用于绑定 url 中的占位符。例如：请求 url 中 /delete/{id}，这个{id}就是 url 占位符。 url 支持占位符是 spring3.0 之后加入的。是 springmvc 支持 rest 风格 URL 的一个重要标志。 </li>
-<li>属性： value：用于指定 url 中占位符名称。 required：是否必须提供占位符。</li>
-</ul>
-<h4 id="1-1-4-REST实现过程"><a href="#1-1-4-REST实现过程" class="headerlink" title="1.1.4 REST实现过程"></a>1.1.4 REST实现过程</h4><ul>
-<li><p>第一步：在 web.xml 中配置HiddenHttpMethodFilter过滤器。 </p>
-</li>
-<li><p>第二步：请求方式必须使用 post 请求。 </p>
-</li>
-<li><p>第三步：按照要求提供带有_method 请求参数隐藏域，该参数的取值就是我们需要的请求方式（PUT或DELETE）。</p>
-<p>JSP文件</p>
-<pre><code class="jsp">&lt;!-- 保存 POST--&gt;
-&lt;form action=&quot;springmvc/testRestPOST&quot; method=&quot;post&quot;&gt;
-    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br/&gt;
-    &lt;!-- &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;POST&quot;&gt; --&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
-&lt;/form&gt;
-&lt;hr/&gt;
-&lt;!-- 更新 PUT--&gt;
-&lt;form action=&quot;springmvc/testRestPUT/1&quot; method=&quot;post&quot;&gt;
-    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br/&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;PUT&quot;&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;更新&quot;&gt;
-&lt;/form&gt;
-&lt;!-- 删除 DELETE--&gt;
-&lt;form action=&quot;springmvc/testRestDELETE/1&quot; method=&quot;post&quot;&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;DELETE&quot;&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;删除&quot;&gt;
-&lt;/form&gt;
-&lt;hr/&gt;
-&lt;!-- 查询一个 GET，也可以直接使用超链接--&gt;
-&lt;form action=&quot;springmvc/testRestGET/1&quot; method=&quot;post&quot;&gt;
-    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;GET&quot;&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;查询&quot;&gt;
-&lt;/form&gt; 
-</code></pre>
-<p>控制器代码</p>
-<pre><code class="java">/**
-* post 请求：保存
-*/
-@RequestMapping(value=&quot;/testRestPOST&quot;,method=RequestMethod.POST)
-public String testRestfulURLPOST(User user)&#123;
-    System.out.println(&quot;rest post&quot;+user);
-    return &quot;success&quot;;
-&#125;
-/**
-* put请求：更新，通过@PathVariable(&quot;id&quot;)获取URL中传递过来的&#123;id&#125;
-*/
-@RequestMapping(value=&quot;/testRestPUT/&#123;id&#125;&quot;,method=RequestMethod.PUT)
-public String testRestfulURLPUT(@PathVariable(&quot;id&quot;)Integer id,User user)&#123;
-    System.out.println(&quot;rest put &quot;+id+&quot;,&quot;+user);
-    return &quot;success&quot;;
-&#125;
-/**
-* post 请求：删除
-*/
-@RequestMapping(value=&quot;/testRestDELETE/&#123;id&#125;&quot;,method=RequestMethod.DELETE)
-public String testRestfulURLDELETE(@PathVariable(&quot;id&quot;)Integer id)&#123;
-    System.out.println(&quot;rest delete &quot;+id);
-    return &quot;success&quot;;
-&#125;
-/**
-* post 请求：查询
-*/
-@RequestMapping(value=&quot;/testRestGET/&#123;id&#125;&quot;,method=RequestMethod.GET)
-public String testRestfulURLGET(@PathVariable(&quot;id&quot;)Integer id)&#123;
-    System.out.println(&quot;rest get &quot;+id);
-    return &quot;success&quot;;
-&#125; 
-</code></pre>
-</li>
-</ul>
-<h3 id="1-2-SpringMVC常用注解"><a href="#1-2-SpringMVC常用注解" class="headerlink" title="1.2 SpringMVC常用注解"></a>1.2 SpringMVC常用注解</h3><h4 id="RequestParam"><a href="#RequestParam" class="headerlink" title="RequestParam"></a>RequestParam</h4><ul>
-<li><p>作用： 把请求中指定名称的参数给控制器中的形参赋值。 </p>
-</li>
-<li><p>属性： </p>
-<ul>
-<li>value：请求参数中的名称。 </li>
-<li>required：请求参数中是否必须提供此参数。默认值：true。表示必须提供，如果不提供将报错。</li>
-<li>defaultValue: 默认值，当没有传递参数时使用该值</li>
-</ul>
-</li>
-<li><p>使用示例</p>
-<pre><code class="java">jsp 中的代码：
-&lt;!-- requestParams 注解的使用 --&gt;
-&lt;a href=&quot;springmvc/useRequestParam?name=test&amp;age=0&quot;&gt;requestParam 注解&lt;/a&gt;
-控制器中的代码：
-/**
-* requestParams 注解的使用,
-* 其中请求的参数的名称为name，方法中的参数为username，不匹配，可以使用@RequestParam注解将
-* name的值赋值给username，
-*/
-@RequestMapping(&quot;/useRequestParam&quot;)
-public String useRequestParam(@RequestParam(&quot;name&quot;)String username,
-@RequestParam(value=&quot;age&quot;,required=false,defaultValue=&quot;0&quot;)Integer age)&#123;
-System.out.println(username+&quot;,&quot;+age);
-return &quot;success&quot;;
-&#125;
-</code></pre>
-</li>
-</ul>
-<h4 id="RequestBody"><a href="#RequestBody" class="headerlink" title="RequestBody"></a>RequestBody</h4><ul>
-<li><p>作用： 用于获取请求体内容。直接使用得到是 key=value&amp;key=value…结构的数据。 <strong>get 请求方式不适用</strong>。 </p>
-</li>
-<li><p>属性： required：是否必须有请求体。默认值是:true。当取值为 true 时,get 请求方式会报错。如果取值 为 false，get 请求得到是 null。</p>
-</li>
-<li><p>使用示例</p>
-<pre><code class="java">post 请求 jsp 代码：
-&lt;!-- requestBody 注解 --&gt;
-&lt;form action=&quot;springmvc/useRequestBody&quot; method=&quot;post&quot;&gt;
-    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
-    用户密码：&lt;input type=&quot;password&quot; name=&quot;password&quot; &gt;&lt;br/&gt;
-    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
-&lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
-&lt;/form&gt;
-get 请求 jsp 代码：
-&lt;a href=&quot;springmvc/useRequestBody?body=test&quot;&gt;requestBody 注解 get 请求&lt;/a&gt;
-控制器代码：
-/**
-* RequestBody 注解
-*/
-@RequestMapping(&quot;/useRequestBody&quot;)
-public String useRequestBody(@RequestBody(required=false) String body)&#123;
-    System.out.println(body);
-    return &quot;success&quot;;
-&#125;
-//结果：请求体的key为body
-//post请求结果:username=admin&amp;password=123&amp;age=23
-//get请求结果:null
-</code></pre>
-</li>
-</ul>
-<h4 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="RequestHeader"></a>RequestHeader</h4><ul>
-<li><p>作用： 用于获取请求消息头。 </p>
-</li>
-<li><p>属性： value：提供消息头名称 required：是否必须有此消息头 注： 在实际开发中一般不怎么用。</p>
-</li>
-<li><p>使用示例</p>
-<pre><code class="java">jsp 中代码：
-&lt;!-- RequestHeader 注解 --&gt;
-&lt;a href=&quot;springmvc/useRequestHeader&quot;&gt;获取请求消息头&lt;/a&gt;
-控制器中代码：
-/**
-* RequestHeader 注解
-* @param user
-* @return
-*/
-@RequestMapping(&quot;/useRequestHeader&quot;)
-public String useRequestHeader(@RequestHeader(value=&quot;Accept-Language&quot;,required=false)String requestHeader)&#123;
-    System.out.println(requestHeader);
-    return &quot;success&quot;;
-&#125;
-</code></pre>
-</li>
-</ul>
-<h4 id="CookieValue"><a href="#CookieValue" class="headerlink" title="CookieValue"></a>CookieValue</h4><ul>
-<li><p>作用： 用于把指定 cookie 名称的值传入控制器方法参数。 </p>
-</li>
-<li><p>属性： value：指定 cookie 的名称。 required：是否必须有此 cookie。</p>
-</li>
-<li><p>使用示例：</p>
-<pre><code class="java">jsp 中的代码：
-&lt;!-- CookieValue 注解 --&gt;
-&lt;a href=&quot;springmvc/useCookieValue&quot;&gt;绑定 cookie 的值&lt;/a&gt;
-控制器中的代码：
-/**
-* Cookie 注解注解
-*/
-@RequestMapping(&quot;/useCookieValue&quot;)
-public String useCookieValue(@CookieValue(value=&quot;JSESSIONID&quot;,required=false) String cookieValue)&#123;
-    System.out.println(cookieValue);
-    return &quot;success&quot;;
-&#125;
-</code></pre>
-</li>
-</ul>
-<h4 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="ModelAttribute"></a>ModelAttribute</h4><ul>
-<li><p>作用： 该注解是 SpringMVC4.3 版本以后新加入的。它可以用于修饰方法和参数。 </p>
-<ul>
-<li>出现在方法上，表示当前方法会在控制器的方法执行之前，先执行。它可以修饰没有返回值的方法，也可以修饰有具体返回值的方法。 </li>
-<li>出现在参数上，获取指定的数据给参数赋值。 </li>
-</ul>
-</li>
-<li><p>属性： value：用于获取数据的 key。key 可以是 POJO 的属性名称，也可以是 map 结构的 key。 </p>
-</li>
-<li><p>应用场景： 当表单提交数据不是完整的实体类数据时，保证没有提交数据的字段使用数据库对象原来的数据。 </p>
-<ul>
-<li>例如： 我们在编辑一个用户时，用户有一个创建信息字段，该字段的值是不允许被修改的。在提交表单数据是肯定没有此字段的内容，一旦更新会把该字段内容置为 null，此时就可以使用此注解解决问题。</li>
-</ul>
-</li>
-<li><p>使用示例1：基于 POJO 属性的基本使用，加了此注解的方法会在控制器方法之前执行</p>
-<pre><code class="java">jps 代码：
-&lt;!-- ModelAttribute 注解的基本使用 --&gt;
-&lt;a href=&quot;springmvc/testModelAttribute?username=test&quot;&gt;测试 modelattribute&lt;/a&gt;
-控制器代码：
-/**
-* 接收请求的方法，未被ModelAttribute修饰的方法
-*/
-@RequestMapping(&quot;/testModelAttribute&quot;)
-public String testModelAttribute(User user) &#123;
-    System.out.println(&quot;执行了控制器的方法&quot;+user.getUsername());
-    return &quot;success&quot;;
-&#125;
-/**
-* 被 ModelAttribute 修饰的方法
-*/
-@ModelAttribute
-public void showModel(User user) &#123;
-    System.out.println(&quot;执行了 showModel 方法&quot;+user.getUsername());
-&#125;
-结果：
-执行了 showModel 方法test
-执行了控制器的方法test
-</code></pre>
-</li>
-<li><p>使用示例2：基于 Map 的应用场景示例 ：ModelAttribute 修饰方法带返回值</p>
-<pre><code class="java">需求： 修改用户信息，要求用户的密码不能修改
-User类有三个属性，用户名，密码和年龄，表单提交了两个属性，没有提交密码，默认为null，在第一次执行showModel方法中，从数据库拿到user信息，其中包含的有密码，返回User对象，然后再传入testModelAttribute，这样传入的值就是表单传入的username和age外加数据库查到的密码
-
-jsp 的代码：
-&lt;!-- 修改用户信息 --&gt;
-&lt;form action=&quot;springmvc/updateUser&quot; method=&quot;post&quot;&gt;
-    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
-    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
-&lt;/form&gt;
-控制的代码：
-/**
-* 查询数据库中用户信息,加了@ModelAttribute优先执行，在数据库查到user对象后传入testModelAttribute中修改用户
-*/
-@ModelAttribute
-public User showModel(String username) &#123;
-    //模拟去数据库查询
-    User user = findUserByName(username);
-    System.out.println(&quot;执行了 showModel 方法&quot;+user);
-    return user;
-&#125;
-/**
-* 模拟修改用户方法
-*/
-@RequestMapping(&quot;/updateUser&quot;)
-public String testModelAttribute(User user) &#123;
-    System.out.println(&quot;控制器中处理请求的方法：修改用户：&quot;+user);
-    return &quot;success&quot;;
-&#125;
-/**
-* 模拟去数据库查询
-*/
-private User findUserByName(String username) &#123;
-    User user = new User();
-    user.setUsername(username);
-    user.setAge(19);
-    user.setPassword(&quot;123456&quot;);
-    return user;
-&#125;
-</code></pre>
-</li>
-<li><p>使用示例3：基于 Map 的应用场景示例 ：ModelAttribute 修饰方法不带返回值</p>
-<pre><code class="java">需求：修改用户信息，要求用户的密码不能修改
-User类有三个属性，用户名，密码和年龄，表单提交了两个属性，没有提交密码，默认为null，在第一次执行showModel方法中，从数据库拿到user信息，其中包含的有密码，因为没有返回值，所以保存在key为abc的map集合中，然后再通过在属性上加ModelAttribute注解，将key为abc的map集合中的值，赋值给user对象，再传入testModelAttribute，这样传入的值就是表单传入的username和age外加数据库查到的密码
-jsp中的代码：
-&lt;!-- 修改用户信息 --&gt;
-&lt;form action=&quot;springmvc/updateUser&quot; method=&quot;post&quot;&gt;
-    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
-    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
-    &lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
-&lt;/form&gt;
-控制器中的代码：
-/**
-* 查询数据库中用户信息
-*/
-@ModelAttribute
-public void showModel(String username,Map&lt;String,User&gt; map) &#123;
-    //模拟去数据库查询
-    User user = findUserByName(username);
-    System.out.println(&quot;执行了 showModel 方法&quot;+user);
-    map.put(&quot;abc&quot;,user);
-&#125;
-/**
-* 模拟修改用户方法
-*/
-@RequestMapping(&quot;/updateUser&quot;)
-public String testModelAttribute(@ModelAttribute(&quot;abc&quot;)User user) &#123;
-    System.out.println(&quot;控制器中处理请求的方法：修改用户：&quot;+user);
-    return &quot;success&quot;;
-&#125;
-/**
-* 模拟去数据库查询
-*/
-private User findUserByName(String username) &#123;
-    User user = new User();
-    user.setUsername(username);
-    user.setAge(19);
-    user.setPassword(&quot;123456&quot;);
-    return user;
-&#125;
-</code></pre>
-</li>
-</ul>
-<h4 id="SessionAttribute"><a href="#SessionAttribute" class="headerlink" title="SessionAttribute"></a>SessionAttribute</h4><ul>
-<li><p>作用： 用于多次执行控制器方法间的参数共享。 只能用在类上面</p>
-</li>
-<li><p>属性： value：用于指定存入的属性名称 type：用于指定存入的数据类型。</p>
-</li>
-<li><p>使用示例：</p>
-<pre><code class="java">jsp 中的代码：
-&lt;!-- SessionAttribute 注解的使用 --&gt;
-&lt;a href=&quot;springmvc/testPut&quot;&gt;存入 SessionAttribute&lt;/a&gt;
-&lt;hr/&gt;
-&lt;a href=&quot;springmvc/testGet&quot;&gt;取出 SessionAttribute&lt;/a&gt;
-&lt;hr/&gt;
-&lt;a href=&quot;springmvc/testClean&quot;&gt;清除 SessionAttribute&lt;/a&gt;
-控制器中的代码：
-/**
-* SessionAttribute 注解的使用
-*/
-@Controller(&quot;sessionAttributeController&quot;)
-@RequestMapping(&quot;/springmvc&quot;)
-@SessionAttributes(value =&#123;&quot;username&quot;,&quot;password&quot;,&quot;age&quot;&#125;,types=&#123;String.class,String.class,Integer.class&#125;)//向Session中存值
-public class SessionAttributeController &#123;
-/**
-* 把数据存入 SessionAttribute
-* @param model
-* @return
-* Model 是 spring 提供的一个接口，该接口有一个实现类 ExtendedModelMap
-* 该类继承了 ModelMap，而 ModelMap 就是 LinkedHashMap 子类
-* 使用model可以直接将数据以键值对方式存入request域中，不需要定义HttpServletRequest，降低耦合
-* 在类上加上SessionAttribute注解可以将数据再存入一份到Session中
-*/
-@RequestMapping(&quot;/testPut&quot;)
-public String testPut(Model model)&#123;
-     model.addAttribute(&quot;username&quot;, &quot;泰斯特&quot;);
-     model.addAttribute(&quot;password&quot;,&quot;123456&quot;);
-     model.addAttribute(&quot;age&quot;, 31);
-     //跳转之前将数据保存到 username、password 和 age 中，因为注解@SessionAttribute 中有这几个参数
-     return &quot;success&quot;;
- &#125;
-
- @RequestMapping(&quot;/testGet&quot;)
- public String testGet(ModelMap model)&#123;
-    System.out.println(model.get(&quot;username&quot;)+&quot;;&quot;+model.get(&quot;password&quot;)+&quot;;&quot;+model.get(&quot;age&quot;));
-     return &quot;success&quot;;//ModelMap中的get()方法时获取值
- &#125;
-
- @RequestMapping(&quot;/testClean&quot;)
- public String complete(SessionStatus sessionStatus)&#123;
-     sessionStatus.setComplete();//SessionStatus类中的setComplete()是删除session中的值
-     return &quot;success&quot;;
- &#125;
-&#125;
-</code></pre>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>SSM</category>
-      </categories>
-      <tags>
-        <tag>SSM</tag>
-        <tag>SpringMVC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>SpringMVC基本使用-下篇</title>
     <url>/2020/09/29/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%8B%E7%AF%87/</url>
     <content><![CDATA[<h2 id="SpringMVC基本使用-下篇"><a href="#SpringMVC基本使用-下篇" class="headerlink" title="SpringMVC基本使用-下篇"></a>SpringMVC基本使用-下篇</h2><h3 id="1-1-数据响应"><a href="#1-1-数据响应" class="headerlink" title="1.1 数据响应"></a>1.1 数据响应</h3><h4 id="1-1-1-返回值分类"><a href="#1-1-1-返回值分类" class="headerlink" title="1.1.1 返回值分类"></a>1.1.1 返回值分类</h4><ul>
@@ -18224,1259 +17820,407 @@ public class TestExceptionController &#123;
       </tags>
   </entry>
   <entry>
-    <title>JDBC基本使用</title>
-    <url>/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
-    <content><![CDATA[<h1 id="JDBC基本使用"><a href="#JDBC基本使用" class="headerlink" title="JDBC基本使用"></a>JDBC基本使用</h1><hr>
-<h2 id="一：JDBC概述"><a href="#一：JDBC概述" class="headerlink" title="一：JDBC概述"></a>一：JDBC概述</h2><h3 id="1-1-数据的持久化"><a href="#1-1-数据的持久化" class="headerlink" title="1.1 数据的持久化"></a>1.1 数据的持久化</h3><ul>
-<li><p>持久化(persistence)：<strong>把数据保存到可掉电式存储设备中以供之后使用</strong>。大多数情况下，特别是企业级应用，<strong>数据持久化意味着将内存中的数据保存到硬盘</strong>上加以”固化”<strong>，而持久化的实现过程大多通过各种关系数据库来完成</strong>。</p>
-</li>
-<li><p>持久化的主要应用是将内存中的数据存储在关系型数据库中，当然也可以存储在磁盘文件、XML数据文件中。</p>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566741430592.png" alt="1566741430592"> </p>
-</li>
+    <title>SpringMVC基本使用-中篇</title>
+    <url>/2020/09/28/SpringMVC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8-%E4%B8%AD%E7%AF%87/</url>
+    <content><![CDATA[<h2 id="SpringMVC基本使用-中篇"><a href="#SpringMVC基本使用-中篇" class="headerlink" title="SpringMVC基本使用-中篇"></a>SpringMVC基本使用-中篇</h2><h3 id="1-1-REST"><a href="#1-1-REST" class="headerlink" title="1.1 REST"></a>1.1 REST</h3><h4 id="1-1-1-概述：："><a href="#1-1-1-概述：：" class="headerlink" title="1.1.1 概述：："></a>1.1.1 概述：：</h4><ul>
+<li>REST：即 Representational State Transfer。（资源）表现层状态转化。是目前最流行的一种互联网软件架构。它结构清晰、符合标准、易于理解、扩展方便，所以正得到越来越多网站的采用</li>
+<li>资源（Resources）：网络上的一个实体，或者说是网络上的一个具体信息。 它可以是一段文本、一张图片、一首歌曲、一种服务，总之就是一个具体的存在。可以用一个 URI（统一 资源定位符）指向它，每种资源对应一个特定的 URI 。要 获取这个资源，访问它的 URI 就可以，因此 URI 即为每一个资源的独一无二的识别符。 </li>
+<li>表现层（Representation）：把资源具体呈现出来的形式，叫做它的表现层 （Representation）。 比如，文本可以用 txt 格式表现，也可以用 HTML 格式、XML 格式、JSON 格式表现，甚至可以采用二 进制格式。 </li>
+<li>状态转化（State Transfer）：每 发出一个请求，就代表了客户端和服务器的一次交互过程。 HTTP 协议，是一个无状态协议，即所有的状态都保存在服务器端。因此，如果客户端想要操作服务器， 必须通过某种手段，让服务器端发生“状态转化”（State Transfer）。而这种转化是建立在表现层之上的，所以 就是 “表现层状态转化”。</li>
+<li>具体说，就是 HTTP 协议里面，四个表示操作方式的动词：GET 、POST 、PUT、 DELETE。它们分别对应四种基本操作：GET 用来获取资源，POST 用来新建资源，PUT 用来更新资源，DELETE 用来 删除资源。</li>
 </ul>
-<h3 id="1-2-Java中的数据存储技术"><a href="#1-2-Java中的数据存储技术" class="headerlink" title="1.2 Java中的数据存储技术"></a>1.2 Java中的数据存储技术</h3><ul>
-<li><p>在Java中，数据库存取技术可分为如下几类：</p>
+<h4 id="1-1-2-HiddenHttpMethodFilter-过滤器"><a href="#1-1-2-HiddenHttpMethodFilter-过滤器" class="headerlink" title="1.1.2 HiddenHttpMethodFilter 过滤器"></a>1.1.2 HiddenHttpMethodFilter 过滤器</h4><ol>
+<li><p>浏览器 form 表单只支持 GET 与 POST 请求，而 DELETE、PUT 等 method 并不 支持，Spring3.0 添加了一个过滤器，可以将这些请求转换为标准的 http 方法，使 得支持 GET、POST、PUT 与 DELETE 请求。</p>
+</li>
+<li><p>使用方法： </p>
 <ul>
-<li><p><strong>JDBC</strong>直接访问数据库</p>
-</li>
-<li><p>JDO (Java Data Object )技术</p>
-</li>
-<li><p><strong>第三方O/R工具</strong>，如Hibernate, Mybatis 等</p>
-</li>
+<li>在 web.xml 中配置HiddenHttpMethodFilter过滤器。 </li>
 </ul>
-</li>
-<li><p>JDBC是java访问数据库的基石，JDO、Hibernate、MyBatis等只是更好的封装了JDBC。</p>
-</li>
-</ul>
-<h3 id="1-3-JDBC介绍"><a href="#1-3-JDBC介绍" class="headerlink" title="1.3 JDBC介绍"></a>1.3 JDBC介绍</h3><ul>
-<li>JDBC(Java Database Connectivity)是一个<strong>独立于特定数据库管理系统、通用的SQL数据库存取和操作的公共接口</strong>（一组API），定义了用来访问数据库的标准Java类库，（<strong>java.sql,javax.sql</strong>）使用这些类库可以以一种<strong>标准</strong>的方法、方便地访问数据库资源。</li>
-<li>JDBC为访问不同的数据库提供了一种<strong>统一的途径</strong>，为开发者屏蔽了一些细节问题。</li>
-<li>JDBC的目标是使Java程序员使用JDBC可以连接任何<strong>提供了JDBC驱动程序</strong>的数据库系统，这样就使得程序员无需对特定的数据库系统的特点有过多的了解，从而大大简化和加快了开发过程。</li>
-<li>如果没有JDBC，那么Java程序访问数据库时是这样的：</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555575760234.png" alt="1555575760234"></p>
-<hr>
-<ul>
-<li>有了JDBC，Java程序访问数据库时是这样的：</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555575981203.png" alt="1555575981203"></p>
-<hr>
-<ul>
-<li>总结如下：</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566741692804.png" alt="1566741692804"></p>
-<h3 id="1-4-JDBC体系结构"><a href="#1-4-JDBC体系结构" class="headerlink" title="1.4 JDBC体系结构"></a>1.4 JDBC体系结构</h3><ul>
-<li>JDBC接口（API）包括两个层次：<ul>
-<li><strong>面向应用的API</strong>：Java API，抽象接口，供应用程序开发人员使用（连接数据库，执行SQL语句，获得结果）。</li>
-<li> <strong>面向数据库的API</strong>：Java Driver API，供开发商开发数据库驱动程序用。</li>
-</ul>
-</li>
-</ul>
-<blockquote>
-<p><strong>JDBC是sun公司提供一套用于数据库操作的接口，java程序员只需要面向这套接口编程即可。</strong></p>
-<p><strong>不同的数据库厂商，需要针对这套接口，提供不同实现。不同的实现的集合，即为不同数据库的驱动。                                                                ————面向接口编程</strong></p>
-</blockquote>
-<h3 id="1-5-JDBC程序编写步骤"><a href="#1-5-JDBC程序编写步骤" class="headerlink" title="1.5 JDBC程序编写步骤"></a>1.5 JDBC程序编写步骤</h3><p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1565969323908.png" alt="1565969323908"></p>
-<blockquote>
-<p>补充：ODBC(<strong>Open Database Connectivity</strong>，开放式数据库连接)，是微软在Windows平台下推出的。使用者在程序中只需要调用ODBC API，由 ODBC 驱动程序将调用转换成为对特定的数据库的调用请求。</p>
-</blockquote>
-<h2 id="二：获取数据库连接"><a href="#二：获取数据库连接" class="headerlink" title="二：获取数据库连接"></a>二：获取数据库连接</h2><h3 id="2-1-要素一：Driver接口实现类"><a href="#2-1-要素一：Driver接口实现类" class="headerlink" title="2.1 要素一：Driver接口实现类"></a>2.1 要素一：Driver接口实现类</h3><h4 id="2-1-1-Driver接口介绍"><a href="#2-1-1-Driver接口介绍" class="headerlink" title="2.1.1 Driver接口介绍"></a>2.1.1 Driver接口介绍</h4><ul>
-<li><p>java.sql.Driver 接口是所有 JDBC 驱动程序需要实现的接口。这个接口是提供给数据库厂商使用的，不同数据库厂商提供不同的实现。</p>
-</li>
-<li><p>在程序中不需要直接去访问实现了 Driver 接口的类，而是由驱动程序管理器类(java.sql.DriverManager)去调用这些Driver实现。</p>
-<ul>
-<li>Oracle的驱动：<strong>oracle.jdbc.driver.OracleDriver</strong></li>
-<li>mySql的驱动： <strong>com.mysql.jdbc.Driver</strong></li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555576157618.png" alt="1555576157618"></p>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555576170074.png" alt="1555576170074"></p>
-<ul>
-<li><p>将上述jar包拷贝到Java工程的一个目录中，习惯上新建一个lib文件夹。</p>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566134718955.png" alt="1566134718955"></p>
-</li>
-</ul>
-<p>在驱动jar上右键–&gt;Build Path–&gt;Add to Build Path</p>
-<p> <img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566134781682.png" alt="1566134781682"></p>
-<p>注意：如果是Dynamic Web Project（动态的web项目）话，则是把驱动jar放到WebContent（有的开发工具叫WebRoot）目录中的WEB-INF目录中的lib目录下即可</p>
-<p> <img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566135290460.png" alt="1566135290460"></p>
-<h4 id="2-1-2-加载与注册JDBC驱动"><a href="#2-1-2-加载与注册JDBC驱动" class="headerlink" title="2.1.2 加载与注册JDBC驱动"></a>2.1.2 加载与注册JDBC驱动</h4><ul>
-<li><p>加载驱动：加载 JDBC 驱动需调用 Class 类的静态方法 forName()，向其传递要加载的 JDBC 驱动的类名</p>
-<ul>
-<li><strong>Class.forName(“com.mysql.jdbc.Driver”);</strong></li>
-</ul>
-</li>
-<li><p>注册驱动：DriverManager 类是驱动程序管理器类，负责管理驱动程序</p>
-<ul>
-<li><p><strong>使用DriverManager.registerDriver(com.mysql.jdbc.Driver类的对象)来注册驱动</strong></p>
-</li>
-<li><p>通常不用显式调用 DriverManager 类的 registerDriver() 方法来注册驱动程序类的实例，因为 Driver 接口的驱动程序类<strong>都</strong>包含了静态代码块，在这个静态代码块中，会调用 DriverManager.registerDriver() 方法来注册自身的一个实例。下图是MySQL的Driver实现类的源码：</p>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566136831283.png" alt="1566136831283"></p>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-2-要素二：URL"><a href="#2-2-要素二：URL" class="headerlink" title="2.2 要素二：URL"></a>2.2 要素二：URL</h3><ul>
-<li><p>JDBC URL 用于标识一个被注册的驱动程序，驱动程序管理器通过这个 URL 选择正确的驱动程序，从而建立到数据库的连接。</p>
-</li>
-<li><p>JDBC URL的标准由三部分组成，各部分间用冒号分隔。 </p>
-<ul>
-<li><strong>jdbc:子协议:子名称</strong></li>
-<li><strong>协议</strong>：JDBC URL中的协议总是jdbc </li>
-<li><strong>子协议</strong>：子协议用于标识一个数据库驱动程序</li>
-<li><strong>子名称</strong>：一种标识数据库的方法。子名称可以依不同的子协议而变化，用子名称的目的是为了<strong>定位数据库</strong>提供足够的信息。包含<strong>主机名</strong>(对应服务端的ip地址)<strong>，端口号，数据库名</strong></li>
-</ul>
-</li>
-<li><p>举例：</p>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555576477107.png" alt="1555576477107"></p>
-</li>
-<li><p><strong>几种常用数据库的 JDBC URL</strong></p>
-<ul>
-<li><p>MySQL的连接URL编写方式：</p>
-<ul>
-<li>jdbc:mysql://主机名称:mysql服务端口号/数据库名称?参数=值&amp;参数=值</li>
-<li>jdbc:mysql://localhost:3306/test</li>
-<li>jdbc:mysql://localhost:3306/test**?useUnicode=true&amp;characterEncoding=utf8**（如果JDBC程序与服务器端的字符集不一致，会导致乱码，那么可以通过参数指定服务器端的字符集）</li>
-<li>jdbc:mysql://localhost:3306/test?user=root&amp;password=123456</li>
-</ul>
-</li>
-<li><p>Oracle 9i的连接URL编写方式：</p>
-<ul>
-<li>jdbc:oracle:thin:@主机名称:oracle服务端口号:数据库名称</li>
-<li>jdbc:oracle:thin:@localhost:1521:test</li>
-</ul>
-</li>
-<li><p>SQLServer的连接URL编写方式：</p>
-<ul>
-<li><p>jdbc:sqlserver://主机名称:sqlserver服务端口号:DatabaseName=数据库名称</p>
-</li>
-<li><p>jdbc:sqlserver://localhost:1433:DatabaseName=test</p>
-</li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="2-3-要素三：用户名和密码"><a href="#2-3-要素三：用户名和密码" class="headerlink" title="2.3 要素三：用户名和密码"></a>2.3 要素三：用户名和密码</h3><ul>
-<li>user,password可以用“属性名=属性值”方式告诉数据库</li>
-<li>可以调用 DriverManager 类的 getConnection() 方法建立到数据库的连接</li>
-</ul>
-<h3 id="2-4-数据库连接方式举例"><a href="#2-4-数据库连接方式举例" class="headerlink" title="2.4 数据库连接方式举例"></a>2.4 数据库连接方式举例</h3><h4 id="2-4-1-连接方式一"><a href="#2-4-1-连接方式一" class="headerlink" title="2.4.1 连接方式一"></a>2.4.1 连接方式一</h4><pre><code class="java">    @Test
-    public void testConnection1() &#123;
-        try &#123;
-            //1.导入jar包
-            //2.注册驱动(MySql 5.0 之后可以省略)
-            //Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
-            
-            //1.提供java.sql.Driver接口实现类的对象
-            Driver driver = null;
-            driver = new com.mysql.jdbc.Driver();
-
-            //2.提供url，指明具体操作的数据
-            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
-
-            //3.提供Properties的对象，指明用户名和密码
-            Properties info = new Properties();
-            info.setProperty(&quot;user&quot;, &quot;root&quot;);
-            info.setProperty(&quot;password&quot;, &quot;abc123&quot;);
-
-            //4.调用driver的connect()，获取连接
-            Connection conn = driver.connect(url, info);
-            System.out.println(conn);
-        &#125; catch (SQLException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-</code></pre>
-<blockquote>
-<p>说明：上述代码中显式出现了第三方数据库的API：com.mysql.jdbc.Driver()</p>
-</blockquote>
-<h4 id="2-4-2-连接方式二"><a href="#2-4-2-连接方式二" class="headerlink" title="2.4.2 连接方式二"></a>2.4.2 连接方式二</h4><pre><code class="java">    @Test
-    public void testConnection2() &#123;
-        try &#123;
-            //1.实例化Driver
-            String className = &quot;com.mysql.jdbc.Driver&quot;;
-            Class clazz = Class.forName(className);
-            Driver driver = (Driver) clazz.newInstance();
-
-            //2.提供url，指明具体操作的数据
-            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
-
-            //3.提供Properties的对象，指明用户名和密码
-            Properties info = new Properties();
-            info.setProperty(&quot;user&quot;, &quot;root&quot;);
-            info.setProperty(&quot;password&quot;, &quot;abc123&quot;);
-
-            //4.调用driver的connect()，获取连接
-            Connection conn = driver.connect(url, info);
-            System.out.println(conn);
-
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-</code></pre>
-<blockquote>
-<p>说明：相较于方式一，这里使用反射实例化Driver，不在代码中体现第三方数据库的API。体现了面向接口编程思想。</p>
-</blockquote>
-<h4 id="2-4-3-连接方式三"><a href="#2-4-3-连接方式三" class="headerlink" title="2.4.3 连接方式三"></a>2.4.3 连接方式三</h4><pre><code class="java">    @Test
-    public void testConnection3() &#123;
-        try &#123;
-            //1.数据库连接的4个基本要素：
-            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
-            String user = &quot;root&quot;;
-            String password = &quot;abc123&quot;;
-            String driverName = &quot;com.mysql.jdbc.Driver&quot;;
-
-            //2.实例化Driver
-            Class clazz = Class.forName(driverName);
-            Driver driver = (Driver) clazz.newInstance();
-            //3.注册驱动
-            DriverManager.registerDriver(driver);
-            //4.获取连接
-            Connection conn = DriverManager.getConnection(url, user, password);
-            System.out.println(conn);
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-
-    &#125;
-</code></pre>
-<blockquote>
-<p>说明：使用DriverManager实现数据库的连接。体会获取连接必要的4个基本要素。</p>
-</blockquote>
-<h4 id="2-4-4-连接方式四"><a href="#2-4-4-连接方式四" class="headerlink" title="2.4.4 连接方式四"></a>2.4.4 连接方式四</h4><pre><code class="java">    @Test
-    public void testConnection4() &#123;
-        try &#123;
-            //1.数据库连接的4个基本要素：
-            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
-            String user = &quot;root&quot;;
-            String password = &quot;abc123&quot;;
-            String driverName = &quot;com.mysql.jdbc.Driver&quot;;
-
-            //2.加载驱动 （①实例化Driver ②注册驱动）
-            Class.forName(driverName);
-
-            //Class clazz = Class.forName(driverName);
-            //Driver driver = (Driver) clazz.newInstance();
-            //3.注册驱动
-            //DriverManager.registerDriver(driver);
-            /*
-            可以注释掉上述代码的原因，是因为在mysql的Driver类中声明有：
-            static &#123;
-                try &#123;
-                    DriverManager.registerDriver(new Driver());
-                &#125; catch (SQLException var1) &#123;
-                    throw new RuntimeException(&quot;Can&#39;t register driver!&quot;);
-                &#125;
-            &#125;
-
-             */
-
-
-            //3.获取连接
-            Connection conn = DriverManager.getConnection(url, user, password);
-            System.out.println(conn);
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;
-
-    &#125;
-</code></pre>
-<blockquote>
-<p>说明：不必显式的注册驱动了。因为在DriverManager的源码中已经存在静态代码块，实现了驱动的注册。</p>
-</blockquote>
-<h4 id="2-4-5-连接方式五-最终版"><a href="#2-4-5-连接方式五-最终版" class="headerlink" title="2.4.5 连接方式五(最终版)"></a>2.4.5 连接方式五(最终版)</h4><pre><code class="java">    @Test
-    public  void testConnection5() throws Exception &#123;
-        //1.加载配置文件
-        InputStream is = ConnectionTest.class.getClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
-        Properties pros = new Properties();
-        pros.load(is);
-        
-        //2.读取配置信息
-        String user = pros.getProperty(&quot;user&quot;);
-        String password = pros.getProperty(&quot;password&quot;);
-        String url = pros.getProperty(&quot;url&quot;);
-        String driverClass = pros.getProperty(&quot;driverClass&quot;);
-
-        //3.加载驱动
-        Class.forName(driverClass);
-
-        //4.获取连接
-        Connection conn = DriverManager.getConnection(url,user,password);
-        System.out.println(conn);
-
-    &#125;
-</code></pre>
-<p>其中，配置文件声明在工程的src目录下：【jdbc.properties】</p>
-<pre><code class="properties">user=root
-password=abc123
-url=jdbc:mysql://localhost:3306/test
-driverClass=com.mysql.jdbc.Driver
-</code></pre>
-<blockquote>
-<p>说明：使用配置文件的方式保存配置信息，在代码中加载配置文件</p>
-<p><strong>使用配置文件的好处：</strong></p>
-<p>①实现了代码和数据的分离，如果需要修改配置信息，直接在配置文件中修改，不需要深入代码<br>②如果修改了配置信息，省去重新编译的过程。</p>
-</blockquote>
-<h2 id="三：使用PreparedStatement实现CRUD操作"><a href="#三：使用PreparedStatement实现CRUD操作" class="headerlink" title="三：使用PreparedStatement实现CRUD操作"></a>三：使用PreparedStatement实现CRUD操作</h2><h3 id="3-1-操作和访问数据库"><a href="#3-1-操作和访问数据库" class="headerlink" title="3.1 操作和访问数据库"></a>3.1 操作和访问数据库</h3><ul>
-<li><p>数据库连接被用于向数据库服务器发送命令和 SQL 语句，并接受数据库服务器返回的结果。其实一个数据库连接就是一个Socket连接。</p>
-</li>
-<li><p>在 java.sql 包中有 3 个<strong>接口</strong>分别定义了对数据库的调用的不同方式：</p>
-<ul>
-<li><code>Statemen</code>t：用于执行静态 SQL 语句并返回它所生成结果的对象。 </li>
-<li><code>PrepatedStatement</code>：SQL 语句被预编译并存储在此对象中，可以使用此对象多次高效地执行该语句。</li>
-<li><code>CallableStatement</code>：用于执行 SQL 存储过程</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566573842140.png" alt="1566573842140"></p>
-</li>
-</ul>
-<h3 id="3-2-使用Statement操作数据表的弊端：SQL注入"><a href="#3-2-使用Statement操作数据表的弊端：SQL注入" class="headerlink" title="3.2 使用Statement操作数据表的弊端：SQL注入"></a>3.2 使用Statement操作数据表的弊端：SQL注入</h3><ul>
-<li><p>通过调用 Connection 对象的 createStatement() 方法创建该对象。该对象用于执行静态的 SQL 语句，并且返回执行结果。</p>
-</li>
-<li><p>Statement 接口中定义了下列方法用于执行 SQL 语句：</p>
-<pre><code class="sql">int excuteUpdate(String sql)：执行更新操作INSERT、UPDATE、DELETE
-ResultSet executeQuery(String sql)：执行查询操作SELECT
+<p>web.xml配置文件</p>
+<pre><code class="xml">&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd&quot;
+         version=&quot;4.0&quot;&gt;
+    &lt;filter&gt;
+        &lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;org.springframework.web.filter.HiddenHttpMethodFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;filter-mapping&gt;
+        &lt;filter-name&gt;HiddenHttpMethodFilter&lt;/filter-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+    &lt;servlet&gt;
+        &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;
+        &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;/servlet&gt;
+    &lt;servlet-mapping&gt;
+        &lt;servlet-name&gt;springMVC&lt;/servlet-name&gt;
+        &lt;url-pattern&gt;/&lt;/url-pattern&gt;
+    &lt;/servlet-mapping&gt;
+&lt;/web-app&gt;
 </code></pre>
 </li>
-<li><p>但是使用Statement操作数据表存在弊端：</p>
-<ul>
-<li><strong>问题一：存在拼串操作，繁琐</strong></li>
-<li><strong>问题二：存在SQL注入问题</strong></li>
-</ul>
-</li>
-<li><p>SQL 注入是利用某些系统没有对用户输入的数据进行充分的检查，而在用户输入数据中注入非法的 SQL 语句段或命令(如：SELECT user, password FROM user_table WHERE user=’a’ OR 1 = ‘ AND password = ‘ OR ‘1’ = ‘1’) ，从而利用系统的 SQL 引擎完成恶意行为的做法。</p>
-</li>
-<li><p>对于 Java 而言，要防范 SQL 注入，只要用 PreparedStatement(从Statement扩展而来) 取代 Statement 就可以了。</p>
-</li>
-<li><p>代码演示：</p>
-</li>
-</ul>
-<pre><code class="java">public class StatementTest &#123;
-
-    // 使用Statement的弊端：需要拼写sql语句，并且存在SQL注入的问题
-    @Test
-    public void testLogin() &#123;
-        Scanner scan = new Scanner(System.in);
-
-        System.out.print(&quot;用户名：&quot;);
-        String userName = scan.nextLine();
-        System.out.print(&quot;密   码：&quot;);
-        String password = scan.nextLine();
-        
-        //SELECT * FROM customers WHERE id=1 AND NAME = &#39;汪峰&#39;
-        // SELECT user,password FROM user_table WHERE USER = &#39;1&#39; or &#39; AND PASSWORD = &#39;=&#39;1&#39; or &#39;1&#39; = &#39;1&#39;;
-        String sql = &quot;SELECT user,password FROM user_table WHERE user = &#39;&quot; + userName + &quot;&#39; AND password = &#39;&quot; + password + &quot;&#39;&quot;;//需要拼串，繁琐
-        User user = get(sql, User.class);
-        if (user != null) &#123;
-            System.out.println(&quot;登陆成功!&quot;);
-        &#125; else &#123;
-            System.out.println(&quot;用户名或密码错误！&quot;);
-        &#125;
-    &#125;
-
-    // 使用Statement实现对数据表的查询操作
-    public &lt;T&gt; T get(String sql, Class&lt;T&gt; clazz) &#123;
-        T t = null;
-
-        Connection conn = null;
-        Statement st = null;
-        ResultSet rs = null;
-        try &#123;
-            // 1.加载配置文件
-            InputStream is = StatementTest.class.getClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
-            Properties pros = new Properties();
-            pros.load(is);
-
-            // 2.读取配置信息
-            String user = pros.getProperty(&quot;user&quot;);
-            String password = pros.getProperty(&quot;password&quot;);
-            String url = pros.getProperty(&quot;url&quot;);
-            String driverClass = pros.getProperty(&quot;driverClass&quot;);
-
-            // 3.加载驱动
-            Class.forName(driverClass);
-
-            // 4.获取连接
-            conn = DriverManager.getConnection(url, user, password);
-
-            st = conn.createStatement();
-
-            rs = st.executeQuery(sql);
-
-            // 获取结果集的元数据
-            ResultSetMetaData rsmd = rs.getMetaData();
-
-            // 获取结果集的列数
-            int columnCount = rsmd.getColumnCount();
-
-            if (rs.next()) &#123;
-                t = clazz.newInstance();
-                for (int i = 0; i &lt; columnCount; i++) &#123;
-                    // //1. 获取列的名称
-                    // String columnName = rsmd.getColumnName(i+1);
-
-                    // 1. 获取列的别名
-                    String columnName = rsmd.getColumnLabel(i + 1);
-
-                    // 2. 根据列名获取对应数据表中的数据
-                    Object columnVal = rs.getObject(columnName);
-
-                    // 3. 将数据表中得到的数据，封装进对象
-                    Field field = clazz.getDeclaredField(columnName);
-                    field.setAccessible(true);
-                    field.set(t, columnVal);
-                &#125;
-                return t;
-            &#125;
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125; finally &#123;
-            // 关闭资源
-            if (rs != null) &#123;
-                try &#123;
-                    rs.close();
-                &#125; catch (SQLException e) &#123;
-                    e.printStackTrace();
-                &#125;
-            &#125;
-            if (st != null) &#123;
-                try &#123;
-                    st.close();
-                &#125; catch (SQLException e) &#123;
-                    e.printStackTrace();
-                &#125;
-            &#125;
-            if (conn != null) &#123;
-                try &#123;
-                    conn.close();
-                &#125; catch (SQLException e) &#123;
-                    e.printStackTrace();
-                &#125;
-            &#125;
-        &#125;
-        return null;
-    &#125;
-&#125;
-</code></pre>
-<p>综上：</p>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566569819744.png" alt="1566569819744"></p>
-<h3 id="3-3-PreparedStatement的使用"><a href="#3-3-PreparedStatement的使用" class="headerlink" title="3.3 PreparedStatement的使用"></a>3.3 PreparedStatement的使用</h3><h4 id="3-3-1-PreparedStatement介绍"><a href="#3-3-1-PreparedStatement介绍" class="headerlink" title="3.3.1 PreparedStatement介绍"></a>3.3.1 PreparedStatement介绍</h4><ul>
-<li><p>可以通过调用 Connection 对象的 <strong>preparedStatement(String sql)</strong> 方法获取 PreparedStatement 对象</p>
-</li>
-<li><p><strong>PreparedStatement 接口是 Statement 的子接口，它表示一条预编译过的 SQL 语句</strong></p>
-</li>
-<li><p>PreparedStatement 对象所代表的 SQL 语句中的参数用问号(?)来表示，调用 PreparedStatement 对象的 setXxx() 方法来设置这些参数. setXxx() 方法有两个参数，第一个参数是要设置的 SQL 语句中的参数的索引(从 1 开始)，第二个是设置的 SQL 语句中的参数的值</p>
-</li>
-</ul>
-<h4 id="3-3-2-PreparedStatement-vs-Statement"><a href="#3-3-2-PreparedStatement-vs-Statement" class="headerlink" title="3.3.2 PreparedStatement vs Statement"></a>3.3.2 PreparedStatement vs Statement</h4><ul>
-<li><p>代码的可读性和可维护性。</p>
-</li>
-<li><p><strong>PreparedStatement 能最大可能提高性能：</strong></p>
-<ul>
-<li>DBServer会对<strong>预编译</strong>语句提供性能优化。因为预编译语句有可能被重复调用，所以<u>语句在被DBServer的编译器编译后的执行代码被缓存下来，那么下次调用时只要是相同的预编译语句就不需要编译，只要将参数直接传入编译过的语句执行代码中就会得到执行。</u></li>
-<li>在statement语句中,即使是相同操作但因为数据内容不一样,所以整个语句本身不能匹配,没有缓存语句的意义.事实是没有数据库会对普通语句编译后的执行代码缓存。这样<u>每执行一次都要对传入的语句编译一次。</u></li>
-<li>(语法检查，语义检查，翻译成二进制命令，缓存)</li>
-</ul>
-</li>
-<li><p>PreparedStatement 可以防止 SQL 注入 </p>
-</li>
-</ul>
-<h4 id="3-3-3-Java与SQL对应数据类型转换表"><a href="#3-3-3-Java与SQL对应数据类型转换表" class="headerlink" title="3.3.3 Java与SQL对应数据类型转换表"></a>3.3.3 Java与SQL对应数据类型转换表</h4><table>
-<thead>
-<tr>
-<th>Java类型</th>
-<th>SQL类型</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>boolean</td>
-<td>BIT</td>
-</tr>
-<tr>
-<td>byte</td>
-<td>TINYINT</td>
-</tr>
-<tr>
-<td>short</td>
-<td>SMALLINT</td>
-</tr>
-<tr>
-<td>int</td>
-<td>INTEGER</td>
-</tr>
-<tr>
-<td>long</td>
-<td>BIGINT</td>
-</tr>
-<tr>
-<td>String</td>
-<td>CHAR,VARCHAR,LONGVARCHAR</td>
-</tr>
-<tr>
-<td>byte   array</td>
-<td>BINARY  ,    VAR BINARY</td>
-</tr>
-<tr>
-<td>java.sql.Date</td>
-<td>DATE</td>
-</tr>
-<tr>
-<td>java.sql.Time</td>
-<td>TIME</td>
-</tr>
-<tr>
-<td>java.sql.Timestamp</td>
-<td>TIMESTAMP</td>
-</tr>
-</tbody></table>
-<h4 id="3-3-4-创建数据库工具类JDBCUtils"><a href="#3-3-4-创建数据库工具类JDBCUtils" class="headerlink" title="3.3.4 创建数据库工具类JDBCUtils"></a>3.3.4 创建数据库工具类JDBCUtils</h4><ul>
-<li>方式一</li>
-</ul>
-<pre><code class="java">public class JDBCUtils &#123;
-    /*
-     获取数据库的连接
-     */
-    public static Connection getConnection() throws Exception &#123;
-        // 1.读取配置文件中的4个基本信息
-        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
-        //两种方式均可
-        //InputStream is = JDBCUtils.class.ClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
-        Properties pros = new Properties();
-        pros.load(is);
-
-        String user = pros.getProperty(&quot;user&quot;);
-        String password = pros.getProperty(&quot;password&quot;);
-        String url = pros.getProperty(&quot;url&quot;);
-        String driverClass = pros.getProperty(&quot;driverClass&quot;);
-
-        // 2.加载驱动
-        Class.forName(driverClass);
-
-        // 3.获取连接
-        Connection conn = DriverManager.getConnection(url, user, password);
-        return conn;
-    &#125;
-    /*
-     * 关闭连接和Statement的操作，方法的重载
-     */
-    public static void closeResource(Connection conn,Statement ps)&#123;
-        try &#123;
-            if(ps != null)
-                ps.close();
-        &#125; catch (SQLException e) &#123;
-            e.printStackTrace();
-        &#125;
-        try &#123;
-            if(conn != null)
-                conn.close();
-        &#125; catch (SQLException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-    /*
-     *关闭资源操作，方法的重载
-     */
-    public static void closeResource(Connection conn,Statement ps,ResultSet rs)&#123;
-        try &#123;
-            if(ps != null)
-                ps.close();
-        &#125; catch (SQLException e) &#123;
-            e.printStackTrace();
-        &#125;
-        try &#123;
-            if(conn != null)
-                conn.close();
-        &#125; catch (SQLException e) &#123;
-            e.printStackTrace();
-        &#125;
-        try &#123;
-            if(rs != null)
-                rs.close();
-        &#125; catch (SQLException e) &#123;
-            e.printStackTrace();
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>方式二：</p>
-<pre><code class="java">public class JDBCUtils &#123;
-    private static String url;
-    private static String user;
-    private static String password;
-    private static String driver;
-    /*
-    文件的读取，只需要读取一次即可拿到这些值，静态代码快
-     */
-    static &#123;
-        //读取资源文件，获取值
-        try &#123;
-            //1.创建properties对象
-            Properties pro=new Properties();
-
-            //获取src路径下文件的方式：classloader 类加载器
-            ClassLoader classLoader = JDBCUtils.class.getClassLoader();
-            URL res = classLoader.getResource(&quot;jdbc.properties&quot;);
-            String path = res.getPath();
-            //2.加载文件
-//            pro.load(new FileReader(&quot;src/jdbc.properties&quot;));
-            pro.load(new FileReader(path));
-            //3.获取数据，赋值
-            url=pro.getProperty(&quot;url&quot;);
-            user = pro.getProperty(&quot;user&quot;);
-            password = pro.getProperty(&quot;password&quot;);
-            driver = pro.getProperty(&quot;driver&quot;);
-            //4.注册驱动
-            Class.forName(driver);
-        &#125; catch (IOException e) &#123;
-            e.printStackTrace();
-        &#125; catch (ClassNotFoundException e) &#123;
-            e.printStackTrace();
-        &#125;
-
-    &#125;
-    /*
-    获取连接，返回连接对象
-     */
-    public static Connection getConnection() throws SQLException &#123;
-        return DriverManager.getConnection(url,user,password);
-    &#125;
-
-    /*
-    释放资源,close()
-     */
-    public static void close(ResultSet rs, Connection conn, Statement stmt)&#123;
-        if (rs != null)&#123;
-            try &#123;
-                rs.close();
-            &#125; catch (SQLException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-        if (stmt != null)&#123;
-            try &#123;
-                stmt.close();
-            &#125; catch (SQLException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-        if (conn!=null)&#123;
-            try &#123;
-                conn.close();
-            &#125; catch (SQLException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-    &#125;
-    public static void close(Connection conn, Statement stmt)&#123;
-        if (stmt != null)&#123;
-            try &#123;
-                stmt.close();
-            &#125; catch (SQLException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-        if (conn!=null)&#123;
-            try &#123;
-                conn.close();
-            &#125; catch (SQLException e) &#123;
-                e.printStackTrace();
-            &#125;
-        &#125;
-    &#125;
-&#125;
-</code></pre>
-<h4 id="3-3-5-使用PreparedStatement实现增、删、改操作"><a href="#3-3-5-使用PreparedStatement实现增、删、改操作" class="headerlink" title="3.3.5 使用PreparedStatement实现增、删、改操作"></a>3.3.5 使用PreparedStatement实现增、删、改操作</h4><ul>
-<li>单独的增删改</li>
-</ul>
-<pre><code class="java">//增：insert 用execute()方法
-    @Test
-    public void test1()&#123;
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        try &#123;
-            connection = JDBCUtils.getConnection();
-            String sql= &quot;insert into customers(name,email,birth)values(?,?,?)&quot;;
-            preparedStatement = connection.prepareStatement(sql);
-            //设置值
-            preparedStatement.setString(1,&quot;哪吒&quot;);//表示第一个？设置String类型的名字
-            preparedStatement.setString(2,&quot;nezha@163.com&quot;);
-            //转换Date
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
-            java.util.Date parse = simpleDateFormat.parse(&quot;1000-01-01&quot;);
-            preparedStatement.setDate(3,new Date(parse.getTime()));//毫秒值一样
-            //执行，execute()方法返回一个boolean值，executeUpdate()有返回int值，返回更新了几条数据
-            preparedStatement.execute();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;finally &#123;
-            //资源关闭
-            JDBCUtils.closeResource(connection,preparedStatement);
-        &#125;
-
-    &#125;
-//改 update，修改customers表的一条记录
-    @Test
-    public void testUpdate()&#123;
-        Connection conn = null;
-        PreparedStatement ps = null;
-        try &#123;
-            //1.获取数据库的连接
-            conn = JDBCUtils.getConnection();
-            //2.预编译sql语句，返回PreparedStatement的实例
-            String sql = &quot;update customers set name = ? where id = ?&quot;;
-            ps = conn.prepareStatement(sql);
-            //3.填充占位符
-            ps.setObject(1,&quot;莫扎特&quot;);
-            ps.setObject(2, 18);
-            //4.执行
-            ps.execute();
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;finally&#123;
-            //5.资源的关闭
-            JDBCUtils.closeResource(conn, ps);
-            
-        &#125;
-    &#125;
-</code></pre>
-<ul>
-<li>通用的增删改操作：就sql语句不一样，占位符？数量不一样，参数类型不一样，统一为object</li>
-</ul>
-<pre><code class="java">    //通用的增、删、改操作（体现一：增、删、改 ； 体现二：针对于不同的表）
-    public void update(String sql,Object ... args)&#123;//可变形参的个数与占位符一致
-        Connection conn = null;
-        PreparedStatement ps = null;
-        try &#123;
-            //1.获取数据库的连接
-            conn = JDBCUtils.getConnection();
-            
-            //2.获取PreparedStatement的实例 (或：预编译sql语句)
-            ps = conn.prepareStatement(sql);
-            //3.填充占位符
-            for(int i = 0;i &lt; args.length;i++)&#123;
-                ps.setObject(i + 1, args[i]);
-            &#125;
-            
-            //4.执行sql语句
-            ps.execute();
-        &#125; catch (Exception e) &#123;
-            
-            e.printStackTrace();
-        &#125;finally&#123;
-            //5.关闭资源
-            JDBCUtils.closeResource(conn, ps);
-            
-        &#125;
-    &#125;
-//使用
-@Test
-    public void testCommonUpdate()&#123;
-        //增删改均可，不需要获取连接，直接在update中定义了，后面处理事务则需要把连接放在外面定义
-//        String sql = &quot;delete from customers where id = ?&quot;;
-//        update(sql,3);
-        
-        String sql = &quot;update `order` set order_name = ? where order_id = ?&quot;;//表order是关键字，需要用``包裹(1旁边的按键)
-        update(sql,&quot;DD&quot;,&quot;2&quot;);
-    &#125;
-</code></pre>
-<h4 id="3-3-6-使用PreparedStatement实现查询操作"><a href="#3-3-6-使用PreparedStatement实现查询操作" class="headerlink" title="3.3.6 使用PreparedStatement实现查询操作"></a>3.3.6 使用PreparedStatement实现查询操作</h4><p>查找会返回一个结果集，executeQuery查询之后返回的是ResultSet接口的对象</p>
-<pre><code class="java">@Test
-    public void testQuery1() &#123;
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet resultSet = null;
-        try &#123;
-            conn = JDBCUtils.getConnection();
-            String sql = &quot;select id,name,email,birth from customers where id = ?&quot;;
-            ps = conn.prepareStatement(sql);
-            ps.setObject(1, 1);
-            
-            //执行,并返回结果集
-            resultSet = ps.executeQuery();
-            //处理结果集
-            if(resultSet.next())&#123;
-                //next():判断结果集的下一条是否有数据，如果有数据返回true,
-                //并指针下移；如果返回false,指针不会下移。
-                
-                //获取当前这条数据的各个字段值
-                int id = resultSet.getInt(1);
-                String name = resultSet.getString(2);
-                String email = resultSet.getString(3);
-                Date birth = resultSet.getDate(4);
-                
-            //方式一：
-//            System.out.println(&quot;id = &quot; + id + &quot;,name = &quot; + name + &quot;,email = &quot; + email + &quot;,birth = &quot; + birth);
-                
-            //方式二：
-//            Object[] data = new Object[]&#123;id,name,email,birth&#125;;
-                //方式三：将数据封装为一个对象（推荐）
-                Customer customer = new Customer(id, name, email, birth);
-                System.out.println(customer);
-                
-            &#125;
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125;finally&#123;
-            //关闭资源
-            JDBCUtils.closeResource(conn, ps, resultSet);
-            
-        &#125;
-        
-    &#125;
-/*
- * ORM编程思想  （object relational mapping）
- * 对象关系映射
- * 一个数据表对应一个java类
- * 表中的一条记录对应java类的一个对象
- * 表中的一个字段对应java类的一个属性
- * 
- */
-public class Customer &#123;
-    
-    private int id;
-    private String name;
-    private String email;
-    private Date birth;
-    //构造方法 略
-    //getter,setter方法 略
-    // toString方法   略
-&#125;
-</code></pre>
-<ul>
-<li>通用操作</li>
-</ul>
-<pre><code class="java">    // 通用的针对于不同表的查询:返回一个对象 (version 1.0)
-    public &lt;T&gt; T getInstance(Class&lt;T&gt; clazz, String sql, Object... args) &#123;
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try &#123;
-            // 1.获取数据库连接
-            conn = JDBCUtils.getConnection();
-            // 2.预编译sql语句，得到PreparedStatement对象
-            ps = conn.prepareStatement(sql);
-            // 3.填充占位符
-            for (int i = 0; i &lt; args.length; i++) &#123;
-                ps.setObject(i + 1, args[i]);
-            &#125;
-            // 4.执行executeQuery(),得到结果集：ResultSet
-            rs = ps.executeQuery();
-            // 5.得到结果集的元数据：ResultSetMetaData
-            ResultSetMetaData rsmd = rs.getMetaData();//通过ResultSetMetaData获取列值
-            // 6.1通过ResultSetMetaData得到columnCount,columnLabel；通过ResultSet得到列值
-            int columnCount = rsmd.getColumnCount();//得到列数，每一列表示一种数据类型
-            if (rs.next()) &#123;
-                T t = clazz.newInstance();
-                for (int i = 0; i &lt; columnCount; i++) &#123;// 遍历每一个列
-                    // 获取列值columnVal
-                    Object columnVal = rs.getObject(i + 1);
-                    //很难的一块，两种方式一种造对象在构造器中将列值填入，一种造好之后用set方法填入
-                    //用第二种，第一种构造器不一定有
-                    
-                    // 获取列的别名:列的别名，使用类的属性名充当columnLabel
-                    String columnLabel = rsmd.getColumnLabel(i + 1);
-                    // 6.2使用反射，给对象的相应属性赋值getDeclaredField获取属性的方法，不考虑权限修饰符
-                    Field field = clazz.getDeclaredField(columnLabel);
-                    field.setAccessible(true);//设置可以获取私有属性
-                    field.set(t, columnVal);
-                &#125;
-                return t;
-            &#125;
-        &#125; catch (Exception e) &#123;
-
-            e.printStackTrace();
-        &#125; finally &#123;
-            // 7.关闭资源
-            JDBCUtils.closeResource(conn, ps, rs);
-        &#125;
-
-        return null;
-
-    &#125;
-//使用
-@Test
-    public void testGetInstance()&#123;
-        String sql = &quot;select id,name,email from customers where id = ?&quot;;
-        Customer customer = getInstance(Customer.class,sql,12);
-        System.out.println(customer);
-        
-        String sql1 = &quot;select order_id orderId,order_name orderName from `order` where order_id = ?&quot;;
-        Order order = getInstance(Order.class, sql1, 1);
-        System.out.println(order);
-    &#125;
-</code></pre>
-<p>通用操作</p>
-<pre><code class="java">//针对于不同的表的通用的查询操作，返回表中的多条记录，所以对象用List集合
-public &lt;T&gt; List&lt;T&gt; getForList(Class&lt;T&gt; clazz,String sql, Object... args)&#123;
-        Connection conn = null;
-        PreparedStatement ps = null;
-        ResultSet rs = null;
-        try &#123;
-            conn = JDBCUtils.getConnection();
-
-            ps = conn.prepareStatement(sql);
-            for (int i = 0; i &lt; args.length; i++) &#123;
-                ps.setObject(i + 1, args[i]);
-            &#125;
-
-            rs = ps.executeQuery();
-            // 获取结果集的元数据 :ResultSetMetaData
-            ResultSetMetaData rsmd = rs.getMetaData();
-            // 通过ResultSetMetaData获取结果集中的列数
-            int columnCount = rsmd.getColumnCount();
-            //创建集合对象
-            ArrayList&lt;T&gt; list = new ArrayList&lt;T&gt;();
-            while (rs.next()) &#123;
-                T t = clazz.newInstance();
-                // 处理结果集一行数据中的每一个列:给t对象指定的属性赋值
-                for (int i = 0; i &lt; columnCount; i++) &#123;
-                    // 获取列值
-                    Object columValue = rs.getObject(i + 1);
-
-                    // 获取每个列的列名
-                    // String columnName = rsmd.getColumnName(i + 1);
-                    String columnLabel = rsmd.getColumnLabel(i + 1);
-
-                    // 给t对象指定的columnName属性，赋值为columValue：通过反射
-                    Field field = clazz.getDeclaredField(columnLabel);
-                    field.setAccessible(true);
-                    field.set(t, columValue);
-                &#125;
-                list.add(t);//添加对象到集合
-            &#125;
-            
-            return list;
-        &#125; catch (Exception e) &#123;
-            e.printStackTrace();
-        &#125; finally &#123;
-            JDBCUtils.closeResource(conn, ps, rs);
-
-        &#125;
-
-        return null;
-    &#125;
-//使用
-@Test
-    public void testGetForList()&#123;
-        
-        String sql = &quot;select id,name,email from customers where id &lt; ?&quot;;
-        List&lt;Customer&gt; list = getForList(Customer.class,sql,12);
-        list.forEach(System.out::println);//java8新特性
-        
-        String sql1 = &quot;select order_id orderId,order_name orderName from `order`&quot;;
-        List&lt;Order&gt; orderList = getForList(Order.class, sql1);
-        orderList.forEach(System.out::println);
-    &#125;
-</code></pre>
-<blockquote>
-<p>说明：使用PreparedStatement实现的查询操作可以替换Statement实现的查询操作，解决Statement拼串和SQL注入问题。</p>
-</blockquote>
-<h3 id="3-4-ResultSet与ResultSetMetaData"><a href="#3-4-ResultSet与ResultSetMetaData" class="headerlink" title="3.4 ResultSet与ResultSetMetaData"></a>3.4 ResultSet与ResultSetMetaData</h3><h4 id="3-4-1-ResultSet"><a href="#3-4-1-ResultSet" class="headerlink" title="3.4.1 ResultSet"></a>3.4.1 ResultSet</h4><ul>
-<li><p>查询需要调用PreparedStatement 的 executeQuery() 方法，查询结果是一个ResultSet 对象</p>
-</li>
-<li><p>ResultSet 对象以逻辑表格的形式封装了执行数据库操作的结果集，ResultSet 接口由数据库厂商提供实现</p>
-</li>
-<li><p>ResultSet 返回的实际上就是一张数据表。有一个指针指向数据表的第一条记录的前面。</p>
-</li>
-<li><p>ResultSet 对象维护了一个指向当前数据行的<strong>游标</strong>，初始的时候，游标在第一行之前，可以通过 ResultSet 对象的 next() 方法移动到下一行。调用 next()方法检测下一行是否有效。若有效，该方法返回 true，且指针下移。相当于Iterator对象的 hasNext() 和 next() 方法的结合体。</p>
-</li>
-<li><p>当指针指向一行时, 可以通过调用 getXxx(int index) 或 getXxx(int columnName) 获取每一列的值。</p>
-<ul>
-<li>例如: getInt(1), getString(“name”)</li>
-<li><strong>注意：Java与数据库交互涉及到的相关Java API中的索引都从1开始。</strong></li>
-</ul>
-</li>
-<li><p>ResultSet 接口的常用方法：</p>
-<ul>
-<li><p>boolean next()</p>
-</li>
-<li><p>getString()</p>
-</li>
-<li><p>…</p>
-</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555580152530.png" alt="1555580152530"></p>
-</li>
-</ul>
-<h4 id="3-4-2-ResultSetMetaData元数据"><a href="#3-4-2-ResultSetMetaData元数据" class="headerlink" title="3.4.2 ResultSetMetaData元数据"></a>3.4.2 ResultSetMetaData元数据</h4><ul>
-<li><p>可用于获取关于 ResultSet 对象中列的类型和属性信息的对象</p>
-</li>
-<li><p>ResultSetMetaData meta = rs.getMetaData();</p>
-<ul>
-<li><p><strong>getColumnName</strong>(int column)：获取指定列的名称</p>
-</li>
-<li><p><strong>getColumnLabel</strong>(int column)：获取指定列的别名</p>
-</li>
-<li><p><strong>getColumnCount</strong>()：返回当前 ResultSet 对象中的列数。 </p>
-</li>
-<li><p>getColumnTypeName(int column)：检索指定列的数据库特定的类型名称。 </p>
-</li>
-<li><p>getColumnDisplaySize(int column)：指示指定列的最大标准宽度，以字符为单位。 </p>
-</li>
-<li><p><strong>isNullable</strong>(int column)：指示指定列中的值是否可以为 null。 </p>
-</li>
-<li><p> isAutoIncrement(int column)：指示是否自动为指定列进行编号，这样这些列仍然是只读的。 </p>
-</li>
-</ul>
-</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555579494691.png" alt="1555579494691"></p>
-<p><strong>问题1：得到结果集后, 如何知道该结果集中有哪些列 ？ 列名是什么？</strong></p>
-<p>​     需要使用一个描述 ResultSet 的对象， 即 ResultSetMetaData</p>
-<p><strong>问题2：关于ResultSetMetaData</strong></p>
-<ol>
-<li><strong>如何获取 ResultSetMetaData</strong>： 调用 ResultSet 的 getMetaData() 方法即可</li>
-<li><strong>获取 ResultSet 中有多少列</strong>：调用 ResultSetMetaData 的 getColumnCount() 方法</li>
-<li><strong>获取 ResultSet 每一列的列的别名是什么</strong>：调用 ResultSetMetaData 的getColumnLabel() 方法</li>
 </ol>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555579816884.png" alt="1555579816884"></p>
-<h3 id="3-5-资源的释放"><a href="#3-5-资源的释放" class="headerlink" title="3.5 资源的释放"></a>3.5 资源的释放</h3><ul>
-<li>释放ResultSet, Statement,Connection。</li>
-<li>数据库连接（Connection）是非常稀有的资源，用完后必须马上释放，如果Connection不能及时正确的关闭将导致系统宕机。Connection的使用原则是<strong>尽量晚创建，尽量早的释放。</strong></li>
-<li>可以在finally中关闭，保证及时其他代码出现异常，资源也一定能被关闭。</li>
+<h4 id="1-1-3PathVariable-注解"><a href="#1-1-3PathVariable-注解" class="headerlink" title="1.1.3PathVariable 注解"></a>1.1.3PathVariable 注解</h4><ul>
+<li>作用： 用于绑定 url 中的占位符。例如：请求 url 中 /delete/{id}，这个{id}就是 url 占位符。 url 支持占位符是 spring3.0 之后加入的。是 springmvc 支持 rest 风格 URL 的一个重要标志。 </li>
+<li>属性： value：用于指定 url 中占位符名称。 required：是否必须提供占位符。</li>
 </ul>
-<h3 id="3-6-JDBC-API小结"><a href="#3-6-JDBC-API小结" class="headerlink" title="3.6 JDBC API小结"></a>3.6 JDBC API小结</h3><ul>
-<li><p>两种思想</p>
-<ul>
-<li><p>面向接口编程的思想</p>
+<h4 id="1-1-4-REST实现过程"><a href="#1-1-4-REST实现过程" class="headerlink" title="1.1.4 REST实现过程"></a>1.1.4 REST实现过程</h4><ul>
+<li><p>第一步：在 web.xml 中配置HiddenHttpMethodFilter过滤器。 </p>
 </li>
-<li><p>ORM思想(object relational mapping)</p>
-<ul>
-<li>一个数据表对应一个java类</li>
-<li>表中的一条记录对应java类的一个对象</li>
-<li>表中的一个字段对应java类的一个属性</li>
-</ul>
+<li><p>第二步：请求方式必须使用 post 请求。 </p>
 </li>
-</ul>
-<blockquote>
-<p>sql是需要结合列名和表的属性名来写。注意起别名。</p>
-</blockquote>
-</li>
-<li><p>两种技术</p>
-<ul>
-<li>JDBC结果集的元数据：ResultSetMetaData<ul>
-<li>获取列数：getColumnCount()</li>
-<li>获取列的别名：getColumnLabel()</li>
-</ul>
-</li>
-<li>通过反射，创建指定类的对象，获取指定的属性并赋值</li>
-</ul>
-</li>
-</ul>
-<hr>
-<h2 id="四：-操作BLOB类型字段"><a href="#四：-操作BLOB类型字段" class="headerlink" title="四： 操作BLOB类型字段"></a>四： 操作BLOB类型字段</h2><h3 id="4-1-MySQL-BLOB类型-图片操作等"><a href="#4-1-MySQL-BLOB类型-图片操作等" class="headerlink" title="4.1 MySQL BLOB类型(图片操作等)"></a>4.1 MySQL BLOB类型(图片操作等)</h3><ul>
-<li><p>MySQL中，BLOB是一个二进制大型对象，是一个可以存储大量数据的容器，它能容纳不同大小的数据。</p>
-</li>
-<li><p>插入BLOB类型的数据必须使用PreparedStatement，因为BLOB类型的数据无法使用字符串拼接写的。</p>
-</li>
-<li><p>MySQL的四种BLOB类型(除了在存储的最大信息量上不同外，他们是等同的)</p>
-</li>
-</ul>
-<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555581069798.png" alt="1555581069798"></p>
-<ul>
-<li>实际使用中根据需要存入的数据大小定义不同的BLOB类型。</li>
-<li>需要注意的是：如果存储的文件过大，数据库的性能会下降。</li>
-<li>如果在指定了相关的Blob类型以后，还报错：xxx too large，那么在mysql的安装目录下，找my.ini文件加上如下的配置参数： <strong>max_allowed_packet=16M</strong>。同时注意：修改了my.ini文件之后，需要重新启动mysql服务。</li>
-</ul>
-<h3 id="4-2-向数据表中插入大数据类型"><a href="#4-2-向数据表中插入大数据类型" class="headerlink" title="4.2 向数据表中插入大数据类型"></a>4.2 向数据表中插入大数据类型</h3><pre><code class="java">//获取连接
-Connection conn = JDBCUtils.getConnection();
-        
-String sql = &quot;insert into customers(name,email,birth,photo)values(?,?,?,?)&quot;;
-PreparedStatement ps = conn.prepareStatement(sql);
-
-// 填充占位符
-ps.setString(1, &quot;徐海强&quot;);
-ps.setString(2, &quot;xhq@126.com&quot;);
-ps.setDate(3, new Date(new java.util.Date().getTime()));
-// 操作Blob类型的变量
-FileInputStream fis = new FileInputStream(&quot;xhq.png&quot;);
-ps.setBlob(4, fis);
-//执行
-ps.execute();
-        
-fis.close();
-JDBCUtils.closeResource(conn, ps);
+<li><p>第三步：按照要求提供带有_method 请求参数隐藏域，该参数的取值就是我们需要的请求方式（PUT或DELETE）。</p>
+<p>JSP文件</p>
+<pre><code class="jsp">&lt;!-- 保存 POST--&gt;
+&lt;form action=&quot;springmvc/testRestPOST&quot; method=&quot;post&quot;&gt;
+    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br/&gt;
+    &lt;!-- &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;POST&quot;&gt; --&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
+&lt;/form&gt;
+&lt;hr/&gt;
+&lt;!-- 更新 PUT--&gt;
+&lt;form action=&quot;springmvc/testRestPUT/1&quot; method=&quot;post&quot;&gt;
+    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot;&gt;&lt;br/&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;PUT&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;更新&quot;&gt;
+&lt;/form&gt;
+&lt;!-- 删除 DELETE--&gt;
+&lt;form action=&quot;springmvc/testRestDELETE/1&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;DELETE&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;删除&quot;&gt;
+&lt;/form&gt;
+&lt;hr/&gt;
+&lt;!-- 查询一个 GET，也可以直接使用超链接--&gt;
+&lt;form action=&quot;springmvc/testRestGET/1&quot; method=&quot;post&quot;&gt;
+    &lt;input type=&quot;hidden&quot; name=&quot;_method&quot; value=&quot;GET&quot;&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;查询&quot;&gt;
+&lt;/form&gt; 
 </code></pre>
-<h3 id="4-3-修改数据表中的Blob类型字段"><a href="#4-3-修改数据表中的Blob类型字段" class="headerlink" title="4.3 修改数据表中的Blob类型字段"></a>4.3 修改数据表中的Blob类型字段</h3><pre><code class="java">Connection conn = JDBCUtils.getConnection();
-String sql = &quot;update customers set photo = ? where id = ?&quot;;
-PreparedStatement ps = conn.prepareStatement(sql);
-
-// 填充占位符
-// 操作Blob类型的变量
-FileInputStream fis = new FileInputStream(&quot;coffee.png&quot;);
-ps.setBlob(1, fis);
-ps.setInt(2, 25);
-
-ps.execute();
-
-fis.close();
-JDBCUtils.closeResource(conn, ps);
-</code></pre>
-<h3 id="4-4-从数据表中读取大数据类型"><a href="#4-4-从数据表中读取大数据类型" class="headerlink" title="4.4 从数据表中读取大数据类型"></a>4.4 从数据表中读取大数据类型</h3><pre><code class="java">String sql = &quot;SELECT id, name, email, birth, photo FROM customer WHERE id = ?&quot;;
-conn = getConnection();
-ps = conn.prepareStatement(sql);
-ps.setInt(1, 8);
-rs = ps.executeQuery();
-if(rs.next())&#123;
-    Integer id = rs.getInt(1);
-    String name = rs.getString(2);
-    String email = rs.getString(3);
-    Date birth = rs.getDate(4);
-    Customer cust = new Customer(id, name, email, birth);
-    System.out.println(cust); 
-    //读取Blob类型的字段
-    Blob photo = rs.getBlob(5);
-    InputStream is = photo.getBinaryStream();
-    OutputStream os = new FileOutputStream(&quot;c.jpg&quot;);
-    byte [] buffer = new byte[1024];
-    int len = 0;
-    while((len = is.read(buffer)) != -1)&#123;
-        os.write(buffer, 0, len);
-    &#125;
-    JDBCUtils.closeResource(conn, ps, rs);
-        
-    if(is != null)&#123;
-        is.close();
-    &#125;
-        
-    if(os !=  null)&#123;
-        os.close();
-    &#125;
-    
-&#125;
-</code></pre>
-<h2 id="五：-批量插入Insert"><a href="#五：-批量插入Insert" class="headerlink" title="五： 批量插入Insert"></a>五： 批量插入Insert</h2><h3 id="5-1-批量执行SQL语句"><a href="#5-1-批量执行SQL语句" class="headerlink" title="5.1 批量执行SQL语句"></a>5.1 批量执行SQL语句</h3><p>当需要成批插入或者更新记录时，可以采用Java的批量<strong>更新</strong>机制，这一机制允许多条语句一次性提交给数据库批量处理。通常情况下比单独提交处理更有效率</p>
-<p>使用PreparedStatement实现批量数据的操作，update、delete本身就具有批量操作的效果。</p>
-<p>此时的批量操作，主要指的是批量插入。</p>
-<p>JDBC的批量处理语句包括下面三个方法：</p>
-<ul>
-<li><strong>addBatch(String)：添加需要批量处理的SQL语句或是参数；</strong></li>
-<li><strong>executeBatch()：执行批量处理语句；</strong></li>
-<li><strong>clearBatch():清空缓存的数据</strong></li>
-</ul>
-<p>通常我们会遇到两种批量执行SQL语句的情况：</p>
-<ul>
-<li>多条SQL语句的批量处理；</li>
-<li>一个SQL语句的批量传参；</li>
-</ul>
-<h3 id="5-2-高效的批量插入"><a href="#5-2-高效的批量插入" class="headerlink" title="5.2 高效的批量插入"></a>5.2 高效的批量插入</h3><p>举例：向数据表中插入20000条数据</p>
-<ul>
-<li>数据库中提供一个goods表。创建如下：</li>
-</ul>
-<pre><code class="sql">CREATE TABLE goods(
-id INT PRIMARY KEY AUTO_INCREMENT,
-NAME VARCHAR(20)
-);
-</code></pre>
-<h4 id="5-2-1-实现层次一：使用Statement"><a href="#5-2-1-实现层次一：使用Statement" class="headerlink" title="5.2.1 实现层次一：使用Statement"></a>5.2.1 实现层次一：使用Statement</h4><pre><code class="java">Connection conn = JDBCUtils.getConnection();
-Statement st = conn.createStatement();
-for(int i = 1;i &lt;= 20000;i++)&#123;
-    String sql = &quot;insert into goods(name) values(&#39;name_&#39; + &quot;+ i +&quot;)&quot;;
-    st.executeUpdate(sql);
-&#125;
-</code></pre>
-<h4 id="5-2-2-实现层次二：使用PreparedStatement"><a href="#5-2-2-实现层次二：使用PreparedStatement" class="headerlink" title="5.2.2 实现层次二：使用PreparedStatement"></a>5.2.2 实现层次二：使用PreparedStatement</h4><pre><code class="java">long start = System.currentTimeMillis();
-        
-Connection conn = JDBCUtils.getConnection();
-        
-String sql = &quot;insert into goods(name)values(?)&quot;;
-PreparedStatement ps = conn.prepareStatement(sql);
-for(int i = 1;i &lt;= 20000;i++)&#123;
-    ps.setString(1, &quot;name_&quot; + i);
-    ps.executeUpdate();
-&#125;
-        
-long end = System.currentTimeMillis();
-System.out.println(&quot;花费的时间为：&quot; + (end - start));//82340
-        
-        
-JDBCUtils.closeResource(conn, ps);
-</code></pre>
-<p>层次二相比于层次一，preparedStatement有预编译功能，层次一sql语句在循环中，循环两万次有两万个String对象在内存中，preparedStatement性能提升详见3.32</p>
-<h4 id="5-2-3-实现层次三"><a href="#5-2-3-实现层次三" class="headerlink" title="5.2.3 实现层次三"></a>5.2.3 实现层次三</h4><pre><code class="java">/*
- * 修改1： 使用 addBatch() / executeBatch() / clearBatch()
- * 修改2：mysql服务器默认是关闭批处理的，我们需要通过一个参数，让mysql开启批处理的支持。
- *          ?rewriteBatchedStatements=true 写在配置文件的url后面
- * 修改3：使用更新的mysql 驱动：mysql-connector-java-5.1.37-bin.jar
- * 
- */
-@Test
-public void testInsert1() throws Exception&#123;
-    long start = System.currentTimeMillis();
-        
-    Connection conn = JDBCUtils.getConnection();
-        
-    String sql = &quot;insert into goods(name)values(?)&quot;;
-    PreparedStatement ps = conn.prepareStatement(sql);
-        
-    for(int i = 1;i &lt;= 1000000;i++)&#123;
-        ps.setString(1, &quot;name_&quot; + i);
-            
-        //1.“攒”sql，攒够一定数量，再一起执行
-        ps.addBatch();
-        if(i % 500 == 0)&#123;
-            //2.执行
-            ps.executeBatch();
-            //3.清空，清空之后再攒
-            ps.clearBatch();
-        &#125;
-    &#125;
-        
-    long end = System.currentTimeMillis();
-    System.out.println(&quot;花费的时间为：&quot; + (end - start));//20000条：625                                                                         //1000000条:14733  
-        
-    JDBCUtils.closeResource(conn, ps);
-&#125;
-</code></pre>
-<h4 id="5-2-4-实现层次四"><a href="#5-2-4-实现层次四" class="headerlink" title="5.2.4 实现层次四"></a>5.2.4 实现层次四</h4><pre><code class="java">/*
-* 层次四：在层次三的基础上操作
-* 使用Connection 的 setAutoCommit(false)  /  commit()
-* 每次执行完不自动提交数据
+<p>控制器代码</p>
+<pre><code class="java">/**
+* post 请求：保存
 */
-@Test
-public void testInsert2() throws Exception&#123;
-    long start = System.currentTimeMillis();
-        
-    Connection conn = JDBCUtils.getConnection();
-        
-    //1.设置为不自动提交数据
-    conn.setAutoCommit(false);
-        
-    String sql = &quot;insert into goods(name)values(?)&quot;;
-    PreparedStatement ps = conn.prepareStatement(sql);
-        
-    for(int i = 1;i &lt;= 1000000;i++)&#123;
-        ps.setString(1, &quot;name_&quot; + i);
-            
-        //1.“攒”sql
-        ps.addBatch();
-            
-        if(i % 500 == 0)&#123;
-            //2.执行
-            ps.executeBatch();
-            //3.清空
-            ps.clearBatch();
-        &#125;
-    &#125;
-        
-    //2.提交数据，最后提交数据
-    conn.commit();
-        
-    long end = System.currentTimeMillis();
-    System.out.println(&quot;花费的时间为：&quot; + (end - start));//1000000条:4978 
-        
-    JDBCUtils.closeResource(conn, ps);
+@RequestMapping(value=&quot;/testRestPOST&quot;,method=RequestMethod.POST)
+public String testRestfulURLPOST(User user)&#123;
+    System.out.println(&quot;rest post&quot;+user);
+    return &quot;success&quot;;
+&#125;
+/**
+* put请求：更新，通过@PathVariable(&quot;id&quot;)获取URL中传递过来的&#123;id&#125;
+*/
+@RequestMapping(value=&quot;/testRestPUT/&#123;id&#125;&quot;,method=RequestMethod.PUT)
+public String testRestfulURLPUT(@PathVariable(&quot;id&quot;)Integer id,User user)&#123;
+    System.out.println(&quot;rest put &quot;+id+&quot;,&quot;+user);
+    return &quot;success&quot;;
+&#125;
+/**
+* post 请求：删除
+*/
+@RequestMapping(value=&quot;/testRestDELETE/&#123;id&#125;&quot;,method=RequestMethod.DELETE)
+public String testRestfulURLDELETE(@PathVariable(&quot;id&quot;)Integer id)&#123;
+    System.out.println(&quot;rest delete &quot;+id);
+    return &quot;success&quot;;
+&#125;
+/**
+* post 请求：查询
+*/
+@RequestMapping(value=&quot;/testRestGET/&#123;id&#125;&quot;,method=RequestMethod.GET)
+public String testRestfulURLGET(@PathVariable(&quot;id&quot;)Integer id)&#123;
+    System.out.println(&quot;rest get &quot;+id);
+    return &quot;success&quot;;
+&#125; 
+</code></pre>
+</li>
+</ul>
+<h3 id="1-2-SpringMVC常用注解"><a href="#1-2-SpringMVC常用注解" class="headerlink" title="1.2 SpringMVC常用注解"></a>1.2 SpringMVC常用注解</h3><h4 id="RequestParam"><a href="#RequestParam" class="headerlink" title="RequestParam"></a>RequestParam</h4><ul>
+<li><p>作用： 把请求中指定名称的参数给控制器中的形参赋值。 </p>
+</li>
+<li><p>属性： </p>
+<ul>
+<li>value：请求参数中的名称。 </li>
+<li>required：请求参数中是否必须提供此参数。默认值：true。表示必须提供，如果不提供将报错。</li>
+<li>defaultValue: 默认值，当没有传递参数时使用该值</li>
+</ul>
+</li>
+<li><p>使用示例</p>
+<pre><code class="java">jsp 中的代码：
+&lt;!-- requestParams 注解的使用 --&gt;
+&lt;a href=&quot;springmvc/useRequestParam?name=test&amp;age=0&quot;&gt;requestParam 注解&lt;/a&gt;
+控制器中的代码：
+/**
+* requestParams 注解的使用,
+* 其中请求的参数的名称为name，方法中的参数为username，不匹配，可以使用@RequestParam注解将
+* name的值赋值给username，
+*/
+@RequestMapping(&quot;/useRequestParam&quot;)
+public String useRequestParam(@RequestParam(&quot;name&quot;)String username,
+@RequestParam(value=&quot;age&quot;,required=false,defaultValue=&quot;0&quot;)Integer age)&#123;
+System.out.println(username+&quot;,&quot;+age);
+return &quot;success&quot;;
 &#125;
 </code></pre>
+</li>
+</ul>
+<h4 id="RequestBody"><a href="#RequestBody" class="headerlink" title="RequestBody"></a>RequestBody</h4><ul>
+<li><p>作用： 用于获取请求体内容。直接使用得到是 key=value&amp;key=value…结构的数据。 <strong>get 请求方式不适用</strong>。 </p>
+</li>
+<li><p>属性： required：是否必须有请求体。默认值是:true。当取值为 true 时,get 请求方式会报错。如果取值 为 false，get 请求得到是 null。</p>
+</li>
+<li><p>使用示例</p>
+<pre><code class="java">post 请求 jsp 代码：
+&lt;!-- requestBody 注解 --&gt;
+&lt;form action=&quot;springmvc/useRequestBody&quot; method=&quot;post&quot;&gt;
+    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
+    用户密码：&lt;input type=&quot;password&quot; name=&quot;password&quot; &gt;&lt;br/&gt;
+    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
+&lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
+&lt;/form&gt;
+get 请求 jsp 代码：
+&lt;a href=&quot;springmvc/useRequestBody?body=test&quot;&gt;requestBody 注解 get 请求&lt;/a&gt;
+控制器代码：
+/**
+* RequestBody 注解
+*/
+@RequestMapping(&quot;/useRequestBody&quot;)
+public String useRequestBody(@RequestBody(required=false) String body)&#123;
+    System.out.println(body);
+    return &quot;success&quot;;
+&#125;
+//结果：请求体的key为body
+//post请求结果:username=admin&amp;password=123&amp;age=23
+//get请求结果:null
+</code></pre>
+</li>
+</ul>
+<h4 id="RequestHeader"><a href="#RequestHeader" class="headerlink" title="RequestHeader"></a>RequestHeader</h4><ul>
+<li><p>作用： 用于获取请求消息头。 </p>
+</li>
+<li><p>属性： value：提供消息头名称 required：是否必须有此消息头 注： 在实际开发中一般不怎么用。</p>
+</li>
+<li><p>使用示例</p>
+<pre><code class="java">jsp 中代码：
+&lt;!-- RequestHeader 注解 --&gt;
+&lt;a href=&quot;springmvc/useRequestHeader&quot;&gt;获取请求消息头&lt;/a&gt;
+控制器中代码：
+/**
+* RequestHeader 注解
+* @param user
+* @return
+*/
+@RequestMapping(&quot;/useRequestHeader&quot;)
+public String useRequestHeader(@RequestHeader(value=&quot;Accept-Language&quot;,required=false)String requestHeader)&#123;
+    System.out.println(requestHeader);
+    return &quot;success&quot;;
+&#125;
+</code></pre>
+</li>
+</ul>
+<h4 id="CookieValue"><a href="#CookieValue" class="headerlink" title="CookieValue"></a>CookieValue</h4><ul>
+<li><p>作用： 用于把指定 cookie 名称的值传入控制器方法参数。 </p>
+</li>
+<li><p>属性： value：指定 cookie 的名称。 required：是否必须有此 cookie。</p>
+</li>
+<li><p>使用示例：</p>
+<pre><code class="java">jsp 中的代码：
+&lt;!-- CookieValue 注解 --&gt;
+&lt;a href=&quot;springmvc/useCookieValue&quot;&gt;绑定 cookie 的值&lt;/a&gt;
+控制器中的代码：
+/**
+* Cookie 注解注解
+*/
+@RequestMapping(&quot;/useCookieValue&quot;)
+public String useCookieValue(@CookieValue(value=&quot;JSESSIONID&quot;,required=false) String cookieValue)&#123;
+    System.out.println(cookieValue);
+    return &quot;success&quot;;
+&#125;
+</code></pre>
+</li>
+</ul>
+<h4 id="ModelAttribute"><a href="#ModelAttribute" class="headerlink" title="ModelAttribute"></a>ModelAttribute</h4><ul>
+<li><p>作用： 该注解是 SpringMVC4.3 版本以后新加入的。它可以用于修饰方法和参数。 </p>
+<ul>
+<li>出现在方法上，表示当前方法会在控制器的方法执行之前，先执行。它可以修饰没有返回值的方法，也可以修饰有具体返回值的方法。 </li>
+<li>出现在参数上，获取指定的数据给参数赋值。 </li>
+</ul>
+</li>
+<li><p>属性： value：用于获取数据的 key。key 可以是 POJO 的属性名称，也可以是 map 结构的 key。 </p>
+</li>
+<li><p>应用场景： 当表单提交数据不是完整的实体类数据时，保证没有提交数据的字段使用数据库对象原来的数据。 </p>
+<ul>
+<li>例如： 我们在编辑一个用户时，用户有一个创建信息字段，该字段的值是不允许被修改的。在提交表单数据是肯定没有此字段的内容，一旦更新会把该字段内容置为 null，此时就可以使用此注解解决问题。</li>
+</ul>
+</li>
+<li><p>使用示例1：基于 POJO 属性的基本使用，加了此注解的方法会在控制器方法之前执行</p>
+<pre><code class="java">jps 代码：
+&lt;!-- ModelAttribute 注解的基本使用 --&gt;
+&lt;a href=&quot;springmvc/testModelAttribute?username=test&quot;&gt;测试 modelattribute&lt;/a&gt;
+控制器代码：
+/**
+* 接收请求的方法，未被ModelAttribute修饰的方法
+*/
+@RequestMapping(&quot;/testModelAttribute&quot;)
+public String testModelAttribute(User user) &#123;
+    System.out.println(&quot;执行了控制器的方法&quot;+user.getUsername());
+    return &quot;success&quot;;
+&#125;
+/**
+* 被 ModelAttribute 修饰的方法
+*/
+@ModelAttribute
+public void showModel(User user) &#123;
+    System.out.println(&quot;执行了 showModel 方法&quot;+user.getUsername());
+&#125;
+结果：
+执行了 showModel 方法test
+执行了控制器的方法test
+</code></pre>
+</li>
+<li><p>使用示例2：基于 Map 的应用场景示例 ：ModelAttribute 修饰方法带返回值</p>
+<pre><code class="java">需求： 修改用户信息，要求用户的密码不能修改
+User类有三个属性，用户名，密码和年龄，表单提交了两个属性，没有提交密码，默认为null，在第一次执行showModel方法中，从数据库拿到user信息，其中包含的有密码，返回User对象，然后再传入testModelAttribute，这样传入的值就是表单传入的username和age外加数据库查到的密码
+
+jsp 的代码：
+&lt;!-- 修改用户信息 --&gt;
+&lt;form action=&quot;springmvc/updateUser&quot; method=&quot;post&quot;&gt;
+    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
+    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
+&lt;/form&gt;
+控制的代码：
+/**
+* 查询数据库中用户信息,加了@ModelAttribute优先执行，在数据库查到user对象后传入testModelAttribute中修改用户
+*/
+@ModelAttribute
+public User showModel(String username) &#123;
+    //模拟去数据库查询
+    User user = findUserByName(username);
+    System.out.println(&quot;执行了 showModel 方法&quot;+user);
+    return user;
+&#125;
+/**
+* 模拟修改用户方法
+*/
+@RequestMapping(&quot;/updateUser&quot;)
+public String testModelAttribute(User user) &#123;
+    System.out.println(&quot;控制器中处理请求的方法：修改用户：&quot;+user);
+    return &quot;success&quot;;
+&#125;
+/**
+* 模拟去数据库查询
+*/
+private User findUserByName(String username) &#123;
+    User user = new User();
+    user.setUsername(username);
+    user.setAge(19);
+    user.setPassword(&quot;123456&quot;);
+    return user;
+&#125;
+</code></pre>
+</li>
+<li><p>使用示例3：基于 Map 的应用场景示例 ：ModelAttribute 修饰方法不带返回值</p>
+<pre><code class="java">需求：修改用户信息，要求用户的密码不能修改
+User类有三个属性，用户名，密码和年龄，表单提交了两个属性，没有提交密码，默认为null，在第一次执行showModel方法中，从数据库拿到user信息，其中包含的有密码，因为没有返回值，所以保存在key为abc的map集合中，然后再通过在属性上加ModelAttribute注解，将key为abc的map集合中的值，赋值给user对象，再传入testModelAttribute，这样传入的值就是表单传入的username和age外加数据库查到的密码
+jsp中的代码：
+&lt;!-- 修改用户信息 --&gt;
+&lt;form action=&quot;springmvc/updateUser&quot; method=&quot;post&quot;&gt;
+    用户名称：&lt;input type=&quot;text&quot; name=&quot;username&quot; &gt;&lt;br/&gt;
+    用户年龄：&lt;input type=&quot;text&quot; name=&quot;age&quot; &gt;&lt;br/&gt;
+    &lt;input type=&quot;submit&quot; value=&quot;保存&quot;&gt;
+&lt;/form&gt;
+控制器中的代码：
+/**
+* 查询数据库中用户信息
+*/
+@ModelAttribute
+public void showModel(String username,Map&lt;String,User&gt; map) &#123;
+    //模拟去数据库查询
+    User user = findUserByName(username);
+    System.out.println(&quot;执行了 showModel 方法&quot;+user);
+    map.put(&quot;abc&quot;,user);
+&#125;
+/**
+* 模拟修改用户方法
+*/
+@RequestMapping(&quot;/updateUser&quot;)
+public String testModelAttribute(@ModelAttribute(&quot;abc&quot;)User user) &#123;
+    System.out.println(&quot;控制器中处理请求的方法：修改用户：&quot;+user);
+    return &quot;success&quot;;
+&#125;
+/**
+* 模拟去数据库查询
+*/
+private User findUserByName(String username) &#123;
+    User user = new User();
+    user.setUsername(username);
+    user.setAge(19);
+    user.setPassword(&quot;123456&quot;);
+    return user;
+&#125;
+</code></pre>
+</li>
+</ul>
+<h4 id="SessionAttribute"><a href="#SessionAttribute" class="headerlink" title="SessionAttribute"></a>SessionAttribute</h4><ul>
+<li><p>作用： 用于多次执行控制器方法间的参数共享。 只能用在类上面</p>
+</li>
+<li><p>属性： value：用于指定存入的属性名称 type：用于指定存入的数据类型。</p>
+</li>
+<li><p>使用示例：</p>
+<pre><code class="java">jsp 中的代码：
+&lt;!-- SessionAttribute 注解的使用 --&gt;
+&lt;a href=&quot;springmvc/testPut&quot;&gt;存入 SessionAttribute&lt;/a&gt;
+&lt;hr/&gt;
+&lt;a href=&quot;springmvc/testGet&quot;&gt;取出 SessionAttribute&lt;/a&gt;
+&lt;hr/&gt;
+&lt;a href=&quot;springmvc/testClean&quot;&gt;清除 SessionAttribute&lt;/a&gt;
+控制器中的代码：
+/**
+* SessionAttribute 注解的使用
+*/
+@Controller(&quot;sessionAttributeController&quot;)
+@RequestMapping(&quot;/springmvc&quot;)
+@SessionAttributes(value =&#123;&quot;username&quot;,&quot;password&quot;,&quot;age&quot;&#125;,types=&#123;String.class,String.class,Integer.class&#125;)//向Session中存值
+public class SessionAttributeController &#123;
+/**
+* 把数据存入 SessionAttribute
+* @param model
+* @return
+* Model 是 spring 提供的一个接口，该接口有一个实现类 ExtendedModelMap
+* 该类继承了 ModelMap，而 ModelMap 就是 LinkedHashMap 子类
+* 使用model可以直接将数据以键值对方式存入request域中，不需要定义HttpServletRequest，降低耦合
+* 在类上加上SessionAttribute注解可以将数据再存入一份到Session中
+*/
+@RequestMapping(&quot;/testPut&quot;)
+public String testPut(Model model)&#123;
+     model.addAttribute(&quot;username&quot;, &quot;泰斯特&quot;);
+     model.addAttribute(&quot;password&quot;,&quot;123456&quot;);
+     model.addAttribute(&quot;age&quot;, 31);
+     //跳转之前将数据保存到 username、password 和 age 中，因为注解@SessionAttribute 中有这几个参数
+     return &quot;success&quot;;
+ &#125;
+
+ @RequestMapping(&quot;/testGet&quot;)
+ public String testGet(ModelMap model)&#123;
+    System.out.println(model.get(&quot;username&quot;)+&quot;;&quot;+model.get(&quot;password&quot;)+&quot;;&quot;+model.get(&quot;age&quot;));
+     return &quot;success&quot;;//ModelMap中的get()方法时获取值
+ &#125;
+
+ @RequestMapping(&quot;/testClean&quot;)
+ public String complete(SessionStatus sessionStatus)&#123;
+     sessionStatus.setComplete();//SessionStatus类中的setComplete()是删除session中的值
+     return &quot;success&quot;;
+ &#125;
+&#125;
+</code></pre>
+</li>
+</ul>
 ]]></content>
       <categories>
-        <category>JavaWeb</category>
+        <category>SSM</category>
       </categories>
       <tags>
-        <tag>javaweb</tag>
-        <tag>jdbc</tag>
+        <tag>SSM</tag>
+        <tag>SpringMVC</tag>
       </tags>
   </entry>
   <entry>
@@ -20776,6 +19520,1262 @@ public class User &#123;
         <category>JavaWeb</category>
       </categories>
       <tags>
+        <tag>jdbc</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JDBC基本使用</title>
+    <url>/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="JDBC基本使用"><a href="#JDBC基本使用" class="headerlink" title="JDBC基本使用"></a>JDBC基本使用</h1><hr>
+<h2 id="一：JDBC概述"><a href="#一：JDBC概述" class="headerlink" title="一：JDBC概述"></a>一：JDBC概述</h2><h3 id="1-1-数据的持久化"><a href="#1-1-数据的持久化" class="headerlink" title="1.1 数据的持久化"></a>1.1 数据的持久化</h3><ul>
+<li><p>持久化(persistence)：<strong>把数据保存到可掉电式存储设备中以供之后使用</strong>。大多数情况下，特别是企业级应用，<strong>数据持久化意味着将内存中的数据保存到硬盘</strong>上加以”固化”<strong>，而持久化的实现过程大多通过各种关系数据库来完成</strong>。</p>
+</li>
+<li><p>持久化的主要应用是将内存中的数据存储在关系型数据库中，当然也可以存储在磁盘文件、XML数据文件中。</p>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566741430592.png" alt="1566741430592"> </p>
+</li>
+</ul>
+<h3 id="1-2-Java中的数据存储技术"><a href="#1-2-Java中的数据存储技术" class="headerlink" title="1.2 Java中的数据存储技术"></a>1.2 Java中的数据存储技术</h3><ul>
+<li><p>在Java中，数据库存取技术可分为如下几类：</p>
+<ul>
+<li><p><strong>JDBC</strong>直接访问数据库</p>
+</li>
+<li><p>JDO (Java Data Object )技术</p>
+</li>
+<li><p><strong>第三方O/R工具</strong>，如Hibernate, Mybatis 等</p>
+</li>
+</ul>
+</li>
+<li><p>JDBC是java访问数据库的基石，JDO、Hibernate、MyBatis等只是更好的封装了JDBC。</p>
+</li>
+</ul>
+<h3 id="1-3-JDBC介绍"><a href="#1-3-JDBC介绍" class="headerlink" title="1.3 JDBC介绍"></a>1.3 JDBC介绍</h3><ul>
+<li>JDBC(Java Database Connectivity)是一个<strong>独立于特定数据库管理系统、通用的SQL数据库存取和操作的公共接口</strong>（一组API），定义了用来访问数据库的标准Java类库，（<strong>java.sql,javax.sql</strong>）使用这些类库可以以一种<strong>标准</strong>的方法、方便地访问数据库资源。</li>
+<li>JDBC为访问不同的数据库提供了一种<strong>统一的途径</strong>，为开发者屏蔽了一些细节问题。</li>
+<li>JDBC的目标是使Java程序员使用JDBC可以连接任何<strong>提供了JDBC驱动程序</strong>的数据库系统，这样就使得程序员无需对特定的数据库系统的特点有过多的了解，从而大大简化和加快了开发过程。</li>
+<li>如果没有JDBC，那么Java程序访问数据库时是这样的：</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555575760234.png" alt="1555575760234"></p>
+<hr>
+<ul>
+<li>有了JDBC，Java程序访问数据库时是这样的：</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555575981203.png" alt="1555575981203"></p>
+<hr>
+<ul>
+<li>总结如下：</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566741692804.png" alt="1566741692804"></p>
+<h3 id="1-4-JDBC体系结构"><a href="#1-4-JDBC体系结构" class="headerlink" title="1.4 JDBC体系结构"></a>1.4 JDBC体系结构</h3><ul>
+<li>JDBC接口（API）包括两个层次：<ul>
+<li><strong>面向应用的API</strong>：Java API，抽象接口，供应用程序开发人员使用（连接数据库，执行SQL语句，获得结果）。</li>
+<li> <strong>面向数据库的API</strong>：Java Driver API，供开发商开发数据库驱动程序用。</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><strong>JDBC是sun公司提供一套用于数据库操作的接口，java程序员只需要面向这套接口编程即可。</strong></p>
+<p><strong>不同的数据库厂商，需要针对这套接口，提供不同实现。不同的实现的集合，即为不同数据库的驱动。                                                                ————面向接口编程</strong></p>
+</blockquote>
+<h3 id="1-5-JDBC程序编写步骤"><a href="#1-5-JDBC程序编写步骤" class="headerlink" title="1.5 JDBC程序编写步骤"></a>1.5 JDBC程序编写步骤</h3><p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1565969323908.png" alt="1565969323908"></p>
+<blockquote>
+<p>补充：ODBC(<strong>Open Database Connectivity</strong>，开放式数据库连接)，是微软在Windows平台下推出的。使用者在程序中只需要调用ODBC API，由 ODBC 驱动程序将调用转换成为对特定的数据库的调用请求。</p>
+</blockquote>
+<h2 id="二：获取数据库连接"><a href="#二：获取数据库连接" class="headerlink" title="二：获取数据库连接"></a>二：获取数据库连接</h2><h3 id="2-1-要素一：Driver接口实现类"><a href="#2-1-要素一：Driver接口实现类" class="headerlink" title="2.1 要素一：Driver接口实现类"></a>2.1 要素一：Driver接口实现类</h3><h4 id="2-1-1-Driver接口介绍"><a href="#2-1-1-Driver接口介绍" class="headerlink" title="2.1.1 Driver接口介绍"></a>2.1.1 Driver接口介绍</h4><ul>
+<li><p>java.sql.Driver 接口是所有 JDBC 驱动程序需要实现的接口。这个接口是提供给数据库厂商使用的，不同数据库厂商提供不同的实现。</p>
+</li>
+<li><p>在程序中不需要直接去访问实现了 Driver 接口的类，而是由驱动程序管理器类(java.sql.DriverManager)去调用这些Driver实现。</p>
+<ul>
+<li>Oracle的驱动：<strong>oracle.jdbc.driver.OracleDriver</strong></li>
+<li>mySql的驱动： <strong>com.mysql.jdbc.Driver</strong></li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555576157618.png" alt="1555576157618"></p>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555576170074.png" alt="1555576170074"></p>
+<ul>
+<li><p>将上述jar包拷贝到Java工程的一个目录中，习惯上新建一个lib文件夹。</p>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566134718955.png" alt="1566134718955"></p>
+</li>
+</ul>
+<p>在驱动jar上右键–&gt;Build Path–&gt;Add to Build Path</p>
+<p> <img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566134781682.png" alt="1566134781682"></p>
+<p>注意：如果是Dynamic Web Project（动态的web项目）话，则是把驱动jar放到WebContent（有的开发工具叫WebRoot）目录中的WEB-INF目录中的lib目录下即可</p>
+<p> <img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566135290460.png" alt="1566135290460"></p>
+<h4 id="2-1-2-加载与注册JDBC驱动"><a href="#2-1-2-加载与注册JDBC驱动" class="headerlink" title="2.1.2 加载与注册JDBC驱动"></a>2.1.2 加载与注册JDBC驱动</h4><ul>
+<li><p>加载驱动：加载 JDBC 驱动需调用 Class 类的静态方法 forName()，向其传递要加载的 JDBC 驱动的类名</p>
+<ul>
+<li><strong>Class.forName(“com.mysql.jdbc.Driver”);</strong></li>
+</ul>
+</li>
+<li><p>注册驱动：DriverManager 类是驱动程序管理器类，负责管理驱动程序</p>
+<ul>
+<li><p><strong>使用DriverManager.registerDriver(com.mysql.jdbc.Driver类的对象)来注册驱动</strong></p>
+</li>
+<li><p>通常不用显式调用 DriverManager 类的 registerDriver() 方法来注册驱动程序类的实例，因为 Driver 接口的驱动程序类<strong>都</strong>包含了静态代码块，在这个静态代码块中，会调用 DriverManager.registerDriver() 方法来注册自身的一个实例。下图是MySQL的Driver实现类的源码：</p>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566136831283.png" alt="1566136831283"></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-2-要素二：URL"><a href="#2-2-要素二：URL" class="headerlink" title="2.2 要素二：URL"></a>2.2 要素二：URL</h3><ul>
+<li><p>JDBC URL 用于标识一个被注册的驱动程序，驱动程序管理器通过这个 URL 选择正确的驱动程序，从而建立到数据库的连接。</p>
+</li>
+<li><p>JDBC URL的标准由三部分组成，各部分间用冒号分隔。 </p>
+<ul>
+<li><strong>jdbc:子协议:子名称</strong></li>
+<li><strong>协议</strong>：JDBC URL中的协议总是jdbc </li>
+<li><strong>子协议</strong>：子协议用于标识一个数据库驱动程序</li>
+<li><strong>子名称</strong>：一种标识数据库的方法。子名称可以依不同的子协议而变化，用子名称的目的是为了<strong>定位数据库</strong>提供足够的信息。包含<strong>主机名</strong>(对应服务端的ip地址)<strong>，端口号，数据库名</strong></li>
+</ul>
+</li>
+<li><p>举例：</p>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555576477107.png" alt="1555576477107"></p>
+</li>
+<li><p><strong>几种常用数据库的 JDBC URL</strong></p>
+<ul>
+<li><p>MySQL的连接URL编写方式：</p>
+<ul>
+<li>jdbc:mysql://主机名称:mysql服务端口号/数据库名称?参数=值&amp;参数=值</li>
+<li>jdbc:mysql://localhost:3306/test</li>
+<li>jdbc:mysql://localhost:3306/test**?useUnicode=true&amp;characterEncoding=utf8**（如果JDBC程序与服务器端的字符集不一致，会导致乱码，那么可以通过参数指定服务器端的字符集）</li>
+<li>jdbc:mysql://localhost:3306/test?user=root&amp;password=123456</li>
+</ul>
+</li>
+<li><p>Oracle 9i的连接URL编写方式：</p>
+<ul>
+<li>jdbc:oracle:thin:@主机名称:oracle服务端口号:数据库名称</li>
+<li>jdbc:oracle:thin:@localhost:1521:test</li>
+</ul>
+</li>
+<li><p>SQLServer的连接URL编写方式：</p>
+<ul>
+<li><p>jdbc:sqlserver://主机名称:sqlserver服务端口号:DatabaseName=数据库名称</p>
+</li>
+<li><p>jdbc:sqlserver://localhost:1433:DatabaseName=test</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-3-要素三：用户名和密码"><a href="#2-3-要素三：用户名和密码" class="headerlink" title="2.3 要素三：用户名和密码"></a>2.3 要素三：用户名和密码</h3><ul>
+<li>user,password可以用“属性名=属性值”方式告诉数据库</li>
+<li>可以调用 DriverManager 类的 getConnection() 方法建立到数据库的连接</li>
+</ul>
+<h3 id="2-4-数据库连接方式举例"><a href="#2-4-数据库连接方式举例" class="headerlink" title="2.4 数据库连接方式举例"></a>2.4 数据库连接方式举例</h3><h4 id="2-4-1-连接方式一"><a href="#2-4-1-连接方式一" class="headerlink" title="2.4.1 连接方式一"></a>2.4.1 连接方式一</h4><pre><code class="java">    @Test
+    public void testConnection1() &#123;
+        try &#123;
+            //1.导入jar包
+            //2.注册驱动(MySql 5.0 之后可以省略)
+            //Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+            
+            //1.提供java.sql.Driver接口实现类的对象
+            Driver driver = null;
+            driver = new com.mysql.jdbc.Driver();
+
+            //2.提供url，指明具体操作的数据
+            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
+
+            //3.提供Properties的对象，指明用户名和密码
+            Properties info = new Properties();
+            info.setProperty(&quot;user&quot;, &quot;root&quot;);
+            info.setProperty(&quot;password&quot;, &quot;abc123&quot;);
+
+            //4.调用driver的connect()，获取连接
+            Connection conn = driver.connect(url, info);
+            System.out.println(conn);
+        &#125; catch (SQLException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+</code></pre>
+<blockquote>
+<p>说明：上述代码中显式出现了第三方数据库的API：com.mysql.jdbc.Driver()</p>
+</blockquote>
+<h4 id="2-4-2-连接方式二"><a href="#2-4-2-连接方式二" class="headerlink" title="2.4.2 连接方式二"></a>2.4.2 连接方式二</h4><pre><code class="java">    @Test
+    public void testConnection2() &#123;
+        try &#123;
+            //1.实例化Driver
+            String className = &quot;com.mysql.jdbc.Driver&quot;;
+            Class clazz = Class.forName(className);
+            Driver driver = (Driver) clazz.newInstance();
+
+            //2.提供url，指明具体操作的数据
+            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
+
+            //3.提供Properties的对象，指明用户名和密码
+            Properties info = new Properties();
+            info.setProperty(&quot;user&quot;, &quot;root&quot;);
+            info.setProperty(&quot;password&quot;, &quot;abc123&quot;);
+
+            //4.调用driver的connect()，获取连接
+            Connection conn = driver.connect(url, info);
+            System.out.println(conn);
+
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+</code></pre>
+<blockquote>
+<p>说明：相较于方式一，这里使用反射实例化Driver，不在代码中体现第三方数据库的API。体现了面向接口编程思想。</p>
+</blockquote>
+<h4 id="2-4-3-连接方式三"><a href="#2-4-3-连接方式三" class="headerlink" title="2.4.3 连接方式三"></a>2.4.3 连接方式三</h4><pre><code class="java">    @Test
+    public void testConnection3() &#123;
+        try &#123;
+            //1.数据库连接的4个基本要素：
+            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
+            String user = &quot;root&quot;;
+            String password = &quot;abc123&quot;;
+            String driverName = &quot;com.mysql.jdbc.Driver&quot;;
+
+            //2.实例化Driver
+            Class clazz = Class.forName(driverName);
+            Driver driver = (Driver) clazz.newInstance();
+            //3.注册驱动
+            DriverManager.registerDriver(driver);
+            //4.获取连接
+            Connection conn = DriverManager.getConnection(url, user, password);
+            System.out.println(conn);
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+
+    &#125;
+</code></pre>
+<blockquote>
+<p>说明：使用DriverManager实现数据库的连接。体会获取连接必要的4个基本要素。</p>
+</blockquote>
+<h4 id="2-4-4-连接方式四"><a href="#2-4-4-连接方式四" class="headerlink" title="2.4.4 连接方式四"></a>2.4.4 连接方式四</h4><pre><code class="java">    @Test
+    public void testConnection4() &#123;
+        try &#123;
+            //1.数据库连接的4个基本要素：
+            String url = &quot;jdbc:mysql://localhost:3306/test&quot;;
+            String user = &quot;root&quot;;
+            String password = &quot;abc123&quot;;
+            String driverName = &quot;com.mysql.jdbc.Driver&quot;;
+
+            //2.加载驱动 （①实例化Driver ②注册驱动）
+            Class.forName(driverName);
+
+            //Class clazz = Class.forName(driverName);
+            //Driver driver = (Driver) clazz.newInstance();
+            //3.注册驱动
+            //DriverManager.registerDriver(driver);
+            /*
+            可以注释掉上述代码的原因，是因为在mysql的Driver类中声明有：
+            static &#123;
+                try &#123;
+                    DriverManager.registerDriver(new Driver());
+                &#125; catch (SQLException var1) &#123;
+                    throw new RuntimeException(&quot;Can&#39;t register driver!&quot;);
+                &#125;
+            &#125;
+
+             */
+
+
+            //3.获取连接
+            Connection conn = DriverManager.getConnection(url, user, password);
+            System.out.println(conn);
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;
+
+    &#125;
+</code></pre>
+<blockquote>
+<p>说明：不必显式的注册驱动了。因为在DriverManager的源码中已经存在静态代码块，实现了驱动的注册。</p>
+</blockquote>
+<h4 id="2-4-5-连接方式五-最终版"><a href="#2-4-5-连接方式五-最终版" class="headerlink" title="2.4.5 连接方式五(最终版)"></a>2.4.5 连接方式五(最终版)</h4><pre><code class="java">    @Test
+    public  void testConnection5() throws Exception &#123;
+        //1.加载配置文件
+        InputStream is = ConnectionTest.class.getClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
+        Properties pros = new Properties();
+        pros.load(is);
+        
+        //2.读取配置信息
+        String user = pros.getProperty(&quot;user&quot;);
+        String password = pros.getProperty(&quot;password&quot;);
+        String url = pros.getProperty(&quot;url&quot;);
+        String driverClass = pros.getProperty(&quot;driverClass&quot;);
+
+        //3.加载驱动
+        Class.forName(driverClass);
+
+        //4.获取连接
+        Connection conn = DriverManager.getConnection(url,user,password);
+        System.out.println(conn);
+
+    &#125;
+</code></pre>
+<p>其中，配置文件声明在工程的src目录下：【jdbc.properties】</p>
+<pre><code class="properties">user=root
+password=abc123
+url=jdbc:mysql://localhost:3306/test
+driverClass=com.mysql.jdbc.Driver
+</code></pre>
+<blockquote>
+<p>说明：使用配置文件的方式保存配置信息，在代码中加载配置文件</p>
+<p><strong>使用配置文件的好处：</strong></p>
+<p>①实现了代码和数据的分离，如果需要修改配置信息，直接在配置文件中修改，不需要深入代码<br>②如果修改了配置信息，省去重新编译的过程。</p>
+</blockquote>
+<h2 id="三：使用PreparedStatement实现CRUD操作"><a href="#三：使用PreparedStatement实现CRUD操作" class="headerlink" title="三：使用PreparedStatement实现CRUD操作"></a>三：使用PreparedStatement实现CRUD操作</h2><h3 id="3-1-操作和访问数据库"><a href="#3-1-操作和访问数据库" class="headerlink" title="3.1 操作和访问数据库"></a>3.1 操作和访问数据库</h3><ul>
+<li><p>数据库连接被用于向数据库服务器发送命令和 SQL 语句，并接受数据库服务器返回的结果。其实一个数据库连接就是一个Socket连接。</p>
+</li>
+<li><p>在 java.sql 包中有 3 个<strong>接口</strong>分别定义了对数据库的调用的不同方式：</p>
+<ul>
+<li><code>Statemen</code>t：用于执行静态 SQL 语句并返回它所生成结果的对象。 </li>
+<li><code>PrepatedStatement</code>：SQL 语句被预编译并存储在此对象中，可以使用此对象多次高效地执行该语句。</li>
+<li><code>CallableStatement</code>：用于执行 SQL 存储过程</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566573842140.png" alt="1566573842140"></p>
+</li>
+</ul>
+<h3 id="3-2-使用Statement操作数据表的弊端：SQL注入"><a href="#3-2-使用Statement操作数据表的弊端：SQL注入" class="headerlink" title="3.2 使用Statement操作数据表的弊端：SQL注入"></a>3.2 使用Statement操作数据表的弊端：SQL注入</h3><ul>
+<li><p>通过调用 Connection 对象的 createStatement() 方法创建该对象。该对象用于执行静态的 SQL 语句，并且返回执行结果。</p>
+</li>
+<li><p>Statement 接口中定义了下列方法用于执行 SQL 语句：</p>
+<pre><code class="sql">int excuteUpdate(String sql)：执行更新操作INSERT、UPDATE、DELETE
+ResultSet executeQuery(String sql)：执行查询操作SELECT
+</code></pre>
+</li>
+<li><p>但是使用Statement操作数据表存在弊端：</p>
+<ul>
+<li><strong>问题一：存在拼串操作，繁琐</strong></li>
+<li><strong>问题二：存在SQL注入问题</strong></li>
+</ul>
+</li>
+<li><p>SQL 注入是利用某些系统没有对用户输入的数据进行充分的检查，而在用户输入数据中注入非法的 SQL 语句段或命令(如：SELECT user, password FROM user_table WHERE user=’a’ OR 1 = ‘ AND password = ‘ OR ‘1’ = ‘1’) ，从而利用系统的 SQL 引擎完成恶意行为的做法。</p>
+</li>
+<li><p>对于 Java 而言，要防范 SQL 注入，只要用 PreparedStatement(从Statement扩展而来) 取代 Statement 就可以了。</p>
+</li>
+<li><p>代码演示：</p>
+</li>
+</ul>
+<pre><code class="java">public class StatementTest &#123;
+
+    // 使用Statement的弊端：需要拼写sql语句，并且存在SQL注入的问题
+    @Test
+    public void testLogin() &#123;
+        Scanner scan = new Scanner(System.in);
+
+        System.out.print(&quot;用户名：&quot;);
+        String userName = scan.nextLine();
+        System.out.print(&quot;密   码：&quot;);
+        String password = scan.nextLine();
+        
+        //SELECT * FROM customers WHERE id=1 AND NAME = &#39;汪峰&#39;
+        // SELECT user,password FROM user_table WHERE USER = &#39;1&#39; or &#39; AND PASSWORD = &#39;=&#39;1&#39; or &#39;1&#39; = &#39;1&#39;;
+        String sql = &quot;SELECT user,password FROM user_table WHERE user = &#39;&quot; + userName + &quot;&#39; AND password = &#39;&quot; + password + &quot;&#39;&quot;;//需要拼串，繁琐
+        User user = get(sql, User.class);
+        if (user != null) &#123;
+            System.out.println(&quot;登陆成功!&quot;);
+        &#125; else &#123;
+            System.out.println(&quot;用户名或密码错误！&quot;);
+        &#125;
+    &#125;
+
+    // 使用Statement实现对数据表的查询操作
+    public &lt;T&gt; T get(String sql, Class&lt;T&gt; clazz) &#123;
+        T t = null;
+
+        Connection conn = null;
+        Statement st = null;
+        ResultSet rs = null;
+        try &#123;
+            // 1.加载配置文件
+            InputStream is = StatementTest.class.getClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
+            Properties pros = new Properties();
+            pros.load(is);
+
+            // 2.读取配置信息
+            String user = pros.getProperty(&quot;user&quot;);
+            String password = pros.getProperty(&quot;password&quot;);
+            String url = pros.getProperty(&quot;url&quot;);
+            String driverClass = pros.getProperty(&quot;driverClass&quot;);
+
+            // 3.加载驱动
+            Class.forName(driverClass);
+
+            // 4.获取连接
+            conn = DriverManager.getConnection(url, user, password);
+
+            st = conn.createStatement();
+
+            rs = st.executeQuery(sql);
+
+            // 获取结果集的元数据
+            ResultSetMetaData rsmd = rs.getMetaData();
+
+            // 获取结果集的列数
+            int columnCount = rsmd.getColumnCount();
+
+            if (rs.next()) &#123;
+                t = clazz.newInstance();
+                for (int i = 0; i &lt; columnCount; i++) &#123;
+                    // //1. 获取列的名称
+                    // String columnName = rsmd.getColumnName(i+1);
+
+                    // 1. 获取列的别名
+                    String columnName = rsmd.getColumnLabel(i + 1);
+
+                    // 2. 根据列名获取对应数据表中的数据
+                    Object columnVal = rs.getObject(columnName);
+
+                    // 3. 将数据表中得到的数据，封装进对象
+                    Field field = clazz.getDeclaredField(columnName);
+                    field.setAccessible(true);
+                    field.set(t, columnVal);
+                &#125;
+                return t;
+            &#125;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            // 关闭资源
+            if (rs != null) &#123;
+                try &#123;
+                    rs.close();
+                &#125; catch (SQLException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+            if (st != null) &#123;
+                try &#123;
+                    st.close();
+                &#125; catch (SQLException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+            if (conn != null) &#123;
+                try &#123;
+                    conn.close();
+                &#125; catch (SQLException e) &#123;
+                    e.printStackTrace();
+                &#125;
+            &#125;
+        &#125;
+        return null;
+    &#125;
+&#125;
+</code></pre>
+<p>综上：</p>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1566569819744.png" alt="1566569819744"></p>
+<h3 id="3-3-PreparedStatement的使用"><a href="#3-3-PreparedStatement的使用" class="headerlink" title="3.3 PreparedStatement的使用"></a>3.3 PreparedStatement的使用</h3><h4 id="3-3-1-PreparedStatement介绍"><a href="#3-3-1-PreparedStatement介绍" class="headerlink" title="3.3.1 PreparedStatement介绍"></a>3.3.1 PreparedStatement介绍</h4><ul>
+<li><p>可以通过调用 Connection 对象的 <strong>preparedStatement(String sql)</strong> 方法获取 PreparedStatement 对象</p>
+</li>
+<li><p><strong>PreparedStatement 接口是 Statement 的子接口，它表示一条预编译过的 SQL 语句</strong></p>
+</li>
+<li><p>PreparedStatement 对象所代表的 SQL 语句中的参数用问号(?)来表示，调用 PreparedStatement 对象的 setXxx() 方法来设置这些参数. setXxx() 方法有两个参数，第一个参数是要设置的 SQL 语句中的参数的索引(从 1 开始)，第二个是设置的 SQL 语句中的参数的值</p>
+</li>
+</ul>
+<h4 id="3-3-2-PreparedStatement-vs-Statement"><a href="#3-3-2-PreparedStatement-vs-Statement" class="headerlink" title="3.3.2 PreparedStatement vs Statement"></a>3.3.2 PreparedStatement vs Statement</h4><ul>
+<li><p>代码的可读性和可维护性。</p>
+</li>
+<li><p><strong>PreparedStatement 能最大可能提高性能：</strong></p>
+<ul>
+<li>DBServer会对<strong>预编译</strong>语句提供性能优化。因为预编译语句有可能被重复调用，所以<u>语句在被DBServer的编译器编译后的执行代码被缓存下来，那么下次调用时只要是相同的预编译语句就不需要编译，只要将参数直接传入编译过的语句执行代码中就会得到执行。</u></li>
+<li>在statement语句中,即使是相同操作但因为数据内容不一样,所以整个语句本身不能匹配,没有缓存语句的意义.事实是没有数据库会对普通语句编译后的执行代码缓存。这样<u>每执行一次都要对传入的语句编译一次。</u></li>
+<li>(语法检查，语义检查，翻译成二进制命令，缓存)</li>
+</ul>
+</li>
+<li><p>PreparedStatement 可以防止 SQL 注入 </p>
+</li>
+</ul>
+<h4 id="3-3-3-Java与SQL对应数据类型转换表"><a href="#3-3-3-Java与SQL对应数据类型转换表" class="headerlink" title="3.3.3 Java与SQL对应数据类型转换表"></a>3.3.3 Java与SQL对应数据类型转换表</h4><table>
+<thead>
+<tr>
+<th>Java类型</th>
+<th>SQL类型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>boolean</td>
+<td>BIT</td>
+</tr>
+<tr>
+<td>byte</td>
+<td>TINYINT</td>
+</tr>
+<tr>
+<td>short</td>
+<td>SMALLINT</td>
+</tr>
+<tr>
+<td>int</td>
+<td>INTEGER</td>
+</tr>
+<tr>
+<td>long</td>
+<td>BIGINT</td>
+</tr>
+<tr>
+<td>String</td>
+<td>CHAR,VARCHAR,LONGVARCHAR</td>
+</tr>
+<tr>
+<td>byte   array</td>
+<td>BINARY  ,    VAR BINARY</td>
+</tr>
+<tr>
+<td>java.sql.Date</td>
+<td>DATE</td>
+</tr>
+<tr>
+<td>java.sql.Time</td>
+<td>TIME</td>
+</tr>
+<tr>
+<td>java.sql.Timestamp</td>
+<td>TIMESTAMP</td>
+</tr>
+</tbody></table>
+<h4 id="3-3-4-创建数据库工具类JDBCUtils"><a href="#3-3-4-创建数据库工具类JDBCUtils" class="headerlink" title="3.3.4 创建数据库工具类JDBCUtils"></a>3.3.4 创建数据库工具类JDBCUtils</h4><ul>
+<li>方式一</li>
+</ul>
+<pre><code class="java">public class JDBCUtils &#123;
+    /*
+     获取数据库的连接
+     */
+    public static Connection getConnection() throws Exception &#123;
+        // 1.读取配置文件中的4个基本信息
+        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
+        //两种方式均可
+        //InputStream is = JDBCUtils.class.ClassLoader().getResourceAsStream(&quot;jdbc.properties&quot;);
+        Properties pros = new Properties();
+        pros.load(is);
+
+        String user = pros.getProperty(&quot;user&quot;);
+        String password = pros.getProperty(&quot;password&quot;);
+        String url = pros.getProperty(&quot;url&quot;);
+        String driverClass = pros.getProperty(&quot;driverClass&quot;);
+
+        // 2.加载驱动
+        Class.forName(driverClass);
+
+        // 3.获取连接
+        Connection conn = DriverManager.getConnection(url, user, password);
+        return conn;
+    &#125;
+    /*
+     * 关闭连接和Statement的操作，方法的重载
+     */
+    public static void closeResource(Connection conn,Statement ps)&#123;
+        try &#123;
+            if(ps != null)
+                ps.close();
+        &#125; catch (SQLException e) &#123;
+            e.printStackTrace();
+        &#125;
+        try &#123;
+            if(conn != null)
+                conn.close();
+        &#125; catch (SQLException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+    /*
+     *关闭资源操作，方法的重载
+     */
+    public static void closeResource(Connection conn,Statement ps,ResultSet rs)&#123;
+        try &#123;
+            if(ps != null)
+                ps.close();
+        &#125; catch (SQLException e) &#123;
+            e.printStackTrace();
+        &#125;
+        try &#123;
+            if(conn != null)
+                conn.close();
+        &#125; catch (SQLException e) &#123;
+            e.printStackTrace();
+        &#125;
+        try &#123;
+            if(rs != null)
+                rs.close();
+        &#125; catch (SQLException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>方式二：</p>
+<pre><code class="java">public class JDBCUtils &#123;
+    private static String url;
+    private static String user;
+    private static String password;
+    private static String driver;
+    /*
+    文件的读取，只需要读取一次即可拿到这些值，静态代码快
+     */
+    static &#123;
+        //读取资源文件，获取值
+        try &#123;
+            //1.创建properties对象
+            Properties pro=new Properties();
+
+            //获取src路径下文件的方式：classloader 类加载器
+            ClassLoader classLoader = JDBCUtils.class.getClassLoader();
+            URL res = classLoader.getResource(&quot;jdbc.properties&quot;);
+            String path = res.getPath();
+            //2.加载文件
+//            pro.load(new FileReader(&quot;src/jdbc.properties&quot;));
+            pro.load(new FileReader(path));
+            //3.获取数据，赋值
+            url=pro.getProperty(&quot;url&quot;);
+            user = pro.getProperty(&quot;user&quot;);
+            password = pro.getProperty(&quot;password&quot;);
+            driver = pro.getProperty(&quot;driver&quot;);
+            //4.注册驱动
+            Class.forName(driver);
+        &#125; catch (IOException e) &#123;
+            e.printStackTrace();
+        &#125; catch (ClassNotFoundException e) &#123;
+            e.printStackTrace();
+        &#125;
+
+    &#125;
+    /*
+    获取连接，返回连接对象
+     */
+    public static Connection getConnection() throws SQLException &#123;
+        return DriverManager.getConnection(url,user,password);
+    &#125;
+
+    /*
+    释放资源,close()
+     */
+    public static void close(ResultSet rs, Connection conn, Statement stmt)&#123;
+        if (rs != null)&#123;
+            try &#123;
+                rs.close();
+            &#125; catch (SQLException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if (stmt != null)&#123;
+            try &#123;
+                stmt.close();
+            &#125; catch (SQLException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if (conn!=null)&#123;
+            try &#123;
+                conn.close();
+            &#125; catch (SQLException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+    public static void close(Connection conn, Statement stmt)&#123;
+        if (stmt != null)&#123;
+            try &#123;
+                stmt.close();
+            &#125; catch (SQLException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+        if (conn!=null)&#123;
+            try &#123;
+                conn.close();
+            &#125; catch (SQLException e) &#123;
+                e.printStackTrace();
+            &#125;
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<h4 id="3-3-5-使用PreparedStatement实现增、删、改操作"><a href="#3-3-5-使用PreparedStatement实现增、删、改操作" class="headerlink" title="3.3.5 使用PreparedStatement实现增、删、改操作"></a>3.3.5 使用PreparedStatement实现增、删、改操作</h4><ul>
+<li>单独的增删改</li>
+</ul>
+<pre><code class="java">//增：insert 用execute()方法
+    @Test
+    public void test1()&#123;
+        Connection connection = null;
+        PreparedStatement preparedStatement = null;
+        try &#123;
+            connection = JDBCUtils.getConnection();
+            String sql= &quot;insert into customers(name,email,birth)values(?,?,?)&quot;;
+            preparedStatement = connection.prepareStatement(sql);
+            //设置值
+            preparedStatement.setString(1,&quot;哪吒&quot;);//表示第一个？设置String类型的名字
+            preparedStatement.setString(2,&quot;nezha@163.com&quot;);
+            //转换Date
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);
+            java.util.Date parse = simpleDateFormat.parse(&quot;1000-01-01&quot;);
+            preparedStatement.setDate(3,new Date(parse.getTime()));//毫秒值一样
+            //执行，execute()方法返回一个boolean值，executeUpdate()有返回int值，返回更新了几条数据
+            preparedStatement.execute();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;finally &#123;
+            //资源关闭
+            JDBCUtils.closeResource(connection,preparedStatement);
+        &#125;
+
+    &#125;
+//改 update，修改customers表的一条记录
+    @Test
+    public void testUpdate()&#123;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try &#123;
+            //1.获取数据库的连接
+            conn = JDBCUtils.getConnection();
+            //2.预编译sql语句，返回PreparedStatement的实例
+            String sql = &quot;update customers set name = ? where id = ?&quot;;
+            ps = conn.prepareStatement(sql);
+            //3.填充占位符
+            ps.setObject(1,&quot;莫扎特&quot;);
+            ps.setObject(2, 18);
+            //4.执行
+            ps.execute();
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;finally&#123;
+            //5.资源的关闭
+            JDBCUtils.closeResource(conn, ps);
+            
+        &#125;
+    &#125;
+</code></pre>
+<ul>
+<li>通用的增删改操作：就sql语句不一样，占位符？数量不一样，参数类型不一样，统一为object</li>
+</ul>
+<pre><code class="java">    //通用的增、删、改操作（体现一：增、删、改 ； 体现二：针对于不同的表）
+    public void update(String sql,Object ... args)&#123;//可变形参的个数与占位符一致
+        Connection conn = null;
+        PreparedStatement ps = null;
+        try &#123;
+            //1.获取数据库的连接
+            conn = JDBCUtils.getConnection();
+            
+            //2.获取PreparedStatement的实例 (或：预编译sql语句)
+            ps = conn.prepareStatement(sql);
+            //3.填充占位符
+            for(int i = 0;i &lt; args.length;i++)&#123;
+                ps.setObject(i + 1, args[i]);
+            &#125;
+            
+            //4.执行sql语句
+            ps.execute();
+        &#125; catch (Exception e) &#123;
+            
+            e.printStackTrace();
+        &#125;finally&#123;
+            //5.关闭资源
+            JDBCUtils.closeResource(conn, ps);
+            
+        &#125;
+    &#125;
+//使用
+@Test
+    public void testCommonUpdate()&#123;
+        //增删改均可，不需要获取连接，直接在update中定义了，后面处理事务则需要把连接放在外面定义
+//        String sql = &quot;delete from customers where id = ?&quot;;
+//        update(sql,3);
+        
+        String sql = &quot;update `order` set order_name = ? where order_id = ?&quot;;//表order是关键字，需要用``包裹(1旁边的按键)
+        update(sql,&quot;DD&quot;,&quot;2&quot;);
+    &#125;
+</code></pre>
+<h4 id="3-3-6-使用PreparedStatement实现查询操作"><a href="#3-3-6-使用PreparedStatement实现查询操作" class="headerlink" title="3.3.6 使用PreparedStatement实现查询操作"></a>3.3.6 使用PreparedStatement实现查询操作</h4><p>查找会返回一个结果集，executeQuery查询之后返回的是ResultSet接口的对象</p>
+<pre><code class="java">@Test
+    public void testQuery1() &#123;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet resultSet = null;
+        try &#123;
+            conn = JDBCUtils.getConnection();
+            String sql = &quot;select id,name,email,birth from customers where id = ?&quot;;
+            ps = conn.prepareStatement(sql);
+            ps.setObject(1, 1);
+            
+            //执行,并返回结果集
+            resultSet = ps.executeQuery();
+            //处理结果集
+            if(resultSet.next())&#123;
+                //next():判断结果集的下一条是否有数据，如果有数据返回true,
+                //并指针下移；如果返回false,指针不会下移。
+                
+                //获取当前这条数据的各个字段值
+                int id = resultSet.getInt(1);
+                String name = resultSet.getString(2);
+                String email = resultSet.getString(3);
+                Date birth = resultSet.getDate(4);
+                
+            //方式一：
+//            System.out.println(&quot;id = &quot; + id + &quot;,name = &quot; + name + &quot;,email = &quot; + email + &quot;,birth = &quot; + birth);
+                
+            //方式二：
+//            Object[] data = new Object[]&#123;id,name,email,birth&#125;;
+                //方式三：将数据封装为一个对象（推荐）
+                Customer customer = new Customer(id, name, email, birth);
+                System.out.println(customer);
+                
+            &#125;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125;finally&#123;
+            //关闭资源
+            JDBCUtils.closeResource(conn, ps, resultSet);
+            
+        &#125;
+        
+    &#125;
+/*
+ * ORM编程思想  （object relational mapping）
+ * 对象关系映射
+ * 一个数据表对应一个java类
+ * 表中的一条记录对应java类的一个对象
+ * 表中的一个字段对应java类的一个属性
+ * 
+ */
+public class Customer &#123;
+    
+    private int id;
+    private String name;
+    private String email;
+    private Date birth;
+    //构造方法 略
+    //getter,setter方法 略
+    // toString方法   略
+&#125;
+</code></pre>
+<ul>
+<li>通用操作</li>
+</ul>
+<pre><code class="java">    // 通用的针对于不同表的查询:返回一个对象 (version 1.0)
+    public &lt;T&gt; T getInstance(Class&lt;T&gt; clazz, String sql, Object... args) &#123;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try &#123;
+            // 1.获取数据库连接
+            conn = JDBCUtils.getConnection();
+            // 2.预编译sql语句，得到PreparedStatement对象
+            ps = conn.prepareStatement(sql);
+            // 3.填充占位符
+            for (int i = 0; i &lt; args.length; i++) &#123;
+                ps.setObject(i + 1, args[i]);
+            &#125;
+            // 4.执行executeQuery(),得到结果集：ResultSet
+            rs = ps.executeQuery();
+            // 5.得到结果集的元数据：ResultSetMetaData
+            ResultSetMetaData rsmd = rs.getMetaData();//通过ResultSetMetaData获取列值
+            // 6.1通过ResultSetMetaData得到columnCount,columnLabel；通过ResultSet得到列值
+            int columnCount = rsmd.getColumnCount();//得到列数，每一列表示一种数据类型
+            if (rs.next()) &#123;
+                T t = clazz.newInstance();
+                for (int i = 0; i &lt; columnCount; i++) &#123;// 遍历每一个列
+                    // 获取列值columnVal
+                    Object columnVal = rs.getObject(i + 1);
+                    //很难的一块，两种方式一种造对象在构造器中将列值填入，一种造好之后用set方法填入
+                    //用第二种，第一种构造器不一定有
+                    
+                    // 获取列的别名:列的别名，使用类的属性名充当columnLabel
+                    String columnLabel = rsmd.getColumnLabel(i + 1);
+                    // 6.2使用反射，给对象的相应属性赋值getDeclaredField获取属性的方法，不考虑权限修饰符
+                    Field field = clazz.getDeclaredField(columnLabel);
+                    field.setAccessible(true);//设置可以获取私有属性
+                    field.set(t, columnVal);
+                &#125;
+                return t;
+            &#125;
+        &#125; catch (Exception e) &#123;
+
+            e.printStackTrace();
+        &#125; finally &#123;
+            // 7.关闭资源
+            JDBCUtils.closeResource(conn, ps, rs);
+        &#125;
+
+        return null;
+
+    &#125;
+//使用
+@Test
+    public void testGetInstance()&#123;
+        String sql = &quot;select id,name,email from customers where id = ?&quot;;
+        Customer customer = getInstance(Customer.class,sql,12);
+        System.out.println(customer);
+        
+        String sql1 = &quot;select order_id orderId,order_name orderName from `order` where order_id = ?&quot;;
+        Order order = getInstance(Order.class, sql1, 1);
+        System.out.println(order);
+    &#125;
+</code></pre>
+<p>通用操作</p>
+<pre><code class="java">//针对于不同的表的通用的查询操作，返回表中的多条记录，所以对象用List集合
+public &lt;T&gt; List&lt;T&gt; getForList(Class&lt;T&gt; clazz,String sql, Object... args)&#123;
+        Connection conn = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try &#123;
+            conn = JDBCUtils.getConnection();
+
+            ps = conn.prepareStatement(sql);
+            for (int i = 0; i &lt; args.length; i++) &#123;
+                ps.setObject(i + 1, args[i]);
+            &#125;
+
+            rs = ps.executeQuery();
+            // 获取结果集的元数据 :ResultSetMetaData
+            ResultSetMetaData rsmd = rs.getMetaData();
+            // 通过ResultSetMetaData获取结果集中的列数
+            int columnCount = rsmd.getColumnCount();
+            //创建集合对象
+            ArrayList&lt;T&gt; list = new ArrayList&lt;T&gt;();
+            while (rs.next()) &#123;
+                T t = clazz.newInstance();
+                // 处理结果集一行数据中的每一个列:给t对象指定的属性赋值
+                for (int i = 0; i &lt; columnCount; i++) &#123;
+                    // 获取列值
+                    Object columValue = rs.getObject(i + 1);
+
+                    // 获取每个列的列名
+                    // String columnName = rsmd.getColumnName(i + 1);
+                    String columnLabel = rsmd.getColumnLabel(i + 1);
+
+                    // 给t对象指定的columnName属性，赋值为columValue：通过反射
+                    Field field = clazz.getDeclaredField(columnLabel);
+                    field.setAccessible(true);
+                    field.set(t, columValue);
+                &#125;
+                list.add(t);//添加对象到集合
+            &#125;
+            
+            return list;
+        &#125; catch (Exception e) &#123;
+            e.printStackTrace();
+        &#125; finally &#123;
+            JDBCUtils.closeResource(conn, ps, rs);
+
+        &#125;
+
+        return null;
+    &#125;
+//使用
+@Test
+    public void testGetForList()&#123;
+        
+        String sql = &quot;select id,name,email from customers where id &lt; ?&quot;;
+        List&lt;Customer&gt; list = getForList(Customer.class,sql,12);
+        list.forEach(System.out::println);//java8新特性
+        
+        String sql1 = &quot;select order_id orderId,order_name orderName from `order`&quot;;
+        List&lt;Order&gt; orderList = getForList(Order.class, sql1);
+        orderList.forEach(System.out::println);
+    &#125;
+</code></pre>
+<blockquote>
+<p>说明：使用PreparedStatement实现的查询操作可以替换Statement实现的查询操作，解决Statement拼串和SQL注入问题。</p>
+</blockquote>
+<h3 id="3-4-ResultSet与ResultSetMetaData"><a href="#3-4-ResultSet与ResultSetMetaData" class="headerlink" title="3.4 ResultSet与ResultSetMetaData"></a>3.4 ResultSet与ResultSetMetaData</h3><h4 id="3-4-1-ResultSet"><a href="#3-4-1-ResultSet" class="headerlink" title="3.4.1 ResultSet"></a>3.4.1 ResultSet</h4><ul>
+<li><p>查询需要调用PreparedStatement 的 executeQuery() 方法，查询结果是一个ResultSet 对象</p>
+</li>
+<li><p>ResultSet 对象以逻辑表格的形式封装了执行数据库操作的结果集，ResultSet 接口由数据库厂商提供实现</p>
+</li>
+<li><p>ResultSet 返回的实际上就是一张数据表。有一个指针指向数据表的第一条记录的前面。</p>
+</li>
+<li><p>ResultSet 对象维护了一个指向当前数据行的<strong>游标</strong>，初始的时候，游标在第一行之前，可以通过 ResultSet 对象的 next() 方法移动到下一行。调用 next()方法检测下一行是否有效。若有效，该方法返回 true，且指针下移。相当于Iterator对象的 hasNext() 和 next() 方法的结合体。</p>
+</li>
+<li><p>当指针指向一行时, 可以通过调用 getXxx(int index) 或 getXxx(int columnName) 获取每一列的值。</p>
+<ul>
+<li>例如: getInt(1), getString(“name”)</li>
+<li><strong>注意：Java与数据库交互涉及到的相关Java API中的索引都从1开始。</strong></li>
+</ul>
+</li>
+<li><p>ResultSet 接口的常用方法：</p>
+<ul>
+<li><p>boolean next()</p>
+</li>
+<li><p>getString()</p>
+</li>
+<li><p>…</p>
+</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555580152530.png" alt="1555580152530"></p>
+</li>
+</ul>
+<h4 id="3-4-2-ResultSetMetaData元数据"><a href="#3-4-2-ResultSetMetaData元数据" class="headerlink" title="3.4.2 ResultSetMetaData元数据"></a>3.4.2 ResultSetMetaData元数据</h4><ul>
+<li><p>可用于获取关于 ResultSet 对象中列的类型和属性信息的对象</p>
+</li>
+<li><p>ResultSetMetaData meta = rs.getMetaData();</p>
+<ul>
+<li><p><strong>getColumnName</strong>(int column)：获取指定列的名称</p>
+</li>
+<li><p><strong>getColumnLabel</strong>(int column)：获取指定列的别名</p>
+</li>
+<li><p><strong>getColumnCount</strong>()：返回当前 ResultSet 对象中的列数。 </p>
+</li>
+<li><p>getColumnTypeName(int column)：检索指定列的数据库特定的类型名称。 </p>
+</li>
+<li><p>getColumnDisplaySize(int column)：指示指定列的最大标准宽度，以字符为单位。 </p>
+</li>
+<li><p><strong>isNullable</strong>(int column)：指示指定列中的值是否可以为 null。 </p>
+</li>
+<li><p> isAutoIncrement(int column)：指示是否自动为指定列进行编号，这样这些列仍然是只读的。 </p>
+</li>
+</ul>
+</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555579494691.png" alt="1555579494691"></p>
+<p><strong>问题1：得到结果集后, 如何知道该结果集中有哪些列 ？ 列名是什么？</strong></p>
+<p>​     需要使用一个描述 ResultSet 的对象， 即 ResultSetMetaData</p>
+<p><strong>问题2：关于ResultSetMetaData</strong></p>
+<ol>
+<li><strong>如何获取 ResultSetMetaData</strong>： 调用 ResultSet 的 getMetaData() 方法即可</li>
+<li><strong>获取 ResultSet 中有多少列</strong>：调用 ResultSetMetaData 的 getColumnCount() 方法</li>
+<li><strong>获取 ResultSet 每一列的列的别名是什么</strong>：调用 ResultSetMetaData 的getColumnLabel() 方法</li>
+</ol>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555579816884.png" alt="1555579816884"></p>
+<h3 id="3-5-资源的释放"><a href="#3-5-资源的释放" class="headerlink" title="3.5 资源的释放"></a>3.5 资源的释放</h3><ul>
+<li>释放ResultSet, Statement,Connection。</li>
+<li>数据库连接（Connection）是非常稀有的资源，用完后必须马上释放，如果Connection不能及时正确的关闭将导致系统宕机。Connection的使用原则是<strong>尽量晚创建，尽量早的释放。</strong></li>
+<li>可以在finally中关闭，保证及时其他代码出现异常，资源也一定能被关闭。</li>
+</ul>
+<h3 id="3-6-JDBC-API小结"><a href="#3-6-JDBC-API小结" class="headerlink" title="3.6 JDBC API小结"></a>3.6 JDBC API小结</h3><ul>
+<li><p>两种思想</p>
+<ul>
+<li><p>面向接口编程的思想</p>
+</li>
+<li><p>ORM思想(object relational mapping)</p>
+<ul>
+<li>一个数据表对应一个java类</li>
+<li>表中的一条记录对应java类的一个对象</li>
+<li>表中的一个字段对应java类的一个属性</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>sql是需要结合列名和表的属性名来写。注意起别名。</p>
+</blockquote>
+</li>
+<li><p>两种技术</p>
+<ul>
+<li>JDBC结果集的元数据：ResultSetMetaData<ul>
+<li>获取列数：getColumnCount()</li>
+<li>获取列的别名：getColumnLabel()</li>
+</ul>
+</li>
+<li>通过反射，创建指定类的对象，获取指定的属性并赋值</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="四：-操作BLOB类型字段"><a href="#四：-操作BLOB类型字段" class="headerlink" title="四： 操作BLOB类型字段"></a>四： 操作BLOB类型字段</h2><h3 id="4-1-MySQL-BLOB类型-图片操作等"><a href="#4-1-MySQL-BLOB类型-图片操作等" class="headerlink" title="4.1 MySQL BLOB类型(图片操作等)"></a>4.1 MySQL BLOB类型(图片操作等)</h3><ul>
+<li><p>MySQL中，BLOB是一个二进制大型对象，是一个可以存储大量数据的容器，它能容纳不同大小的数据。</p>
+</li>
+<li><p>插入BLOB类型的数据必须使用PreparedStatement，因为BLOB类型的数据无法使用字符串拼接写的。</p>
+</li>
+<li><p>MySQL的四种BLOB类型(除了在存储的最大信息量上不同外，他们是等同的)</p>
+</li>
+</ul>
+<p><img src="/2020/09/20/JDBC%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/1555581069798.png" alt="1555581069798"></p>
+<ul>
+<li>实际使用中根据需要存入的数据大小定义不同的BLOB类型。</li>
+<li>需要注意的是：如果存储的文件过大，数据库的性能会下降。</li>
+<li>如果在指定了相关的Blob类型以后，还报错：xxx too large，那么在mysql的安装目录下，找my.ini文件加上如下的配置参数： <strong>max_allowed_packet=16M</strong>。同时注意：修改了my.ini文件之后，需要重新启动mysql服务。</li>
+</ul>
+<h3 id="4-2-向数据表中插入大数据类型"><a href="#4-2-向数据表中插入大数据类型" class="headerlink" title="4.2 向数据表中插入大数据类型"></a>4.2 向数据表中插入大数据类型</h3><pre><code class="java">//获取连接
+Connection conn = JDBCUtils.getConnection();
+        
+String sql = &quot;insert into customers(name,email,birth,photo)values(?,?,?,?)&quot;;
+PreparedStatement ps = conn.prepareStatement(sql);
+
+// 填充占位符
+ps.setString(1, &quot;徐海强&quot;);
+ps.setString(2, &quot;xhq@126.com&quot;);
+ps.setDate(3, new Date(new java.util.Date().getTime()));
+// 操作Blob类型的变量
+FileInputStream fis = new FileInputStream(&quot;xhq.png&quot;);
+ps.setBlob(4, fis);
+//执行
+ps.execute();
+        
+fis.close();
+JDBCUtils.closeResource(conn, ps);
+</code></pre>
+<h3 id="4-3-修改数据表中的Blob类型字段"><a href="#4-3-修改数据表中的Blob类型字段" class="headerlink" title="4.3 修改数据表中的Blob类型字段"></a>4.3 修改数据表中的Blob类型字段</h3><pre><code class="java">Connection conn = JDBCUtils.getConnection();
+String sql = &quot;update customers set photo = ? where id = ?&quot;;
+PreparedStatement ps = conn.prepareStatement(sql);
+
+// 填充占位符
+// 操作Blob类型的变量
+FileInputStream fis = new FileInputStream(&quot;coffee.png&quot;);
+ps.setBlob(1, fis);
+ps.setInt(2, 25);
+
+ps.execute();
+
+fis.close();
+JDBCUtils.closeResource(conn, ps);
+</code></pre>
+<h3 id="4-4-从数据表中读取大数据类型"><a href="#4-4-从数据表中读取大数据类型" class="headerlink" title="4.4 从数据表中读取大数据类型"></a>4.4 从数据表中读取大数据类型</h3><pre><code class="java">String sql = &quot;SELECT id, name, email, birth, photo FROM customer WHERE id = ?&quot;;
+conn = getConnection();
+ps = conn.prepareStatement(sql);
+ps.setInt(1, 8);
+rs = ps.executeQuery();
+if(rs.next())&#123;
+    Integer id = rs.getInt(1);
+    String name = rs.getString(2);
+    String email = rs.getString(3);
+    Date birth = rs.getDate(4);
+    Customer cust = new Customer(id, name, email, birth);
+    System.out.println(cust); 
+    //读取Blob类型的字段
+    Blob photo = rs.getBlob(5);
+    InputStream is = photo.getBinaryStream();
+    OutputStream os = new FileOutputStream(&quot;c.jpg&quot;);
+    byte [] buffer = new byte[1024];
+    int len = 0;
+    while((len = is.read(buffer)) != -1)&#123;
+        os.write(buffer, 0, len);
+    &#125;
+    JDBCUtils.closeResource(conn, ps, rs);
+        
+    if(is != null)&#123;
+        is.close();
+    &#125;
+        
+    if(os !=  null)&#123;
+        os.close();
+    &#125;
+    
+&#125;
+</code></pre>
+<h2 id="五：-批量插入Insert"><a href="#五：-批量插入Insert" class="headerlink" title="五： 批量插入Insert"></a>五： 批量插入Insert</h2><h3 id="5-1-批量执行SQL语句"><a href="#5-1-批量执行SQL语句" class="headerlink" title="5.1 批量执行SQL语句"></a>5.1 批量执行SQL语句</h3><p>当需要成批插入或者更新记录时，可以采用Java的批量<strong>更新</strong>机制，这一机制允许多条语句一次性提交给数据库批量处理。通常情况下比单独提交处理更有效率</p>
+<p>使用PreparedStatement实现批量数据的操作，update、delete本身就具有批量操作的效果。</p>
+<p>此时的批量操作，主要指的是批量插入。</p>
+<p>JDBC的批量处理语句包括下面三个方法：</p>
+<ul>
+<li><strong>addBatch(String)：添加需要批量处理的SQL语句或是参数；</strong></li>
+<li><strong>executeBatch()：执行批量处理语句；</strong></li>
+<li><strong>clearBatch():清空缓存的数据</strong></li>
+</ul>
+<p>通常我们会遇到两种批量执行SQL语句的情况：</p>
+<ul>
+<li>多条SQL语句的批量处理；</li>
+<li>一个SQL语句的批量传参；</li>
+</ul>
+<h3 id="5-2-高效的批量插入"><a href="#5-2-高效的批量插入" class="headerlink" title="5.2 高效的批量插入"></a>5.2 高效的批量插入</h3><p>举例：向数据表中插入20000条数据</p>
+<ul>
+<li>数据库中提供一个goods表。创建如下：</li>
+</ul>
+<pre><code class="sql">CREATE TABLE goods(
+id INT PRIMARY KEY AUTO_INCREMENT,
+NAME VARCHAR(20)
+);
+</code></pre>
+<h4 id="5-2-1-实现层次一：使用Statement"><a href="#5-2-1-实现层次一：使用Statement" class="headerlink" title="5.2.1 实现层次一：使用Statement"></a>5.2.1 实现层次一：使用Statement</h4><pre><code class="java">Connection conn = JDBCUtils.getConnection();
+Statement st = conn.createStatement();
+for(int i = 1;i &lt;= 20000;i++)&#123;
+    String sql = &quot;insert into goods(name) values(&#39;name_&#39; + &quot;+ i +&quot;)&quot;;
+    st.executeUpdate(sql);
+&#125;
+</code></pre>
+<h4 id="5-2-2-实现层次二：使用PreparedStatement"><a href="#5-2-2-实现层次二：使用PreparedStatement" class="headerlink" title="5.2.2 实现层次二：使用PreparedStatement"></a>5.2.2 实现层次二：使用PreparedStatement</h4><pre><code class="java">long start = System.currentTimeMillis();
+        
+Connection conn = JDBCUtils.getConnection();
+        
+String sql = &quot;insert into goods(name)values(?)&quot;;
+PreparedStatement ps = conn.prepareStatement(sql);
+for(int i = 1;i &lt;= 20000;i++)&#123;
+    ps.setString(1, &quot;name_&quot; + i);
+    ps.executeUpdate();
+&#125;
+        
+long end = System.currentTimeMillis();
+System.out.println(&quot;花费的时间为：&quot; + (end - start));//82340
+        
+        
+JDBCUtils.closeResource(conn, ps);
+</code></pre>
+<p>层次二相比于层次一，preparedStatement有预编译功能，层次一sql语句在循环中，循环两万次有两万个String对象在内存中，preparedStatement性能提升详见3.32</p>
+<h4 id="5-2-3-实现层次三"><a href="#5-2-3-实现层次三" class="headerlink" title="5.2.3 实现层次三"></a>5.2.3 实现层次三</h4><pre><code class="java">/*
+ * 修改1： 使用 addBatch() / executeBatch() / clearBatch()
+ * 修改2：mysql服务器默认是关闭批处理的，我们需要通过一个参数，让mysql开启批处理的支持。
+ *          ?rewriteBatchedStatements=true 写在配置文件的url后面
+ * 修改3：使用更新的mysql 驱动：mysql-connector-java-5.1.37-bin.jar
+ * 
+ */
+@Test
+public void testInsert1() throws Exception&#123;
+    long start = System.currentTimeMillis();
+        
+    Connection conn = JDBCUtils.getConnection();
+        
+    String sql = &quot;insert into goods(name)values(?)&quot;;
+    PreparedStatement ps = conn.prepareStatement(sql);
+        
+    for(int i = 1;i &lt;= 1000000;i++)&#123;
+        ps.setString(1, &quot;name_&quot; + i);
+            
+        //1.“攒”sql，攒够一定数量，再一起执行
+        ps.addBatch();
+        if(i % 500 == 0)&#123;
+            //2.执行
+            ps.executeBatch();
+            //3.清空，清空之后再攒
+            ps.clearBatch();
+        &#125;
+    &#125;
+        
+    long end = System.currentTimeMillis();
+    System.out.println(&quot;花费的时间为：&quot; + (end - start));//20000条：625                                                                         //1000000条:14733  
+        
+    JDBCUtils.closeResource(conn, ps);
+&#125;
+</code></pre>
+<h4 id="5-2-4-实现层次四"><a href="#5-2-4-实现层次四" class="headerlink" title="5.2.4 实现层次四"></a>5.2.4 实现层次四</h4><pre><code class="java">/*
+* 层次四：在层次三的基础上操作
+* 使用Connection 的 setAutoCommit(false)  /  commit()
+* 每次执行完不自动提交数据
+*/
+@Test
+public void testInsert2() throws Exception&#123;
+    long start = System.currentTimeMillis();
+        
+    Connection conn = JDBCUtils.getConnection();
+        
+    //1.设置为不自动提交数据
+    conn.setAutoCommit(false);
+        
+    String sql = &quot;insert into goods(name)values(?)&quot;;
+    PreparedStatement ps = conn.prepareStatement(sql);
+        
+    for(int i = 1;i &lt;= 1000000;i++)&#123;
+        ps.setString(1, &quot;name_&quot; + i);
+            
+        //1.“攒”sql
+        ps.addBatch();
+            
+        if(i % 500 == 0)&#123;
+            //2.执行
+            ps.executeBatch();
+            //3.清空
+            ps.clearBatch();
+        &#125;
+    &#125;
+        
+    //2.提交数据，最后提交数据
+    conn.commit();
+        
+    long end = System.currentTimeMillis();
+    System.out.println(&quot;花费的时间为：&quot; + (end - start));//1000000条:4978 
+        
+    JDBCUtils.closeResource(conn, ps);
+&#125;
+</code></pre>
+]]></content>
+      <categories>
+        <category>JavaWeb</category>
+      </categories>
+      <tags>
+        <tag>javaweb</tag>
         <tag>jdbc</tag>
       </tags>
   </entry>
