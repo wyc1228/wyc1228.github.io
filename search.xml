@@ -1,6 +1,347 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>Java Annotation(注解)</title>
+    <url>/2020/09/09/Annotation(%E6%B3%A8%E8%A7%A3)/</url>
+    <content><![CDATA[<h2 id="Annotation-注解"><a href="#Annotation-注解" class="headerlink" title="Annotation(注解)"></a>Annotation(注解)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>注解是jdk 5.0 新增的功能，Annotation 其实就是代码里的特殊标记, 这些标记可以在编译, 类加载, 运行时被读取, 并执行相应的处理。</p>
+<p>通过使用 Annotation,程序员可以在不改变原逻辑的情况下, 在源文件中嵌入一些补充信息。</p>
+<p>在JavaSE中，注解的使用目的比较简单，例如标记过时的功能，忽略警告等。</p>
+<p>在JavaEE/Android中注解占据了更重要的角色，例如用来配置应用程序的任何切面，代替JavaEE旧版中所遗留的繁冗代码和XML配置等。</p>
+<p><code>框架 = 注解 + 反射机制 + 设计模式</code></p>
+<h3 id="1-2-声明注解"><a href="#1-2-声明注解" class="headerlink" title="1.2 声明注解"></a>1.2 声明注解</h3><p>注解是一种代码级别的说明.它与<code>类</code>，<code>接口</code>，<code>枚举</code>在同一个层次,它可以声明在<code>包</code>，<code>类</code>，<code>字段</code>，<code>方法</code>，<code>局部变量</code>，<code>方法参数</code>等的前面用来对这些元素进行说明注释</p>
+<h3 id="1-3-注解的分类"><a href="#1-3-注解的分类" class="headerlink" title="1.3 注解的分类"></a>1.3 注解的分类</h3><ul>
+<li>基本注解</li>
+<li>元注解</li>
+<li>自定义注解</li>
+</ul>
+<h3 id="1-4-基本注解"><a href="#1-4-基本注解" class="headerlink" title="1.4 基本注解"></a>1.4 基本注解</h3><p><code>java.lang</code>包下注解分别是 : <code>@Override</code>,<code>@Deprecated</code>,<code>@SuppressWarnings</code>,<code>@FunctionalInterface</code>,<code>@SafeVarargs</code>,</p>
+<ul>
+<li><p><code>@Override</code>: 限定重写父类方法, 该注解只能用于方法</p>
+<pre><code class="java">class Student extends Person implements Info&#123;
+    @Override
+    public void work()&#123;
+        System.out.println(&quot;学生工作&quot;);
+    &#125;
+    @Override
+    public void show() &#123;
+
+    &#125;
+&#125;
+</code></pre>
+</li>
+<li><p><code>@Deprecated</code>: 用于表示所修饰的元素(类, 方法等)<code>已过时</code>。表示此方法或类不再建议使用，调用时也会出现删除线，通常是因为所修饰的结构危险或存在更好的选择，如<code>ViewPager</code>中的<code>setOnPageChangeListener</code>方法，已过时</p>
+<pre><code class="java">@Deprecated
+public void setOnPageChangeListener(OnPageChangeListener listener) &#123;
+    mOnPageChangeListener = listener;
+&#125;
+</code></pre>
+</li>
+<li><p><code>@SuppressWarnings</code>: 抑制编译器警告</p>
+<pre><code class="java">public class AnnotationTest &#123;
+    public static void main(String[] args) &#123;
+        @SuppressWarnings(&#123;&quot;unused&quot;,&quot;rawtypes&quot;&#125;)
+        ArrayList arrayList=new ArrayList();
+   &#125;
+&#125;
+</code></pre>
+</li>
+<li><p><code>@FunctionalInterface</code>： 示例</p>
+</li>
+</ul>
+<pre><code class="java">//`Java8`为函数式接口引入了一个新注解`@FunctionalInterface`,其主要用于编译错误检查,
+//加上该注释后当你写的接口不符合函数式定义时,编译器就会报错 !
+//注意: 是否添加`@FunctionalInterface`对于接口是不是函数式接口没有影响,
+//该注释只是提醒`编译器`去检查该接口是否仅仅包含一个抽象方法.
+@FunctionalInterface
+interface functionalInterface &#123;
+
+    // 注意: 函数式接口中只能有一个抽象方法 !
+    void myLambda(String message);
+
+    // 函数式接口里是可以包含默认方法,因为默认方法不是抽象方法,其有一个默认实现,
+    //所以是符合函数式接口的定义的.
+    default void defaultMethod() &#123;
+        // method body..
+    &#125;
+
+    // 函数式接口里是可以包含静态方法,因为静态方法不能是抽象方法,是一个已经实现了的方法,
+    //所以是符合函数式接口的定义的.
+    static void staticMethod() &#123;
+        // method body..
+    &#125;
+
+    // 函数式接口里是可以包含Object里的public方法,这些方法对于函数式接口来说,
+    // 不被当成是抽象方法(虽然它们是抽象方法).因为任何一个函数式接口的实现,默认都继承了Object类,
+    //其包含了来自java.lang.Object里对这些抽象方法的实现!
+    @Override
+    boolean equals(Object object);
+
+&#125;
+
+//使用`@FunctionalInterface`注解的函数式接口继而可以使用`Lambda`表示式来表示该接口的一个实现.
+//(Java8 之前一般是使用匿名类实现的).
+//functionalInterface  f = message-&gt;System.out.println();
+</code></pre>
+<ul>
+<li><p><code>@SafeVarargs</code>： 声明具有模糊类型（比如：泛型）的可变参数的构造函数或方法时，Java编译器会报unchecked警告。鉴于这些情况，如果程序员断定声明的构造函数和方法的主体不会对其varargs参数执行潜在的不安全的操作，可使用@SafeVarargs进行标记，这样的话，Java编译器就不会报unchecked警告。</p>
+<p>只能用于标记构造函数和方法，由于保留策略声明为RUNTIME，所以此注解可以在运行时生效。</p>
+</li>
+</ul>
+<pre><code class="java">public class SafeVarargsAnnotation&lt;S&gt;&#123;
+
+    private S[] args;
+
+    //构造函数可以使用@SafeVarargs标记
+    @SafeVarargs
+    public SafeVarargsAnnotation(S... args)&#123;
+        this.args = args;
+    &#125;
+
+    //此处不能使用@SafeVarargs，因为此方法未声明为static或final方法，
+    //如果要抑制unchecked警告，可以使用@SuppressWarnings注解
+    @SuppressWarnings(&quot;unchecked&quot;)
+    //@SafeVarargs
+    public void loopPrintArgs(S... args)&#123;
+        for (S arg : args) &#123;
+            System.out.println(arg);
+        &#125;
+    &#125;
+
+    //final方法可以使用@SafeVarargs标记
+    @SafeVarargs
+    public final void printSelfArgs(S... args)&#123;
+        for (S arg : this.args) &#123;
+            System.out.println(arg);
+        &#125;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        SafeVarargsAnnotation.loopPrintInfo(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;);
+    &#125;
+
+    //static方法可以使用@SafeVarargs标记
+    @SafeVarargs
+    public static &lt;T&gt; void loopPrintInfo(T ... infos)&#123;
+        for (T info : infos) &#123;
+            System.out.println(info);
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+<p>如果以上把@SafeVarargs标记注释掉，在编译时就会报unchecked警告</p>
+<h3 id="1-5-元注解"><a href="#1-5-元注解" class="headerlink" title="1.5 元注解"></a>1.5 元注解</h3><p><code>java.lang.annotation</code>包下的注解分别是 : <code>@Retention</code>,<code>@Documnetd</code>,<code>@Target</code>,<code>@Inherited</code></p>
+<p>以上四个注解被称为<code>元注解</code>,其作用是负责注解其它的注解,用来提供对其它<code>annotation</code>类型做说明.</p>
+<pre><code class="java">@Target(&#123;TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, MODULE&#125;)
+@Retention(RetentionPolicy.SOURCE)
+public @interface SuppressWarnings &#123;
+    String[] value();
+&#125;
+</code></pre>
+<p>注意: <code>JDK8</code>在<code>java.lang.annotation</code>中添加了<code>Repeatable</code>和<code>Native</code>注解.其中<code>Repeatable</code>支持重复注解,<code>Native</code>用于注解本机代码可以访问的域变量</p>
+<ul>
+<li><p><code>Retention</code>：指定所修饰的 Annotation 的生命周期：SOURCE\CLASS\RUNTIME，只有声明为RUNTIME生命周期的注解，才能通过反射获取。</p>
+<ol>
+<li><code>RetentionPolicy.SOURCE</code>：注解只在源码阶段保留，编译器开始编译时它将被丢弃忽视</li>
+<li><code>RetentionPolicy.CLASS</code>：注解会保留到编译期，但运行时不会把它加载到JVM中（默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得）</li>
+<li><code>RetentionPolicy.RUNTIME</code>：注解可以保留到程序运行时，它会被加载到JVM中，所以程序运行过程中可以获取到它们</li>
+</ol>
+</li>
+<li><p><code>Target</code>:用于指定被修饰的 Annotation 能用于修饰哪些程序元素</p>
+<ol>
+<li><code>ElementType.PACKAGE</code>：可作用在包上</li>
+<li><code>ElementType.TYPE</code>：可作用在类、接口、枚举上</li>
+<li><code>ElementType.ANNOTATION_TYPE</code>：可以作用在注解上</li>
+<li><code>ElementType.FIELD</code>：可作用在属性上</li>
+<li><code>ElementType.CONSTRUCTOR</code>：可作用在构造方法上</li>
+<li><code>ElementType.METHOD</code>：可作用在方法上</li>
+<li><code>ElementType.PARAMETER</code>：可作用在方法参数上</li>
+<li><code>ElementType.LOCAL_VARIABLE</code>：可作用在局部变量上，例如方法中定义的变量</li>
+<li><code>ElementType.TYPE_PARAMETER</code>:可作用在类参数的声明上   如：泛型声明。Since jdk1.8以后添加的</li>
+<li><code>ElementType.TYPE_USE</code>:可作用在使用的类型  Since jdk1.8以后添加的</li>
+</ol>
+</li>
+<li><p><code>Documented</code>:表示所修饰的注解在被javadoc解析时，保留下来。（不常用）</p>
+</li>
+<li><p><code>Inherited</code>:被它修饰的 Annotation 将具继承性，一个父类被该类注解修饰，那么它的子类如果没有任何注解修饰，就会继承父类的这个注解。（不常用）</p>
+<pre><code class="java">@Inherited
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Person &#123;
+&#125;
+ 
+@Person
+public class Teacher &#123;
+&#125;
+ 
+public class TeacherA extends Teacher&#123;
+&#125;
+</code></pre>
+<p>注解Person被@Inherited修饰，Teacher被Person修饰，TeacherA继承Teacher（TeacherA上又无其他注解），那么TeacherA就会拥有Person这个注解。</p>
+</li>
+</ul>
+<h4 id="重复注解"><a href="#重复注解" class="headerlink" title="重复注解"></a>重复注解</h4><ul>
+<li><p><code>Repeatable</code>：支持重复注解</p>
+<pre><code class="java">@Target(ElementType.TYPE)  
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Persons &#123;
+   Person[] value();
+&#125;
+
+@Repeatable(Persons.class)
+public @interface Person&#123;
+    String role() default &quot;&quot;;
+&#125;
+
+@Person(role=&quot;Teacher&quot;)
+@Person(role=&quot;Student&quot;)
+@Person(role=&quot;Doctor&quot;)
+public class Man &#123;
+    String name=&quot;&quot;;
+&#125;
+</code></pre>
+</li>
+</ul>
+<h3 id="1-6-自定义注解"><a href="#1-6-自定义注解" class="headerlink" title="1.6  自定义注解"></a>1.6  自定义注解</h3><h4 id="注解的属性"><a href="#注解的属性" class="headerlink" title="注解的属性"></a>注解的属性</h4><p>注解的属性也叫做成员变量，注解只有成员变量，没有方法。注解的成员变量在注解的定义中以“无形参的方法”形式来声明，其方法名定义了该成员变量的名字，其返回值定义了该成员变量的类型。</p>
+<pre><code class="java">@Repeatable(Persons.class)
+public  @interface Person&#123;
+    String role() default &quot;&quot;;
+&#125;
+</code></pre>
+<p>注解Person里面的role属性，role是一个成员变量，只不过书写形式为 String role() default “”； 即所谓的“无形参的方法”形式书写，给role设置了默认值为空字符串 default “”。</p>
+<h4 id="标记注解"><a href="#标记注解" class="headerlink" title="标记注解"></a>标记注解</h4><p>因为<code>标记注解没有成员</code>,所以应用标记注解时,后面不需要有圆括号.如果提供空的圆括号,也不会报错,但不是必需的.类似地,对于所有成员都使用<code>默认值(default)</code>的注解也可以没有圆括号.</p>
+<pre><code class="java">@Retention(RetentionPolicy.RUNTIME)
+@interface MyMarker_annotation &#123;
+&#125;
+</code></pre>
+<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ul>
+<li>注解声明为：@interface</li>
+</ul>
+<ul>
+<li>内部定义成员，通常使用value表示</li>
+<li>可以指定成员的默认值，使用default定义</li>
+<li>如果自定义注解没成员，表明是一个标识作用。</li>
+</ul>
+<ul>
+<li>自定义注解是以元注解为基础注解自己定义的注解。</li>
+</ul>
+<p>自定义运行是注解分为两步：声明注解、解析注解。</p>
+<h4 id="声明注解"><a href="#声明注解" class="headerlink" title="声明注解"></a>声明注解</h4><pre><code class="java">@Target(ElementType.FIELD)
+@Retention(RetentionPolicy.RUNTIME)//指定保留策略
+public @interface Animal &#123;
+    int value() default 5;
+&#125;
+</code></pre>
+<p>上面是自己定义了一个注解Animal，Animal含有一个int类型的属性，该属性的名称为value，默认值为5。该注解主要用来注解成员变量，作用于运行期。</p>
+<h4 id="解析注解"><a href="#解析注解" class="headerlink" title="解析注解"></a>解析注解</h4><pre><code class="java">public class TestMain &#123;
+ 
+    @Animal(value = 12)
+    public int age;
+    public static void main(String[] args) &#123;
+        TestMain testMain=new TestMain();
+        Class clazz=testMain.getClass();
+        try &#123;
+            Field fieldAge=clazz.getField(&quot;age&quot;);
+            Animal animal=fieldAge.getAnnotation(Animal.class);
+            System.out.println(animal.value()+&quot;===岁===&quot;);
+        &#125; catch (NoSuchFieldException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<p>上面通过类的反射机制解析注解，先拿到TestMain类里面的age成员变量，再通过成员变量调用getAnnotation方法拿到该成员变量的注解。</p>
+<h4 id="反射获取注解信息"><a href="#反射获取注解信息" class="headerlink" title="反射获取注解信息"></a>反射获取注解信息</h4><ul>
+<li>定义注解</li>
+</ul>
+<pre><code class="java">@Retention(RetentionPolicy.RUNTIME)//指定保留策略
+@Target(&#123; ElementType.METHOD, ElementType.TYPE &#125;)
+public @interface MyAnnotation &#123;
+
+    int id() default 1;
+
+    String name() default &quot;default value&quot;;
+&#125;
+</code></pre>
+<ul>
+<li>反射获取自定义注解信息</li>
+</ul>
+<pre><code class="java">public class getAnnotationInfo &#123;
+    @MyAnnotation(name = &quot;Hello annotation !&quot;)
+    public void fun(double d, String s) &#123;
+    &#125;
+
+    public static void main(String[] args) &#123;
+        getAnnotationInfo getInfo = new getAnnotationInfo();
+
+        // 获取Class对象
+        Class&lt;?&gt; class1 = getInfo.getClass();
+        try &#123;
+            // 通过调用Class泛型类提供的`getMethod`方法获取与方法相关的信息
+            Method method = class1.getMethod(&quot;fun&quot;, double.class, String.class);
+            // 通过调用`getAnnotation`获取与对象相关联的特定注解
+            MyAnnotation annotatioin = method.getAnnotation(MyAnnotation.class);
+            System.out.println(&quot;id : &quot; + annotatioin.id() + &quot;\nname : &quot; + annotatioin.name());
+            //id : 1 
+            //name : Hello annotation 
+        &#125; catch (NoSuchMethodException | SecurityException e) &#123;
+            e.printStackTrace();
+        &#125;
+    &#125;
+&#125;
+</code></pre>
+<ul>
+<li>反射获取所有注解</li>
+</ul>
+<pre><code class="java">@Retention(RetentionPolicy.RUNTIME)
+public @interface MyAnnotation2 &#123;
+
+    String description();
+&#125;
+@MyAnnotation()
+@MyAnnotation2(description = &quot;Test class&quot;)
+public class getAllAnnotationInfo &#123;
+
+    @MyAnnotation(id = 1, name = &quot;Hello annotation !&quot;)
+    @MyAnnotation2(description = &quot;Test method&quot;)
+    public void fun() &#123;
+
+    &#125;
+
+    public static void main(String[] args) throws NoSuchMethodException, SecurityException &#123;
+        getAllAnnotationInfo allAnnotationInfo = new getAllAnnotationInfo();
+
+        // 通过`getAnnoations`获取该类所有注解信息
+        Annotation annotation[] = allAnnotationInfo.getClass().getAnnotations();
+
+        System.out.println(&quot;`getAllAnnotationInfo`类的所有注解 : &quot;);
+        for (Annotation info : annotation) &#123;
+            System.out.println(info);
+        &#125;
+
+        System.out.println();
+        // 通过调用Class泛型类提供的`getMethod`方法获取与方法相关的信息
+        Method method = allAnnotationInfo.getClass().getMethod(&quot;fun&quot;);
+        // 通过调用`getAnnotation`获取与对象相关联的特定注解
+        annotation = method.getAnnotations();
+
+        System.out.println(&quot;方法`fun()`的所有注解 : &quot;);
+        for (Annotation info : annotation) &#123;
+            System.out.println(info);
+        &#125;
+    &#125;
+
+&#125;
+</code></pre>
+]]></content>
+      <categories>
+        <category>JavaSE</category>
+      </categories>
+      <tags>
+        <tag>JavaSE</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Cookie&amp;Session</title>
     <url>/2020/09/23/Cookie&amp;Session/</url>
     <content><![CDATA[<h1 id="Cookie-amp-Session"><a href="#Cookie-amp-Session" class="headerlink" title="Cookie&amp;Session"></a>Cookie&amp;Session</h1><h2 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h2><p>会话：一次会话中包含多次请求和响应。</p>
@@ -376,337 +717,162 @@ response.addCookie(c);
       </tags>
   </entry>
   <entry>
-    <title>Java Annotation(注解)</title>
-    <url>/2020/09/09/Annotation(%E6%B3%A8%E8%A7%A3)/</url>
-    <content><![CDATA[<h2 id="Annotation-注解"><a href="#Annotation-注解" class="headerlink" title="Annotation(注解)"></a>Annotation(注解)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>注解是jdk 5.0 新增的功能，Annotation 其实就是代码里的特殊标记, 这些标记可以在编译, 类加载, 运行时被读取, 并执行相应的处理。</p>
-<p>通过使用 Annotation,程序员可以在不改变原逻辑的情况下, 在源文件中嵌入一些补充信息。</p>
-<p>在JavaSE中，注解的使用目的比较简单，例如标记过时的功能，忽略警告等。</p>
-<p>在JavaEE/Android中注解占据了更重要的角色，例如用来配置应用程序的任何切面，代替JavaEE旧版中所遗留的繁冗代码和XML配置等。</p>
-<p><code>框架 = 注解 + 反射机制 + 设计模式</code></p>
-<h3 id="1-2-声明注解"><a href="#1-2-声明注解" class="headerlink" title="1.2 声明注解"></a>1.2 声明注解</h3><p>注解是一种代码级别的说明.它与<code>类</code>，<code>接口</code>，<code>枚举</code>在同一个层次,它可以声明在<code>包</code>，<code>类</code>，<code>字段</code>，<code>方法</code>，<code>局部变量</code>，<code>方法参数</code>等的前面用来对这些元素进行说明注释</p>
-<h3 id="1-3-注解的分类"><a href="#1-3-注解的分类" class="headerlink" title="1.3 注解的分类"></a>1.3 注解的分类</h3><ul>
-<li>基本注解</li>
-<li>元注解</li>
-<li>自定义注解</li>
+    <title>Java Enum(枚举)</title>
+    <url>/2020/09/11/Enum(%E6%9E%9A%E4%B8%BE)/</url>
+    <content><![CDATA[<h2 id="Enum-枚举"><a href="#Enum-枚举" class="headerlink" title="Enum(枚举)"></a>Enum(枚举)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li><p>枚举类的理解：类的对象只有有限个，确定的。我们称此类为枚举类</p>
+<p>例如：星期：Monday(星期一)、……、Sunday(星期天) </p>
+<p>性别：Man(男)、Woman(女) </p>
+<p>季节：Spring(春节)……Winter(冬天) </p>
+</li>
+<li><p>当需要定义一组常量时，强烈建议使用枚举类</p>
+</li>
+<li><p>如果枚举类中只一个对象，则可以作为单例模式的实现方式。</p>
+</li>
 </ul>
-<h3 id="1-4-基本注解"><a href="#1-4-基本注解" class="headerlink" title="1.4 基本注解"></a>1.4 基本注解</h3><p><code>java.lang</code>包下注解分别是 : <code>@Override</code>,<code>@Deprecated</code>,<code>@SuppressWarnings</code>,<code>@FunctionalInterface</code>,<code>@SafeVarargs</code>,</p>
-<ul>
-<li><p><code>@Override</code>: 限定重写父类方法, 该注解只能用于方法</p>
-<pre><code class="java">class Student extends Person implements Info&#123;
+<h3 id="1-2-自定义枚举类"><a href="#1-2-自定义枚举类" class="headerlink" title="1.2 自定义枚举类"></a>1.2 自定义枚举类</h3><ul>
+<li>枚举类的属性 :枚举类对象的属性不应允许被改动, 所以应该使用 <code>private final</code> 修饰 </li>
+<li>枚举类的使用: private final 修饰的属性应该在构造器中为其赋值 </li>
+<li>若枚举类显式的定义了带参数的构造器, 则在列出枚举值时也必须对应的传入参数</li>
+<li>私有化类的构造器，保证不能在类的外部创建其对象 </li>
+<li>在类的内部创建枚举类的实例。声明为：public static final </li>
+</ul>
+<pre><code class="java">//自定义枚举类
+class Season&#123;
+    //声明Season对象的属性:private final修饰
+    private final String seasonName;
+    private final String seasonDesc;
+
+    //私化类的构造器,并给对象属性赋值
+    private Season(String seasonName, String seasonDesc) &#123;
+        this.seasonName = seasonName;
+        this.seasonDesc = seasonDesc;
+    &#125;
+    //提供当前枚举类的多个对象：public static final的
+    public static final Season SPRING=new Season(&quot;春天&quot;,&quot;四季如春&quot;);
+    public static final Season SUMMER=new Season(&quot;夏天&quot;,&quot;夏日炎炎&quot;);
+    public static final Season AUTUMN=new Season(&quot;秋天&quot;,&quot;秋高气爽&quot;);
+    public static final Season WINTER=new Season(&quot;冬天&quot;,&quot;冰天雪地&quot;);
+
+    //其他诉求1：获取枚举类对象的属性
+    public String getSeasonName() &#123;
+        return seasonName;
+    &#125;
+
+    public String getSeasonDesc() &#123;
+        return seasonDesc;
+    &#125;
+
     @Override
-    public void work()&#123;
-        System.out.println(&quot;学生工作&quot;);
-    &#125;
-    @Override
-    public void show() &#123;
-
+    public String toString() &#123;
+        return &quot;Season&#123;&quot; +
+                &quot;seasonName=&#39;&quot; + seasonName + &#39;\&#39;&#39; +
+                &quot;, seasonDesc=&#39;&quot; + seasonDesc + &#39;\&#39;&#39; +
+                &#39;&#125;&#39;;
     &#125;
 &#125;
-</code></pre>
-</li>
-<li><p><code>@Deprecated</code>: 用于表示所修饰的元素(类, 方法等)<code>已过时</code>。表示此方法或类不再建议使用，调用时也会出现删除线，通常是因为所修饰的结构危险或存在更好的选择，如<code>ViewPager</code>中的<code>setOnPageChangeListener</code>方法，已过时</p>
-<pre><code class="java">@Deprecated
-public void setOnPageChangeListener(OnPageChangeListener listener) &#123;
-    mOnPageChangeListener = listener;
-&#125;
-</code></pre>
-</li>
-<li><p><code>@SuppressWarnings</code>: 抑制编译器警告</p>
-<pre><code class="java">public class AnnotationTest &#123;
+//使用
+public class SeasonTest &#123;
     public static void main(String[] args) &#123;
-        @SuppressWarnings(&#123;&quot;unused&quot;,&quot;rawtypes&quot;&#125;)
-        ArrayList arrayList=new ArrayList();
-   &#125;
+        Season str=Season.SPRING;
+        System.out.println(str);//Season&#123;seasonName=&#39;春天&#39;, seasonDesc=&#39;四季如春&#39;&#125;
+        String seasonDesc = str.getSeasonDesc();
+        System.out.println(seasonDesc);//四季如春
+    &#125;
 &#125;
 </code></pre>
-</li>
-<li><p><code>@FunctionalInterface</code>： 示例</p>
-</li>
+<h3 id="1-3-enum定义枚举类"><a href="#1-3-enum定义枚举类" class="headerlink" title="1.3 enum定义枚举类"></a>1.3 enum定义枚举类</h3><ul>
+<li>jdk 5.0 新增使用enum定义枚举类。步骤：</li>
 </ul>
-<pre><code class="java">//`Java8`为函数式接口引入了一个新注解`@FunctionalInterface`,其主要用于编译错误检查,
-//加上该注释后当你写的接口不符合函数式定义时,编译器就会报错 !
-//注意: 是否添加`@FunctionalInterface`对于接口是不是函数式接口没有影响,
-//该注释只是提醒`编译器`去检查该接口是否仅仅包含一个抽象方法.
-@FunctionalInterface
-interface functionalInterface &#123;
+<pre><code class="java">enum Season1&#123;
+    //提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束,最开始就要这样做
+    SPRING(&quot;春天&quot;),
+    SUMMER(&quot;夏天&quot;),
+    AUTUMN(&quot;秋天&quot;),
+    WINTER(&quot;冬天&quot;);
 
-    // 注意: 函数式接口中只能有一个抽象方法 !
-    void myLambda(String message);
+    private final String seasonName;
 
-    // 函数式接口里是可以包含默认方法,因为默认方法不是抽象方法,其有一个默认实现,
-    //所以是符合函数式接口的定义的.
-    default void defaultMethod() &#123;
-        // method body..
+    private Season1(String seasonName) &#123;
+        this.seasonName = seasonName;
     &#125;
-
-    // 函数式接口里是可以包含静态方法,因为静态方法不能是抽象方法,是一个已经实现了的方法,
-    //所以是符合函数式接口的定义的.
-    static void staticMethod() &#123;
-        // method body..
+    public String getSeasonName() &#123;
+        return seasonName;
     &#125;
-
-    // 函数式接口里是可以包含Object里的public方法,这些方法对于函数式接口来说,
-    // 不被当成是抽象方法(虽然它们是抽象方法).因为任何一个函数式接口的实现,默认都继承了Object类,
-    //其包含了来自java.lang.Object里对这些抽象方法的实现!
-    @Override
-    boolean equals(Object object);
-
 &#125;
 
-//使用`@FunctionalInterface`注解的函数式接口继而可以使用`Lambda`表示式来表示该接口的一个实现.
-//(Java8 之前一般是使用匿名类实现的).
-//functionalInterface  f = message-&gt;System.out.println();
-</code></pre>
-<ul>
-<li><p><code>@SafeVarargs</code>： 声明具有模糊类型（比如：泛型）的可变参数的构造函数或方法时，Java编译器会报unchecked警告。鉴于这些情况，如果程序员断定声明的构造函数和方法的主体不会对其varargs参数执行潜在的不安全的操作，可使用@SafeVarargs进行标记，这样的话，Java编译器就不会报unchecked警告。</p>
-<p>只能用于标记构造函数和方法，由于保留策略声明为RUNTIME，所以此注解可以在运行时生效。</p>
-</li>
-</ul>
-<pre><code class="java">public class SafeVarargsAnnotation&lt;S&gt;&#123;
-
-    private S[] args;
-
-    //构造函数可以使用@SafeVarargs标记
-    @SafeVarargs
-    public SafeVarargsAnnotation(S... args)&#123;
-        this.args = args;
-    &#125;
-
-    //此处不能使用@SafeVarargs，因为此方法未声明为static或final方法，
-    //如果要抑制unchecked警告，可以使用@SuppressWarnings注解
-    @SuppressWarnings(&quot;unchecked&quot;)
-    //@SafeVarargs
-    public void loopPrintArgs(S... args)&#123;
-        for (S arg : args) &#123;
-            System.out.println(arg);
-        &#125;
-    &#125;
-
-    //final方法可以使用@SafeVarargs标记
-    @SafeVarargs
-    public final void printSelfArgs(S... args)&#123;
-        for (S arg : this.args) &#123;
-            System.out.println(arg);
-        &#125;
-    &#125;
-
+//使用
+public class SeasonTest &#123;
     public static void main(String[] args) &#123;
-        SafeVarargsAnnotation.loopPrintInfo(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;);
+        Season1 autumn = Season1.AUTUMN;
+        System.out.println(autumn);//重写过toString AUTUMN
+        System.out.println(autumn.getSeasonName());
+
+        //枚举类的方法
+        //toString():返回枚举类对象的名称
+        System.out.println(autumn.toString());//AUTUMN
+
+        //values():返回所的枚举类对象构成的数组
+        Season1[] values = Season1.values();
+        for(int i = 0;i &lt; values.length;i++)&#123;
+            System.out.println(values[i]);
+        &#125;//SPRING SUMMER AUTUMN WINTER
+
+        //valueOf(String objName):返回枚举类中对象名是objName的对象
+        Season1 winter = Season1.valueOf(&quot;WINTER&quot;);
+        //如果没objName的枚举类对象，则抛异常：IllegalArgumentException
+//        Season1 winter = Season1.valueOf(&quot;WINTER1&quot;);
+        System.out.println(winter);//WINTER
     &#125;
-
-    //static方法可以使用@SafeVarargs标记
-    @SafeVarargs
-    public static &lt;T&gt; void loopPrintInfo(T ... infos)&#123;
-        for (T info : infos) &#123;
-            System.out.println(info);
-        &#125;
-    &#125;
-
 &#125;
 </code></pre>
-<p>如果以上把@SafeVarargs标记注释掉，在编译时就会报unchecked警告</p>
-<h3 id="1-5-元注解"><a href="#1-5-元注解" class="headerlink" title="1.5 元注解"></a>1.5 元注解</h3><p><code>java.lang.annotation</code>包下的注解分别是 : <code>@Retention</code>,<code>@Documnetd</code>,<code>@Target</code>,<code>@Inherited</code></p>
-<p>以上四个注解被称为<code>元注解</code>,其作用是负责注解其它的注解,用来提供对其它<code>annotation</code>类型做说明.</p>
-<pre><code class="java">@Target(&#123;TYPE, FIELD, METHOD, PARAMETER, CONSTRUCTOR, LOCAL_VARIABLE, MODULE&#125;)
-@Retention(RetentionPolicy.SOURCE)
-public @interface SuppressWarnings &#123;
-    String[] value();
-&#125;
-</code></pre>
-<p>注意: <code>JDK8</code>在<code>java.lang.annotation</code>中添加了<code>Repeatable</code>和<code>Native</code>注解.其中<code>Repeatable</code>支持重复注解,<code>Native</code>用于注解本机代码可以访问的域变量</p>
-<ul>
-<li><p><code>Retention</code>：指定所修饰的 Annotation 的生命周期：SOURCE\CLASS\RUNTIME，只有声明为RUNTIME生命周期的注解，才能通过反射获取。</p>
-<ol>
-<li><code>RetentionPolicy.SOURCE</code>：注解只在源码阶段保留，编译器开始编译时它将被丢弃忽视</li>
-<li><code>RetentionPolicy.CLASS</code>：注解会保留到编译期，但运行时不会把它加载到JVM中（默认的保留策略，注解会在class字节码文件中存在，但运行时无法获得）</li>
-<li><code>RetentionPolicy.RUNTIME</code>：注解可以保留到程序运行时，它会被加载到JVM中，所以程序运行过程中可以获取到它们</li>
-</ol>
-</li>
-<li><p><code>Target</code>:用于指定被修饰的 Annotation 能用于修饰哪些程序元素</p>
-<ol>
-<li><code>ElementType.PACKAGE</code>：可作用在包上</li>
-<li><code>ElementType.TYPE</code>：可作用在类、接口、枚举上</li>
-<li><code>ElementType.ANNOTATION_TYPE</code>：可以作用在注解上</li>
-<li><code>ElementType.FIELD</code>：可作用在属性上</li>
-<li><code>ElementType.CONSTRUCTOR</code>：可作用在构造方法上</li>
-<li><code>ElementType.METHOD</code>：可作用在方法上</li>
-<li><code>ElementType.PARAMETER</code>：可作用在方法参数上</li>
-<li><code>ElementType.LOCAL_VARIABLE</code>：可作用在局部变量上，例如方法中定义的变量</li>
-<li><code>ElementType.TYPE_PARAMETER</code>:可作用在类参数的声明上   如：泛型声明。Since jdk1.8以后添加的</li>
-<li><code>ElementType.TYPE_USE</code>:可作用在使用的类型  Since jdk1.8以后添加的</li>
-</ol>
-</li>
-<li><p><code>Documented</code>:表示所修饰的注解在被javadoc解析时，保留下来。（不常用）</p>
-</li>
-<li><p><code>Inherited</code>:被它修饰的 Annotation 将具继承性，一个父类被该类注解修饰，那么它的子类如果没有任何注解修饰，就会继承父类的这个注解。（不常用）</p>
-<pre><code class="java">@Inherited
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Person &#123;
-&#125;
- 
-@Person
-public class Teacher &#123;
-&#125;
- 
-public class TeacherA extends Teacher&#123;
-&#125;
-</code></pre>
-<p>注解Person被@Inherited修饰，Teacher被Person修饰，TeacherA继承Teacher（TeacherA上又无其他注解），那么TeacherA就会拥有Person这个注解。</p>
-</li>
-</ul>
-<h4 id="重复注解"><a href="#重复注解" class="headerlink" title="重复注解"></a>重复注解</h4><ul>
-<li><p><code>Repeatable</code>：支持重复注解</p>
-<pre><code class="java">@Target(ElementType.TYPE)  
-@Retention(RetentionPolicy.RUNTIME)
-public @interface Persons &#123;
-   Person[] value();
-&#125;
-
-@Repeatable(Persons.class)
-public @interface Person&#123;
-    String role() default &quot;&quot;;
-&#125;
-
-@Person(role=&quot;Teacher&quot;)
-@Person(role=&quot;Student&quot;)
-@Person(role=&quot;Doctor&quot;)
-public class Man &#123;
-    String name=&quot;&quot;;
-&#125;
-</code></pre>
-</li>
-</ul>
-<h3 id="1-6-自定义注解"><a href="#1-6-自定义注解" class="headerlink" title="1.6  自定义注解"></a>1.6  自定义注解</h3><h4 id="注解的属性"><a href="#注解的属性" class="headerlink" title="注解的属性"></a>注解的属性</h4><p>注解的属性也叫做成员变量，注解只有成员变量，没有方法。注解的成员变量在注解的定义中以“无形参的方法”形式来声明，其方法名定义了该成员变量的名字，其返回值定义了该成员变量的类型。</p>
-<pre><code class="java">@Repeatable(Persons.class)
-public  @interface Person&#123;
-    String role() default &quot;&quot;;
-&#125;
-</code></pre>
-<p>注解Person里面的role属性，role是一个成员变量，只不过书写形式为 String role() default “”； 即所谓的“无形参的方法”形式书写，给role设置了默认值为空字符串 default “”。</p>
-<h4 id="标记注解"><a href="#标记注解" class="headerlink" title="标记注解"></a>标记注解</h4><p>因为<code>标记注解没有成员</code>,所以应用标记注解时,后面不需要有圆括号.如果提供空的圆括号,也不会报错,但不是必需的.类似地,对于所有成员都使用<code>默认值(default)</code>的注解也可以没有圆括号.</p>
-<pre><code class="java">@Retention(RetentionPolicy.RUNTIME)
-@interface MyMarker_annotation &#123;
-&#125;
-</code></pre>
-<h4 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h4><ul>
-<li>注解声明为：@interface</li>
-</ul>
-<ul>
-<li>内部定义成员，通常使用value表示</li>
-<li>可以指定成员的默认值，使用default定义</li>
-<li>如果自定义注解没成员，表明是一个标识作用。</li>
-</ul>
-<ul>
-<li>自定义注解是以元注解为基础注解自己定义的注解。</li>
-</ul>
-<p>自定义运行是注解分为两步：声明注解、解析注解。</p>
-<h4 id="声明注解"><a href="#声明注解" class="headerlink" title="声明注解"></a>声明注解</h4><pre><code class="java">@Target(ElementType.FIELD)
-@Retention(RetentionPolicy.RUNTIME)//指定保留策略
-public @interface Animal &#123;
-    int value() default 5;
-&#125;
-</code></pre>
-<p>上面是自己定义了一个注解Animal，Animal含有一个int类型的属性，该属性的名称为value，默认值为5。该注解主要用来注解成员变量，作用于运行期。</p>
-<h4 id="解析注解"><a href="#解析注解" class="headerlink" title="解析注解"></a>解析注解</h4><pre><code class="java">public class TestMain &#123;
- 
-    @Animal(value = 12)
-    public int age;
+<h3 id="1-4-枚举类对象分别实现接口"><a href="#1-4-枚举类对象分别实现接口" class="headerlink" title="1.4 枚举类对象分别实现接口"></a>1.4 枚举类对象分别实现接口</h3><pre><code class="java">public class SeasonTest1 &#123;
     public static void main(String[] args) &#123;
-        TestMain testMain=new TestMain();
-        Class clazz=testMain.getClass();
-        try &#123;
-            Field fieldAge=clazz.getField(&quot;age&quot;);
-            Animal animal=fieldAge.getAnnotation(Animal.class);
-            System.out.println(animal.value()+&quot;===岁===&quot;);
-        &#125; catch (NoSuchFieldException e) &#123;
-            e.printStackTrace();
+        Season2.AUTUMN.show();
+    &#125;
+&#125;
+
+interface Info&#123;
+    void show();
+&#125;
+
+//使用enum关键字枚举类
+enum Season2 implements Info&#123;
+    //1.提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束
+    SPRING(&quot;春天&quot;,&quot;春暖花开&quot;)&#123;
+        @Override
+        public void show() &#123;
+            System.out.println(&quot;春天在哪里？&quot;);
         &#125;
-    &#125;
-&#125;
-</code></pre>
-<p>上面通过类的反射机制解析注解，先拿到TestMain类里面的age成员变量，再通过成员变量调用getAnnotation方法拿到该成员变量的注解。</p>
-<h4 id="反射获取注解信息"><a href="#反射获取注解信息" class="headerlink" title="反射获取注解信息"></a>反射获取注解信息</h4><ul>
-<li>定义注解</li>
-</ul>
-<pre><code class="java">@Retention(RetentionPolicy.RUNTIME)//指定保留策略
-@Target(&#123; ElementType.METHOD, ElementType.TYPE &#125;)
-public @interface MyAnnotation &#123;
-
-    int id() default 1;
-
-    String name() default &quot;default value&quot;;
-&#125;
-</code></pre>
-<ul>
-<li>反射获取自定义注解信息</li>
-</ul>
-<pre><code class="java">public class getAnnotationInfo &#123;
-    @MyAnnotation(name = &quot;Hello annotation !&quot;)
-    public void fun(double d, String s) &#123;
-    &#125;
-
-    public static void main(String[] args) &#123;
-        getAnnotationInfo getInfo = new getAnnotationInfo();
-
-        // 获取Class对象
-        Class&lt;?&gt; class1 = getInfo.getClass();
-        try &#123;
-            // 通过调用Class泛型类提供的`getMethod`方法获取与方法相关的信息
-            Method method = class1.getMethod(&quot;fun&quot;, double.class, String.class);
-            // 通过调用`getAnnotation`获取与对象相关联的特定注解
-            MyAnnotation annotatioin = method.getAnnotation(MyAnnotation.class);
-            System.out.println(&quot;id : &quot; + annotatioin.id() + &quot;\nname : &quot; + annotatioin.name());
-            //id : 1 
-            //name : Hello annotation 
-        &#125; catch (NoSuchMethodException | SecurityException e) &#123;
-            e.printStackTrace();
+    &#125;,
+    SUMMER(&quot;夏天&quot;,&quot;夏日炎炎&quot;)&#123;
+        @Override
+        public void show() &#123;
+            System.out.println(&quot;宁夏&quot;);
         &#125;
-    &#125;
-&#125;
-</code></pre>
-<ul>
-<li>反射获取所有注解</li>
-</ul>
-<pre><code class="java">@Retention(RetentionPolicy.RUNTIME)
-public @interface MyAnnotation2 &#123;
-
-    String description();
-&#125;
-@MyAnnotation()
-@MyAnnotation2(description = &quot;Test class&quot;)
-public class getAllAnnotationInfo &#123;
-
-    @MyAnnotation(id = 1, name = &quot;Hello annotation !&quot;)
-    @MyAnnotation2(description = &quot;Test method&quot;)
-    public void fun() &#123;
-
-    &#125;
-
-    public static void main(String[] args) throws NoSuchMethodException, SecurityException &#123;
-        getAllAnnotationInfo allAnnotationInfo = new getAllAnnotationInfo();
-
-        // 通过`getAnnoations`获取该类所有注解信息
-        Annotation annotation[] = allAnnotationInfo.getClass().getAnnotations();
-
-        System.out.println(&quot;`getAllAnnotationInfo`类的所有注解 : &quot;);
-        for (Annotation info : annotation) &#123;
-            System.out.println(info);
+    &#125;,
+    AUTUMN(&quot;秋天&quot;,&quot;秋高气爽&quot;)&#123;
+        @Override
+        public void show() &#123;
+            System.out.println(&quot;秋天不回来&quot;);
         &#125;
-
-        System.out.println();
-        // 通过调用Class泛型类提供的`getMethod`方法获取与方法相关的信息
-        Method method = allAnnotationInfo.getClass().getMethod(&quot;fun&quot;);
-        // 通过调用`getAnnotation`获取与对象相关联的特定注解
-        annotation = method.getAnnotations();
-
-        System.out.println(&quot;方法`fun()`的所有注解 : &quot;);
-        for (Annotation info : annotation) &#123;
-            System.out.println(info);
+    &#125;,
+    WINTER(&quot;冬天&quot;,&quot;冰天雪地&quot;)&#123;
+        @Override
+        public void show() &#123;
+            System.out.println(&quot;大约在冬季&quot;);
         &#125;
-    &#125;
+    &#125;;
 
+    private final String seasonName;
+    private final String seasonDesc;
+
+    private Season2(String seasonName,String seasonDesc)&#123;
+        this.seasonName=seasonName;
+        this.seasonDesc=seasonDesc;
+    &#125;
 &#125;
+
 </code></pre>
 ]]></content>
       <categories>
@@ -714,6 +880,157 @@ public class getAllAnnotationInfo &#123;
       </categories>
       <tags>
         <tag>JavaSE</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Filter过滤器和Listener监听器</title>
+    <url>/2020/09/24/Filter%E8%BF%87%E6%BB%A4%E5%99%A8&amp;Listener%E7%9B%91%E5%90%AC%E5%99%A8/</url>
+    <content><![CDATA[<h1 id="Filter过滤器和Listener监听器"><a href="#Filter过滤器和Listener监听器" class="headerlink" title="Filter过滤器和Listener监听器"></a>Filter过滤器和Listener监听器</h1><h2 id="Filter过滤器"><a href="#Filter过滤器" class="headerlink" title="Filter过滤器"></a>Filter过滤器</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
+<li><p>Filter 过滤器它是 JavaWeb 的三大组件之一。三大组件分别是：Servlet 程序、Listener 监听器、Filter 过滤器 </p>
+</li>
+<li><p>Filter 过滤器它是 JavaEE 的规范。也就是接口</p>
+</li>
+<li><p>Filter 过滤器它的作用是：拦截请求，过滤响应。</p>
+</li>
+</ul>
+<p>拦截请求常见的应用场景有： 权限检查 ，日记操作 ，事务管理 ……等等</p>
+<h3 id="1-2-Filter过滤器的使用"><a href="#1-2-Filter过滤器的使用" class="headerlink" title="1.2 Filter过滤器的使用"></a>1.2 Filter过滤器的使用</h3><p>Filter 过滤器的使用步骤： </p>
+<ol>
+<li>编写一个类去实现 Filter 接口</li>
+<li>实现过滤方法 doFilter() </li>
+<li>到 web.xml 中去配置 Filter 的拦截路径</li>
+</ol>
+<pre><code class="java">public class TestFilter implements Filter &#123;
+    public void destroy() &#123;
+    &#125;
+
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException &#123;
+        chain.doFilter(req, resp);
+    &#125;
+
+    public void init(FilterConfig config) throws ServletException &#123;
+
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="xml">&lt;filter&gt;
+        &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;
+        &lt;filter-class&gt;com.review.filter.TestFilter&lt;/filter-class&gt;
+    &lt;/filter&gt;
+    &lt;!--filter-mapping配置Filter过滤器的拦截路径 --&gt;
+    &lt;filter-mapping&gt;
+        &lt;!--filter-name表示当前的拦截路径给哪个filter使用 --&gt;
+        &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;
+        &lt;!--url-pattern配置拦截路径
+        /表示请求地址为： http://ip:port/工程路径/映射到IDEA的web目录
+        /admin/*表示请求地址为： http://ip:port/工程路径/admin/*
+        --&gt;
+        &lt;url-pattern&gt;/admin/*&lt;/url-pattern&gt;
+    &lt;/filter-mapping&gt;
+</code></pre>
+<ul>
+<li>Filter的使用</li>
+</ul>
+<pre><code class="java">public class ManagerFilter implements Filter &#123;
+    public void destroy() &#123;
+    &#125;
+
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException &#123;
+        HttpServletRequest httpServletRequest= (HttpServletRequest) req;
+        Object user = httpServletRequest.getSession().getAttribute(&quot;user&quot;);
+        if (user == null)&#123;//判断不符合条件就跳到登录页面
+            httpServletRequest.getRequestDispatcher(&quot;/pages/user/login.jsp&quot;).forward(req,resp);
+        &#125;else &#123;//符合条件放行
+            chain.doFilter(req, resp);
+        &#125;
+
+    &#125;
+
+    public void init(FilterConfig config) throws ServletException &#123;
+
+    &#125;
+
+&#125;
+</code></pre>
+<h3 id="1-3-Filter的生命周期"><a href="#1-3-Filter的生命周期" class="headerlink" title="1.3 Filter的生命周期"></a>1.3 Filter的生命周期</h3><p>Filter 的生命周期包含几个方法 </p>
+<p>构造器方法 </p>
+<p>init 初始化方法 </p>
+<p>前两个方法在 web 工程启动的时候执行（Filter 已经创建）</p>
+<p>doFilter 过滤方法，每次拦截到请求，就会执行</p>
+<p>destroy 销毁 ，停止 web 工程的时候，就会执行（停止 web 工程，也会销毁 Filter 过滤器）</p>
+<h3 id="1-4-FilterConfig类"><a href="#1-4-FilterConfig类" class="headerlink" title="1.4 FilterConfig类"></a>1.4 FilterConfig类</h3><p>FilterConfig 类见名知义，它是 Filter 过滤器的配置文件类。 </p>
+<p>Tomcat 每次创建 Filter 的时候，也会同时创建一个 FilterConfig 类，这里包含了 Filter 配置文件的配置信息。</p>
+<p>FilterConfig 类的作用是获取 filter 过滤器的配置内容 </p>
+<ol>
+<li>获取 Filter 的名称 filter-name 的内容 </li>
+<li>获取在 Filter 中配置的 init-param 初始化参数 </li>
+<li>获取 ServletContext 对象</li>
+</ol>
+<h3 id="1-5FilterChain-过滤器链"><a href="#1-5FilterChain-过滤器链" class="headerlink" title="1.5FilterChain 过滤器链"></a>1.5FilterChain 过滤器链</h3><p>Filter 过滤器 Chain 链，链条 FilterChain 就是过滤器链（多个过滤器如何一起工作）</p>
+<p><img src="/2020/09/24/Filter%E8%BF%87%E6%BB%A4%E5%99%A8&Listener%E7%9B%91%E5%90%AC%E5%99%A8/FilterChain.jpg" alt="FilterChain"></p>
+<h3 id="1-6Filter的拦截路径"><a href="#1-6Filter的拦截路径" class="headerlink" title="1.6Filter的拦截路径"></a>1.6Filter的拦截路径</h3><p><strong>精确匹配</strong><br><url-pattern>/target.jsp</url-pattern> </p>
+<p>以上配置的路径，表示请求地址必须为：<a href="http://ip:port/工程路径/target.jsp">http://ip:port/工程路径/target.jsp</a></p>
+<p><strong>目录匹配</strong><br><url-pattern>/admin/*</url-pattern> </p>
+<p>以上配置的路径，表示请求地址必须为：<a href="http://ip:port/工程路径/admin/">http://ip:port/工程路径/admin/</a>*</p>
+<p><strong>后缀名匹配</strong><br><url-pattern>*.html</url-pattern> </p>
+<p>以上配置的路径，表示请求地址必须以.html 结尾才会拦截到 </p>
+<p> <url-pattern>*.action</url-pattern> </p>
+<p>以上配置的路径，表示请求地址必须以.action 结尾才会拦截到</p>
+<p>Filter 过滤器它只关心请求的地址是否匹配，不关心请求的资源是否存在！！！</p>
+<h2 id="Listener监听器"><a href="#Listener监听器" class="headerlink" title="Listener监听器"></a>Listener监听器</h2><ul>
+<li><p>概述：</p>
+<ul>
+<li>Listener 监听器它是 JavaWeb 的三大组件之一。JavaWeb 的三大组件分别是：Servlet 程序、Filter 过滤器、Listener 监 听器</li>
+<li>Listener 它是 JavaEE 的规范，就是接口</li>
+<li>监听器的作用是，监听某种事物的变化。然后通过回调函数，反馈给客户（程序）去做一些相应的处理。</li>
+</ul>
+</li>
+<li><p><code>ServletContextListener</code> 监听器</p>
+<ul>
+<li><code>ServletContextListener</code> 它可以监听 <code>ServletContext</code> 对象的创建和销毁。</li>
+<li><code>ServletContext</code> 对象在 web 工程启动的时候创建，在 web 工程停止的时候销毁。</li>
+<li>监听到创建和销毁之后都会分别调用 <code>ServletContextListener</code> 监听器的方法反馈。</li>
+</ul>
+<pre><code class="java">public interface ServletContextListener extends EventListener &#123;
+    //初始化调用
+    default void contextInitialized(ServletContextEvent sce) &#123;
+    &#125;
+    //销毁调用
+    default void contextDestroyed(ServletContextEvent sce) &#123;
+    &#125;
+&#125;
+</code></pre>
+<p>如何使用 ServletContextListener 监听器监听 ServletContext 对象</p>
+<ul>
+<li>编写一个类去实现 ServletContextListener </li>
+<li>实现其两个回调方法</li>
+<li>到 web.xml 中去配置监听器</li>
+</ul>
+<pre><code class="java">public class MyServletContextListenerImpl implements ServletContextListener &#123;
+
+    @Override
+    public void contextInitialized(ServletContextEvent sce) &#123;
+        System.out.println(&quot;ServletContext对象被创建了&quot;);
+    &#125;
+
+    @Override
+    public void contextDestroyed(ServletContextEvent sce) &#123;
+        System.out.println(&quot;ServletContext对象被销毁了&quot;);
+    &#125;
+&#125;
+</code></pre>
+<pre><code class="xml"> &lt;listener&gt;
+        &lt;listener-class&gt;com.review.listener.MyServletContextListenerImpl&lt;/listener-class&gt;
+    &lt;/listener&gt;
+</code></pre>
+</li>
+</ul>
+]]></content>
+      <categories>
+        <category>JavaWeb</category>
+      </categories>
+      <tags>
+        <tag>javaweb</tag>
       </tags>
   </entry>
   <entry>
@@ -1042,323 +1359,6 @@ false 或 false
       </tags>
   </entry>
   <entry>
-    <title>Java Enum(枚举)</title>
-    <url>/2020/09/11/Enum(%E6%9E%9A%E4%B8%BE)/</url>
-    <content><![CDATA[<h2 id="Enum-枚举"><a href="#Enum-枚举" class="headerlink" title="Enum(枚举)"></a>Enum(枚举)</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
-<li><p>枚举类的理解：类的对象只有有限个，确定的。我们称此类为枚举类</p>
-<p>例如：星期：Monday(星期一)、……、Sunday(星期天) </p>
-<p>性别：Man(男)、Woman(女) </p>
-<p>季节：Spring(春节)……Winter(冬天) </p>
-</li>
-<li><p>当需要定义一组常量时，强烈建议使用枚举类</p>
-</li>
-<li><p>如果枚举类中只一个对象，则可以作为单例模式的实现方式。</p>
-</li>
-</ul>
-<h3 id="1-2-自定义枚举类"><a href="#1-2-自定义枚举类" class="headerlink" title="1.2 自定义枚举类"></a>1.2 自定义枚举类</h3><ul>
-<li>枚举类的属性 :枚举类对象的属性不应允许被改动, 所以应该使用 <code>private final</code> 修饰 </li>
-<li>枚举类的使用: private final 修饰的属性应该在构造器中为其赋值 </li>
-<li>若枚举类显式的定义了带参数的构造器, 则在列出枚举值时也必须对应的传入参数</li>
-<li>私有化类的构造器，保证不能在类的外部创建其对象 </li>
-<li>在类的内部创建枚举类的实例。声明为：public static final </li>
-</ul>
-<pre><code class="java">//自定义枚举类
-class Season&#123;
-    //声明Season对象的属性:private final修饰
-    private final String seasonName;
-    private final String seasonDesc;
-
-    //私化类的构造器,并给对象属性赋值
-    private Season(String seasonName, String seasonDesc) &#123;
-        this.seasonName = seasonName;
-        this.seasonDesc = seasonDesc;
-    &#125;
-    //提供当前枚举类的多个对象：public static final的
-    public static final Season SPRING=new Season(&quot;春天&quot;,&quot;四季如春&quot;);
-    public static final Season SUMMER=new Season(&quot;夏天&quot;,&quot;夏日炎炎&quot;);
-    public static final Season AUTUMN=new Season(&quot;秋天&quot;,&quot;秋高气爽&quot;);
-    public static final Season WINTER=new Season(&quot;冬天&quot;,&quot;冰天雪地&quot;);
-
-    //其他诉求1：获取枚举类对象的属性
-    public String getSeasonName() &#123;
-        return seasonName;
-    &#125;
-
-    public String getSeasonDesc() &#123;
-        return seasonDesc;
-    &#125;
-
-    @Override
-    public String toString() &#123;
-        return &quot;Season&#123;&quot; +
-                &quot;seasonName=&#39;&quot; + seasonName + &#39;\&#39;&#39; +
-                &quot;, seasonDesc=&#39;&quot; + seasonDesc + &#39;\&#39;&#39; +
-                &#39;&#125;&#39;;
-    &#125;
-&#125;
-//使用
-public class SeasonTest &#123;
-    public static void main(String[] args) &#123;
-        Season str=Season.SPRING;
-        System.out.println(str);//Season&#123;seasonName=&#39;春天&#39;, seasonDesc=&#39;四季如春&#39;&#125;
-        String seasonDesc = str.getSeasonDesc();
-        System.out.println(seasonDesc);//四季如春
-    &#125;
-&#125;
-</code></pre>
-<h3 id="1-3-enum定义枚举类"><a href="#1-3-enum定义枚举类" class="headerlink" title="1.3 enum定义枚举类"></a>1.3 enum定义枚举类</h3><ul>
-<li>jdk 5.0 新增使用enum定义枚举类。步骤：</li>
-</ul>
-<pre><code class="java">enum Season1&#123;
-    //提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束,最开始就要这样做
-    SPRING(&quot;春天&quot;),
-    SUMMER(&quot;夏天&quot;),
-    AUTUMN(&quot;秋天&quot;),
-    WINTER(&quot;冬天&quot;);
-
-    private final String seasonName;
-
-    private Season1(String seasonName) &#123;
-        this.seasonName = seasonName;
-    &#125;
-    public String getSeasonName() &#123;
-        return seasonName;
-    &#125;
-&#125;
-
-//使用
-public class SeasonTest &#123;
-    public static void main(String[] args) &#123;
-        Season1 autumn = Season1.AUTUMN;
-        System.out.println(autumn);//重写过toString AUTUMN
-        System.out.println(autumn.getSeasonName());
-
-        //枚举类的方法
-        //toString():返回枚举类对象的名称
-        System.out.println(autumn.toString());//AUTUMN
-
-        //values():返回所的枚举类对象构成的数组
-        Season1[] values = Season1.values();
-        for(int i = 0;i &lt; values.length;i++)&#123;
-            System.out.println(values[i]);
-        &#125;//SPRING SUMMER AUTUMN WINTER
-
-        //valueOf(String objName):返回枚举类中对象名是objName的对象
-        Season1 winter = Season1.valueOf(&quot;WINTER&quot;);
-        //如果没objName的枚举类对象，则抛异常：IllegalArgumentException
-//        Season1 winter = Season1.valueOf(&quot;WINTER1&quot;);
-        System.out.println(winter);//WINTER
-    &#125;
-&#125;
-</code></pre>
-<h3 id="1-4-枚举类对象分别实现接口"><a href="#1-4-枚举类对象分别实现接口" class="headerlink" title="1.4 枚举类对象分别实现接口"></a>1.4 枚举类对象分别实现接口</h3><pre><code class="java">public class SeasonTest1 &#123;
-    public static void main(String[] args) &#123;
-        Season2.AUTUMN.show();
-    &#125;
-&#125;
-
-interface Info&#123;
-    void show();
-&#125;
-
-//使用enum关键字枚举类
-enum Season2 implements Info&#123;
-    //1.提供当前枚举类的对象，多个对象之间用&quot;,&quot;隔开，末尾对象&quot;;&quot;结束
-    SPRING(&quot;春天&quot;,&quot;春暖花开&quot;)&#123;
-        @Override
-        public void show() &#123;
-            System.out.println(&quot;春天在哪里？&quot;);
-        &#125;
-    &#125;,
-    SUMMER(&quot;夏天&quot;,&quot;夏日炎炎&quot;)&#123;
-        @Override
-        public void show() &#123;
-            System.out.println(&quot;宁夏&quot;);
-        &#125;
-    &#125;,
-    AUTUMN(&quot;秋天&quot;,&quot;秋高气爽&quot;)&#123;
-        @Override
-        public void show() &#123;
-            System.out.println(&quot;秋天不回来&quot;);
-        &#125;
-    &#125;,
-    WINTER(&quot;冬天&quot;,&quot;冰天雪地&quot;)&#123;
-        @Override
-        public void show() &#123;
-            System.out.println(&quot;大约在冬季&quot;);
-        &#125;
-    &#125;;
-
-    private final String seasonName;
-    private final String seasonDesc;
-
-    private Season2(String seasonName,String seasonDesc)&#123;
-        this.seasonName=seasonName;
-        this.seasonDesc=seasonDesc;
-    &#125;
-&#125;
-
-</code></pre>
-]]></content>
-      <categories>
-        <category>JavaSE</category>
-      </categories>
-      <tags>
-        <tag>JavaSE</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Filter过滤器和Listener监听器</title>
-    <url>/2020/09/24/Filter%E8%BF%87%E6%BB%A4%E5%99%A8&amp;Listener%E7%9B%91%E5%90%AC%E5%99%A8/</url>
-    <content><![CDATA[<h1 id="Filter过滤器和Listener监听器"><a href="#Filter过滤器和Listener监听器" class="headerlink" title="Filter过滤器和Listener监听器"></a>Filter过滤器和Listener监听器</h1><h2 id="Filter过滤器"><a href="#Filter过滤器" class="headerlink" title="Filter过滤器"></a>Filter过滤器</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><ul>
-<li><p>Filter 过滤器它是 JavaWeb 的三大组件之一。三大组件分别是：Servlet 程序、Listener 监听器、Filter 过滤器 </p>
-</li>
-<li><p>Filter 过滤器它是 JavaEE 的规范。也就是接口</p>
-</li>
-<li><p>Filter 过滤器它的作用是：拦截请求，过滤响应。</p>
-</li>
-</ul>
-<p>拦截请求常见的应用场景有： 权限检查 ，日记操作 ，事务管理 ……等等</p>
-<h3 id="1-2-Filter过滤器的使用"><a href="#1-2-Filter过滤器的使用" class="headerlink" title="1.2 Filter过滤器的使用"></a>1.2 Filter过滤器的使用</h3><p>Filter 过滤器的使用步骤： </p>
-<ol>
-<li>编写一个类去实现 Filter 接口</li>
-<li>实现过滤方法 doFilter() </li>
-<li>到 web.xml 中去配置 Filter 的拦截路径</li>
-</ol>
-<pre><code class="java">public class TestFilter implements Filter &#123;
-    public void destroy() &#123;
-    &#125;
-
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException &#123;
-        chain.doFilter(req, resp);
-    &#125;
-
-    public void init(FilterConfig config) throws ServletException &#123;
-
-    &#125;
-&#125;
-</code></pre>
-<pre><code class="xml">&lt;filter&gt;
-        &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;
-        &lt;filter-class&gt;com.review.filter.TestFilter&lt;/filter-class&gt;
-    &lt;/filter&gt;
-    &lt;!--filter-mapping配置Filter过滤器的拦截路径 --&gt;
-    &lt;filter-mapping&gt;
-        &lt;!--filter-name表示当前的拦截路径给哪个filter使用 --&gt;
-        &lt;filter-name&gt;TestFilter&lt;/filter-name&gt;
-        &lt;!--url-pattern配置拦截路径
-        /表示请求地址为： http://ip:port/工程路径/映射到IDEA的web目录
-        /admin/*表示请求地址为： http://ip:port/工程路径/admin/*
-        --&gt;
-        &lt;url-pattern&gt;/admin/*&lt;/url-pattern&gt;
-    &lt;/filter-mapping&gt;
-</code></pre>
-<ul>
-<li>Filter的使用</li>
-</ul>
-<pre><code class="java">public class ManagerFilter implements Filter &#123;
-    public void destroy() &#123;
-    &#125;
-
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws ServletException, IOException &#123;
-        HttpServletRequest httpServletRequest= (HttpServletRequest) req;
-        Object user = httpServletRequest.getSession().getAttribute(&quot;user&quot;);
-        if (user == null)&#123;//判断不符合条件就跳到登录页面
-            httpServletRequest.getRequestDispatcher(&quot;/pages/user/login.jsp&quot;).forward(req,resp);
-        &#125;else &#123;//符合条件放行
-            chain.doFilter(req, resp);
-        &#125;
-
-    &#125;
-
-    public void init(FilterConfig config) throws ServletException &#123;
-
-    &#125;
-
-&#125;
-</code></pre>
-<h3 id="1-3-Filter的生命周期"><a href="#1-3-Filter的生命周期" class="headerlink" title="1.3 Filter的生命周期"></a>1.3 Filter的生命周期</h3><p>Filter 的生命周期包含几个方法 </p>
-<p>构造器方法 </p>
-<p>init 初始化方法 </p>
-<p>前两个方法在 web 工程启动的时候执行（Filter 已经创建）</p>
-<p>doFilter 过滤方法，每次拦截到请求，就会执行</p>
-<p>destroy 销毁 ，停止 web 工程的时候，就会执行（停止 web 工程，也会销毁 Filter 过滤器）</p>
-<h3 id="1-4-FilterConfig类"><a href="#1-4-FilterConfig类" class="headerlink" title="1.4 FilterConfig类"></a>1.4 FilterConfig类</h3><p>FilterConfig 类见名知义，它是 Filter 过滤器的配置文件类。 </p>
-<p>Tomcat 每次创建 Filter 的时候，也会同时创建一个 FilterConfig 类，这里包含了 Filter 配置文件的配置信息。</p>
-<p>FilterConfig 类的作用是获取 filter 过滤器的配置内容 </p>
-<ol>
-<li>获取 Filter 的名称 filter-name 的内容 </li>
-<li>获取在 Filter 中配置的 init-param 初始化参数 </li>
-<li>获取 ServletContext 对象</li>
-</ol>
-<h3 id="1-5FilterChain-过滤器链"><a href="#1-5FilterChain-过滤器链" class="headerlink" title="1.5FilterChain 过滤器链"></a>1.5FilterChain 过滤器链</h3><p>Filter 过滤器 Chain 链，链条 FilterChain 就是过滤器链（多个过滤器如何一起工作）</p>
-<p><img src="/2020/09/24/Filter%E8%BF%87%E6%BB%A4%E5%99%A8&Listener%E7%9B%91%E5%90%AC%E5%99%A8/FilterChain.jpg" alt="FilterChain"></p>
-<h3 id="1-6Filter的拦截路径"><a href="#1-6Filter的拦截路径" class="headerlink" title="1.6Filter的拦截路径"></a>1.6Filter的拦截路径</h3><p><strong>精确匹配</strong><br><url-pattern>/target.jsp</url-pattern> </p>
-<p>以上配置的路径，表示请求地址必须为：<a href="http://ip:port/工程路径/target.jsp">http://ip:port/工程路径/target.jsp</a></p>
-<p><strong>目录匹配</strong><br><url-pattern>/admin/*</url-pattern> </p>
-<p>以上配置的路径，表示请求地址必须为：<a href="http://ip:port/工程路径/admin/">http://ip:port/工程路径/admin/</a>*</p>
-<p><strong>后缀名匹配</strong><br><url-pattern>*.html</url-pattern> </p>
-<p>以上配置的路径，表示请求地址必须以.html 结尾才会拦截到 </p>
-<p> <url-pattern>*.action</url-pattern> </p>
-<p>以上配置的路径，表示请求地址必须以.action 结尾才会拦截到</p>
-<p>Filter 过滤器它只关心请求的地址是否匹配，不关心请求的资源是否存在！！！</p>
-<h2 id="Listener监听器"><a href="#Listener监听器" class="headerlink" title="Listener监听器"></a>Listener监听器</h2><ul>
-<li><p>概述：</p>
-<ul>
-<li>Listener 监听器它是 JavaWeb 的三大组件之一。JavaWeb 的三大组件分别是：Servlet 程序、Filter 过滤器、Listener 监 听器</li>
-<li>Listener 它是 JavaEE 的规范，就是接口</li>
-<li>监听器的作用是，监听某种事物的变化。然后通过回调函数，反馈给客户（程序）去做一些相应的处理。</li>
-</ul>
-</li>
-<li><p><code>ServletContextListener</code> 监听器</p>
-<ul>
-<li><code>ServletContextListener</code> 它可以监听 <code>ServletContext</code> 对象的创建和销毁。</li>
-<li><code>ServletContext</code> 对象在 web 工程启动的时候创建，在 web 工程停止的时候销毁。</li>
-<li>监听到创建和销毁之后都会分别调用 <code>ServletContextListener</code> 监听器的方法反馈。</li>
-</ul>
-<pre><code class="java">public interface ServletContextListener extends EventListener &#123;
-    //初始化调用
-    default void contextInitialized(ServletContextEvent sce) &#123;
-    &#125;
-    //销毁调用
-    default void contextDestroyed(ServletContextEvent sce) &#123;
-    &#125;
-&#125;
-</code></pre>
-<p>如何使用 ServletContextListener 监听器监听 ServletContext 对象</p>
-<ul>
-<li>编写一个类去实现 ServletContextListener </li>
-<li>实现其两个回调方法</li>
-<li>到 web.xml 中去配置监听器</li>
-</ul>
-<pre><code class="java">public class MyServletContextListenerImpl implements ServletContextListener &#123;
-
-    @Override
-    public void contextInitialized(ServletContextEvent sce) &#123;
-        System.out.println(&quot;ServletContext对象被创建了&quot;);
-    &#125;
-
-    @Override
-    public void contextDestroyed(ServletContextEvent sce) &#123;
-        System.out.println(&quot;ServletContext对象被销毁了&quot;);
-    &#125;
-&#125;
-</code></pre>
-<pre><code class="xml"> &lt;listener&gt;
-        &lt;listener-class&gt;com.review.listener.MyServletContextListenerImpl&lt;/listener-class&gt;
-    &lt;/listener&gt;
-</code></pre>
-</li>
-</ul>
-]]></content>
-      <categories>
-        <category>JavaWeb</category>
-      </categories>
-      <tags>
-        <tag>javaweb</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Hexo+github搭建个人博客</title>
     <url>/2020/09/08/Hexo-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/</url>
     <content><![CDATA[<h2 id="Hexo-github搭建个人博客"><a href="#Hexo-github搭建个人博客" class="headerlink" title="Hexo+github搭建个人博客"></a>Hexo+github搭建个人博客</h2><h3 id="第一步"><a href="#第一步" class="headerlink" title="第一步"></a>第一步</h3><p>下载两个软件 <code>NodeJs</code> 和 <code>Git</code>，我用的是这两个版本的<img src="/2020/09/08/Hexo-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20200908205500251.png" alt="image-20200908205500251"></p>
@@ -1444,56 +1444,6 @@ branch: master
 <p><img src="/2020/09/08/Hexo-github%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/image-20200908215230460.png" alt="image-20200908215230460"></p>
 <p>至此，博客搭建完成</p>
 <p><a href="https://bet-yc.gitee.io/2020/04/28/%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2%E7%BD%91%E7%AB%99%E6%96%87%E5%AD%97%E6%95%99%E7%A8%8B%E5%86%85%E5%90%AB%E6%89%80%E9%9C%80%E4%BB%A3%E7%A0%81/">参考文章</a></p>
-]]></content>
-      <categories>
-        <category>环境搭建</category>
-      </categories>
-      <tags>
-        <tag>环境搭建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>重装系统后重新部署恢复 Hexo</title>
-    <url>/2021/07/09/Hexo%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2/</url>
-    <content><![CDATA[<p>以下方法只适用于没有删除hexo blog文件夹，因为重装系统后，Hexo 相关依赖插件/软件和在C盘的缓存资料都会被删除，以至于Hexo的相关命令都无法运行。所以，在重装系统后，都要重新部署Hexo。但是重新部署并不难，只需要几个步骤就行。</p>
-<h2 id="重装系统后重新部署恢复-Hexo"><a href="#重装系统后重新部署恢复-Hexo" class="headerlink" title="重装系统后重新部署恢复 Hexo"></a>重装系统后重新部署恢复 Hexo</h2><h3 id="安装Git-和Node"><a href="#安装Git-和Node" class="headerlink" title="安装Git 和Node"></a>安装Git 和Node</h3><pre><code>git for windows: https://git-scm.com/
-Node.js: https://nodejs.org/en/
-</code></pre>
-<h3 id="生成ssh密钥"><a href="#生成ssh密钥" class="headerlink" title="生成ssh密钥"></a>生成ssh密钥</h3><p>配置git个人信息和生成ssh密钥<br>打开git bash，输入</p>
-<pre><code>git config --global user.name &quot;xxxxx&quot;
-git config --global user.email &quot;xxxxxx@xx.com&quot;
-ssh-keygen -t rsa -C &quot;xxxxxx@xx.com&quot;
-</code></pre>
-<h3 id="设置Github的ssh密钥"><a href="#设置Github的ssh密钥" class="headerlink" title="设置Github的ssh密钥"></a>设置Github的ssh密钥</h3><p>当上面的运行完成后，会在 <code>C:\Users\主用户</code>里出现<code>.ssh</code>文件夹，里面有id_rsa和id_rsa.pub两个文件，复制id_rsa.pub的内容。</p>
-<pre><code>
-</code></pre>
-<p>打开 Github 网页，依次是 <code>右上角Settings - SSH and GPG keys - New SSH key</code> 把复制的内容粘贴到 <code>Key</code>栏，然后保存。</p>
-<p><img src="/2021/07/09/Hexo%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2/blog\wycblog\source_posts\hello-world\image-20211017103702994.png" alt="image-20211017103702994"></p>
-<h3 id="安装Hexo"><a href="#安装Hexo" class="headerlink" title="安装Hexo"></a>安装Hexo</h3><p>git bash 上 输入 <code>npm install hexo-cli -g</code></p>
-<h3 id="删掉原blog文件夹部分文件"><a href="#删掉原blog文件夹部分文件" class="headerlink" title="删掉原blog文件夹部分文件"></a>删掉原blog文件夹部分文件</h3><p>打开你原有的 blog文件夹，只需保留_config.yml，theme/，source/，scaffolds/，package.json，.gitignore 这些项目，删除其他的文件。</p>
-<h3 id="安装依赖文件"><a href="#安装依赖文件" class="headerlink" title="安装依赖文件"></a>安装依赖文件</h3><p>git bash 上 输入 <code>npm install</code></p>
-<h3 id="安装部署插件"><a href="#安装部署插件" class="headerlink" title="安装部署插件"></a>安装部署插件</h3><p>git bash 上 输入 <code>npm install hexo-deployer-git --save</code></p>
-<p>最后 运行 hexo clean &amp;&amp; hexo g &amp;&amp; hexo d 看看是否成功。</p>
-<h3 id="本次部署我遇到的问题："><a href="#本次部署我遇到的问题：" class="headerlink" title="本次部署我遇到的问题："></a>本次部署我遇到的问题：</h3><h4 id="1-yaml-safeLoad已经弃用，用yaml-load代替"><a href="#1-yaml-safeLoad已经弃用，用yaml-load代替" class="headerlink" title="1. yaml.safeLoad已经弃用，用yaml.load代替"></a>1. yaml.safeLoad已经弃用，用yaml.load代替</h4><pre><code>Function yaml.safeLoad is removed in js-yaml 4. Use yaml.load instead, which is now safe by default
-</code></pre>
-<p>解决方式：在next主题的vendors.js文件中修改 yaml.safeLoad</p>
-<p><img src="/2021/07/09/Hexo%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2/blog\wycblog\source_posts\hello-world\image-20211017104603019.png" alt="image-20211017104603019"></p>
-<p><img src="/2021/07/09/Hexo%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2/blog\wycblog\source_posts\hello-world\image-20211017104729045.png" alt="image-20211017104729045"></p>
-<h4 id="2-npm-版本过低"><a href="#2-npm-版本过低" class="headerlink" title="2. npm 版本过低"></a>2. npm 版本过低</h4><p>修改config文件，将true改为false</p>
-<p><img src="/2021/07/09/Hexo%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2/blog\wycblog\source_posts\hello-world\image-20211017105311585.png" alt="image-20211017105311585"></p>
-<p><img src="/2021/07/09/Hexo%E9%87%8D%E6%96%B0%E9%83%A8%E7%BD%B2/blog\wycblog\source_posts\hello-world\image-20211017105358951.png" alt="image-20211017105358951"></p>
-<h2 id="Hexo常用操作"><a href="#Hexo常用操作" class="headerlink" title="Hexo常用操作"></a>Hexo常用操作</h2><h3 id="新建博客文件"><a href="#新建博客文件" class="headerlink" title="新建博客文件"></a>新建博客文件</h3><pre><code class="bash">$ hexo new &quot;My New Post&quot;
-</code></pre>
-<h3 id="本地运行"><a href="#本地运行" class="headerlink" title="本地运行"></a>本地运行</h3><pre><code class="bash">$ hexo server
-</code></pre>
-<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><pre><code class="bash">$ hexo generate
-</code></pre>
-<h3 id="上传到GitHub"><a href="#上传到GitHub" class="headerlink" title="上传到GitHub"></a>上传到GitHub</h3><pre><code class="bash">$ hexo deploy
-</code></pre>
-<h3 id="上传的步骤一般是"><a href="#上传的步骤一般是" class="headerlink" title="上传的步骤一般是"></a>上传的步骤一般是</h3><pre><code>hexo clean
-hexo g
-hexo d
-</code></pre>
 ]]></content>
       <categories>
         <category>环境搭建</category>
@@ -5931,7 +5881,7 @@ hexo d
 <h3 id="6-2-设置签名"><a href="#6-2-设置签名" class="headerlink" title="6.2 设置签名"></a>6.2 设置签名</h3><p>形式</p>
 <ul>
 <li>用户名：wyc</li>
-<li>Email地址：<a href="mailto:&#x77;&#97;&#x6e;&#103;&#x40;&#x31;&#x36;&#51;&#46;&#x63;&#x6f;&#x6d;">&#x77;&#97;&#x6e;&#103;&#x40;&#x31;&#x36;&#51;&#46;&#x63;&#x6f;&#x6d;</a></li>
+<li>Email地址：<a href="mailto:&#x77;&#97;&#110;&#x67;&#x40;&#49;&#x36;&#x33;&#46;&#99;&#x6f;&#109;">&#x77;&#97;&#110;&#x67;&#x40;&#49;&#x36;&#x33;&#46;&#99;&#x6f;&#109;</a></li>
 </ul>
 <p>作用：区分不同开发人员的身份</p>
 <p>辨析：登录远程库(代码托管中心)的账号，密码和这个设置的签名没有任何关系</p>
@@ -5939,13 +5889,13 @@ hexo d
 <ul>
 <li>项目级别/仓库级别：仅在当前本地库范围内有效<ul>
 <li>git config user.name wyc_pro</li>
-<li>git config user.email <a href="mailto:&#x77;&#x61;&#x6e;&#x67;&#95;&#x70;&#x72;&#x6f;&#x40;&#x31;&#x36;&#51;&#x2e;&#99;&#111;&#x6d;">&#x77;&#x61;&#x6e;&#x67;&#95;&#x70;&#x72;&#x6f;&#x40;&#x31;&#x36;&#51;&#x2e;&#99;&#111;&#x6d;</a></li>
+<li>git config user.email <a href="mailto:&#x77;&#97;&#x6e;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#x31;&#54;&#x33;&#x2e;&#x63;&#x6f;&#109;">&#x77;&#97;&#x6e;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#x31;&#54;&#x33;&#x2e;&#x63;&#x6f;&#109;</a></li>
 <li>信息保存位置：.git/config</li>
 </ul>
 </li>
 <li>系统用户级别：登陆当前操作系统的用户范围<ul>
 <li>git config –global user.name wyc_glb</li>
-<li>git config –globle user.email <a href="mailto:&#119;&#97;&#x6e;&#103;&#x5f;&#x67;&#x6c;&#98;&#x40;&#x31;&#54;&#x33;&#46;&#x63;&#111;&#109;">&#119;&#97;&#x6e;&#103;&#x5f;&#x67;&#x6c;&#98;&#x40;&#x31;&#54;&#x33;&#46;&#x63;&#111;&#109;</a></li>
+<li>git config –globle user.email <a href="mailto:&#x77;&#x61;&#110;&#x67;&#x5f;&#x67;&#x6c;&#98;&#x40;&#49;&#54;&#51;&#x2e;&#x63;&#111;&#109;">&#x77;&#x61;&#110;&#x67;&#x5f;&#x67;&#x6c;&#98;&#x40;&#49;&#54;&#51;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>信息保存位置：家目录下的gitconfig隐藏文件，~/.gitconfig文件</li>
 </ul>
 </li>
@@ -6478,7 +6428,7 @@ hexo d
 <p>此时复制id_rsa.pub文件的内容，在github中添加key</p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320190404837.png" alt="image-20210320190404837"></p>
 <p>检查测试连接，执行命令，显示success则成功</p>
-<p>ssh -T <a href="mailto:&#x67;&#105;&#116;&#64;&#x67;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#x67;&#105;&#116;&#64;&#x67;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a></p>
+<p>ssh -T <a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#109;">&#103;&#x69;&#116;&#64;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#109;</a></p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185950523.png" alt="image-20210320185950523"></p>
 <p>之后就可以直接使用ssh密匙来clone和push项目，不用输入密码</p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321093019644.png" alt="image-20210321093019644"></p>
@@ -13871,7 +13821,7 @@ public class MyLogGateWayFilter implements GlobalFilter, Ordered &#123;
 <li><p>用自己的GitHub账号在GitHub上新建一个名为springcloud-config的新Repository</p>
 </li>
 <li><p>获得SSH协议的git地址</p>
-<p><a href="mailto:&#x67;&#x69;&#x74;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;">&#x67;&#x69;&#x74;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;</a>:wyc1228/springcloud-config.git</p>
+<p><a href="mailto:&#103;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#x67;&#x69;&#x74;&#104;&#x75;&#98;&#x2e;&#99;&#x6f;&#109;</a>:wyc1228/springcloud-config.git</p>
 <p><img src="/2020/11/21/SpringCloud-07/image-20210320171817426.png" alt="image-20210320171817426"></p>
 </li>
 <li><p>在本地硬盘目录上新建git仓库并clone（不需要初始化，直接clone）</p>
