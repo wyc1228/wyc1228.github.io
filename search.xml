@@ -2670,378 +2670,6 @@ branch: master
       </tags>
   </entry>
   <entry>
-    <title>MyBatis动态SQL</title>
-    <url>/2020/10/06/MyBatis%E5%8A%A8%E6%80%81SQL/</url>
-    <content><![CDATA[<h2 id="MyBatis动态SQL"><a href="#MyBatis动态SQL" class="headerlink" title="MyBatis动态SQL"></a>MyBatis动态SQL</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>动态 SQL是MyBatis强大特性之一。极大的简化我们拼装 SQL的操作。</p>
-<p>动态 SQL 元素和使用 JSTL 或其他类似基于 XML 的文本处理器相似。</p>
-<p>MyBatis 采用功能强大的基于 OGNL 的表达式来简化操作。 </p>
-<ul>
-<li> if </li>
-<li> choose (when, otherwise) </li>
-<li> trim (where, set) </li>
-<li>foreach</li>
-</ul>
-<h3 id="1-2-if的使用："><a href="#1-2-if的使用：" class="headerlink" title="1.2 if的使用："></a>1.2 if的使用：</h3><p>直接写入表达式，在使用时不管传入几个参数都可以执行</p>
-<p>mapper映射文件</p>
-<pre><code class="xml"> &lt;!-- 查询员工，要求，携带了哪个字段查询条件就带上这个字段的值 --&gt;
-    &lt;!--where标签解决解决sql语句拼装的and的问题：and拼接在前面--&gt;
-     &lt;!-- public List&lt;Employee&gt; getEmpsByConditionIf(Employee employee); --&gt;
-     &lt;select id=&quot;getEmpsByConditionIf&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
-         select * from tbl_employee
-         &lt;!-- where --&gt;
-         &lt;where&gt;
-             &lt;!-- test：判断表达式（OGNL）
-             OGNL参照PPT或者官方文档。
-                    c:if  test
-             从参数中取值进行判断
-             遇见特殊符号应该去写转义字符：
-             &amp;&amp;：
-             --&gt;
-             &lt;if test=&quot;id!=null&quot;&gt;&lt;!--传上来的id参数不为空才会将其拼接--&gt;
-                 id=#&#123;id&#125;
-             &lt;/if&gt;
-             &lt;if test=&quot;lastName!=null &amp;amp;&amp;amp; lastName!=&amp;quot;&amp;quot;&quot;&gt;&lt;!--&amp;amp;&amp;amp;==&amp;&amp; &amp;quot;&amp;quot;=&quot;&quot; --&gt;
-                 and last_name like #&#123;lastName&#125;
-             &lt;/if&gt;
-             &lt;if test=&quot;email!=null and email.trim()!=&amp;quot;&amp;quot;&quot;&gt;
-                 and email=#&#123;email&#125;
-             &lt;/if&gt; 
-             &lt;!-- ognl会进行字符串与数字的转换判断  &quot;0&quot;==0 --&gt;
-             &lt;if test=&quot;gender==0 or gender==1&quot;&gt;
-                  and gender=#&#123;gender&#125;
-             &lt;/if&gt;
-         &lt;/where&gt;
-     &lt;/select&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java"> public SqlSessionFactory getSqlSessionFactory() throws IOException &#123;
-        String resource = &quot;mybatis-config.xml&quot;;
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        return new SqlSessionFactoryBuilder().build(inputStream);
-    &#125;
-
-    //测试if中的where标签
-    @Test
-    public void test1() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-            Employee employee = new Employee(3,&quot;%c%&quot;,null,null);
-            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionIf(employee);
-            for (Employee employee1 : empsByConditionIf) &#123;
-                System.out.println(employee1);
-            &#125;
-            //查询时某些条件没带sql拼装有问题
-            //1.在where后面加上1=1
-            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-<p>此时若将输入的id值置为null，你会发现sql语句拼接出了问题，所以我们可以使用trim标签</p>
-<h3 id="1-3trim标签"><a href="#1-3trim标签" class="headerlink" title="1.3trim标签"></a>1.3trim标签</h3><pre><code class="xml">&lt;!--使用trim标签解决sql语句拼装的and的问题：and拼接在后面--&gt;
-    &lt;!--public List&lt;Employee&gt; getEmpsByConditionTrim(Employee employee);  --&gt;
-    &lt;select id=&quot;getEmpsByConditionTrim&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
-        select * from tbl_employee
-        &lt;!-- 后面多出的and或者or where标签不能解决
-        prefix=&quot;&quot;:前缀：trim标签体中是整个字符串拼串 后的结果。
-                prefix给拼串后的整个字符串加一个前缀
-        prefixOverrides=&quot;&quot;:
-                前缀覆盖： 去掉整个字符串前面多余的字符
-        suffix=&quot;&quot;:后缀
-                suffix给拼串后的整个字符串加一个后缀
-        suffixOverrides=&quot;&quot;
-                后缀覆盖：去掉整个字符串后面多余的字符
-
-        --&gt;
-        &lt;!-- 自定义字符串的截取规则 --&gt;
-        &lt;trim prefix=&quot;where&quot; suffixOverrides=&quot;and&quot;&gt;
-            &lt;if test=&quot;id!=null&quot;&gt;
-                id=#&#123;id&#125; and
-            &lt;/if&gt;
-            &lt;if test=&quot;lastName!=null &amp;amp;&amp;amp; lastName!=&amp;quot;&amp;quot;&quot;&gt;
-                last_name like #&#123;lastName&#125; and
-            &lt;/if&gt;
-            &lt;if test=&quot;email!=null and email.trim()!=&amp;quot;&amp;quot;&quot;&gt;
-                email=#&#123;email&#125; and
-            &lt;/if&gt;
-            &lt;!-- ognl会进行字符串与数字的转换判断  &quot;0&quot;==0 --&gt;
-            &lt;if test=&quot;gender==0 or gender==1&quot;&gt;
-                gender=#&#123;gender&#125;
-            &lt;/if&gt;
-        &lt;/trim&gt;
-    &lt;/select&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java">//测试if中的trim标签，and放在后面
-    @Test
-    public void test2() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-            Employee employee = new Employee(null,&quot;%c%&quot;,null,null);
-            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionTrim(employee);
-            for (Employee employee1 : empsByConditionIf) &#123;
-                System.out.println(employee1);
-            &#125;
-            //查询时某些条件没带sql拼装有问题
-            //1.在where后面加上1=1
-            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-<h3 id="1-4-choose标签使用"><a href="#1-4-choose标签使用" class="headerlink" title="1.4 choose标签使用"></a>1.4 choose标签使用</h3><pre><code class="xml">&lt;!--choose标签：如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个--&gt;
-    &lt;!-- public List&lt;Employee&gt; getEmpsByConditionChoose(Employee employee); --&gt;
-    &lt;select id=&quot;getEmpsByConditionChoose&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
-        select * from tbl_employee
-        &lt;where&gt;
-            &lt;!-- 如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个 --&gt;
-            &lt;choose&gt;
-                &lt;when test=&quot;id!=null&quot;&gt;
-                    id=#&#123;id&#125;
-                &lt;/when&gt;
-                &lt;when test=&quot;lastName!=null&quot;&gt;
-                    last_name like #&#123;lastName&#125;
-                &lt;/when&gt;
-                &lt;when test=&quot;email!=null&quot;&gt;
-                    email = #&#123;email&#125;
-                &lt;/when&gt;
-                &lt;otherwise&gt;
-                    gender = 0
-                &lt;/otherwise&gt;
-            &lt;/choose&gt;
-        &lt;/where&gt;
-    &lt;/select&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java"> //测试choose标签
-    @Test
-    public void test3() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-            Employee employee = new Employee(1,&quot;%c%&quot;,null,&quot;1&quot;);
-            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionChoose(employee);
-            for (Employee employee1 : empsByConditionIf) &#123;
-                System.out.println(employee1);
-            &#125;
-            //查询时某些条件没带sql拼装有问题
-            //1.在where后面加上1=1
-            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-<h3 id="1-5-set标签使用"><a href="#1-5-set标签使用" class="headerlink" title="1.5 set标签使用"></a>1.5 set标签使用</h3><pre><code class="xml">&lt;!--set更新操作，封装修改，传入哪一个参数更新哪一个--&gt;
-    &lt;!--public void updateEmp(Employee employee);  --&gt;
-    &lt;update id=&quot;updateEmp&quot;&gt;
-        &lt;!-- Set标签的使用 ,后面多个逗号，加set标签可以去掉，加trim标签也可以--&gt;
-        update tbl_employee
-        &lt;set&gt;
-            &lt;if test=&quot;lastName!=null&quot;&gt;
-                last_name=#&#123;lastName&#125;,
-            &lt;/if&gt;
-            &lt;if test=&quot;email!=null&quot;&gt;
-                email=#&#123;email&#125;,
-            &lt;/if&gt;
-            &lt;if test=&quot;gender!=null&quot;&gt;
-                gender=#&#123;gender&#125;
-            &lt;/if&gt;
-        &lt;/set&gt;
-        where id=#&#123;id&#125;
-        &lt;!--
-                Trim：更新拼串
-                update tbl_employee
-                &lt;trim prefix=&quot;set&quot; suffixOverrides=&quot;,&quot;&gt;
-                    &lt;if test=&quot;lastName!=null&quot;&gt;
-                        last_name=#&#123;lastName&#125;,
-                    &lt;/if&gt;
-                    &lt;if test=&quot;email!=null&quot;&gt;
-                        email=#&#123;email&#125;,
-                    &lt;/if&gt;
-                    &lt;if test=&quot;gender!=null&quot;&gt;
-                        gender=#&#123;gender&#125;
-                    &lt;/if&gt;
-                &lt;/trim&gt;
-                where id=#&#123;id&#125;  --&gt;
-    &lt;/update&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java">//测试set标签
-    @Test
-    public void test4() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-            Employee employee = new Employee(1,&quot;%c%&quot;,null,&quot;1&quot;);
-            mapper.updateEmp(employee);
-            //查询时某些条件没带sql拼装有问题
-            //1.在where后面加上1=1
-            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-<h3 id="1-6-foreach标签"><a href="#1-6-foreach标签" class="headerlink" title="1.6 foreach标签"></a>1.6 foreach标签</h3><pre><code class="xml">&lt;!--foreach 遍历集合--&gt;
-    &lt;!--public List&lt;Employee&gt; getEmpsByConditionForeach(List&lt;Integer&gt; ids);  --&gt;
-    &lt;select id=&quot;getEmpsByConditionForeach&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
-        &lt;!--
-            collection：指定要遍历的集合：
-                list类型的参数会特殊处理封装在map中，map的key就叫list
-            item：将当前遍历出的元素赋值给指定的变量
-            separator:每个元素之间的分隔符
-            open：遍历出所有结果拼接一个开始的字符
-            close:遍历出所有结果拼接一个结束的字符
-            index:索引。遍历list的时候是index就是索引，item就是当前值
-                          遍历map的时候index表示的就是map的key，item就是map的值
-
-            #&#123;变量名&#125;就能取出变量的值也就是当前遍历出的元素
-          --&gt;
-        select * from tbl_employee
-        &lt;foreach collection=&quot;ids&quot; item=&quot;item_id&quot; separator=&quot;,&quot; open=&quot;where id in(&quot; close=&quot;)&quot;&gt;
-            #&#123;item_id&#125;
-        &lt;/foreach&gt;
-    &lt;/select&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java"> //测试foreach标签
-    @Test
-    public void test5() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-
-            List&lt;Employee&gt; empsByConditionForeach = mapper.getEmpsByConditionForeach(Arrays.asList(1, 2, 3, 4));
-            for (Employee byConditionForeach : empsByConditionForeach) &#123;
-                System.out.println(byConditionForeach);
-            &#125;
-            //查询时某些条件没带sql拼装有问题
-            //1.在where后面加上1=1
-            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-<p><strong>foreach的批量保存</strong></p>
-<pre><code class="xml">&lt;!--foreach批量保存--&gt;
-    &lt;!-- 批量保存 --&gt;
-    &lt;!--public void addEmps(@Param(&quot;emps&quot;)List&lt;Employee&gt; emps);  --&gt;
-    &lt;!--MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法--&gt;
-    &lt;insert id=&quot;addEmps&quot;&gt;
-        insert into tbl_employee(last_name,email,gender)
-        values
-        &lt;foreach collection=&quot;emps&quot; item=&quot;emp&quot; separator=&quot;,&quot;&gt;
-            (#&#123;emp.lastName&#125;,#&#123;emp.email&#125;,#&#123;emp.gender&#125;)
-        &lt;/foreach&gt;
-    &lt;/insert&gt;&lt;!--   --&gt;
-
-    &lt;!-- 这种方式需要数据库连接属性allowMultiQueries=true；
-         这种分号分隔多个sql可以用于其他的批量操作（删除，修改） --&gt;
-     &lt;!--&lt;insert id=&quot;addEmps&quot;&gt;
-        &lt;foreach collection=&quot;emps&quot; item=&quot;emp&quot; separator=&quot;;&quot;&gt;
-            insert into tbl_employee(last_name,email,gender)
-            values(#&#123;emp.lastName&#125;,#&#123;emp.email&#125;,#&#123;emp.gender&#125;)
-        &lt;/foreach&gt;
-    &lt;/insert&gt; --&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java">//测试foreach批量保存
-    @Test
-    public void test6() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-
-            List&lt;Employee&gt; emps=new ArrayList&lt;&gt;();
-            emps.add(new Employee(null,&quot;jerry&quot;,&quot;jerry@163.com&quot;,&quot;0&quot;));
-            emps.add(new Employee(null,&quot;smith&quot;,&quot;smith@163.com&quot;,&quot;1&quot;));
-            emps.add(new Employee(null,&quot;test&quot;,&quot;test@163.com&quot;,&quot;0&quot;));
-            mapper.addEmps(emps);
-
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-<h3 id="1-7-内置参数"><a href="#1-7-内置参数" class="headerlink" title="1.7 内置参数"></a>1.7 内置参数</h3><pre><code class="xml">&lt;!-- 两个内置参数：
-         不只是方法传递过来的参数可以被用来判断，取值。。。
-         mybatis默认还有两个内置参数：
-         _parameter:代表整个参数
-             单个参数：_parameter就是这个参数
-             多个参数：参数会被封装为一个map；_parameter就是代表这个map
-
-         _databaseId:如果配置了databaseIdProvider标签。
-             _databaseId就是代表当前数据库的别名oracle
-      --&gt;
-
-    &lt;!--public List&lt;Employee&gt; getEmpsTestInnerParameter(Employee employee);  --&gt;
-    &lt;select id=&quot;getEmpsTestInnerParameter&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
-        &lt;!-- bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值 --&gt;
-        &lt;bind name=&quot;_lastName&quot; value=&quot;&#39;%&#39;+lastName+&#39;%&#39;&quot;/&gt;
-        &lt;if test=&quot;_databaseId==&#39;mysql&#39;&quot;&gt;
-            select * from tbl_employee
-            &lt;if test=&quot;_parameter!=null&quot;&gt;
-                where last_name like #&#123;lastName&#125;
-            &lt;/if&gt;
-        &lt;/if&gt;
-        &lt;if test=&quot;_databaseId==&#39;oracle&#39;&quot;&gt;
-            select * from employees
-            &lt;if test=&quot;_parameter!=null&quot;&gt;
-                where last_name like #&#123;_parameter.lastName&#125;
-            &lt;/if&gt;
-        &lt;/if&gt;
-    &lt;/select&gt;
-</code></pre>
-<p>测试代码</p>
-<pre><code class="java"> //测试mybatis的两个内置参数_parameter和_databaseId
-    @Test
-    public void test7() throws IOException &#123;
-        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
-        SqlSession sqlSession = sqlSessionFactory.openSession();
-        try &#123;
-            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-
-            Employee employee2 = new Employee();
-            employee2.setLastName(&quot;%e%&quot;);
-            List&lt;Employee&gt; list = mapper.getEmpsTestInnerParameter(employee2);
-            for (Employee employee : list) &#123;
-                System.out.println(employee);
-            &#125;
-
-            sqlSession.commit();
-        &#125; finally &#123;
-            sqlSession.close();
-        &#125;
-    &#125;
-</code></pre>
-]]></content>
-      <categories>
-        <category>SSM</category>
-      </categories>
-      <tags>
-        <tag>SSM</tag>
-        <tag>MyBatis</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux实用指令</title>
     <url>/2020/10/10/Linux%E5%AE%9E%E7%94%A8%E6%8C%87%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="Linux实用指令"><a href="#Linux实用指令" class="headerlink" title="Linux实用指令"></a>Linux实用指令</h2><h3 id="1-指令运行级别"><a href="#1-指令运行级别" class="headerlink" title="1. 指令运行级别"></a>1. 指令运行级别</h3><p>七个运行级别：配置文件为/etc/inittab</p>
@@ -3533,6 +3161,378 @@ branch: master
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MyBatis动态SQL</title>
+    <url>/2020/10/06/MyBatis%E5%8A%A8%E6%80%81SQL/</url>
+    <content><![CDATA[<h2 id="MyBatis动态SQL"><a href="#MyBatis动态SQL" class="headerlink" title="MyBatis动态SQL"></a>MyBatis动态SQL</h2><h3 id="1-1-概述"><a href="#1-1-概述" class="headerlink" title="1.1 概述"></a>1.1 概述</h3><p>动态 SQL是MyBatis强大特性之一。极大的简化我们拼装 SQL的操作。</p>
+<p>动态 SQL 元素和使用 JSTL 或其他类似基于 XML 的文本处理器相似。</p>
+<p>MyBatis 采用功能强大的基于 OGNL 的表达式来简化操作。 </p>
+<ul>
+<li> if </li>
+<li> choose (when, otherwise) </li>
+<li> trim (where, set) </li>
+<li>foreach</li>
+</ul>
+<h3 id="1-2-if的使用："><a href="#1-2-if的使用：" class="headerlink" title="1.2 if的使用："></a>1.2 if的使用：</h3><p>直接写入表达式，在使用时不管传入几个参数都可以执行</p>
+<p>mapper映射文件</p>
+<pre><code class="xml"> &lt;!-- 查询员工，要求，携带了哪个字段查询条件就带上这个字段的值 --&gt;
+    &lt;!--where标签解决解决sql语句拼装的and的问题：and拼接在前面--&gt;
+     &lt;!-- public List&lt;Employee&gt; getEmpsByConditionIf(Employee employee); --&gt;
+     &lt;select id=&quot;getEmpsByConditionIf&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+         select * from tbl_employee
+         &lt;!-- where --&gt;
+         &lt;where&gt;
+             &lt;!-- test：判断表达式（OGNL）
+             OGNL参照PPT或者官方文档。
+                    c:if  test
+             从参数中取值进行判断
+             遇见特殊符号应该去写转义字符：
+             &amp;&amp;：
+             --&gt;
+             &lt;if test=&quot;id!=null&quot;&gt;&lt;!--传上来的id参数不为空才会将其拼接--&gt;
+                 id=#&#123;id&#125;
+             &lt;/if&gt;
+             &lt;if test=&quot;lastName!=null &amp;amp;&amp;amp; lastName!=&amp;quot;&amp;quot;&quot;&gt;&lt;!--&amp;amp;&amp;amp;==&amp;&amp; &amp;quot;&amp;quot;=&quot;&quot; --&gt;
+                 and last_name like #&#123;lastName&#125;
+             &lt;/if&gt;
+             &lt;if test=&quot;email!=null and email.trim()!=&amp;quot;&amp;quot;&quot;&gt;
+                 and email=#&#123;email&#125;
+             &lt;/if&gt; 
+             &lt;!-- ognl会进行字符串与数字的转换判断  &quot;0&quot;==0 --&gt;
+             &lt;if test=&quot;gender==0 or gender==1&quot;&gt;
+                  and gender=#&#123;gender&#125;
+             &lt;/if&gt;
+         &lt;/where&gt;
+     &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> public SqlSessionFactory getSqlSessionFactory() throws IOException &#123;
+        String resource = &quot;mybatis-config.xml&quot;;
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        return new SqlSessionFactoryBuilder().build(inputStream);
+    &#125;
+
+    //测试if中的where标签
+    @Test
+    public void test1() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(3,&quot;%c%&quot;,null,null);
+            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionIf(employee);
+            for (Employee employee1 : empsByConditionIf) &#123;
+                System.out.println(employee1);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p>此时若将输入的id值置为null，你会发现sql语句拼接出了问题，所以我们可以使用trim标签</p>
+<h3 id="1-3trim标签"><a href="#1-3trim标签" class="headerlink" title="1.3trim标签"></a>1.3trim标签</h3><pre><code class="xml">&lt;!--使用trim标签解决sql语句拼装的and的问题：and拼接在后面--&gt;
+    &lt;!--public List&lt;Employee&gt; getEmpsByConditionTrim(Employee employee);  --&gt;
+    &lt;select id=&quot;getEmpsByConditionTrim&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select * from tbl_employee
+        &lt;!-- 后面多出的and或者or where标签不能解决
+        prefix=&quot;&quot;:前缀：trim标签体中是整个字符串拼串 后的结果。
+                prefix给拼串后的整个字符串加一个前缀
+        prefixOverrides=&quot;&quot;:
+                前缀覆盖： 去掉整个字符串前面多余的字符
+        suffix=&quot;&quot;:后缀
+                suffix给拼串后的整个字符串加一个后缀
+        suffixOverrides=&quot;&quot;
+                后缀覆盖：去掉整个字符串后面多余的字符
+
+        --&gt;
+        &lt;!-- 自定义字符串的截取规则 --&gt;
+        &lt;trim prefix=&quot;where&quot; suffixOverrides=&quot;and&quot;&gt;
+            &lt;if test=&quot;id!=null&quot;&gt;
+                id=#&#123;id&#125; and
+            &lt;/if&gt;
+            &lt;if test=&quot;lastName!=null &amp;amp;&amp;amp; lastName!=&amp;quot;&amp;quot;&quot;&gt;
+                last_name like #&#123;lastName&#125; and
+            &lt;/if&gt;
+            &lt;if test=&quot;email!=null and email.trim()!=&amp;quot;&amp;quot;&quot;&gt;
+                email=#&#123;email&#125; and
+            &lt;/if&gt;
+            &lt;!-- ognl会进行字符串与数字的转换判断  &quot;0&quot;==0 --&gt;
+            &lt;if test=&quot;gender==0 or gender==1&quot;&gt;
+                gender=#&#123;gender&#125;
+            &lt;/if&gt;
+        &lt;/trim&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//测试if中的trim标签，and放在后面
+    @Test
+    public void test2() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(null,&quot;%c%&quot;,null,null);
+            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionTrim(employee);
+            for (Employee employee1 : empsByConditionIf) &#123;
+                System.out.println(employee1);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-4-choose标签使用"><a href="#1-4-choose标签使用" class="headerlink" title="1.4 choose标签使用"></a>1.4 choose标签使用</h3><pre><code class="xml">&lt;!--choose标签：如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个--&gt;
+    &lt;!-- public List&lt;Employee&gt; getEmpsByConditionChoose(Employee employee); --&gt;
+    &lt;select id=&quot;getEmpsByConditionChoose&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        select * from tbl_employee
+        &lt;where&gt;
+            &lt;!-- 如果带了id就用id查，如果带了lastName就用lastName查;只会进入其中一个 --&gt;
+            &lt;choose&gt;
+                &lt;when test=&quot;id!=null&quot;&gt;
+                    id=#&#123;id&#125;
+                &lt;/when&gt;
+                &lt;when test=&quot;lastName!=null&quot;&gt;
+                    last_name like #&#123;lastName&#125;
+                &lt;/when&gt;
+                &lt;when test=&quot;email!=null&quot;&gt;
+                    email = #&#123;email&#125;
+                &lt;/when&gt;
+                &lt;otherwise&gt;
+                    gender = 0
+                &lt;/otherwise&gt;
+            &lt;/choose&gt;
+        &lt;/where&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> //测试choose标签
+    @Test
+    public void test3() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(1,&quot;%c%&quot;,null,&quot;1&quot;);
+            List&lt;Employee&gt; empsByConditionIf = mapper.getEmpsByConditionChoose(employee);
+            for (Employee employee1 : empsByConditionIf) &#123;
+                System.out.println(employee1);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-5-set标签使用"><a href="#1-5-set标签使用" class="headerlink" title="1.5 set标签使用"></a>1.5 set标签使用</h3><pre><code class="xml">&lt;!--set更新操作，封装修改，传入哪一个参数更新哪一个--&gt;
+    &lt;!--public void updateEmp(Employee employee);  --&gt;
+    &lt;update id=&quot;updateEmp&quot;&gt;
+        &lt;!-- Set标签的使用 ,后面多个逗号，加set标签可以去掉，加trim标签也可以--&gt;
+        update tbl_employee
+        &lt;set&gt;
+            &lt;if test=&quot;lastName!=null&quot;&gt;
+                last_name=#&#123;lastName&#125;,
+            &lt;/if&gt;
+            &lt;if test=&quot;email!=null&quot;&gt;
+                email=#&#123;email&#125;,
+            &lt;/if&gt;
+            &lt;if test=&quot;gender!=null&quot;&gt;
+                gender=#&#123;gender&#125;
+            &lt;/if&gt;
+        &lt;/set&gt;
+        where id=#&#123;id&#125;
+        &lt;!--
+                Trim：更新拼串
+                update tbl_employee
+                &lt;trim prefix=&quot;set&quot; suffixOverrides=&quot;,&quot;&gt;
+                    &lt;if test=&quot;lastName!=null&quot;&gt;
+                        last_name=#&#123;lastName&#125;,
+                    &lt;/if&gt;
+                    &lt;if test=&quot;email!=null&quot;&gt;
+                        email=#&#123;email&#125;,
+                    &lt;/if&gt;
+                    &lt;if test=&quot;gender!=null&quot;&gt;
+                        gender=#&#123;gender&#125;
+                    &lt;/if&gt;
+                &lt;/trim&gt;
+                where id=#&#123;id&#125;  --&gt;
+    &lt;/update&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//测试set标签
+    @Test
+    public void test4() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(1,&quot;%c%&quot;,null,&quot;1&quot;);
+            mapper.updateEmp(employee);
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-6-foreach标签"><a href="#1-6-foreach标签" class="headerlink" title="1.6 foreach标签"></a>1.6 foreach标签</h3><pre><code class="xml">&lt;!--foreach 遍历集合--&gt;
+    &lt;!--public List&lt;Employee&gt; getEmpsByConditionForeach(List&lt;Integer&gt; ids);  --&gt;
+    &lt;select id=&quot;getEmpsByConditionForeach&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        &lt;!--
+            collection：指定要遍历的集合：
+                list类型的参数会特殊处理封装在map中，map的key就叫list
+            item：将当前遍历出的元素赋值给指定的变量
+            separator:每个元素之间的分隔符
+            open：遍历出所有结果拼接一个开始的字符
+            close:遍历出所有结果拼接一个结束的字符
+            index:索引。遍历list的时候是index就是索引，item就是当前值
+                          遍历map的时候index表示的就是map的key，item就是map的值
+
+            #&#123;变量名&#125;就能取出变量的值也就是当前遍历出的元素
+          --&gt;
+        select * from tbl_employee
+        &lt;foreach collection=&quot;ids&quot; item=&quot;item_id&quot; separator=&quot;,&quot; open=&quot;where id in(&quot; close=&quot;)&quot;&gt;
+            #&#123;item_id&#125;
+        &lt;/foreach&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> //测试foreach标签
+    @Test
+    public void test5() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            List&lt;Employee&gt; empsByConditionForeach = mapper.getEmpsByConditionForeach(Arrays.asList(1, 2, 3, 4));
+            for (Employee byConditionForeach : empsByConditionForeach) &#123;
+                System.out.println(byConditionForeach);
+            &#125;
+            //查询时某些条件没带sql拼装有问题
+            //1.在where后面加上1=1
+            //2.mybatis可以使用where标签来讲所有的查询条件包括在内
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<p><strong>foreach的批量保存</strong></p>
+<pre><code class="xml">&lt;!--foreach批量保存--&gt;
+    &lt;!-- 批量保存 --&gt;
+    &lt;!--public void addEmps(@Param(&quot;emps&quot;)List&lt;Employee&gt; emps);  --&gt;
+    &lt;!--MySQL下批量保存：可以foreach遍历   mysql支持values(),(),()语法--&gt;
+    &lt;insert id=&quot;addEmps&quot;&gt;
+        insert into tbl_employee(last_name,email,gender)
+        values
+        &lt;foreach collection=&quot;emps&quot; item=&quot;emp&quot; separator=&quot;,&quot;&gt;
+            (#&#123;emp.lastName&#125;,#&#123;emp.email&#125;,#&#123;emp.gender&#125;)
+        &lt;/foreach&gt;
+    &lt;/insert&gt;&lt;!--   --&gt;
+
+    &lt;!-- 这种方式需要数据库连接属性allowMultiQueries=true；
+         这种分号分隔多个sql可以用于其他的批量操作（删除，修改） --&gt;
+     &lt;!--&lt;insert id=&quot;addEmps&quot;&gt;
+        &lt;foreach collection=&quot;emps&quot; item=&quot;emp&quot; separator=&quot;;&quot;&gt;
+            insert into tbl_employee(last_name,email,gender)
+            values(#&#123;emp.lastName&#125;,#&#123;emp.email&#125;,#&#123;emp.gender&#125;)
+        &lt;/foreach&gt;
+    &lt;/insert&gt; --&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java">//测试foreach批量保存
+    @Test
+    public void test6() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            List&lt;Employee&gt; emps=new ArrayList&lt;&gt;();
+            emps.add(new Employee(null,&quot;jerry&quot;,&quot;jerry@163.com&quot;,&quot;0&quot;));
+            emps.add(new Employee(null,&quot;smith&quot;,&quot;smith@163.com&quot;,&quot;1&quot;));
+            emps.add(new Employee(null,&quot;test&quot;,&quot;test@163.com&quot;,&quot;0&quot;));
+            mapper.addEmps(emps);
+
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+<h3 id="1-7-内置参数"><a href="#1-7-内置参数" class="headerlink" title="1.7 内置参数"></a>1.7 内置参数</h3><pre><code class="xml">&lt;!-- 两个内置参数：
+         不只是方法传递过来的参数可以被用来判断，取值。。。
+         mybatis默认还有两个内置参数：
+         _parameter:代表整个参数
+             单个参数：_parameter就是这个参数
+             多个参数：参数会被封装为一个map；_parameter就是代表这个map
+
+         _databaseId:如果配置了databaseIdProvider标签。
+             _databaseId就是代表当前数据库的别名oracle
+      --&gt;
+
+    &lt;!--public List&lt;Employee&gt; getEmpsTestInnerParameter(Employee employee);  --&gt;
+    &lt;select id=&quot;getEmpsTestInnerParameter&quot; resultType=&quot;com.review.mybatis.bean.Employee&quot;&gt;
+        &lt;!-- bind：可以将OGNL表达式的值绑定到一个变量中，方便后来引用这个变量的值 --&gt;
+        &lt;bind name=&quot;_lastName&quot; value=&quot;&#39;%&#39;+lastName+&#39;%&#39;&quot;/&gt;
+        &lt;if test=&quot;_databaseId==&#39;mysql&#39;&quot;&gt;
+            select * from tbl_employee
+            &lt;if test=&quot;_parameter!=null&quot;&gt;
+                where last_name like #&#123;lastName&#125;
+            &lt;/if&gt;
+        &lt;/if&gt;
+        &lt;if test=&quot;_databaseId==&#39;oracle&#39;&quot;&gt;
+            select * from employees
+            &lt;if test=&quot;_parameter!=null&quot;&gt;
+                where last_name like #&#123;_parameter.lastName&#125;
+            &lt;/if&gt;
+        &lt;/if&gt;
+    &lt;/select&gt;
+</code></pre>
+<p>测试代码</p>
+<pre><code class="java"> //测试mybatis的两个内置参数_parameter和_databaseId
+    @Test
+    public void test7() throws IOException &#123;
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try &#123;
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+
+            Employee employee2 = new Employee();
+            employee2.setLastName(&quot;%e%&quot;);
+            List&lt;Employee&gt; list = mapper.getEmpsTestInnerParameter(employee2);
+            for (Employee employee : list) &#123;
+                System.out.println(employee);
+            &#125;
+
+            sqlSession.commit();
+        &#125; finally &#123;
+            sqlSession.close();
+        &#125;
+    &#125;
+</code></pre>
+]]></content>
+      <categories>
+        <category>SSM</category>
+      </categories>
+      <tags>
+        <tag>SSM</tag>
+        <tag>MyBatis</tag>
       </tags>
   </entry>
   <entry>
@@ -5849,7 +5849,7 @@ public class TxConfig &#123;
 <h3 id="6-2-设置签名"><a href="#6-2-设置签名" class="headerlink" title="6.2 设置签名"></a>6.2 设置签名</h3><p>形式</p>
 <ul>
 <li>用户名：wyc</li>
-<li>Email地址：<a href="mailto:&#119;&#x61;&#x6e;&#103;&#64;&#x31;&#x36;&#x33;&#46;&#x63;&#111;&#x6d;">&#119;&#x61;&#x6e;&#103;&#64;&#x31;&#x36;&#x33;&#46;&#x63;&#111;&#x6d;</a></li>
+<li>Email地址：<a href="mailto:&#119;&#x61;&#x6e;&#103;&#64;&#49;&#54;&#51;&#x2e;&#x63;&#x6f;&#109;">&#119;&#x61;&#x6e;&#103;&#64;&#49;&#54;&#51;&#x2e;&#x63;&#x6f;&#109;</a></li>
 </ul>
 <p>作用：区分不同开发人员的身份</p>
 <p>辨析：登录远程库(代码托管中心)的账号，密码和这个设置的签名没有任何关系</p>
@@ -5857,13 +5857,13 @@ public class TxConfig &#123;
 <ul>
 <li>项目级别/仓库级别：仅在当前本地库范围内有效<ul>
 <li>git config user.name wyc_pro</li>
-<li>git config user.email <a href="mailto:&#119;&#97;&#110;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#x31;&#54;&#x33;&#46;&#x63;&#111;&#x6d;">&#119;&#97;&#110;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#x31;&#54;&#x33;&#46;&#x63;&#111;&#x6d;</a></li>
+<li>git config user.email <a href="mailto:&#119;&#97;&#x6e;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#49;&#54;&#x33;&#x2e;&#x63;&#x6f;&#x6d;">&#119;&#97;&#x6e;&#103;&#95;&#112;&#x72;&#x6f;&#64;&#49;&#54;&#x33;&#x2e;&#x63;&#x6f;&#x6d;</a></li>
 <li>信息保存位置：.git/config</li>
 </ul>
 </li>
 <li>系统用户级别：登陆当前操作系统的用户范围<ul>
 <li>git config –global user.name wyc_glb</li>
-<li>git config –globle user.email <a href="mailto:&#x77;&#97;&#x6e;&#x67;&#95;&#x67;&#108;&#x62;&#64;&#x31;&#54;&#51;&#46;&#99;&#111;&#x6d;">&#x77;&#97;&#x6e;&#x67;&#95;&#x67;&#108;&#x62;&#64;&#x31;&#54;&#51;&#46;&#99;&#111;&#x6d;</a></li>
+<li>git config –globle user.email <a href="mailto:&#119;&#x61;&#110;&#x67;&#x5f;&#103;&#x6c;&#98;&#64;&#x31;&#54;&#x33;&#x2e;&#99;&#x6f;&#109;">&#119;&#x61;&#110;&#x67;&#x5f;&#103;&#x6c;&#98;&#64;&#x31;&#54;&#x33;&#x2e;&#99;&#x6f;&#109;</a></li>
 <li>信息保存位置：家目录下的gitconfig隐藏文件，~/.gitconfig文件</li>
 </ul>
 </li>
@@ -6396,7 +6396,7 @@ public class TxConfig &#123;
 <p>此时复制id_rsa.pub文件的内容，在github中添加key</p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320190404837.png" alt="image-20210320190404837"></p>
 <p>检查测试连接，执行命令，显示success则成功</p>
-<p>ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#105;&#116;&#x40;&#103;&#x69;&#116;&#x68;&#117;&#98;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p>ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#109;">&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#x75;&#x62;&#x2e;&#99;&#111;&#109;</a></p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210320185950523.png" alt="image-20210320185950523"></p>
 <p>之后就可以直接使用ssh密匙来clone和push项目，不用输入密码</p>
 <p><img src="/2020/10/15/Git%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8/image-20210321093019644.png" alt="image-20210321093019644"></p>
@@ -13789,7 +13789,7 @@ public class MyLogGateWayFilter implements GlobalFilter, Ordered &#123;
 <li><p>用自己的GitHub账号在GitHub上新建一个名为springcloud-config的新Repository</p>
 </li>
 <li><p>获得SSH协议的git地址</p>
-<p><a href="mailto:&#103;&#105;&#x74;&#x40;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#x63;&#x6f;&#109;">&#103;&#105;&#x74;&#x40;&#103;&#105;&#116;&#104;&#117;&#98;&#x2e;&#x63;&#x6f;&#109;</a>:wyc1228/springcloud-config.git</p>
+<p><a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#105;&#x74;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#x69;&#116;&#64;&#103;&#105;&#x74;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;</a>:wyc1228/springcloud-config.git</p>
 <p><img src="/2020/11/21/SpringCloud-07/image-20210320171817426.png" alt="image-20210320171817426"></p>
 </li>
 <li><p>在本地硬盘目录上新建git仓库并clone（不需要初始化，直接clone）</p>
