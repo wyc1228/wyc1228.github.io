@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Redis安装与启动(Linux)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis安装与启动(Linux)">
+<meta property="og:url" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Redis安装与启动(Linux)">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220154747626.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220154920786.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220155125865.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165222068.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220164503630.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220164844821.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165510236.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165550224.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165834691.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220164337751.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220171249489.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220172507135.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220172850900.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201227201126466.png">
+<meta property="article:published_time" content="2021-04-10T08:46:45.000Z">
+<meta property="article:modified_time" content="2021-10-17T06:42:11.881Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220154747626.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Redis安装与启动(Linux) | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E5%AE%89%E8%A3%85%E4%B8%8E%E5%90%AF%E5%8A%A8-Linux"><span class="nav-text">Redis安装与启动(Linux)</span></a></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2021/04/10/Redis%E5%AE%89%E8%A3%85/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis安装与启动(Linux)
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-04-10 16:46:45" itemprop="dateCreated datePublished" datetime="2021-04-10T16:46:45+08:00">2021-04-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Redis安装与启动(Linux)</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Redis安装与启动-Linux"><a href="#Redis安装与启动-Linux" class="headerlink" title="Redis安装与启动(Linux)"></a>Redis安装与启动(Linux)</h2><p>首先，下载redis安装包到opt文件夹</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220154747626.png" alt="image-20201220154747626"></p>
+<p>解压redis安装包</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220154920786.png" alt="image-20201220154920786"></p>
+<p>进入redis目录下执行make命令</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220155125865.png" alt="image-20201220155125865"></p>
+<p>执行make命令，会发现报错，</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165222068.png" alt="image-20201220165222068"></p>
+<p>缺少gcc与cc，所以还要安装gcc和cc，执行以下两条命令发现centos6安装gcc与cc报错</p>
+<blockquote>
+<p>yum install gcc</p>
+</blockquote>
+<blockquote>
+<p>yum install gcc-c++</p>
+</blockquote>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220164503630.png" alt="image-20201220164503630"></p>
+<p>若发生错误，执行以下五条命令,<a target="_blank" rel="noopener" href="https://blog.csdn.net/zhs260133172/article/details/111403417?utm_medium=distribute.pc_relevant.none-task-blog-baidujs_title-3&spm=1001.2101.3001.4242">错误解决参考文章</a></p>
+<blockquote>
+<p>sed -i “s|enabled=1|enabled=0|g” /etc/yum/pluginconf.d/fastestmirror.conf</p>
+</blockquote>
+<blockquote>
+<p>mv /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.backup</p>
+</blockquote>
+<blockquote>
+<p>curl -o /etc/yum.repos.d/CentOS-Base.repo <a target="_blank" rel="noopener" href="https://www.xmpan.com/Centos-6-Vault-Aliyun.repo">https://www.xmpan.com/Centos-6-Vault-Aliyun.repo</a></p>
+</blockquote>
+<blockquote>
+<p>yum clean all</p>
+</blockquote>
+<blockquote>
+<p>yum makecache</p>
+</blockquote>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220164844821.png" alt="image-20201220164844821"></p>
+<p>之后再安装gcc与cc,执行两条命令</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165510236.png" alt="image-20201220165510236"></p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165550224.png" alt="image-20201220165550224"></p>
+<p>安装好gcc与cc之后，再进入redis目录执行make distclean，清除之前make未执行完的文件，再执行make指令</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220165834691.png" alt="image-20201220165834691"></p>
+<p>最后执行make install安装成功：</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220164337751.png" alt="image-20201220164337751"></p>
+<p>启动：</p>
+<p>后台启动，修改/redis-3.2.5/redis.config的daemonize 为yes</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220171249489.png" alt="image-20201220171249489"></p>
+<p>执行redis-server redis.config启动redis的服务端(注意，不在redis路径下，要带上redis.config的路径)</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220172507135.png" alt="image-20201220172507135"></p>
+<p>执行redis-cli 启动redis的客户端</p>
+<p>客户端启动后输入shutdown则会同时关闭服务端和客户端</p>
+<p>也可以通过客户端redis-cli shutdown来关闭服务端</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201220172850900.png" alt="image-20201220172850900"></p>
+<p>java连接Redis</p>
+<p>注销bind 127.0.0.1</p>
+<p>将protected-mode 改为no</p>
+<p><img src="/2021/04/10/Redis%E5%AE%89%E8%A3%85/image-20201227201126466.png" alt="image-20201227201126466"></p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"># Redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/25/SpringCloud-11/" rel="prev" title="SpringCloud-11(Seata分布式事务)">
+                  <i class="fa fa-chevron-left"></i> SpringCloud-11(Seata分布式事务)
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/04/14/Redis%E5%88%9D%E8%AF%86/" rel="next" title="Redis初识">
+                  Redis初识 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

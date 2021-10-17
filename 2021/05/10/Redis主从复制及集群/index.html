@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.14.0/css/all.min.css">
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"wyc1228.github.io","root":"/","scheme":"Gemini","version":"8.0.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"},"path":"search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
+  </script>
+
+  <meta name="description" content="Redis主从复制及集群">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Redis主从复制及集群">
+<meta property="og:url" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/index.html">
+<meta property="og:site_name" content="wyc&#39;s blog">
+<meta property="og:description" content="Redis主从复制及集群">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195225707.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195206874.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195337820.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195544700.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195706124.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195751624.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201317059.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201836764.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201853190.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201902123.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202036165.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202408170.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202450857.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202725276.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202757745.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202809344.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227214941119.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227221453000.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227221430706.png">
+<meta property="og:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227223726506.png">
+<meta property="article:published_time" content="2021-05-10T08:46:45.000Z">
+<meta property="article:modified_time" content="2021-10-17T06:42:43.481Z">
+<meta property="article:author" content="wyc">
+<meta property="article:tag" content="Redis">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195225707.png">
+
+
+<link rel="canonical" href="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Redis主从复制及集群 | wyc's blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">wyc's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">welcome</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <section class="post-toc-wrap sidebar-panel">
+          <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4"><span class="nav-text">Redis主从复制及集群</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6"><span class="nav-text">主从复制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E4%B9%8B%E8%96%AA%E7%81%AB%E7%9B%B8%E4%BC%A0"><span class="nav-text">主从复制之薪火相传</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E4%B9%8B%E5%93%A8%E5%85%B5%E6%A8%A1%E5%BC%8F"><span class="nav-text">主从复制之哨兵模式</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis%E9%9B%86%E7%BE%A4"><span class="nav-text">Redis集群</span></a></li></ol></li></ol></div>
+      </section>
+      <!--/noindex-->
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="wyc"
+      src="/images/header.jpg">
+  <p class="site-author-name" itemprop="name">wyc</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">53</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">9</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/yourname" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;yourname" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+
+
+      </section>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+      
+
+      
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="https://wyc1228.github.io/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/header.jpg">
+      <meta itemprop="name" content="wyc">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="wyc's blog">
+    </span>
+
+    
+    
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Redis主从复制及集群
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2021-05-10 16:46:45" itemprop="dateCreated datePublished" datetime="2021-05-10T16:46:45+08:00">2021-05-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Redis/" itemprop="url" rel="index"><span itemprop="name">Redis</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">Redis主从复制及集群</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="Redis主从复制及集群"><a href="#Redis主从复制及集群" class="headerlink" title="Redis主从复制及集群"></a>Redis主从复制及集群</h2><h3 id="主从复制"><a href="#主从复制" class="headerlink" title="主从复制"></a>主从复制</h3><p>主从复制，就是主机数据更新后根据配置和策略，自动同步到备机的master/slaver机制，Master以写为主，Slave以读为主</p>
+<p>用处：读写分离，性能扩展。容灾快速恢复</p>
+<p>设置一个主服务器，以写为主，设置多个从服务器，以读为主</p>
+<p>配从(服务器)不配主(服务器)</p>
+<ul>
+<li>拷贝多个redis.conf文件include</li>
+<li>开启daemonize yes</li>
+<li>Pid文件名字pidfile</li>
+<li>指定端口port</li>
+<li>Log文件名字</li>
+<li>Dump.rdb名字dbfilename</li>
+<li>appendonly关掉或者换名字</li>
+</ul>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195225707.png" alt="image-20201227195225707"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195206874.png" alt="image-20201227195206874"></p>
+<p>关掉appendonly</p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195337820.png" alt="image-20201227195337820"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195544700.png" alt="image-20201227195544700"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195706124.png" alt="image-20201227195706124"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227195751624.png" alt="image-20201227195751624"></p>
+<p>打开三个redis</p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201317059.png" alt="image-20201227201317059"></p>
+<p>开启三个客户端</p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201836764.png" alt="image-20201227201836764"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201853190.png" alt="image-20201227201853190"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227201902123.png" alt="image-20201227201902123"></p>
+<p>开启成功之后将6379作为主服务器，其他两个作为从服务器，此时还未配置主从关系，用info replication查看主从</p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202036165.png" alt="image-20201227202036165"></p>
+<p>info replication，打印主从复制的相关信息</p>
+<p>slaveof <ip> <port> 称为某个实例的从服务器</port></ip></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202408170.png" alt="image-20201227202408170"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202450857.png" alt="image-20201227202450857"></p>
+<p>主从复制：</p>
+<p>主服务器设置，从服务器也有数据，主服务器会把数据复制到从服务器中，保持数据一致，</p>
+<p>主服务器能写能读，从服务器只有读的功能</p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202725276.png" alt="image-20201227202725276"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202757745.png" alt="image-20201227202757745"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227202809344.png" alt="image-20201227202809344"></p>
+<p>注意：</p>
+<p>从服务器shutdown之后，自动解除主从关系，再次开启从服务器需要重新设置主从关系，再次连上主服务器则主服务器数据会全部同步复制给从服务器</p>
+<p>主服务器shutdown之后，从服务器会原地待命，还是从服务器，等待主服务器开启</p>
+<h4 id="主从复制之薪火相传"><a href="#主从复制之薪火相传" class="headerlink" title="主从复制之薪火相传"></a>主从复制之薪火相传</h4><p>将主从服务器配置为永久的，将配置文件中的slaveof 后面主服务器的ip，端口号写上，则主从服务器将永久存在，不会重启失效</p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227214941119.png" alt="image-20201227214941119"></p>
+<p>主从复制原理</p>
+<ul>
+<li>每次从机连通后，都会给主机发送sync命令</li>
+<li>主机立刻进行存盘操作，发送RDB文件给从机</li>
+<li>从机收到RDB文件后，进行全盘加载</li>
+<li>之后每次主机写操作，都会立刻发送给从机，从机执行相同的命令</li>
+</ul>
+<p>薪火相传(兄弟，传火不？)</p>
+<ul>
+<li>上一个slave(从)可以是下一个slave(从)的master(主)，slave同样可以接收其他slaves的连接和同步请求，那么改slave作为了链条中下一个master，可以有效减轻master的写压力，去中心化降低风险</li>
+<li>用 slaveof <ip> <port></port></ip></li>
+<li>中途变更方向：会清楚之前的数据，重新建立拷贝最新的</li>
+<li>风险是一旦某个slave宕机，后面的slave都无法备份</li>
+</ul>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227221453000.png" alt="image-20201227221453000"></p>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227221430706.png" alt="image-20201227221430706"></p>
+<p>注意：第一个主服务器79宕机后，因为80还是从服务器，虽然80是81的主服务器，但是80还是不能写数据，要想写数据，需要执行slaveof no one命令，表示80不是任何服务器的从服务器，由此脱离79主服务器</p>
+<h4 id="主从复制之哨兵模式"><a href="#主从复制之哨兵模式" class="headerlink" title="主从复制之哨兵模式"></a>主从复制之哨兵模式</h4><p>从服务器升级为主服务器的自动版，传火需要手动输入slaveof no one才能变成主服务器，而哨兵模式可以后台监控主机是否故障，如果故障了根据投票数自动将从库转换为主库</p>
+<p>哨兵模式有两个协议，留言协议判断主机有没有宕机，投票协议挑选一个从机升级为主机</p>
+<p>配置哨兵：</p>
+<ul>
+<li>调整为一主二仆模式</li>
+<li>自定义的/myredis目录下新建sentinel.conf文件</li>
+<li>在配置文件中填写sentinel monitor mymaster 127.0.0.1 6379 1</li>
+<li>其中mymaster为监控对象器的服务器别称，1为至少有多少个哨兵同意迁移</li>
+<li>执行redis-sentinel sentinel.conf </li>
+</ul>
+<p><img src="/2021/05/10/Redis%E4%B8%BB%E4%BB%8E%E5%A4%8D%E5%88%B6%E5%8F%8A%E9%9B%86%E7%BE%A4/image-20201227223726506.png" alt="image-20201227223726506"></p>
+<p>哨兵模式特点：</p>
+<ul>
+<li>从下线的主服务器的所有从服务里面挑选一个从服务，将其转换为主服务<ul>
+<li>选择的条件依次为：<ol>
+<li>选择优先级靠前的，优先级在redis.conf中的slave-priority 100</li>
+<li>选择偏移量最大的，偏移量是指获得原主数据最多的</li>
+<li>选择runid最小的从服务，每个redis实例启动后都会随机生成一个40位的runid</li>
+</ol>
+</li>
+</ul>
+</li>
+<li>挑选出新的主服务之后，sentinel向原主服务的从服务发送slaveof新主服务的命令，复制性的master</li>
+<li>当已下线的服务重新上线时，sentinel会向其发送slaveof命令，让其成为新的从服务器</li>
+</ul>
+<h3 id="Redis集群"><a href="#Redis集群" class="headerlink" title="Redis集群"></a>Redis集群</h3><p>把多个Redis服务放在一起，通过某种配置策略让他们各司其职，而当我去访问Redis时，也能通过一定的策略将我的请求发送到不同的Redis服务上</p>
+<p>一个redis考虑读写效率问题，主从复制解决读写压力，集群解决内存压力</p>
+<p>容量不够，redis如何进行扩容？</p>
+<p>并发写操作，redis如何分摊？</p>
+<p>什么是集群？</p>
+<ul>
+<li>Redis集群实现了对Redis的水平扩容，即启动N个redis节点，将整个数据库分布存储在这N个节点中，每个节点存储总数据的1/N</li>
+<li>Redis集群通过分区(partition)来提供一定程度的可用性(available)：即使集群中有一部分节点失效或者无法进行通讯，集群也可以继续处理命令请求</li>
+</ul>
+<p>Redis集群环境</p>
+<ul>
+<li>安装ruby环境<ul>
+<li>yum install ruby</li>
+<li>yum install rubygems</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Redis/" rel="tag"># Redis</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/04/27/Redis%E8%BF%9B%E9%98%B6/" rel="prev" title="Redis进阶">
+                  <i class="fa fa-chevron-left"></i> Redis进阶
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/07/09/%E9%87%8D%E8%A3%85%E7%B3%BB%E7%BB%9F%E5%90%8EHexo%E7%9A%84%E9%83%A8%E7%BD%B2/" rel="next" title="重装系统后重新部署恢复 Hexo">
+                  重装系统后重新部署恢复 Hexo <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+  
+  
+  
+
+
+
+      
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      
+
+      
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wyc</span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="Total Visitors">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="Total Views">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+    </div>
+  </footer>
+
+  
+  <script src="//cdn.jsdelivr.net/npm/animejs@3.2.0/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  <script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
